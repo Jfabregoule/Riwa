@@ -35,3 +35,46 @@ Game Trailer: [link-to-trailer]
 Community Forum/Discord: [link-to-community]
 Enjoy the Game!
 Thank you for checking out [Game Name]! We hope you enjoy playing it as much as we enjoyed making it. 🚀
+
+🔗 NOMENCLATURE :
+
+Constante : PRIVATE_CONSTANT_SNAKE_PASCAL_CASE
+
+Static Field : s_camelCase
+
+Class Name : PascalCase
+
+Private Variable : int _camelCase
+Protected Variable : int _camelCase
+Public Variable : int PascalCase
+
+Delegate Variable : IntEvent
+Event Variable : OnNomdelEvent
+
+private int MethodPascalCase(int paramCamelCase = 1)
+    {
+        int variableCamelCase = paramCamelCase++;
+        return variableCamelCase;
+    }
+
+Assets Creation / Unity Objects : type_name (M_myMaterial) except for scenes and scripts.
+
+To add a sound :
+Put your file at this path -> Ressources/Audio/Type/YourSound.mp3
+To specifie a sound with the sound manager : Type_YourSound
+
+Commit Github:
+
+[ADD] New feature
+[UPT] Update feature
+[FIX] Fix de feature
+[REF] Refactor/Rework code
+[CLEAN] Clean code
+[DOC] Documentation code
+
+Espacially for gameplay developper
+[MAP] Level design
+[BAL] Balancing the game
+
+Only Git master
+[MERGE] Commits de merge

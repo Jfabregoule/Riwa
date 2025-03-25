@@ -24,11 +24,13 @@ public class Character : MonoBehaviour
 
     private VariableJoystick _joystick; //TEMPORAIRE EN ATTENDANT L'INPUT SYSTEM
 
-
+    private bool _canInteract;
+    private bool _canInteractSoul;
 
     [Header("Gameplay Statistics")]
 
     [SerializeField] private float _speed = 1;
+    [SerializeField] private float _joystickRunTreshold = 0.4f;
 
     #endregion
 
@@ -40,8 +42,11 @@ public class Character : MonoBehaviour
     public FSMCharacter FsmCharacter { get => _fsmCharacter;}
     public Animator Animator { get => _animator;}
     public VariableJoystick Joystick { get => _joystick;}
-    public float Speed { get => _speed; set => _speed = value; }
     public Rigidbody Rb { get => _rb;}
+    public bool CanInteract { get => _canInteract; set => _canInteract = value; }
+    public bool CanInteractSoul { get => _canInteractSoul; set => _canInteractSoul = value; }
+    public float Speed { get => _speed; set => _speed = value; }
+    public float JoystickRunTreshold { get => _joystickRunTreshold; set => _joystickRunTreshold = value; }
 
     #endregion
 
@@ -58,7 +63,15 @@ public class Character : MonoBehaviour
 
         _joystick = GameObject.Find("Variable Joystick").GetComponent<VariableJoystick>();
 
+        _fsmCharacter.InitState(_fsmCharacter._states[EnumStateCharacter.Idle]);
+
     }
+
+    private void Update()
+    {
+        _fsmCharacter.StateMachineUpdate();
+    }
+
 
     #endregion
 

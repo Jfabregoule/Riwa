@@ -20,7 +20,7 @@ public enum EnumStateCharacter
     SoulInteract
 }
 
-public abstract class BaseStateCharacter : MonoBehaviour
+public abstract class BaseStateCharacter
 {
     //FIELDS
 
@@ -40,9 +40,24 @@ public abstract class BaseStateCharacter : MonoBehaviour
 
     //FUNCTIONS
 
-    public abstract void InitState(FSMCharacter stateMachine, Character character);
-    public abstract void EnterState();
-    public abstract void ExitState();
+    public void InitState(FSMCharacter stateMachine, Character character) 
+    {
+        _stateMachine = stateMachine;
+        _enumState = EnumStateCharacter.Idle;
+        _character = character;
+        _transitionMap = new Dictionary<EnumStateCharacter, Transition>();
+    }
+
+    public void EnterState() 
+    {
+        //_character.Animator.SetTrigger(_stateMachine.AnimationMap[_enumState]); //Lorsque je rentre dans un state, je trigger l'animation à jouer, si l'animator est bien fait, tout est clean
+    }
+
+    public void ExitState()
+    {
+        //code commun à tous les states
+    }
+
     public abstract void UpdateState();
     public abstract void ChangeState();
 

@@ -40,7 +40,7 @@ public abstract class BaseStateCharacter
 
     //FUNCTIONS
 
-    public void InitState(FSMCharacter stateMachine, Character character) 
+    public virtual void InitState(FSMCharacter stateMachine, Character character) 
     {
         _stateMachine = stateMachine;
         _enumState = EnumStateCharacter.Idle;
@@ -48,17 +48,26 @@ public abstract class BaseStateCharacter
         _transitionMap = new Dictionary<EnumStateCharacter, Transition>();
     }
 
-    public void EnterState() 
+    public virtual void EnterState() 
     {
         //_character.Animator.SetTrigger(_stateMachine.AnimationMap[_enumState]); //Lorsque je rentre dans un state, je trigger l'animation à jouer, si l'animator est bien fait, tout est clean
     }
 
-    public void ExitState()
+    public virtual void ExitState()
     {
         //code commun à tous les states
     }
 
-    public abstract void UpdateState();
-    public abstract void ChangeState();
+    public virtual void UpdateState()
+    {
+        //code commun à tous les states
+        ChangeState();
+    }
+
+    public virtual void ChangeState()
+    {
+        //code commun à tous les states
+        //Ici on mettra les conditions et tout ce qui concerne les changements de state
+    }
 
 }

@@ -5,33 +5,33 @@ using UnityEngine;
 public class IdleStateCharacter : BaseStateCharacter
 {
 
-    new public void InitState(FSMCharacter stateMachine, Character character)
+    public override void InitState(FSMCharacter stateMachine, Character character)
     {
         base.InitState(stateMachine, character);
-
-        //Pas de transition
     }
 
-    new public void EnterState()
+    public override void EnterState()
     {
         base.EnterState();
     }
 
-    new public void ExitState()
+    public override void ExitState()
     {
         base.ExitState();
     }
 
     public override void UpdateState()
     {
-        ChangeState();
+        base.UpdateState();
     }
 
     public override void ChangeState()
     {
+        base.ChangeState();
+
         if (_character.Joystick.Direction.y != 0 || _character.Joystick.Direction.x != 0)
         {
-            _stateMachine.ChangeState(_stateMachine._states[EnumStateCharacter.Walk]);
+            _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Walk]);
         }
     }
 }

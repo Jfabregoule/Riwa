@@ -5,25 +5,27 @@ using UnityEngine.InputSystem;
 
 public class WalkStateCharacter : BaseStateCharacter
 {
-    new public void InitState(FSMCharacter stateMachine, Character character)
+    public override void InitState(FSMCharacter stateMachine, Character character)
     {
         base.InitState(stateMachine, character);
 
         //Pas de transition
     }
 
-    new public void EnterState()
+    public override void EnterState()
     {
         base.EnterState();
     }
 
-    new public void ExitState()
+    public override void ExitState()
     {
         base.ExitState();
     }
 
     public override void UpdateState()
     {
+        base.UpdateState();
+
         Vector3 movement;
         movement.x = _character.Joystick.Direction.x;
         movement.y = 0;
@@ -33,22 +35,23 @@ public class WalkStateCharacter : BaseStateCharacter
 
         _character.Rb.velocity = movement * _character.Speed;
 
-        ChangeState();
     }
 
     public override void ChangeState()
     {
+        base.ChangeState();
+
         Vector2 direction = new Vector2(_character.Joystick.Direction.x ,_character.Joystick.Direction.y);
         float magnitude = direction.magnitude;
 
-        if (magnitude > 0.4f)
+        if (magnitude > 0.5f) //Le treshold est legerement superieur pour qu'on ne puisse pas spam de changement de state entre run et walk 
         {
-            _stateMachine.ChangeState(_stateMachine._states[EnumStateCharacter.Run]);
+            _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Run]);
         }
 
         if (_character.Joystick.Direction.y == 0 && _character.Joystick.Direction.x == 0)
         {
-            _stateMachine.ChangeState(_stateMachine._states[EnumStateCharacter.Idle]);
+            _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Idle]);
         }
 
     }

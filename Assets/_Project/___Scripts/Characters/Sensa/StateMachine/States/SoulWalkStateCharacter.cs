@@ -2,8 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractStateCharacter : BaseStateCharacter
+public class SoulWalkStateCharacter : BaseStateCharacter
 {
+    /// <summary>
+    /// State ou le joueur est en état ame
+    /// </summary>
+
     public override void InitState(FSMCharacter stateMachine, Character character)
     {
         base.InitState(stateMachine, character);
@@ -22,10 +26,14 @@ public class InteractStateCharacter : BaseStateCharacter
     public override void UpdateState()
     {
         base.UpdateState();
+
+        //Si le joueur est trop loin de son corps on le stop
+
     }
 
     public override void ChangeState()
     {
         base.ChangeState();
+
     }
 }

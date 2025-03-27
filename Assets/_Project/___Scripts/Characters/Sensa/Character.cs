@@ -63,7 +63,7 @@ public class Character : MonoBehaviour
 
         _joystick = GameObject.Find("Variable Joystick").GetComponent<VariableJoystick>();
 
-        _fsmCharacter.InitState(_fsmCharacter._states[EnumStateCharacter.Idle]);
+        _fsmCharacter.InitState(_fsmCharacter.States[EnumStateCharacter.Idle]);
 
     }
 

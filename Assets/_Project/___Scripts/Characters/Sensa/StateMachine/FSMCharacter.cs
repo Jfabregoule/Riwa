@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FSMCharacter
 {
-    public  Dictionary<EnumStateCharacter, BaseStateCharacter>  _states; //Liste des states
+    private Dictionary<EnumStateCharacter, BaseStateCharacter> _states; //Liste des states
 
     private BaseStateCharacter                                  _currentState;
     private Transitions                                         _transition; //Class qui va contenir toutes les transitions 
@@ -13,6 +13,7 @@ public class FSMCharacter
     public BaseStateCharacter CurrentState { get => _currentState; }
     public Transitions Transition { get => _transition;}
     public Dictionary<EnumStateCharacter, string> AnimationMap { get => _animationMap; }
+    public Dictionary<EnumStateCharacter, BaseStateCharacter> States { get => _states; }
 
     public FSMCharacter() { 
         _transition = new Transitions();
@@ -32,6 +33,19 @@ public class FSMCharacter
 
         _states[EnumStateCharacter.Interact] = new InteractStateCharacter();
         _states[EnumStateCharacter.Interact].InitState(this, character);
+
+        _states[EnumStateCharacter.ChangeTempo] = new ChangeTempoStateCharacter();
+        _states[EnumStateCharacter.ChangeTempo].InitState(this, character);
+
+        _states[EnumStateCharacter.Holding] = new HoldingStateCharacter();
+        _states[EnumStateCharacter.Holding].InitState(this, character);
+
+        _states[EnumStateCharacter.Pull] = new PullStateCharacter();
+        _states[EnumStateCharacter.Pull].InitState(this, character);
+
+        _states[EnumStateCharacter.Push] = new PushStateCharacter();
+        _states[EnumStateCharacter.Push].InitState(this, character);
+
     }
 
     public void InitState(BaseStateCharacter initState)

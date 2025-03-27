@@ -2,8 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractStateCharacter : BaseStateCharacter
+public class SoulIdleStateCharacter : BaseStateCharacter
 {
+    /// <summary>
+    /// State ou le joueur est en état ame
+    /// </summary>
+
     public override void InitState(FSMCharacter stateMachine, Character character)
     {
         base.InitState(stateMachine, character);
@@ -27,5 +31,6 @@ public class InteractStateCharacter : BaseStateCharacter
     public override void ChangeState()
     {
         base.ChangeState();
+
     }
 }

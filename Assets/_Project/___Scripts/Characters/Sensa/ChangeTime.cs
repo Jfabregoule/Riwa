@@ -10,7 +10,7 @@ public class ChangeTime : MonoBehaviour
 {
     private float radius;
     public float baseRadius = 0f;
-    public float maxRadius;
+    public float maxRadius = 50f;
     public bool isActivated;
     private float alpha = 0;
     public ParticleSystem Sphere;
@@ -72,21 +72,19 @@ public class ChangeTime : MonoBehaviour
                 isActivated = false;
             }
         }
-        if (isFinished) 
-        {
-            Shader.SetGlobalInt("_Test", 1 - present);
-            Shader.SetGlobalInt("_Test2", 1 - past);
-            past = 1 - past;
-            present = 1 - present;
-            radius = 0;
-            Shader.SetGlobalFloat("_Radius", radius);
-            isFinished = false;
-            particleActivated = false;
-            alpha = 0;
-
-        }
     }
 
-   
+    public void UpdateShaders()
+    {
+        Shader.SetGlobalInt("_Test", 1 - present);
+        Shader.SetGlobalInt("_Test2", 1 - past);
+        past = 1 - past;
+        present = 1 - present;
+        radius = 0;
+        Shader.SetGlobalFloat("_Radius", radius);
+        isFinished = false;
+        particleActivated = false;
+        alpha = 0;
+    }
 
 }

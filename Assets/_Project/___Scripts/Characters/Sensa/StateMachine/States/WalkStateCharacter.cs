@@ -34,6 +34,7 @@ public class WalkStateCharacter : BaseStateCharacter
         Vector3 direction = Vector3.Normalize(new Vector3(movement.x, 0, movement.z));
 
         _character.Rb.velocity = movement * _character.Speed;
+        _character.Pawn.transform.forward = direction;
 
     }
 

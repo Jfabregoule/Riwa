@@ -10,11 +10,15 @@ public class ChangeTempoStateCharacter : BaseStateCharacter
     /// On y fera le check de si le voyage temporel est possible ou non
     /// </summary>
 
+    private ChangeTime _changeTime;
+
     public override void InitState(FSMCharacter stateMachine, Character character)
     {
         base.InitState(stateMachine, character);
 
         _enumState = EnumStateCharacter.ChangeTempo;
+
+        _changeTime = GameObject.Find("Sphere").GetComponent<ChangeTime>(); 
 
     }
 
@@ -22,13 +26,15 @@ public class ChangeTempoStateCharacter : BaseStateCharacter
     {
         base.EnterState();
 
-        Debug.Log("Je change de temps");
+        _changeTime.isActivated = true;
 
     }
 
     public override void ExitState()
     {
         base.ExitState();
+
+        _changeTime.UpdateShaders();
     }
 
     public override void UpdateState(float dT)
@@ -40,6 +46,9 @@ public class ChangeTempoStateCharacter : BaseStateCharacter
     {
         base.ChangeState();
 
-        _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Idle]);
+        if (_changeTime.isActivated == false)
+        {
+            _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Idle]);
+        }
     }
 }

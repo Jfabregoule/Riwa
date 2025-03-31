@@ -9,6 +9,7 @@ public class Statue : MonoBehaviour, IMovable
     [SerializeField] private float _finalRotation;
     [SerializeField] private int _id;
     [SerializeField] private StatuePuzzle _gridManager;
+    private CellPos _pos;
 
     private bool _validate;
 

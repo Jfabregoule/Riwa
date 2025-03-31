@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+struct CellPos
+{
+    public int x;
+    public int y;
+}
+
 public class StatuePuzzle : MonoBehaviour
 {
     [Header("Grid")]
@@ -15,9 +21,13 @@ public class StatuePuzzle : MonoBehaviour
     public Vector3 Origin { get; private set; }
     public Vector2Int GridSize => _gridSize;
 
+    Vector2Int?[,] grid = new Vector2Int?[7, 3];
+
     private void Awake()
     {
         Origin = gridSpawnpoint.transform.position;
+        grid[0, 1] = new Vector2Int(2, 80);
+        grid[0, 1] = null;
         //GenerateGrid();
     }
 

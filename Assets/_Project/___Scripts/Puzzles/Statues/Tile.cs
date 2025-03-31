@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
+
     [SerializeField] private int _id;
     private Statue _statue;
 

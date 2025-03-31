@@ -9,56 +9,63 @@ public class SoundSystem : Singleton<SoundSystem>
 {
 
     #region Classes
+    /// <summary>
+    /// Représente un effet sonore avec une clé d'identification et une liste de clips audio associés.
+    /// </summary>
     public class SoundFX
     {
-        public string key;
-        public List<AudioClip> clip;
+        public string key; // Clé unique de l'effet sonore.
+        public List<AudioClip> clip; // Liste des clips audio associés à la clé.
     }
 
+    /// <summary>
+    /// Représente une piste musicale ou d'ambiance avec une clé d'identification et un clip audio associé.
+    /// </summary>
     public class Track
     {
-        public string key;
-        public AudioClip clip;
+        public string key; // Clé unique de la piste musicale ou ambiance.
+        public AudioClip clip; // Clip audio associé.
     }
 
     #endregion
 
     #region Fields
 
-    [SerializeField] private string SFXFolderPath;
-    [SerializeField] private string musicFolderPath;
-    [SerializeField] private string ambianceFolderPath;
+    [SerializeField] private string _SFXFolderPath; // Chemin du dossier contenant les effets sonores.
+    [SerializeField] private string _musicFolderPath; // Chemin du dossier contenant la musique.
+    [SerializeField] private string _ambianceFolderPath; // Chemin du dossier contenant les sons d'ambiance.
 
-    private int _numberOfChannels;
+    private int _numberOfChannels; // Nombre de canaux audio disponibles.
 
-    [SerializeField] private AudioMixerGroup _musicMixerGroup;
-    [SerializeField] private AudioMixerGroup _ambianceMixerGroup;
-    private AudioListener _audioListener;
+    [SerializeField] private AudioMixerGroup _musicMixerGroup; // Groupe de mixage pour la musique.
+    [SerializeField] private AudioMixerGroup _ambianceMixerGroup; // Groupe de mixage pour l'ambiance.
+    private AudioListener _audioListener; // Référence à l'AudioListener.
 
-    [SerializeField] private AudioClip _startingMusic;
-    [SerializeField] private AudioClip _startingAmbianceSound;
+    [SerializeField] private AudioClip _startingMusic; // Musique de départ.
+    [SerializeField] private AudioClip _startingAmbianceSound; // Son d'ambiance de départ.
 
-    [SerializeField] private float _fadeInDuration;
-    [SerializeField] private float _fadeOutDuration;
+    [SerializeField] private float _fadeInDuration; // Durée de fondu d'entrée.
+    [SerializeField] private float _fadeOutDuration; // Durée de fondu de sortie.
 
-    private List<AudioSource> _audioSources;
-    private AudioSource _currentMusicSource;
-    private List<AudioSource> _currentAmbianceSources;
+    private List<AudioSource> _audioSources; // Liste des sources audio disponibles.
+    private AudioSource _currentMusicSource; // Source audio actuellement utilisée pour la musique.
+    private List<AudioSource> _currentAmbianceSources; // Liste des sources audio d'ambiance.
 
-    [SerializeField] private AudioSource soundFXObject;
+    [SerializeField] private AudioSource soundFXObject; // Objet préfabriqué pour jouer des effets sonores.
 
-    private GameObject _player;
+    private GameObject _player; // Référence au joueur.
 
-       
-
-    private List<SoundFX> _SFXList = new List<SoundFX>();
-    private List<Track> _musicList = new List<Track>();
-    private List<Track> _ambianceList = new List<Track>();
+    private List<SoundFX> _SFXList = new List<SoundFX>(); // Liste des effets sonores chargés.
+    private List<Track> _musicList = new List<Track>(); // Liste des pistes musicales chargées.
+    private List<Track> _ambianceList = new List<Track>(); // Liste des sons d'ambiance chargés.
 
     #endregion
 
     #region Main Functions
 
+    /// <summary>
+    /// Initialisation du système sonore et chargement des pistes audio.
+    /// </summary>
     protected override void Awake() {
         base.Awake();
 
@@ -77,6 +84,9 @@ public class SoundSystem : Singleton<SoundSystem>
         _player = GameObject.FindGameObjectWithTag("Player");
     }
 
+    /// <summary>
+    /// Génère les clés d'identification des sons en fonction de leur type (SFX, musique, ambiance).
+    /// </summary>
     private void GenerateKeys()
     {
         GenerateSFXKeys();
@@ -84,9 +94,12 @@ public class SoundSystem : Singleton<SoundSystem>
         GenerateAmbianceKeys();
     }
 
+    /// <summary>
+    /// Génère les clés d'identification des SFX.
+    /// </summary>
     private void GenerateSFXKeys()
     {
-        AudioClip[] audioClips = Resources.LoadAll<AudioClip>(SFXFolderPath);
+        AudioClip[] audioClips = Resources.LoadAll<AudioClip>(_SFXFolderPath);
 
         foreach (AudioClip audioClip in audioClips)
         {
@@ -131,9 +144,12 @@ public class SoundSystem : Singleton<SoundSystem>
         }
     }
 
+    /// <summary>
+    /// Génère les clés d'identification des musiques.
+    /// </summary>
     private void GenerateMusicKeys()
     {
-        AudioClip[] audioClips = Resources.LoadAll<AudioClip>(musicFolderPath);
+        AudioClip[] audioClips = Resources.LoadAll<AudioClip>(_musicFolderPath);
 
         foreach (AudioClip audioClip in audioClips)
         {
@@ -171,9 +187,12 @@ public class SoundSystem : Singleton<SoundSystem>
         }
     }
 
+    /// <summary>
+    /// Génère les clés d'identification des sons d'ambiance.
+    /// </summary>
     private void GenerateAmbianceKeys()
     {
-        AudioClip[] audioClips = Resources.LoadAll<AudioClip>(ambianceFolderPath);
+        AudioClip[] audioClips = Resources.LoadAll<AudioClip>(_ambianceFolderPath);
 
         foreach (AudioClip audioClip in audioClips)
         {
@@ -211,16 +230,28 @@ public class SoundSystem : Singleton<SoundSystem>
         }
     }
 
+    /// <summary>
+    /// Définie le nouvel audioListerner.
+    /// </summary>
+    /// <param name="audioListener">Nouveau audioListener.</param>
     public void SetAudioListener(AudioListener audioListener)
     {
         _audioListener = audioListener;
     }
 
+    /// <summary>
+    /// Définie le nouveau Player.
+    /// </summary>
+    /// <param name="player">Nouveau Player.</param>
     public void SetPlayer(GameObject player)
     {
         _player = player;
     }
 
+    /// <summary>
+    /// Récupérer une audio source disponible.
+    /// </summary>
+    /// <returns>Audio source disponible retournée.</returns>
     private AudioSource GetAvailableAudioSource()
     {
         foreach (AudioSource audioSource in _audioSources)
@@ -235,6 +266,11 @@ public class SoundSystem : Singleton<SoundSystem>
         return _audioSources[0];
     }
 
+    /// <summary>
+    /// Récupérer un SFX grace à sa clé.
+    /// </summary>
+    /// <param name="key">Clé du son recherché.</param>
+    /// <returns>Audio clip trouvé retourné ou null si inéxistant.</returns>
     private AudioClip GetSFXByKey(string key)
     {
         foreach (var sound in _SFXList)
@@ -256,6 +292,11 @@ public class SoundSystem : Singleton<SoundSystem>
         return null;
     }
 
+    /// <summary>
+    /// Récupérer une musique grace à sa clé.
+    /// </summary>
+    /// <param name="key">Clé de la musique recherchée.</param>
+    /// <returns>Audio clip trouvé retourné ou null si inéxistant.</returns>
     private AudioClip GetMusicByKey(string key)
     {
         foreach (var sound in _musicList)
@@ -269,6 +310,11 @@ public class SoundSystem : Singleton<SoundSystem>
         return null;
     }
 
+    /// <summary>
+    /// Récupérer un son d'ambiance grace à sa clé.
+    /// </summary>
+    /// <param name="key">Clé du son d'ambiance recherché.</param>
+    /// <returns>Audio clip trouvé retourné ou null si inéxistant.</returns>
     private AudioClip GetAmbianceByKey(string key)
     {
         foreach (var sound in _ambianceList)
@@ -286,11 +332,19 @@ public class SoundSystem : Singleton<SoundSystem>
 
     #region Music
 
+    /// <summary>
+    /// Change la musique actuelle avec la musique donnée.
+    /// </summary>
+    /// <param name="audioClip">Audioclip de la nouvelle musique.</param>
     private void ChangeMusic(AudioClip audioClip)
     {
         StartCoroutine(FadeOutInMusic(audioClip));
     }
 
+    /// <summary>
+    /// Change la musique actuelle avec la musique trouvée avec la clé donnée.
+    /// </summary>
+    /// <param name="key">Clé de la nouvelle musique.</param>
     public void ChangeMusicByKey(string key)
     {
         ChangeMusic(GetMusicByKey(key));
@@ -300,14 +354,23 @@ public class SoundSystem : Singleton<SoundSystem>
 
     #region Ambiances
 
-    public void StopAmbianceSources() {
-        foreach (AudioSource audioSource in _currentAmbianceSources) {
+    /// <summary>
+    /// Stop les sons d'ambiances en cours.
+    /// </summary>
+    public void StopAmbianceSources() 
+    {
+        foreach (AudioSource audioSource in _currentAmbianceSources) 
+        {
             StartCoroutine(FadeOutAudio(audioSource, _fadeOutDuration));
         }
 
         _currentAmbianceSources.Clear();
     }
 
+    /// <summary>
+    /// Ajoute un nouveau son d'ambiance.
+    /// </summary>
+    /// <param name="audioClip">Clip audio d'ambiance à ajouter.</param>
     private void AddAmbianceSound(AudioClip audioClip) {
         AudioSource audioSource = GetAvailableAudioSource();
         audioSource.outputAudioMixerGroup = _ambianceMixerGroup;
@@ -319,6 +382,10 @@ public class SoundSystem : Singleton<SoundSystem>
         _currentAmbianceSources.Add(audioSource);
     }
 
+    /// <summary>
+    /// Ajoute un nouveau son d'ambiance.
+    /// </summary>
+    /// <param name="key">Clé du son d'ambiance à ajouter.</param>
     public void AddAmbianceSoundByKey(string key)
     {
         var audioClip = GetAmbianceByKey(key);
@@ -332,6 +399,12 @@ public class SoundSystem : Singleton<SoundSystem>
 
     #region SoundFX
 
+    /// <summary>
+    /// Permet de faire spawn une prefab contenant une audiosource à une position avec un volume pour jouer un son spécifique ponctuel.
+    /// </summary>
+    /// <param name="audioClip">Audioclip à jouer.</param>
+    /// <param name="spawnPosition">Position ou jouer le son.</param>
+    /// <param name="volume">Volume du son à jouer.</param>
     private void PlaySoundFXClip(AudioClip audioClip, Vector3 spawnPosition, float volume = 1.0f) {
         AudioSource audioSource = CreateSoundFXSource(spawnPosition);
         audioSource.clip = audioClip;
@@ -339,6 +412,12 @@ public class SoundSystem : Singleton<SoundSystem>
         PlayAndDestroy(audioSource, audioClip.length);
     }
 
+    /// <summary>
+    /// Permet de faire spawn une prefab contenant une audiosource à une position avec un volume pour jouer un son spécifique ponctuel.
+    /// </summary>
+    /// <param name="key">Clé du son à jouer.</param>
+    /// <param name="spawnPosition">Position ou jouer le son.</param>
+    /// <param name="volume">Volume du son à jouer.</param>
     public void PlaySoundFXClipByKey(string key, Vector3 spawnPosition, float volume = 1.0f)
     {
         var audioClip = GetSFXByKey(key);
@@ -348,11 +427,22 @@ public class SoundSystem : Singleton<SoundSystem>
         }
     }
 
+    /// <summary>
+    /// Permet de faire spawn une prefab contenant une audiosource sur le joueur avec un volume pour jouer un son spécifique ponctuel.
+    /// </summary>
+    /// <param name="key">Clé du son à jouer.</param>
+    /// <param name="volume">Volume du son à jouer.</param>
     public void PlaySoundFXClipByKey(string key, float volume = 1.0f)
     {
         PlaySoundFXClipByKey(key, _player.transform.position, volume);
     }
 
+    /// <summary>
+    /// Permet de faire spawn des prefabs contenant une audiosource à une position avec un volume pour jouer plusieurs sons spécifique ponctuel.
+    /// </summary>
+    /// <param name="keys">Clés des sons à jouer.</param>
+    /// <param name="spawnPosition">Position ou jouer le son.</param>
+    /// <param name="volume">Volume du son à jouer.</param>
     public void PlayRandomSoundFXClipByKeys(string[] keys, Vector3 spawnPosition, float volume = 1.0f) {
         List<AudioClip> clips = new List<AudioClip>();
         foreach (var key in keys)
@@ -370,12 +460,24 @@ public class SoundSystem : Singleton<SoundSystem>
         }
     }
 
-    private AudioSource CreateSoundFXSource(Vector3 spawnPosition) {
+    /// <summary>
+    /// Permet de faire spawn la prefab contenant une audiosource à une position.
+    /// </summary>
+    /// <param name="spawnPosition">Position ou spawn la prefab.</param>
+    /// <returns> AudioSource spawn.</returns>
+    private AudioSource CreateSoundFXSource(Vector3 spawnPosition) 
+    {
         AudioSource audioSource = Instantiate(soundFXObject, spawnPosition, Quaternion.identity);
         return audioSource;
     }
 
-    private void PlayAndDestroy(AudioSource audioSource, float clipLength) {
+    /// <summary>
+    /// Active une audiosource et la destroy à la fin du son qu'elle joue.
+    /// </summary>
+    /// <param name="audioSource">AudioSource à activer.</param>
+    /// <param name="clipLength">Durée du son.</param>
+    private void PlayAndDestroy(AudioSource audioSource, float clipLength) 
+    {
         audioSource.Play();
         Destroy(audioSource.gameObject, clipLength);
     }
@@ -383,7 +485,13 @@ public class SoundSystem : Singleton<SoundSystem>
     #endregion
 
     #region Coroutines
-    private IEnumerator FadeOutInMusic(AudioClip newClip) {
+
+    /// <summary>
+    /// Fait une transition douce entre la musique en cours et une musique donnée.
+    /// </summary>
+    /// <param name="newClip">Nouvelle musique.</param>
+    private IEnumerator FadeOutInMusic(AudioClip newClip) 
+    {
         if (_currentMusicSource != null) {
             yield return StartCoroutine(FadeOutAudio(_currentMusicSource, _fadeOutDuration));
         }
@@ -400,7 +508,13 @@ public class SoundSystem : Singleton<SoundSystem>
         yield return StartCoroutine(FadeInAudio(newMusicSource, _fadeInDuration));
     }
 
-    public IEnumerator FadeOutAudio(AudioSource audioSource, float duration) {
+    /// <summary>
+    /// Diminue lentement le son d'une musique jusqu'à 0.
+    /// </summary>
+    /// <param name="audioSource">AudioSource à couper.</param>
+    /// <param name="duration">Durée avant d'atteindre 0.</param>
+    public IEnumerator FadeOutAudio(AudioSource audioSource, float duration) 
+    {
         float currentTime = 0f;
         float startVolume = audioSource.volume;
 
@@ -414,7 +528,13 @@ public class SoundSystem : Singleton<SoundSystem>
         audioSource.volume = startVolume;
     }
 
-    public IEnumerator FadeInAudio(AudioSource audioSource, float duration) {
+    /// <summary>
+    /// Augmente lentement le son d'une musique jusqu'à 100.
+    /// </summary>
+    /// <param name="audioSource">AudioSource à augmenter.</param>
+    /// <param name="duration">Durée avant d'atteindre 100.</param>
+    public IEnumerator FadeInAudio(AudioSource audioSource, float duration) 
+    {
         float currentTime = 0f;
         audioSource.volume = 0.0f;
 
@@ -426,5 +546,6 @@ public class SoundSystem : Singleton<SoundSystem>
 
         audioSource.volume = 1.0f;
     }
+
     #endregion
 }

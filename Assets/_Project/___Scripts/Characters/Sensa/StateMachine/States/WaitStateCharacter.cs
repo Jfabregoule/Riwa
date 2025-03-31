@@ -2,18 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PushStateCharacter : BaseStateCharacter
+public class WaitStateCharacter : BaseStateCharacter
 {
     /// <summary>
-    /// Lorsque le joueur est en holding, il peut pousser l'objet 
+    /// State ou le joueur aura les inputs bloqués pour les cinématiques
+    /// pourra surement prendre en paramètre un sequencer, et jouera ce sequncer dans ce state
     /// </summary>
 
     public override void InitState(FSMCharacter stateMachine, Character character)
     {
         base.InitState(stateMachine, character);
 
-        _enumState = EnumStateCharacter.Push;
-
+        _enumState = EnumStateCharacter.Wait;
     }
 
     public override void EnterState()
@@ -35,11 +35,9 @@ public class PushStateCharacter : BaseStateCharacter
     {
         base.ChangeState();
 
-        //Si on ne désactive pas le holding et qu'on lache le joystick
-        _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Holding]);
-
-        //Si désactive le joystick et qu'on a le joystick braqué 
-        _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Walk]);
-
+        if (_character.Joystick.Direction.y != 0 || _character.Joystick.Direction.x != 0)
+        {
+            _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Walk]);
+        }
     }
 }

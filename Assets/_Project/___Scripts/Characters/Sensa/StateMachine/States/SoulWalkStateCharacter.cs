@@ -26,9 +26,9 @@ public class SoulWalkStateCharacter : BaseStateCharacter
         base.ExitState();
     }
 
-    public override void UpdateState()
+    public override void UpdateState(float dT)
     {
-        base.UpdateState();
+        base.UpdateState(dT);
 
         //Si le joueur est trop loin de son corps on le stop
 

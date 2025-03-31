@@ -23,6 +23,7 @@ public class FSMCharacter
     private const string PULL_NAME          = "Pull";
     private const string SOULIDLE_NAME      = "SoulIdle";
     private const string SOULWALK_NAME      = "SoulWalk";
+    private const string WAIT_NAME          = "Wait";
 
     #endregion
 
@@ -79,9 +80,13 @@ public class FSMCharacter
         _states[EnumStateCharacter.SoulWalk].InitState(this, character);
         _animationMap[EnumStateCharacter.SoulWalk] = SOULWALK_NAME;
 
-        _states[EnumStateCharacter.Cinematic] = new CinematicCharacterState();
+        _states[EnumStateCharacter.Cinematic] = new CinematicStateCharacter();
         _states[EnumStateCharacter.Cinematic].InitState(this, character);
         _animationMap[EnumStateCharacter.Cinematic] = CINEMATIC_NAME;
+
+        _states[EnumStateCharacter.Wait] = new WaitStateCharacter();
+        _states[EnumStateCharacter.Wait].InitState(this, character);
+        _animationMap[EnumStateCharacter.Wait] = WAIT_NAME;
 
     }
 
@@ -105,9 +110,9 @@ public class FSMCharacter
 
     }
 
-    public void StateMachineUpdate()
+    public void StateMachineUpdate(float dT)
     {
-        _currentState.UpdateState();
+        _currentState.UpdateState(dT);
     }
 
 }

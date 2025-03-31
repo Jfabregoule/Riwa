@@ -55,7 +55,7 @@ public abstract class BaseStateCharacter
         //code commun à tous les states
     }
 
-    public virtual void UpdateState()
+    public virtual void UpdateState(float dT)
     {
         //code commun à tous les states
         ChangeState();

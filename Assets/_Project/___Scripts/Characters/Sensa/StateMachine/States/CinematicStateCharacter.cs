@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CinematicCharacterState : BaseStateCharacter
+public class CinematicStateCharacter : BaseStateCharacter
 {
     /// <summary>
     /// State ou le joueur aura les inputs bloqués pour les cinématiques
@@ -26,9 +26,9 @@ public class CinematicCharacterState : BaseStateCharacter
         base.ExitState();
     }
 
-    public override void UpdateState()
+    public override void UpdateState(float dT)
     {
-        base.UpdateState();
+        base.UpdateState(dT);
     }
 
     public override void ChangeState()

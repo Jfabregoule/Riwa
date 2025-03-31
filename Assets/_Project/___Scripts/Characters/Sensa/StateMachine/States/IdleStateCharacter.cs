@@ -5,6 +5,8 @@ using UnityEngine;
 public class IdleStateCharacter : BaseStateCharacter
 {
 
+    private float _clock;
+
     public override void InitState(FSMCharacter stateMachine, Character character)
     {
         base.InitState(stateMachine, character);
@@ -15,6 +17,9 @@ public class IdleStateCharacter : BaseStateCharacter
     public override void EnterState()
     {
         base.EnterState();
+
+        _clock = 0;
+
     }
 
     public override void ExitState()
@@ -22,9 +27,12 @@ public class IdleStateCharacter : BaseStateCharacter
         base.ExitState();
     }
 
-    public override void UpdateState()
+    public override void UpdateState(float dT)
     {
-        base.UpdateState();
+        base.UpdateState(dT);
+
+        _clock += dT;
+
     }
 
     public override void ChangeState()
@@ -35,5 +43,11 @@ public class IdleStateCharacter : BaseStateCharacter
         {
             _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Walk]);
         }
+
+        if (_clock > _character.TimeBeforeWait)
+        {
+            _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Wait]);
+        }
+
     }
 }

@@ -21,9 +21,9 @@ public class InteractStateCharacter : BaseStateCharacter
         base.ExitState();
     }
 
-    public override void UpdateState()
+    public override void UpdateState(float dT)
     {
-        base.UpdateState();
+        base.UpdateState(dT);
     }
 
     public override void ChangeState()

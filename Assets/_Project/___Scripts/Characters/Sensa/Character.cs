@@ -32,6 +32,10 @@ public class Character : MonoBehaviour
     [SerializeField] private float _speed = 1;
     [SerializeField] private float _joystickRunTreshold = 0.4f;
 
+    [Header("StateMachine values")]
+
+    [SerializeField] private float _timeBeforeWait = 2.0f;
+
     #endregion
 
     #region Properties
@@ -47,6 +51,7 @@ public class Character : MonoBehaviour
     public bool CanInteractSoul { get => _canInteractSoul; set => _canInteractSoul = value; }
     public float Speed { get => _speed; set => _speed = value; }
     public float JoystickRunTreshold { get => _joystickRunTreshold; set => _joystickRunTreshold = value; }
+    public float TimeBeforeWait { get => _timeBeforeWait; set => _timeBeforeWait = value; }
 
     #endregion
 
@@ -62,7 +67,8 @@ public class Character : MonoBehaviour
         _fsmCharacter.InitStateMachine(this);
 
         _animator = GetComponent<Animator>();
-        _joystick = GameObject.Find("Variable Joystick").GetComponent<VariableJoystick>();
+
+        _joystick = GameObject.Find("Variable Joystick").GetComponent<VariableJoystick>(); //A modifier plus tard 
 
         _fsmCharacter.InitState(_fsmCharacter.States[EnumStateCharacter.Idle]);
 
@@ -70,7 +76,9 @@ public class Character : MonoBehaviour
 
     private void Update()
     {
-        _fsmCharacter.StateMachineUpdate();
+        float dt = Time.deltaTime;
+
+        _fsmCharacter.StateMachineUpdate(dt);
     }
 
 

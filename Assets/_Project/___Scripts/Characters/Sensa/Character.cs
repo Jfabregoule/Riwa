@@ -81,6 +81,10 @@ public class Character : MonoBehaviour
         _fsmCharacter.StateMachineUpdate(dt);
     }
 
+    public void OnChangeTempo() //A DEGAGER QUAND Y'AURA L'INPUT SYSTEM
+    {
+       _fsmCharacter.ChangeState(_fsmCharacter.States[EnumStateCharacter.ChangeTempo]);
+    }
 
     #endregion
 

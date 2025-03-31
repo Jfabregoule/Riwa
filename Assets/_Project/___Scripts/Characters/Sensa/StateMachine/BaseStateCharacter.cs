@@ -16,10 +16,18 @@ public enum EnumStateCharacter
     Pull,
     SoulIdle,
     SoulWalk,
+    Fall,
+    Rotate,
+    Respawn
 }
 
 public abstract class BaseStateCharacter
 {
+    /// <summary>
+    /// Contient une instance du joueur, de la state machine du joueur et l'identifiant du state
+    /// Chaque state a une map avec des transition, state actuel -> identifiant du state cible et va appeler l'event associé
+    /// </summary>
+
     //FIELDS
 
     protected FSMCharacter                                  _stateMachine;

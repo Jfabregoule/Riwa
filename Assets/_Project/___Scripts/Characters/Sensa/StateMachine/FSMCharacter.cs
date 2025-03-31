@@ -24,6 +24,9 @@ public class FSMCharacter
     private const string SOULIDLE_NAME      = "SoulIdle";
     private const string SOULWALK_NAME      = "SoulWalk";
     private const string WAIT_NAME          = "Wait";
+    private const string ROTATE_NAME        = "Rotate";
+    private const string FALL_NAME          = "Fall";
+    private const string RESPAWN_NAME       = "Respawn";
 
     #endregion
 
@@ -87,6 +90,18 @@ public class FSMCharacter
         _states[EnumStateCharacter.Wait] = new WaitStateCharacter();
         _states[EnumStateCharacter.Wait].InitState(this, character);
         _animationMap[EnumStateCharacter.Wait] = WAIT_NAME;
+
+        _states[EnumStateCharacter.Rotate] = new RotateStateCharacter();
+        _states[EnumStateCharacter.Rotate].InitState(this, character);
+        _animationMap[EnumStateCharacter.Rotate] = ROTATE_NAME;
+
+        _states[EnumStateCharacter.Fall] = new FallStateCharacter();
+        _states[EnumStateCharacter.Fall].InitState(this, character);
+        _animationMap[EnumStateCharacter.Fall] = FALL_NAME;
+
+        _states[EnumStateCharacter.Respawn] = new RespawnStateCharacter();
+        _states[EnumStateCharacter.Respawn].InitState(this, character);
+        _animationMap[EnumStateCharacter.Respawn] = RESPAWN_NAME;
 
     }
 

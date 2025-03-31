@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class IdleStateCharacter : BaseStateCharacter
 {
-
     private float _clock;
 
     public override void InitState(FSMCharacter stateMachine, Character character)
@@ -42,12 +41,19 @@ public class IdleStateCharacter : BaseStateCharacter
         if (_character.Joystick.Direction.y != 0 || _character.Joystick.Direction.x != 0)
         {
             _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Walk]);
+            return;
         }
 
         if (_clock > _character.TimeBeforeWait)
         {
             _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Wait]);
+            return;
         }
-
     }
+
+    public void ChangeToChangeTempo()
+    {
+        _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.ChangeTempo]);
+    }
+
 }

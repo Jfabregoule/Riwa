@@ -7,6 +7,8 @@ public class InteractStateCharacter : BaseStateCharacter
     public override void InitState(FSMCharacter stateMachine, Character character)
     {
         base.InitState(stateMachine, character);
+
+        _enumState = EnumStateCharacter.Interact;
     }
 
     public override void EnterState()

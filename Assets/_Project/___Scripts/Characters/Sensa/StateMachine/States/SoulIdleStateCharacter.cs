@@ -11,6 +11,9 @@ public class SoulIdleStateCharacter : BaseStateCharacter
     public override void InitState(FSMCharacter stateMachine, Character character)
     {
         base.InitState(stateMachine, character);
+
+        _enumState = EnumStateCharacter.SoulIdle;
+
     }
 
     public override void EnterState()

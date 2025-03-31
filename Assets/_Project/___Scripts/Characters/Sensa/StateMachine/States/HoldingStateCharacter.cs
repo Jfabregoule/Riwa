@@ -12,6 +12,8 @@ public class HoldingStateCharacter : BaseStateCharacter
     public override void InitState(FSMCharacter stateMachine, Character character)
     {
         base.InitState(stateMachine, character);
+
+        _enumState = EnumStateCharacter.Holding;
     }
 
     public override void EnterState()

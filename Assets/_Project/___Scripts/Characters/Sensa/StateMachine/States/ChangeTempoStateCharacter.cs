@@ -13,6 +13,9 @@ public class ChangeTempoStateCharacter : BaseStateCharacter
     public override void InitState(FSMCharacter stateMachine, Character character)
     {
         base.InitState(stateMachine, character);
+
+        _enumState = EnumStateCharacter.ChangeTempo;
+
     }
 
     public override void EnterState()

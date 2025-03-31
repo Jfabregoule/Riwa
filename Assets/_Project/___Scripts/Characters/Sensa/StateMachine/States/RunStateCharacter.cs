@@ -7,6 +7,9 @@ public class RunStateCharacter : BaseStateCharacter
     public override void InitState(FSMCharacter stateMachine, Character character)
     {
         base.InitState(stateMachine, character);
+
+        _enumState = EnumStateCharacter.Run;
+
     }
 
     public override void EnterState()
@@ -39,7 +42,6 @@ public class RunStateCharacter : BaseStateCharacter
         base.ChangeState();
 
         Vector2 direction = new Vector2(_character.Joystick.Direction.x, _character.Joystick.Direction.y);
-        direction.Normalize();
         float magnitude = direction.magnitude;
 
         if (magnitude < 0.4f)

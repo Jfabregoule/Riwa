@@ -9,7 +9,7 @@ public class WalkStateCharacter : BaseStateCharacter
     {
         base.InitState(stateMachine, character);
 
-        //Pas de transition
+        _enumState = EnumStateCharacter.Walk;
     }
 
     public override void EnterState()

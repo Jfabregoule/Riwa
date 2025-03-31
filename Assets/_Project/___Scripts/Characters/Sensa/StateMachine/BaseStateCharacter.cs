@@ -16,8 +16,6 @@ public enum EnumStateCharacter
     Pull,
     SoulIdle,
     SoulWalk,
-    SoulRun,
-    SoulInteract
 }
 
 public abstract class BaseStateCharacter
@@ -43,14 +41,13 @@ public abstract class BaseStateCharacter
     public virtual void InitState(FSMCharacter stateMachine, Character character) 
     {
         _stateMachine = stateMachine;
-        _enumState = EnumStateCharacter.Idle;
         _character = character;
         _transitionMap = new Dictionary<EnumStateCharacter, Transition>();
     }
 
     public virtual void EnterState() 
     {
-        //_character.Animator.SetTrigger(_stateMachine.AnimationMap[_enumState]); //Lorsque je rentre dans un state, je trigger l'animation à jouer, si l'animator est bien fait, tout est clean
+        _character.Animator.SetTrigger(_stateMachine.AnimationMap[_enumState]); //Lorsque je rentre dans un state, je trigger l'animation à jouer, si l'animator est bien fait, tout est clean
     }
 
     public virtual void ExitState()

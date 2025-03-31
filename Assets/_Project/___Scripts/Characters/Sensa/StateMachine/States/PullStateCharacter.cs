@@ -16,6 +16,9 @@ public class PullStateCharacter : BaseStateCharacter
     public override void EnterState()
     {
         base.EnterState();
+
+        _enumState = EnumStateCharacter.Pull;
+
     }
 
     public override void ExitState()

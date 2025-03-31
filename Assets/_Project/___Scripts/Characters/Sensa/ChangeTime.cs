@@ -35,6 +35,8 @@ public class ChangeTime : MonoBehaviour
 
         AmbianceShapeModule = AmbianceParticles.shape;
         AmbianceEmissionModule = AmbianceParticles.emission;
+        Shader.SetGlobalInt("_Test", 1);
+        Shader.SetGlobalInt("_Test2", 0);
         past = Shader.GetGlobalInt("_Test2");
         present = Shader.GetGlobalInt("_Test");
     }

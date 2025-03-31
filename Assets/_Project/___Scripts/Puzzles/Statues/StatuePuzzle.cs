@@ -2,10 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 struct CellPos
 {
     public int x;
     public int y;
+}
+
+[System.Serializable]
+struct CellContent
+{
+    public CellContent(int newID, int newRotation) { id = newID; rotation = newRotation; }
+
+    public void Init(int newID, int newRotation)
+    {
+        id = newID; 
+        rotation = newRotation;
+    }
+
+    public int id;
+    public int rotation;
 }
 
 public class StatuePuzzle : MonoBehaviour
@@ -21,13 +37,12 @@ public class StatuePuzzle : MonoBehaviour
     public Vector3 Origin { get; private set; }
     public Vector2Int GridSize => _gridSize;
 
-    Vector2Int?[,] grid = new Vector2Int?[7, 3];
+    Dictionary<CellPos, CellContent> Res;
+    CellContent?[,] grid = new CellContent?[7, 3];
 
     private void Awake()
     {
         Origin = gridSpawnpoint.transform.position;
-        grid[0, 1] = new Vector2Int(2, 80);
-        grid[0, 1] = null;
         //GenerateGrid();
     }
 
@@ -47,14 +62,20 @@ public class StatuePuzzle : MonoBehaviour
                     Debug.Log("RESULT POS: " + index);
                     GameObject bt = Instantiate(blueTileGO, position, Quaternion.identity);
                     bt.transform.SetParent(gridSpawnpoint.transform);
+                    grid[x, y] = new CellContent(1, 135);
                 }
                 else
                 {
                     GameObject tile = Instantiate(tiles, position, Quaternion.identity);
                     tile.transform.SetParent(gridSpawnpoint.transform);
-
+                    grid[x, y] = null;
                 }
             }
         }
+    }
+
+    private bool IsCellEmpty(CellPos pos)
+    {
+        return (grid[pos.x, pos.y] == null);
     }
 }

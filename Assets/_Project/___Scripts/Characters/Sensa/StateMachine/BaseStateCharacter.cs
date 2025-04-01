@@ -21,7 +21,7 @@ public enum EnumStateCharacter
     Respawn
 }
 
-public abstract class BaseStateCharacter
+public abstract class BaseStateCharacter : BaseState<EnumStateCharacter>
 {
     /// <summary>
     /// Contient une instance du joueur, de la state machine du joueur et l'identifiant du state
@@ -30,49 +30,45 @@ public abstract class BaseStateCharacter
 
     //FIELDS
 
-    protected FSMCharacter                                  _stateMachine;
-    protected EnumStateCharacter                            _enumState; //L'identité du state soula forme d'un enum 
-    protected Character                                     _character;
-
-    //Liste des transitions entre les states
-    public delegate void Transition();
-    protected Dictionary<EnumStateCharacter, Transition>    _transitionMap;
+    private Character _character;
 
     //PROPERTIES
-
-    public Dictionary<EnumStateCharacter, Transition> TransitionMap { get => _transitionMap; }
-    public EnumStateCharacter EnumState { get => _enumState;}
-    public FSMCharacter Character { get => _stateMachine;}
+    protected Character Character1 { get => _character; set => _character = value; }
 
     //FUNCTIONS
 
-    public virtual void InitState(FSMCharacter stateMachine, Character character) 
+    public virtual void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, Character character) 
     {
-        _stateMachine = stateMachine;
+        base.InitState(stateMachine, enumValue);
+
         _character = character;
         _transitionMap = new Dictionary<EnumStateCharacter, Transition>();
     }
 
-    public virtual void EnterState() 
+    new public virtual void EnterState() 
     {
+        base.EnterState();
         _character.Animator.SetTrigger(_stateMachine.AnimationMap[_enumState]); //Lorsque je rentre dans un state, je trigger l'animation à jouer, si l'animator est bien fait, tout est clean
     }
 
-    public virtual void ExitState()
+    new public virtual void ExitState()
     {
+        base.ExitState();
         //code commun à tous les states
     }
 
-    public virtual void UpdateState(float dT)
+    new public virtual void UpdateState(float dT)
     {
         //code commun à tous les states
+        base.UpdateState(dT);
         ChangeState();
     }
 
-    public virtual void ChangeState()
+    new public virtual void ChangeState()
     {
         //code commun à tous les states
         //Ici on mettra les conditions et tout ce qui concerne les changements de state
+        base.ChangeState();
     }
 
 }

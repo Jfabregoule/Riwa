@@ -9,7 +9,7 @@ public class CinematicStateCharacter : BaseStateCharacter
     /// pourra surement prendre en paramètre un sequencer, et jouera ce sequncer dans ce state
     /// </summary>
 
-    public override void InitState(FSMCharacter stateMachine, Character character)
+    public override void InitState(StateMachineCharacter stateMachine, Character character)
     {
         base.InitState(stateMachine, character);
 

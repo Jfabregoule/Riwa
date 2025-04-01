@@ -18,7 +18,7 @@ public class Character : MonoBehaviour
     //Field
 
     private GameObject _pawn;
-    private FSMCharacter _fsmCharacter;
+    private StateMachineCharacter _fsmCharacter;
     private Animator _animator;
     private Rigidbody _rb;
 
@@ -43,7 +43,7 @@ public class Character : MonoBehaviour
     //Properties
 
     public GameObject Pawn { get => _pawn;}
-    public FSMCharacter FsmCharacter { get => _fsmCharacter;}
+    public StateMachineCharacter FsmCharacter { get => _fsmCharacter;}
     public Animator Animator { get => _animator;}
     public VariableJoystick Joystick { get => _joystick;}
     public Rigidbody Rb { get => _rb;}
@@ -63,7 +63,7 @@ public class Character : MonoBehaviour
     {
         _pawn = GameObject.Find(PAWN_OBJECT);
         _rb = _pawn.GetComponent<Rigidbody>();
-        _fsmCharacter = new FSMCharacter();
+        _fsmCharacter = new StateMachineCharacter();
         _fsmCharacter.InitStateMachine(this);
 
         _animator = GetComponent<Animator>();

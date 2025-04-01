@@ -8,7 +8,7 @@ public class PullStateCharacter : BaseStateCharacter
     /// Lorsque le joueur est en holding, il peut tirer l'objet 
     /// </summary>
 
-    public override void InitState(FSMCharacter stateMachine, Character character)
+    public override void InitState(StateMachineCharacter stateMachine, Character character)
     {
         base.InitState(stateMachine, character);
     }

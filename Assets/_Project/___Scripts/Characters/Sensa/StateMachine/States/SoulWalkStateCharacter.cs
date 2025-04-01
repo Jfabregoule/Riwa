@@ -8,7 +8,7 @@ public class SoulWalkStateCharacter : BaseStateCharacter
     /// State ou le joueur est en état ame
     /// </summary>
 
-    public override void InitState(FSMCharacter stateMachine, Character character)
+    public override void InitState(StateMachineCharacter stateMachine, Character character)
     {
         base.InitState(stateMachine, character);
 

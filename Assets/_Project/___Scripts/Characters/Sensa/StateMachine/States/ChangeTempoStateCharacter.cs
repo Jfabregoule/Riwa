@@ -12,7 +12,7 @@ public class ChangeTempoStateCharacter : BaseStateCharacter
 
     private ChangeTime _changeTime;
 
-    public override void InitState(FSMCharacter stateMachine, Character character)
+    public override void InitState(StateMachineCharacter stateMachine, Character character)
     {
         base.InitState(stateMachine, character);
 

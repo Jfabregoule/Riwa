@@ -56,12 +56,15 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
         if (direction.x != 0) _pos.x += (int)direction.x;
         if (direction.y != 0) _pos.y += (int)direction.y;
         transform.position = new Vector3(transform.localPosition.x + (_gridManager.UnitGridSize * direction.x), transform.localPosition.y, transform.localPosition.z + (_gridManager.UnitGridSize * direction.y));
+        _gridManager.Check();
     }
 
     public void Rotate(float angle)
     {
         transform.localRotation *= Quaternion.Euler(transform.localRotation.eulerAngles.x, angle, transform.localRotation.eulerAngles.z);
-        // Update dans la grid la rotation dans la statue
+        _currentRotation = (int)transform.localRotation.eulerAngles.y;
+        _gridManager.UpdateStatueRotation(_pos, new CellContent(_id, _currentRotation));
+        _gridManager.Check();
     }
 
     public void Hold()

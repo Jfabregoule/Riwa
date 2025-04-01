@@ -58,7 +58,7 @@ public class StatuePuzzle : MonoBehaviour
             statue.OnStatueMoved += Move;
         }
 
-        Res.Add(new CellPos(1, 1), new CellContent(1, 135));
+        Res.Add(new CellPos(0, 0), new CellContent(1, 135));
     }
 
     [ContextMenu("Generate Grid")]
@@ -96,11 +96,15 @@ public class StatuePuzzle : MonoBehaviour
             if (grid[pair.Key.x, pair.Key.y] != null)
             {
                 CellContent value = pair.Value;
-                //if (value != )
+                if (value.Equals(grid[pair.Key.x, pair.Key.y]))
+                    Debug.Log("Grid completed");
+                else
+                    Debug.Log("Grid not completed");
             }
             
         }
     }
+
     public bool Move(CellPos oldPos, Vector2Int direction, CellContent statueData)
     {
         CellPos newPos = new CellPos(oldPos.x + direction.x, oldPos.y + direction.y);
@@ -117,6 +121,11 @@ public class StatuePuzzle : MonoBehaviour
         grid[newPos.x, newPos.y] = statueData;
 
         return true;
+    }
+
+    public void UpdateStatueRotation(CellPos pos, CellContent statueData)
+    {
+        grid[pos.x, pos.y] = statueData;
     }
 
     private bool IsCellEmpty(CellPos pos)

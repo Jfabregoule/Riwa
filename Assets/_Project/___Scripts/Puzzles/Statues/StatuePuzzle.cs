@@ -3,14 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-struct CellPos
+public struct CellPos
 {
+
+    public CellPos(int posX, int posY) { x = posX; y = posY; }
+
+    public void Init(int posX, int posY)
+    {
+        x = posX;
+        y = posY;
+    }
+
     public int x;
     public int y;
 }
 
 [System.Serializable]
-struct CellContent
+public struct CellContent
 {
     public CellContent(int newID, int newRotation) { id = newID; rotation = newRotation; }
 
@@ -32,18 +41,24 @@ public class StatuePuzzle : MonoBehaviour
     [SerializeField] private GameObject tiles;
     [SerializeField] private GameObject gridSpawnpoint;
     [SerializeField] private GameObject blueTileGO;
+    [SerializeField] private List<Statue> _statues;
 
     public int UnitGridSize => _unitGridSize;
     public Vector3 Origin { get; private set; }
     public Vector2Int GridSize => _gridSize;
 
-    Dictionary<CellPos, CellContent> Res;
+    Dictionary<CellPos, CellContent> Res = new Dictionary<CellPos, CellContent>();
     CellContent?[,] grid = new CellContent?[7, 3];
 
-    private void Awake()
+    private void Start()
     {
         Origin = gridSpawnpoint.transform.position;
-        //GenerateGrid();
+        foreach (Statue statue in _statues)
+        {
+            statue.OnStatueMoved += Move;
+        }
+
+        Res.Add(new CellPos(1, 1), new CellContent(1, 135));
     }
 
     [ContextMenu("Generate Grid")]
@@ -74,8 +89,39 @@ public class StatuePuzzle : MonoBehaviour
         }
     }
 
+    public void Check()
+    {
+        foreach(var pair in Res)
+        {
+            if (grid[pair.Key.x, pair.Key.y] != null)
+            {
+                CellContent value = pair.Value;
+                //if (value != )
+            }
+            
+        }
+    }
+    public bool Move(CellPos oldPos, Vector2Int direction, CellContent statueData)
+    {
+        CellPos newPos = new CellPos(oldPos.x + direction.x, oldPos.y + direction.y);
+        if (newPos.x < 0
+            || newPos.x > _gridSize.x - 1
+            || newPos.y < 0
+            || newPos.y > _gridSize.y - 1)
+            return false;
+
+        if (!IsCellEmpty(newPos)) return false;
+
+
+        grid[oldPos.x, oldPos.y] = null;
+        grid[newPos.x, newPos.y] = statueData;
+
+        return true;
+    }
+
     private bool IsCellEmpty(CellPos pos)
     {
         return (grid[pos.x, pos.y] == null);
     }
+
 }

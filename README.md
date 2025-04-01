@@ -8,6 +8,7 @@ Welcome to the official repository of [Riwa], a mobile game designed to bring th
 Responsive Touch Controls: Optimized for mobile with intuitive touch gestures.
 Stunning Graphics: Built using Unity and the Universal Render Pipeline (URP) for smooth performance.
 Multiple Levels & Challenges: Engage in a variety of levels, each more challenging than the last!
+Sound Design : Music and immersive sounds are an important part of the experience playing Riwa.
 
 🔧 Technologies Used
 Unity – Game engine.

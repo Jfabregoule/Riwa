@@ -72,9 +72,13 @@ public class StatuePuzzle : MonoBehaviour
     Dictionary<CellPos, CellContent> solution = new Dictionary<CellPos, CellContent>();
     Dictionary<CellPos, CellContent?> grid = new Dictionary<CellPos, CellContent?>();
 
-    private void Start()
+    private void Awake()
     {
         Origin = gridSpawnpoint.transform.position;
+    }
+
+    private void Start()
+    {
         foreach (Statue statue in _statues)
         {
             statue.OnStatueMoved += Move;

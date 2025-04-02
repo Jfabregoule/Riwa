@@ -27,8 +27,8 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
 
     void Start()
     {
-        _pos.x = Mathf.RoundToInt((transform.position.x - _gridManager.Origin.x) / _gridManager.UnitGridSize);
-        _pos.y = Mathf.RoundToInt((transform.position.z - _gridManager.Origin.z) / _gridManager.UnitGridSize);
+        _pos.x = Mathf.Abs(Mathf.RoundToInt((transform.position.x - _gridManager.Origin.x) / _gridManager.UnitGridSize));
+        _pos.y = Mathf.Abs(Mathf.RoundToInt((transform.position.z - _gridManager.Origin.z) / _gridManager.UnitGridSize));
 
         if (_pos.x < 0 || _pos.x >= _gridManager.GridSize.x || _pos.y < 0 || _pos.y >= _gridManager.GridSize.y)
         {
@@ -37,7 +37,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
             _pos.y = Mathf.Clamp(_pos.y, 0, _gridManager.GridSize.y - 1);
         }
 
-        if(_startDebugLog == true) Debug.Log("POS X: " + _pos.x + " | POS Y: " + _pos.y);
+        if(_startDebugLog == true) Debug.Log("Statue: " + gameObject.name + " | POS X: " + _pos.x + " | POS Y: " + _pos.y);
         AlignToGrid();
     }
 
@@ -56,6 +56,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
     private void AlignToGrid()
     {
         transform.position = _gridManager.Origin + new Vector3(_pos.x * _gridManager.UnitGridSize, transform.localPosition.y, _pos.y * _gridManager.UnitGridSize);
+        Debug.Log("Statue: " + gameObject.name + " | Origin: " + _gridManager.Origin);
     }
 
     public void Move(Vector2 direction)

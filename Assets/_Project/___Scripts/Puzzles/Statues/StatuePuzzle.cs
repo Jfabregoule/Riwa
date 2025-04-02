@@ -25,7 +25,7 @@ public struct CellContent
 
     public void Init(int newID, int newRotation)
     {
-        id = newID; 
+        id = newID;
         rotation = newRotation;
     }
 
@@ -33,22 +33,32 @@ public struct CellContent
     public int rotation;
 }
 
+[System.Serializable]
+public struct GridEntry
+{
+    public CellPos position;
+    public CellContent? content;
+}
+
 public class StatuePuzzle : MonoBehaviour
 {
     [Header("Grid")]
-    [SerializeField] private Vector2Int _gridSize = new Vector2Int(7, 3);
+    [SerializeField] private Vector2Int _gridSize = new Vector2Int(7, 7);
     [SerializeField] private int _unitGridSize = 7;
     [SerializeField] private GameObject tiles;
     [SerializeField] private GameObject gridSpawnpoint;
     [SerializeField] private GameObject blueTileGO;
     [SerializeField] private List<Statue> _statues;
 
+    [SerializeField] private List<GridEntry> serializedGrid = new List<GridEntry>();
+
     public int UnitGridSize => _unitGridSize;
     public Vector3 Origin { get; private set; }
     public Vector2Int GridSize => _gridSize;
 
     Dictionary<CellPos, CellContent> Res = new Dictionary<CellPos, CellContent>();
-    CellContent?[,] grid = new CellContent?[7, 3];
+    CellContent?[,] gridBis = new CellContent?[7, 7];
+    Dictionary<CellPos, CellContent?> grid = new Dictionary<CellPos, CellContent?>();
 
     private void Start()
     {
@@ -59,6 +69,12 @@ public class StatuePuzzle : MonoBehaviour
         }
 
         Res.Add(new CellPos(0, 0), new CellContent(1, 135));
+
+        grid.Clear();
+        foreach (var entry in serializedGrid)
+        {
+            grid[entry.position] = entry.content;
+        }
     }
 
     [ContextMenu("Generate Grid")]
@@ -70,6 +86,10 @@ public class StatuePuzzle : MonoBehaviour
         {
             for (int x = 0; x < _gridSize.x; x++)
             {
+                if (y >= 3 && x >= 4)
+                {
+                    continue;
+                }
                 int index = y * _gridSize.x + x;
                 Vector3 position = Origin + new Vector3(x * _unitGridSize, 0f, y * _unitGridSize);
                 if (index == blueTile)
@@ -77,15 +97,22 @@ public class StatuePuzzle : MonoBehaviour
                     Debug.Log("RESULT POS: " + index);
                     GameObject bt = Instantiate(blueTileGO, position, Quaternion.identity);
                     bt.transform.SetParent(gridSpawnpoint.transform);
-                    grid[x, y] = new CellContent(1, 135);
+                    grid[new CellPos(x, y)] = new CellContent(1, 135);
                 }
                 else
                 {
                     GameObject tile = Instantiate(tiles, position, Quaternion.identity);
                     tile.transform.SetParent(gridSpawnpoint.transform);
-                    grid[x, y] = null;
+                    //grid[new CellPos(x, y)] = null;
+                    grid.Add(new CellPos(x, y), null);
                 }
             }
+        }
+
+        serializedGrid.Clear();
+        foreach (var pair in grid)
+        {
+            serializedGrid.Add(new GridEntry { position = pair.Key, content = pair.Value });
         }
     }
 
@@ -93,10 +120,10 @@ public class StatuePuzzle : MonoBehaviour
     {
         foreach(var pair in Res)
         {
-            if (grid[pair.Key.x, pair.Key.y] != null)
+            if (grid[pair.Key] != null)
             {
                 CellContent value = pair.Value;
-                if (value.Equals(grid[pair.Key.x, pair.Key.y]))
+                if (grid[pair.Key].Equals(value))
                     Debug.Log("Grid completed");
                 else
                     Debug.Log("Grid not completed");
@@ -108,29 +135,25 @@ public class StatuePuzzle : MonoBehaviour
     public bool Move(CellPos oldPos, Vector2Int direction, CellContent statueData)
     {
         CellPos newPos = new CellPos(oldPos.x + direction.x, oldPos.y + direction.y);
-        if (newPos.x < 0
-            || newPos.x > _gridSize.x - 1
-            || newPos.y < 0
-            || newPos.y > _gridSize.y - 1)
-            return false;
 
+        bool test = grid.ContainsKey(newPos);
+        Debug.Log(test);
+        if (!grid.ContainsKey(newPos)) return false;
         if (!IsCellEmpty(newPos)) return false;
 
-
-        grid[oldPos.x, oldPos.y] = null;
-        grid[newPos.x, newPos.y] = statueData;
+        grid[oldPos] = null;
+        grid[newPos] = statueData;
 
         return true;
     }
 
     public void UpdateStatueRotation(CellPos pos, CellContent statueData)
     {
-        grid[pos.x, pos.y] = statueData;
+        grid[pos] = statueData;
     }
 
     private bool IsCellEmpty(CellPos pos)
     {
-        return (grid[pos.x, pos.y] == null);
+        return (grid[pos] == null);
     }
-
 }

@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class WalkStateCharacter : BaseStateCharacter
+public class MoveStateCharacter : BaseStateCharacter
 {
-    public override void InitState(StateMachineCharacter stateMachine, Character character)
+    public override void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, ACharacter character)
     {
-        base.InitState(stateMachine, character);
-
-        _enumState = EnumStateCharacter.Walk;
+        base.InitState(stateMachine, enumValue, character);
     }
 
     public override void EnterState()
@@ -44,11 +42,6 @@ public class WalkStateCharacter : BaseStateCharacter
 
         Vector2 direction = new Vector2(_character.Joystick.Direction.x ,_character.Joystick.Direction.y);
         float magnitude = direction.magnitude;
-
-        if (magnitude > 0.5f) //Le treshold est legerement superieur pour qu'on ne puisse pas spam de changement de state entre run et walk 
-        {
-            _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Run]);
-        }
 
         if (_character.Joystick.Direction.y == 0 && _character.Joystick.Direction.x == 0)
         {

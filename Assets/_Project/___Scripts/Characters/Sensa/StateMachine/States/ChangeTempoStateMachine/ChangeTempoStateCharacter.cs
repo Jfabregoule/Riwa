@@ -12,13 +12,18 @@ public class ChangeTempoStateCharacter : BaseStateCharacter
 
     private ChangeTime _changeTime;
 
-    public override void InitState(StateMachineCharacter stateMachine, Character character)
+    private ChangeTempoStateMachine _subStateMachine;
+
+    public override void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, ACharacter character)
     {
-        base.InitState(stateMachine, character);
+        base.InitState(stateMachine, enumValue, character);
 
-        _enumState = EnumStateCharacter.ChangeTempo;
+        _changeTime = GameObject.Find("Sphere").GetComponent<ChangeTime>();
 
-        _changeTime = GameObject.Find("Sphere").GetComponent<ChangeTime>(); 
+        ///////////////////
+
+        _subStateMachine = new ChangeTempoStateMachine();
+        _subStateMachine.InitStateMachine(_character);
 
     }
 

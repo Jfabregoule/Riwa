@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class RotateStateCharacter : BaseStateCharacter
 {
-    public override void InitState(StateMachineCharacter stateMachine, Character character)
+    public override void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, ACharacter character)
     {
-        base.InitState(stateMachine, character);
-
-        _enumState = EnumStateCharacter.Rotate;
+        base.InitState(stateMachine, enumValue, character);
     }
 
     public override void EnterState()

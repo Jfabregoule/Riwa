@@ -9,11 +9,9 @@ public class WaitStateCharacter : BaseStateCharacter
     /// pourra surement prendre en paramètre un sequencer, et jouera ce sequncer dans ce state
     /// </summary>
 
-    public override void InitState(StateMachineCharacter stateMachine, Character character)
+    public override void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, ACharacter character)
     {
-        base.InitState(stateMachine, character);
-
-        _enumState = EnumStateCharacter.Wait;
+        base.InitState(stateMachine, enumValue, character);
     }
 
     public override void EnterState()
@@ -37,7 +35,7 @@ public class WaitStateCharacter : BaseStateCharacter
 
         if (_character.Joystick.Direction.y != 0 || _character.Joystick.Direction.x != 0)
         {
-            _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Walk]);
+            _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Move]);
         }
     }
 }

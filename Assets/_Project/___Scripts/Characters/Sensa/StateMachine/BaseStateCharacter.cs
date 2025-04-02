@@ -5,8 +5,7 @@ using UnityEngine;
 public enum EnumStateCharacter
 {
     Idle,
-    Walk,
-    Run,
+    Move,
     Cinematic,
     Wait,
     ChangeTempo,
@@ -30,41 +29,44 @@ public abstract class BaseStateCharacter : BaseState<EnumStateCharacter>
 
     //FIELDS
 
-    private Character _character;
+    protected ACharacter _character;
+    new protected StateMachineCharacter _stateMachine;
 
     //PROPERTIES
-    protected Character Character1 { get => _character; set => _character = value; }
+    protected ACharacter Character { get => _character; set => _character = value; }
 
     //FUNCTIONS
 
-    public virtual void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, Character character) 
+    public virtual void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, ACharacter character) 
     {
-        base.InitState(stateMachine, enumValue);
+        base.InitState(enumValue);
 
+        //Je set la state machine dans le baseStateCHaracter et pas plus haut dans l'héritage car les templates ont leurs limites
+        _stateMachine = stateMachine;
         _character = character;
         _transitionMap = new Dictionary<EnumStateCharacter, Transition>();
     }
 
-    new public virtual void EnterState() 
+    public override void EnterState() 
     {
         base.EnterState();
         _character.Animator.SetTrigger(_stateMachine.AnimationMap[_enumState]); //Lorsque je rentre dans un state, je trigger l'animation à jouer, si l'animator est bien fait, tout est clean
     }
 
-    new public virtual void ExitState()
+    public override void ExitState()
     {
         base.ExitState();
         //code commun à tous les states
     }
 
-    new public virtual void UpdateState(float dT)
+    public override void UpdateState(float dT)
     {
         //code commun à tous les states
         base.UpdateState(dT);
         ChangeState();
     }
 
-    new public virtual void ChangeState()
+    public override void ChangeState()
     {
         //code commun à tous les states
         //Ici on mettra les conditions et tout ce qui concerne les changements de state

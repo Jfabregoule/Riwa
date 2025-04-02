@@ -9,11 +9,9 @@ public class CinematicStateCharacter : BaseStateCharacter
     /// pourra surement prendre en paramètre un sequencer, et jouera ce sequncer dans ce state
     /// </summary>
 
-    public override void InitState(StateMachineCharacter stateMachine, Character character)
+    public override void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, ACharacter character)
     {
-        base.InitState(stateMachine, character);
-
-        _enumState = EnumStateCharacter.Cinematic;
+        base.InitState(stateMachine, enumValue, character);
     }
 
     public override void EnterState()

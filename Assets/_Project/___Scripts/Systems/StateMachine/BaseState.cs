@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
-public class BaseState<TStateEnum> where TStateEnum : Enum
+public abstract class BaseState<TStateEnum>
+    where TStateEnum : Enum
 {
     ///<summary>
-    /// State parent de touts les states de toutes les states machines du monde
+    /// State parent de tous les states de toutes les states machines du monde
     /// </summary>
 
     /*----------------------\
@@ -16,7 +17,7 @@ public class BaseState<TStateEnum> where TStateEnum : Enum
 
     #region Fields
 
-    protected BaseStateMachine<TStateEnum> _stateMachine;
+    protected BaseStateMachine<TStateEnum, BaseState<TStateEnum>> _stateMachine;
     protected TStateEnum _enumState; //L'identité du state soula forme d'un enum 
 
     //Liste des transitions entre les states
@@ -33,7 +34,7 @@ public class BaseState<TStateEnum> where TStateEnum : Enum
 
     public Dictionary<TStateEnum, Transition> TransitionMap { get => _transitionMap; }
     public TStateEnum EnumState { get => _enumState; }
-    public BaseStateMachine<TStateEnum> Character { get => _stateMachine; }
+    public BaseStateMachine<TStateEnum, BaseState<TStateEnum>> Character { get => _stateMachine; }
 
     #endregion
 
@@ -43,9 +44,8 @@ public class BaseState<TStateEnum> where TStateEnum : Enum
 
     #region Methods
 
-    public virtual void InitState(BaseStateMachine<TStateEnum> stateMachine, TStateEnum enumValue)
+    public virtual void InitState(TStateEnum enumValue)
     {
-        _stateMachine = stateMachine;
         _enumState = enumValue;
         _transitionMap = new Dictionary<TStateEnum, Transition>();
     }

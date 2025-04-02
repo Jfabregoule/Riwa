@@ -6,11 +6,9 @@ public class IdleStateCharacter : BaseStateCharacter
 {
     private float _clock;
 
-    public override void InitState(StateMachineCharacter stateMachine, Character character)
+    public override void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, ACharacter character)
     {
-        base.InitState(stateMachine, character);
-
-        _enumState = EnumStateCharacter.Idle;
+        base.InitState(stateMachine, enumValue, character);
     }
 
     public override void EnterState()
@@ -40,7 +38,7 @@ public class IdleStateCharacter : BaseStateCharacter
 
         if (_character.Joystick.Direction.y != 0 || _character.Joystick.Direction.x != 0)
         {
-            _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Walk]);
+            _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Move]);
             return;
         }
 

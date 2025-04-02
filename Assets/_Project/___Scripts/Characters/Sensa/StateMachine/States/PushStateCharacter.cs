@@ -8,12 +8,9 @@ public class PushStateCharacter : BaseStateCharacter
     /// Lorsque le joueur est en holding, il peut pousser l'objet 
     /// </summary>
 
-    public override void InitState(StateMachineCharacter stateMachine, Character character)
+    public override void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, ACharacter character)
     {
-        base.InitState(stateMachine, character);
-
-        _enumState = EnumStateCharacter.Push;
-
+        base.InitState(stateMachine, enumValue, character);
     }
 
     public override void EnterState()
@@ -39,7 +36,7 @@ public class PushStateCharacter : BaseStateCharacter
         _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Holding]);
 
         //Si désactive le joystick et qu'on a le joystick braqué 
-        _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Walk]);
+        _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Move]);
 
     }
 }

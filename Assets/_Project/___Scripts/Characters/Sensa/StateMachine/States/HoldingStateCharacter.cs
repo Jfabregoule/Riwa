@@ -9,11 +9,9 @@ public class HoldingStateCharacter : BaseStateCharacter
     /// 
     /// </summary>
 
-    public override void InitState(StateMachineCharacter stateMachine, Character character)
+    public override void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, ACharacter character)
     {
-        base.InitState(stateMachine, character);
-
-        _enumState = EnumStateCharacter.Holding;
+        base.InitState(stateMachine, enumValue, character);
     }
 
     public override void EnterState()

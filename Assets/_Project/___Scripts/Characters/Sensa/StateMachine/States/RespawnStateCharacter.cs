@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class RespawnStateCharacter : BaseStateCharacter
 {
-    public override void InitState(StateMachineCharacter stateMachine, Character character)
+    public override void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, ACharacter character)
     {
-        base.InitState(stateMachine, character);
-
-        _enumState = EnumStateCharacter.Respawn;
+        base.InitState(stateMachine, enumValue, character);
     }
 
     public override void EnterState()

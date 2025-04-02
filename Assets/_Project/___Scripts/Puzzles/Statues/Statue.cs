@@ -20,7 +20,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
 
     void Start()
     {
-        _pos.x = 3;//(int)transform.position.x;
+        _pos.x = 1;//(int)transform.position.x;
         _pos.y = 1;//(int)transform.position.z;
         _validate = false;
         AlignToGrid();
@@ -40,13 +40,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
 
     private void AlignToGrid()
     {
-        if (_gridManager == null) return;
-
-        Vector3 relativePos = transform.position - _gridManager.Origin;
-        int gridX = Mathf.RoundToInt(relativePos.x / _gridManager.UnitGridSize);
-        int gridY = Mathf.RoundToInt(relativePos.z / _gridManager.UnitGridSize);
-
-        transform.position = _gridManager.Origin + new Vector3(gridX * _gridManager.UnitGridSize, transform.localPosition.y, gridY * _gridManager.UnitGridSize);
+        transform.position = _gridManager.Origin + new Vector3(_pos.x * _gridManager.UnitGridSize, transform.localPosition.y, _pos.y * _gridManager.UnitGridSize);
     }
 
     public void Move(Vector2 direction)

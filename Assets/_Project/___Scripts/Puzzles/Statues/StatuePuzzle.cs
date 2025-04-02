@@ -40,24 +40,36 @@ public struct GridEntry
     public CellContent? content;
 }
 
+[System.Serializable]
+public struct Solution
+{
+    public CellPos position;
+    public CellContent content;
+}
+
 public class StatuePuzzle : MonoBehaviour
 {
     [Header("Grid")]
     [SerializeField] private Vector2Int _gridSize = new Vector2Int(7, 7);
     [SerializeField] private int _unitGridSize = 7;
-    [SerializeField] private GameObject tiles;
+    [SerializeField] private GameObject defaultTile;
     [SerializeField] private GameObject gridSpawnpoint;
-    [SerializeField] private GameObject blueTileGO;
+
+    [Header("Tiles")]
+    [SerializeField] private List<GameObject> tiles;
+
+    [Header("Statues")]
     [SerializeField] private List<Statue> _statues;
 
+    [Header("Debug")]
     [SerializeField] private List<GridEntry> serializedGrid = new List<GridEntry>();
+    [SerializeField] private List<Solution> serializedSolutions = new List<Solution>();
 
     public int UnitGridSize => _unitGridSize;
     public Vector3 Origin { get; private set; }
     public Vector2Int GridSize => _gridSize;
 
-    Dictionary<CellPos, CellContent> Res = new Dictionary<CellPos, CellContent>();
-    CellContent?[,] gridBis = new CellContent?[7, 7];
+    Dictionary<CellPos, CellContent> solution = new Dictionary<CellPos, CellContent>();
     Dictionary<CellPos, CellContent?> grid = new Dictionary<CellPos, CellContent?>();
 
     private void Start()
@@ -68,44 +80,51 @@ public class StatuePuzzle : MonoBehaviour
             statue.OnStatueMoved += Move;
         }
 
-        Res.Add(new CellPos(0, 0), new CellContent(1, 135));
-
         grid.Clear();
         foreach (var entry in serializedGrid)
         {
             grid[entry.position] = entry.content;
         }
+        solution.Clear();
+        foreach (var entry in serializedSolutions)
+            solution.Add(entry.position, entry.content);
     }
 
     [ContextMenu("Generate Grid")]
     public void GenerateGrid()
     {
+
+        solution.Add(new CellPos(0, 0), new CellContent(1, 135));    // ID 1 --> Blue Statue
+        solution.Add(new CellPos(4, 1), new CellContent(2, 45));     // ID 2 --> Red Statue
+        solution.Add(new CellPos(2, 2), new CellContent(3, -90));    // ID 3 --> Yellow Statue
+        solution.Add(new CellPos(1, 4), new CellContent(4, 0));      // ID 4 --> Green Statue
+
         Origin = gridSpawnpoint.transform.position;
-        int blueTile = Random.Range(0, _gridSize.x * _gridSize.y);
+
         for (int y = 0; y < _gridSize.y; y++)
         {
             for (int x = 0; x < _gridSize.x; x++)
             {
-                if (y >= 3 && x >= 4)
-                {
+                if (y >= 3 && x >= 3)
                     continue;
-                }
-                int index = y * _gridSize.x + x;
+
                 Vector3 position = Origin + new Vector3(x * _unitGridSize, 0f, y * _unitGridSize);
-                if (index == blueTile)
+
+                foreach(var solution in solution)
                 {
-                    Debug.Log("RESULT POS: " + index);
-                    GameObject bt = Instantiate(blueTileGO, position, Quaternion.identity);
-                    bt.transform.SetParent(gridSpawnpoint.transform);
-                    grid[new CellPos(x, y)] = new CellContent(1, 135);
+                    if(solution.Key.Equals(new CellPos(x, y)))
+                    {
+                        GameObject associatedStatueTile = tiles[solution.Value.id - 1];
+                        GameObject st = Instantiate(associatedStatueTile, position, Quaternion.identity);
+                        st.transform.SetParent(gridSpawnpoint.transform);
+                        grid[new CellPos(x, y)] = solution.Value;
+                        break;
+                    }
                 }
-                else
-                {
-                    GameObject tile = Instantiate(tiles, position, Quaternion.identity);
-                    tile.transform.SetParent(gridSpawnpoint.transform);
-                    //grid[new CellPos(x, y)] = null;
-                    grid.Add(new CellPos(x, y), null);
-                }
+
+                GameObject tile = Instantiate(defaultTile, position, Quaternion.identity);
+                tile.transform.SetParent(gridSpawnpoint.transform);
+                grid[new CellPos(x, y)] = null;
             }
         }
 
@@ -114,11 +133,15 @@ public class StatuePuzzle : MonoBehaviour
         {
             serializedGrid.Add(new GridEntry { position = pair.Key, content = pair.Value });
         }
+
+        serializedSolutions.Clear();
+        foreach (var pair in solution)
+            serializedSolutions.Add(new Solution { position =  pair.Key, content = pair.Value });
     }
 
     public void Check()
     {
-        foreach(var pair in Res)
+        foreach(var pair in solution)
         {
             if (grid[pair.Key] != null)
             {

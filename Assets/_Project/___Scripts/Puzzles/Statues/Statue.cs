@@ -1,13 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 
 public class Statue : MonoBehaviour, IMovable, IRotatable
 {
-    [SerializeField] private int _currentRotation;
+    [Header("Datas")]
     [SerializeField] private int _id;
     [SerializeField] private StatuePuzzle _gridManager;
     [SerializeField] private float _lerpTime = 3f;
+    [Header("Debug")]
+    [SerializeField] private int _currentRotation;
+    [SerializeField] private bool _startDebugLog = false;
 
     private CellPos _pos;
     private bool _validate;
@@ -22,9 +26,17 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
 
     void Start()
     {
-        _pos.x = 1;//(int)transform.position.x;
-        _pos.y = 1;//(int)transform.position.z;
-        _validate = false;
+        _pos.x = Mathf.RoundToInt((transform.position.x - _gridManager.Origin.x) / _gridManager.UnitGridSize);
+        _pos.y = Mathf.RoundToInt((transform.position.z - _gridManager.Origin.z) / _gridManager.UnitGridSize);
+
+        if (_pos.x < 0 || _pos.x >= _gridManager.GridSize.x || _pos.y < 0 || _pos.y >= _gridManager.GridSize.y)
+        {
+            if(_startDebugLog == true) Debug.LogWarning("Position de statue hors limites de la grille !");
+            _pos.x = Mathf.Clamp(_pos.x, 0, _gridManager.GridSize.x - 1);
+            _pos.y = Mathf.Clamp(_pos.y, 0, _gridManager.GridSize.y - 1);
+        }
+
+        if(_startDebugLog == true) Debug.Log("POS X: " + _pos.x + " | POS Y: " + _pos.y);
         AlignToGrid();
     }
 

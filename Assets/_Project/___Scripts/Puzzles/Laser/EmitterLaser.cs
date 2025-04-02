@@ -6,12 +6,14 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class EmitterLaser : MonoBehaviour
 {
+    [SerializeField] private Material _materialLaser;
     private LineRenderer _laser;
     private Vector3 _startPosition;
     private int _layerMask;
     void Start()
     {
         _laser = transform.AddComponent<LineRenderer>();
+        _laser.material = _materialLaser;
         _startPosition = transform.position;
         _layerMask = ~LayerMask.GetMask("Ignore Raycast");
 

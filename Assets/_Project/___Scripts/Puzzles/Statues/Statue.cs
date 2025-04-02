@@ -12,6 +12,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
     [Header("Debug")]
     [SerializeField] private int _currentRotation;
     [SerializeField] private bool _startDebugLog = false;
+    [SerializeField] private bool _lockPosition = true;
 
     private CellPos _pos;
     private bool _validate;
@@ -44,7 +45,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
     {
         Vector2 direction = Vector2.zero;
 
-        if (_isMoving) return;
+        if (_isMoving || _lockPosition) return;
         if (Input.GetKeyDown(KeyCode.W)) Move(Vector2.up);
         if (Input.GetKeyDown(KeyCode.S)) Move(Vector2.down);
         if (Input.GetKeyDown(KeyCode.A)) Move(Vector2.left);

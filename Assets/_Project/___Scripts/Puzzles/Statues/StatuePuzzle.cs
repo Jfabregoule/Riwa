@@ -82,18 +82,18 @@ public class StatuePuzzle : MonoBehaviour
 
         grid.Clear();
         foreach (var entry in serializedGrid)
-        {
             grid[entry.position] = entry.content;
-        }
+
         solution.Clear();
         foreach (var entry in serializedSolutions)
             solution.Add(entry.position, entry.content);
+
     }
 
     [ContextMenu("Generate Grid")]
     public void GenerateGrid()
     {
-
+        solution.Clear();
         solution.Add(new CellPos(0, 0), new CellContent(1, 135));    // ID 1 --> Blue Statue
         solution.Add(new CellPos(4, 1), new CellContent(2, 45));     // ID 2 --> Red Statue
         solution.Add(new CellPos(2, 2), new CellContent(3, -90));    // ID 3 --> Yellow Statue
@@ -117,11 +117,12 @@ public class StatuePuzzle : MonoBehaviour
                         GameObject associatedStatueTile = tiles[solution.Value.id - 1];
                         GameObject st = Instantiate(associatedStatueTile, position, Quaternion.identity);
                         st.transform.SetParent(gridSpawnpoint.transform);
-                        grid[new CellPos(x, y)] = solution.Value;
+                        grid[new CellPos(solution.Key.x, solution.Key.y)] = solution.Value;
                         break;
                     }
                 }
 
+                if (grid.ContainsKey(new CellPos(x, y)) && grid[new CellPos(x, y)] != null) continue;
                 GameObject tile = Instantiate(defaultTile, position, Quaternion.identity);
                 tile.transform.SetParent(gridSpawnpoint.transform);
                 grid[new CellPos(x, y)] = null;

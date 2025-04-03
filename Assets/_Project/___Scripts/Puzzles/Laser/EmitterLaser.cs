@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class EmitterLaser : MonoBehaviour
 {
@@ -11,34 +10,27 @@ public class EmitterLaser : MonoBehaviour
     [SerializeField] private GameObject _impact;
 
     private LineRenderer _laser;
-    private Vector3 _startPosition;
     private List<Vector3> _directions;
     private bool _isReflecting;
+
     void Start()
     {
         _laser = GetComponent<LineRenderer>();
 
-        _startPosition = transform.position;
         _directions = new List<Vector3>();
-
-        _isReflecting = true;
 
         ResetLaser();
     }
 
     void Update()
     {
+        ResetLaser();
         for (int i = 0; i < _laser.positionCount; i++)
         {
-            if (i == _laser.positionCount - 1 && !_isReflecting)
-            {
-                continue;
-            }
+            if (!_isReflecting) continue;
 
             if (Physics.Raycast(_laser.GetPosition(i), _directions[i], out RaycastHit hit, 10f))
             {
-                if (IsPositionAlreadyAdded(hit.point)) continue;
-
                 Vector3 reflect = Vector3.Reflect(_directions[i], hit.normal);
 
                 AddLaserPoint(hit.point);
@@ -49,10 +41,6 @@ public class EmitterLaser : MonoBehaviour
                     SpawnImpact(hit.point, hit.normal);
                     _isReflecting = false;
                 }
-                else
-                {
-                    _isReflecting = true;
-                }
             }
             else if(i == _laser.positionCount - 1)
             {
@@ -60,7 +48,7 @@ public class EmitterLaser : MonoBehaviour
             }
             else
             {
-                RemoveLaserPoint(_laser.positionCount - i);
+                RemoveLaserPoint(_laser.positionCount - i - 1);
                 break;
             }
         }
@@ -95,11 +83,12 @@ public class EmitterLaser : MonoBehaviour
     private void ResetLaser()
     {
         _laser.positionCount = 0;
-        AddLaserPoint(_startPosition);
+        AddLaserPoint(transform.position);
 
         _directions.Clear();
         _directions.Add(transform.right);
 
+        _isReflecting = true;
         ResetImpact();
     }
 
@@ -107,18 +96,6 @@ public class EmitterLaser : MonoBehaviour
     {
         _impact.SetActive(false);
         _particules.SetActive(false);
-    }
-
-    bool IsPositionAlreadyAdded(Vector3 position)
-    {
-        for (int i = 0; i < _laser.positionCount; i++)
-        {
-            if (_laser.GetPosition(i) == position)
-            {
-                return true;
-            }
-        }
-        return false;
     }
 
     private void SpawnImpact(Vector3 position, Vector3 normal)
@@ -131,5 +108,4 @@ public class EmitterLaser : MonoBehaviour
         _particules.transform.position = position;
         _particules.transform.rotation = Quaternion.LookRotation(normal);
     }
-
 }

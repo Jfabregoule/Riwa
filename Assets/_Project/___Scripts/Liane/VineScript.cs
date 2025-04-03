@@ -1,33 +1,49 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class VineScript : MonoBehaviour
 {
-    public List<MeshRenderer> renderers;
+    [SerializeField] private List<MeshRenderer> _renderers;
+    [SerializeField] private float _waitBeforeFall;
+    [SerializeField] private float _growingSpeed = 1;
+    [SerializeField] private float _refreshRate = 0.05f;
+    [SerializeField] private float _frictionSpeed;
 
-    public float timeToGrow = 5;
-    public float refreshRate = 0.05f;
-    [Range(0, 1)]
-    public float minGrow = 0.2f;
-    [Range(0, 1)]
-    public float maxGrow = 0.97f;
+    public float FrictionSpeed { get { return _frictionSpeed; } set { _frictionSpeed = value; } }
 
-    private List<Material> materials = new List<Material>();
-    private bool fullyGrown;
-    public bool Activated;
-    // Start is called before the first frame update
+    [SerializeField, Range(0, 1)]
+    private float _minGrow = 0.2f;
+    [SerializeField, Range(0, 1)]
+    private float _maxGrow = 0.97f;
+
+    private List<Material> _materials = new List<Material>();
+    [SerializeField] private bool _isActivated;
+    private bool _isRetracted = false;
+    [Header("Capsule Collider")]
+    [SerializeField] private float _maxColliderHeight;
+    [SerializeField] private float _refreshRateFactor = 70.0f;
+    private CapsuleCollider _capsuleCollider;
+    private float _minColliderHeight;
+
+    private Transform _socketPoint;
+
     void Start()
     {
-        for (int i = 0; i < renderers.Count; i++) 
+        _socketPoint = transform.GetChild(0); 
+        _capsuleCollider = GetComponent<CapsuleCollider>();
+        _minColliderHeight = _capsuleCollider.height;
+        for (int i = 0; i < _renderers.Count; i++) 
         {
-            for (int j = 0; j < renderers[i].materials.Length; j++)
+            for (int j = 0; j < _renderers[i].materials.Length; j++)
             {
-                if (renderers[i].materials[j].HasProperty("_Grow"))
+                if (_renderers[i].materials[j].HasProperty("_Grow"))
                 {
-                    renderers[i].materials[j].SetFloat("_Grow",minGrow);
-                    materials.Add(renderers[i].materials[j]);
+                    _renderers[i].materials[j].SetFloat("_Grow",_minGrow);
+                    _materials.Add(_renderers[i].materials[j]);
                 }
             }
         }
@@ -36,44 +52,78 @@ public class VineScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Activated)
+        if (_isActivated)
         {
-            for(int i = 0;i < materials.Count; i++)
-            {
-                StartCoroutine(GrowVine(materials[i]));
-            }
+            RaiseVine(_materials[0]);
+        }
+        if (_isRetracted)
+        {
+            RetractedVine(_materials[0]);
         }
     }
 
-    private IEnumerator GrowVine(Material mat)
+    private void RaiseVine(Material mat)
     {
         float growValue = mat.GetFloat("_Grow");
-        if (!fullyGrown)
+        float currentHeight = _capsuleCollider.height;
+        float value = Mathf.MoveTowards(growValue, _maxGrow, _growingSpeed * Time.deltaTime);
+
+        if(_maxGrow - growValue <= 0.01f)
         {
-            while(growValue < maxGrow)
-            {
-                growValue += 1 / (timeToGrow / refreshRate);
-                mat.SetFloat("_Grow", growValue);
-                yield return new WaitForSeconds(refreshRate);
-            }
-        }
-        else
-        {
-            while (growValue > minGrow)
-            {
-                growValue -= 1 / (timeToGrow / refreshRate);
-                mat.SetFloat("_Grow", growValue);
-                yield return new WaitForSeconds(refreshRate);
-            }
+            value = _maxGrow;
+            _isActivated = false;
+            StartCoroutine(DissolveVine());
         }
 
-        if(growValue >= maxGrow)
-        {
-            fullyGrown = true;
-        }
-        else
-        {
-            fullyGrown= false;
-        }
+        mat.SetFloat("_Grow", value);
+        float lastHeight = _capsuleCollider.height;
+        _capsuleCollider.height = _minColliderHeight + value * (_maxColliderHeight - _minColliderHeight);
+        _capsuleCollider.center = new Vector3(_capsuleCollider.center.x - ((_capsuleCollider.height - lastHeight) / 2), _capsuleCollider.center.y, _capsuleCollider.center.z);
     }
+
+    private void RetractedVine(Material mat)
+    {
+        float growValue = mat.GetFloat("_Grow");
+        float currentHeight = _capsuleCollider.height;
+        float value = Mathf.MoveTowards(growValue, _minGrow, _growingSpeed * Time.deltaTime);
+
+        if (growValue - _minGrow <= 0.01f)
+        {
+            value = _minGrow;
+            _isRetracted = false;
+            _capsuleCollider.isTrigger = true;
+        }
+
+        mat.SetFloat("_Grow", value);
+        float lastHeight = _capsuleCollider.height;
+        _capsuleCollider.height = _minColliderHeight + value * (_maxColliderHeight - _minColliderHeight);
+        _capsuleCollider.center = new Vector3(_capsuleCollider.center.x - ((_capsuleCollider.height - lastHeight) / 2), _capsuleCollider.center.y, _capsuleCollider.center.z);
+    }
+    private void VineFall()
+    {
+        //_capsuleCollider.enabled = false;
+        _isRetracted = true;
+        //_capsuleCollider.isTrigger = true;
+    }
+    private IEnumerator DissolveVine()
+    {
+        yield return new WaitForSeconds(_waitBeforeFall);
+
+        VineFall();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!other.transform.parent.TryGetComponent(out Character character)) return;
+        _capsuleCollider.isTrigger = false;
+        _isActivated = true;
+    }
+
+
+    public void SetSocketTransform(Vector3 position)
+    {
+        position.y += 0.2f; 
+        _socketPoint.transform.position = position;
+    }
+
 }

@@ -81,8 +81,12 @@ public class ChangeTime : MonoBehaviour
     {
         Shader.SetGlobalInt("_PresentEnum", 1 - present);
         Shader.SetGlobalInt("_PastEnum", 1 - past);
+        Debug.Log(Shader.GetGlobalInt("_PresentEnum"));
+        Debug.Log(Shader.GetGlobalInt("_PastnEnum"));
         past = 1 - past;
         present = 1 - present;
+        Debug.Log(present);
+        Debug.Log(past);
         radius = 0;
         Shader.SetGlobalFloat("_Radius", radius);
         particleActivated = false;

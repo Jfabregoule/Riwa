@@ -12,7 +12,7 @@ public class VineScript : MonoBehaviour
     [SerializeField] private float _growingSpeed = 1;
     [SerializeField] private float _refreshRate = 0.05f;
     [SerializeField] private float _frictionSpeed;
-
+    [SerializeField] private Transform _socketPoint;
     public float FrictionSpeed { get { return _frictionSpeed; } set { _frictionSpeed = value; } }
 
     [SerializeField, Range(0, 1)]
@@ -29,11 +29,8 @@ public class VineScript : MonoBehaviour
     private CapsuleCollider _capsuleCollider;
     private float _minColliderHeight;
 
-    private Transform _socketPoint;
-
     void Start()
     {
-        _socketPoint = transform.GetChild(0); 
         _capsuleCollider = GetComponent<CapsuleCollider>();
         _minColliderHeight = _capsuleCollider.height;
         for (int i = 0; i < _renderers.Count; i++) 
@@ -77,8 +74,13 @@ public class VineScript : MonoBehaviour
 
         mat.SetFloat("_Grow", value);
         float lastHeight = _capsuleCollider.height;
+        float lastCenterX = _capsuleCollider.center.x;
         _capsuleCollider.height = _minColliderHeight + value * (_maxColliderHeight - _minColliderHeight);
         _capsuleCollider.center = new Vector3(_capsuleCollider.center.x - ((_capsuleCollider.height - lastHeight) / 2), _capsuleCollider.center.y, _capsuleCollider.center.z);
+
+       _socketPoint.localPosition = -transform.right * (_capsuleCollider.height - _minColliderHeight) * transform.localScale.y;
+
+
     }
 
     private void RetractedVine(Material mat)
@@ -98,6 +100,8 @@ public class VineScript : MonoBehaviour
         float lastHeight = _capsuleCollider.height;
         _capsuleCollider.height = _minColliderHeight + value * (_maxColliderHeight - _minColliderHeight);
         _capsuleCollider.center = new Vector3(_capsuleCollider.center.x - ((_capsuleCollider.height - lastHeight) / 2), _capsuleCollider.center.y, _capsuleCollider.center.z);
+        _socketPoint.localPosition = -transform.right * (_capsuleCollider.height - _minColliderHeight) * transform.localScale.y;
+
     }
     private void VineFall()
     {
@@ -122,8 +126,14 @@ public class VineScript : MonoBehaviour
 
     public void SetSocketTransform(Vector3 position)
     {
-        position.y += 0.2f; 
+        //position.y += 0.2f; 
         _socketPoint.transform.position = position;
+    }
+
+    public void SetSocketChild(Transform child)
+    {
+        child.SetParent(_socketPoint,true);
+        child.localPosition = Vector3.zero;
     }
 
 }

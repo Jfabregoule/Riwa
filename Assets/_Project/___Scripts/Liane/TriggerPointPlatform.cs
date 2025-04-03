@@ -17,21 +17,17 @@ public class TriggerPointPlatform : MonoBehaviour
         if (!other.TryGetComponent(out VineScript vineScript)) return;
 
         CapsuleCollider capsule = other.GetComponent<CapsuleCollider>();
-        if (capsule == null) return; // Sécurité si jamais le collider n'est pas trouvé
 
-        Vector3 WorldScale = transform.lossyScale;
+        Vector3 WorldScale = capsule.transform.lossyScale;
 
         Vector3 CollisionPoint = other.ClosestPoint(transform.position);
         
         float WorldRadius = capsule.radius * WorldScale.y;
 
-        //float worldHeightY = capsule.height;
-        //Vector3 pointPosition = new Vector3(CollisionPoint.x, WorldRadius, CollisionPoint.z);
         Vector3 position = capsule.transform.TransformPoint(capsule.center);
-        vineScript.SetSocketTransform(capsule.transform.TransformPoint(capsule.center));
-
-        //Instantiate(null, new Vector3());
-        //GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        //sphere.transform.position = pointPosition;
+        position.x = CollisionPoint.x;
+        position.y += WorldRadius;
+        vineScript.SetSocketTransform(position);
+        vineScript.SetSocketChild(transform.parent);
     }
 }

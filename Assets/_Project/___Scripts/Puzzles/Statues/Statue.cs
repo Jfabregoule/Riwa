@@ -18,12 +18,8 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
     private bool _validate;
     private bool _isMoving;
 
-    public delegate bool StatueMoveEvent(CellPos oldPos, Vector2Int nextPos, CellContent statueData);
-    public event StatueMoveEvent OnStatueMoved;
-
-    public int ID { get => _id; }
     public bool Validate { get => _validate; set => _validate = value; }
-    public int CurrentRotation { get => _currentRotation; }
+    public bool IsLocked { get => _lockPosition; set => _lockPosition = value; }
 
     void Start()
     {
@@ -41,26 +37,17 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
         AlignToGrid();
     }
 
-    void Update()
-    {
-        Vector2 direction = Vector2.zero;
-
-        if (_isMoving || _lockPosition) return;
-        if (Input.GetKeyDown(KeyCode.W)) Move(Vector2.up);
-        if (Input.GetKeyDown(KeyCode.S)) Move(Vector2.down);
-        if (Input.GetKeyDown(KeyCode.A)) Move(Vector2.left);
-        if (Input.GetKeyDown(KeyCode.D)) Move(Vector2.right);
-        if (Input.GetKeyDown(KeyCode.E)) Rotate(45f);
-    }
-
     private void AlignToGrid()
     {
         transform.position = _gridManager.Origin + new Vector3(_pos.x * _gridManager.UnitGridSize, transform.localPosition.y, _pos.y * _gridManager.UnitGridSize);
-        Debug.Log("Statue: " + gameObject.name + " | Origin: " + _gridManager.Origin);
+        if(_startDebugLog == true) Debug.Log("Statue: " + gameObject.name + " | Origin: " + _gridManager.Origin);
+        _gridManager.PlaceStatueData(_pos, new CellContent(_id, _currentRotation));
+        
     }
 
     public void Move(Vector2 direction)
     {
+        if (_isMoving || _lockPosition || _validate) return;
         bool canMove = _gridManager.Move(_pos, Helpers.Vector2To2Int(direction.normalized), new CellContent(_id, _currentRotation));
         if(!canMove) return;
         if (direction.x != 0) _pos.x += (int)direction.x;
@@ -70,6 +57,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
 
     public void Rotate(float angle)
     {
+        if(_isMoving || _lockPosition || _validate) return;
         StartCoroutine(LerpRotation(angle));
     }
 
@@ -121,11 +109,6 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
         _isMoving = false;
         _gridManager.UpdateStatueRotation(_pos, new CellContent(_id, _currentRotation));
         _gridManager.Check();
-    }
-
-    private void StatueMoved(CellPos oldPos, Vector2Int nextPos, CellContent statueData)
-    {
-        OnStatueMoved?.Invoke(oldPos, nextPos, statueData);
     }
 
 }

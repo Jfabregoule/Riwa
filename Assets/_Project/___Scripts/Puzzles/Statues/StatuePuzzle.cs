@@ -75,23 +75,14 @@ public class StatuePuzzle : MonoBehaviour
     private void Awake()
     {
         Origin = gridSpawnpoint.transform.position;
-    }
-
-    private void Start()
-    {
-        foreach (Statue statue in _statues)
-        {
-            statue.OnStatueMoved += Move;
-        }
-
-        grid.Clear();
-        foreach (var entry in serializedGrid)
-            grid[entry.position] = entry.content;
 
         solution.Clear();
         foreach (var entry in serializedSolutions)
             solution.Add(entry.position, entry.content);
 
+        grid.Clear();
+        foreach (var entry in serializedGrid)
+            grid[entry.position] = entry.content;
     }
 
     [ContextMenu("Generate Grid")]
@@ -100,7 +91,7 @@ public class StatuePuzzle : MonoBehaviour
         solution.Clear();
         solution.Add(new CellPos(0, 0), new CellContent(1, 135));    // ID 1 --> Blue Statue
         solution.Add(new CellPos(4, 1), new CellContent(2, 45));     // ID 2 --> Red Statue
-        solution.Add(new CellPos(2, 2), new CellContent(3, -90));    // ID 3 --> Yellow Statue
+        solution.Add(new CellPos(2, 2), new CellContent(3, 270));    // ID 3 --> Yellow Statue
         solution.Add(new CellPos(1, 4), new CellContent(4, 0));      // ID 4 --> Green Statue
 
         Origin = gridSpawnpoint.transform.position;
@@ -135,43 +126,74 @@ public class StatuePuzzle : MonoBehaviour
 
         serializedGrid.Clear();
         foreach (var pair in grid)
-        {
             serializedGrid.Add(new GridEntry { position = pair.Key, content = pair.Value });
-        }
 
         serializedSolutions.Clear();
         foreach (var pair in solution)
             serializedSolutions.Add(new Solution { position =  pair.Key, content = pair.Value });
     }
 
+    public void PlaceStatueData(CellPos pos, CellContent statueData)
+    {
+        grid[pos] = statueData;
+    }
+
     public void Check()
     {
-        foreach(var pair in solution)
+        bool isGridComplete = true;
+
+        foreach (var pair in solution)
         {
-            if (grid[pair.Key] != null)
+            if (!grid.TryGetValue(pair.Key, out CellContent? content) || !content.HasValue)
             {
-                CellContent value = pair.Value;
-                if (grid[pair.Key].Equals(value))
-                    Debug.Log("Grid completed");
-                else
-                    Debug.Log("Grid not completed");
+                Debug.Log($"Erreur: Aucun élément trouvé à la position {pair.Key.x}, {pair.Key.y}, Statue attendue: {pair.Value.id}.");
+                isGridComplete = false;
+                continue;
             }
-            
+
+            if (content.Value.id == pair.Value.id && content.Value.rotation == pair.Value.rotation)
+            {
+                Debug.Log($"Statue {pair.Value.id} bien placée en {pair.Key.x}, {pair.Key.y} avec rotation {pair.Value.rotation}.");
+            }
+            else
+            {
+                Debug.Log($"Erreur: Statue {content.Value.id} mal orientée ou mal placée en {pair.Key.x}, {pair.Key.y}. Rotation attendue: {pair.Value.rotation}, actuelle: {content.Value.rotation}.");
+                isGridComplete = false;
+            }
         }
+
+        if (isGridComplete)
+        {
+            foreach(Statue statues in _statues)
+            {
+                statues.Validate = true;
+            }
+            Debug.Log("Grille complétée avec succès !");
+        }
+        else
+            Debug.Log("La grille n'est pas encore correctement remplie.");
     }
+
 
     public bool Move(CellPos oldPos, Vector2Int direction, CellContent statueData)
     {
         CellPos newPos = new CellPos(oldPos.x + direction.x, oldPos.y + direction.y);
 
-        bool test = grid.ContainsKey(newPos);
-        Debug.Log(test);
-        if (!grid.ContainsKey(newPos)) return false;
-        if (!IsCellEmpty(newPos)) return false;
+        if (!grid.ContainsKey(newPos))
+        {
+            Debug.Log($"Mouvement impossible : {newPos.x}, {newPos.y} est hors de la grille.");
+            return false;
+        }
+        if (!IsCellEmpty(newPos))
+        {
+            Debug.Log($"Mouvement impossible : La case {newPos.x}, {newPos.y} est déjà occupée !");
+            return false;
+        }
 
         grid[oldPos] = null;
         grid[newPos] = statueData;
 
+        Debug.Log($"Statue déplacée en {newPos.x}, {newPos.y}");
         return true;
     }
 
@@ -182,6 +204,8 @@ public class StatuePuzzle : MonoBehaviour
 
     private bool IsCellEmpty(CellPos pos)
     {
-        return (grid[pos] == null);
+        bool isEmpty = !grid.ContainsKey(pos) || !grid[pos].HasValue;
+        Debug.Log($"Vérification case ({pos.x}, {pos.y}) -> Est vide ? {isEmpty} | Contenu : {grid[pos]}");
+        return isEmpty;
     }
 }

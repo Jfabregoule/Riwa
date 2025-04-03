@@ -12,5 +12,10 @@ public static class Helpers
             return _camera;
         }
     }
+
+    public static Vector2Int Vector2To2Int(Vector2 vec)
+    {
+        return new Vector2Int((int)vec.x, (int)vec.y);
+    }
 }
 

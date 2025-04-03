@@ -8,12 +8,9 @@ public class SoulIdleStateCharacter : BaseStateCharacter
     /// State ou le joueur est en état ame
     /// </summary>
 
-    public override void InitState(FSMCharacter stateMachine, Character character)
+    public override void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, ACharacter character)
     {
-        base.InitState(stateMachine, character);
-
-        _enumState = EnumStateCharacter.SoulIdle;
-
+        base.InitState(stateMachine, enumValue, character);
     }
 
     public override void EnterState()
@@ -31,9 +28,9 @@ public class SoulIdleStateCharacter : BaseStateCharacter
         base.UpdateState(dT);
     }
 
-    public override void ChangeState()
+    public override void CheckChangeState()
     {
-        base.ChangeState();
+        base.CheckChangeState();
 
     }
 }

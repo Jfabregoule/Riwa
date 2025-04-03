@@ -10,45 +10,47 @@ public class ChangeTempoStateCharacter : BaseStateCharacter
     /// On y fera le check de si le voyage temporel est possible ou non
     /// </summary>
 
-    private ChangeTime _changeTime;
+    private ChangeTempoStateMachine _subStateMachine;
 
-    public override void InitState(FSMCharacter stateMachine, Character character)
+    public override void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, ACharacter character)
     {
-        base.InitState(stateMachine, character);
+        base.InitState(stateMachine, enumValue, character);
 
-        _enumState = EnumStateCharacter.ChangeTempo;
+        ///////////////////
 
-        _changeTime = GameObject.Find("Sphere").GetComponent<ChangeTime>(); 
-
+        _subStateMachine = new ChangeTempoStateMachine();
+        _subStateMachine.InitStateMachine(_character);
+        _subStateMachine.InitState(_subStateMachine.States[EnumChangeTempo.Standby]);
     }
 
     public override void EnterState()
     {
         base.EnterState();
 
-        _changeTime.isActivated = true;
+        _subStateMachine.ChangeState(_subStateMachine.States[EnumChangeTempo.Check]);
 
     }
 
     public override void ExitState()
     {
         base.ExitState();
-
-        _changeTime.UpdateShaders();
     }
 
     public override void UpdateState(float dT)
     {
         base.UpdateState(dT);
+
+        _subStateMachine.StateMachineUpdate(dT);
     }
 
-    public override void ChangeState()
+    public override void CheckChangeState()
     {
-        base.ChangeState();
+        base.CheckChangeState();
 
-        if (_changeTime.isActivated == false)
+        if (_character.IsChangingTime == false)
         {
             _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Idle]);
+            return;
         }
     }
 }

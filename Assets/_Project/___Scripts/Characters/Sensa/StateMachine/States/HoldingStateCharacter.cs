@@ -9,11 +9,9 @@ public class HoldingStateCharacter : BaseStateCharacter
     /// 
     /// </summary>
 
-    public override void InitState(FSMCharacter stateMachine, Character character)
+    public override void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, ACharacter character)
     {
-        base.InitState(stateMachine, character);
-
-        _enumState = EnumStateCharacter.Holding;
+        base.InitState(stateMachine, enumValue, character);
     }
 
     public override void EnterState()
@@ -31,9 +29,9 @@ public class HoldingStateCharacter : BaseStateCharacter
         base.UpdateState(dT);
     }
 
-    public override void ChangeState()
+    public override void CheckChangeState()
     {
-        base.ChangeState();
+        base.CheckChangeState();
 
         //A definir si on maintient appuye ou si on toggle pour retourner en idle
     }

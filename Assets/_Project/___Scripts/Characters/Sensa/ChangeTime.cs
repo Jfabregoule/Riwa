@@ -23,9 +23,11 @@ public class ChangeTime : MonoBehaviour
     private bool particleActivated = false;
     public CinemachineImpulseSource impulseSource;
     public ParticleSystem Flash;
-    private bool isFinished;
     private int past;
     private int present;
+
+    public delegate void TimeEvent();
+    public event TimeEvent OnTimeChangeEnd;
 
     private void Start()
     {
@@ -68,8 +70,9 @@ public class ChangeTime : MonoBehaviour
             AmbianceEmissionModule.rateOverTimeMultiplier = Mathf.Lerp(20,40,alpha);
             if(alpha == 1)
             {
-                isFinished = true;
                 isActivated = false;
+                UpdateShaders();
+                OnTimeChangeEnd?.Invoke();
             }
         }
     }
@@ -82,7 +85,6 @@ public class ChangeTime : MonoBehaviour
         present = 1 - present;
         radius = 0;
         Shader.SetGlobalFloat("_Radius", radius);
-        isFinished = false;
         particleActivated = false;
         alpha = 0;
     }

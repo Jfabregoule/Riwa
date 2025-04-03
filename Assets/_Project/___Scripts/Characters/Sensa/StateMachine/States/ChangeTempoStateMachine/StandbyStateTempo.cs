@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractStateCharacter : BaseStateCharacter
+public class StandbyStateTempo : ChangeTempoBaseState
 {
-    public override void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, ACharacter character)
+    public override void InitState(ChangeTempoStateMachine stateMachine, EnumChangeTempo enumValue, ACharacter character)
     {
         base.InitState(stateMachine, enumValue, character);
     }

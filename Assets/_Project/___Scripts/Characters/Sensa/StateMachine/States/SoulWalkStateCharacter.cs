@@ -8,11 +8,9 @@ public class SoulWalkStateCharacter : BaseStateCharacter
     /// State ou le joueur est en état ame
     /// </summary>
 
-    public override void InitState(FSMCharacter stateMachine, Character character)
+    public override void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, ACharacter character)
     {
-        base.InitState(stateMachine, character);
-
-        _enumState = EnumStateCharacter.SoulWalk;
+        base.InitState(stateMachine, enumValue, character);
 
     }
 
@@ -34,9 +32,9 @@ public class SoulWalkStateCharacter : BaseStateCharacter
 
     }
 
-    public override void ChangeState()
+    public override void CheckChangeState()
     {
-        base.ChangeState();
+        base.CheckChangeState();
 
     }
 }

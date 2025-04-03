@@ -8,9 +8,9 @@ public class PullStateCharacter : BaseStateCharacter
     /// Lorsque le joueur est en holding, il peut tirer l'objet 
     /// </summary>
 
-    public override void InitState(FSMCharacter stateMachine, Character character)
+    public override void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, ACharacter character)
     {
-        base.InitState(stateMachine, character);
+        base.InitState(stateMachine, enumValue, character);
     }
 
     public override void EnterState()
@@ -31,15 +31,15 @@ public class PullStateCharacter : BaseStateCharacter
         base.UpdateState(dT);
     }
 
-    public override void ChangeState()
+    public override void CheckChangeState()
     {
-        base.ChangeState();
+        base.CheckChangeState();
 
         //Si on ne désactive pas le holding et qu'on lache le joystick
         _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Holding]);
 
         //Si désactive le joystick et qu'on a le joystick braqué 
-        _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Walk]);
+        _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Move]);
 
     }
 }

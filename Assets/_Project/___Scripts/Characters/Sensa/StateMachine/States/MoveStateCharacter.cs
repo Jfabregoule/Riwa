@@ -1,15 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class RunStateCharacter : BaseStateCharacter
+public class MoveStateCharacter : BaseStateCharacter
 {
-    public override void InitState(FSMCharacter stateMachine, Character character)
+    public override void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, ACharacter character)
     {
-        base.InitState(stateMachine, character);
-
-        _enumState = EnumStateCharacter.Run;
-
+        base.InitState(stateMachine, enumValue, character);
     }
 
     public override void EnterState()
@@ -38,16 +36,17 @@ public class RunStateCharacter : BaseStateCharacter
 
     }
 
-    public override void ChangeState()
+    public override void CheckChangeState()
     {
-        base.ChangeState();
+        base.CheckChangeState();
 
-        Vector2 direction = new Vector2(_character.Joystick.Direction.x, _character.Joystick.Direction.y);
+        Vector2 direction = new Vector2(_character.Joystick.Direction.x ,_character.Joystick.Direction.y);
         float magnitude = direction.magnitude;
 
-        if (magnitude < 0.4f)
+        if (_character.Joystick.Direction.y == 0 && _character.Joystick.Direction.x == 0)
         {
-            _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Walk]);
+            _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Idle]);
         }
+
     }
 }

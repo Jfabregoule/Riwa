@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CameraHandler : MonoBehaviour
@@ -18,6 +19,10 @@ public class CameraHandler : MonoBehaviour
     private CinemachineConfiner _confinerCamera;
 
     private float _currentForward;
+    private float _startForward;
+    private float _targetForward;
+
+    private float _clock;
 
     private void Start()
     {
@@ -27,27 +32,54 @@ public class CameraHandler : MonoBehaviour
         _currentForward = _startXValue;
         _freelookCamera.m_XAxis.Value = _startXValue;
 
-        _triggerCamera1.OnExitTrigger += RotateCam;
-        _triggerCamera2.OnExitTrigger += RotateCam;
+        _triggerCamera1.OnExitTrigger += RotateCam2;
+        _triggerCamera2.OnExitTrigger += RotateCam1;
 
     }
 
-    public void RotateCam()
+    public void RotateCam1()
     {
-        if (_freelookCamera.m_XAxis.Value == _startXValue)
-        {
-            _freelookCamera.m_XAxis.Value = _secondXValue;
-            _confinerCamera.m_BoundingVolume = _colliderContain2;
-        }
-        else
-        {
-            _freelookCamera.m_XAxis.Value = _startXValue;
-            _confinerCamera.m_BoundingVolume = _colliderContain1;
-        }
+        _confinerCamera.m_BoundingVolume = _colliderContain1;
+
+        _startForward = _secondXValue;
+        _targetForward = _startXValue;
+
+        _clock = 0;
+        StartCoroutine(CameraRotation());
+    }
+
+    public void RotateCam2()
+    {
+        _confinerCamera.m_BoundingVolume = _colliderContain2;
+
+        _startForward = _startXValue;
+        _targetForward = _secondXValue;
+
+        _clock = 0;
+        StartCoroutine(CameraRotation());
 
     }
 
+    public IEnumerator CameraRotation()
+    {
+        while (_clock < 1)
+        {
+            _clock += Time.deltaTime;
 
+            float angle = Mathf.Lerp(_startForward, _targetForward, _clock);
+            _freelookCamera.m_XAxis.Value = angle;
 
+            Vector3 vect = _freelookCamera.gameObject.transform.eulerAngles;
+            vect.y = angle;
+            _freelookCamera.gameObject.transform.eulerAngles = vect;
+
+            _currentForward = angle;
+
+            Debug.Log(_clock);
+
+            yield return null;
+        }
+
+    }
 
 }

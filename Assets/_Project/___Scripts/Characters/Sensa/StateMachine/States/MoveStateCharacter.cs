@@ -29,10 +29,23 @@ public class MoveStateCharacter : BaseStateCharacter
         movement.y = 0;
         movement.z = _character.Joystick.Direction.y;
 
-        Vector3 direction = Vector3.Normalize(new Vector3(movement.x, 0, movement.z));
+        Vector3 camForward = _character.CameraHandler.transform.forward;
+        Vector3 camRight = _character.CameraHandler.transform.right;
 
-        _character.Rb.velocity = movement * _character.Speed;
-        _character.Pawn.transform.forward = direction;
+        camForward.y = 0;
+        camRight.y = 0;
+
+        camForward.Normalize();
+        camRight.Normalize();
+
+        Vector3 moveDirection = (camForward * movement.z + camRight * movement.x).normalized;
+
+        _character.Rb.velocity = moveDirection * _character.Speed;
+
+        if (moveDirection != Vector3.zero)
+        {
+            _character.Pawn.transform.forward = moveDirection;
+        }
 
     }
 

@@ -8,7 +8,7 @@ public class TriggerCamera : MonoBehaviour
     public delegate void ExitTrigger();
     public event ExitTrigger OnExitTrigger;
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerExit(Collider other)
     {
         if(other.TryGetComponent(out ACharacter character)) {
 

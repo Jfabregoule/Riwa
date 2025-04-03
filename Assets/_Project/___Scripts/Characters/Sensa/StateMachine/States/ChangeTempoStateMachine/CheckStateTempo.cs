@@ -37,6 +37,7 @@ public class CheckStateTempo : ChangeTempoBaseState
         {
             _nextState = EnumChangeTempo.Process;
         }
+        Debug.Log(_nextState);
     }
 
     public override void ExitState()

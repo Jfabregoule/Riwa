@@ -85,6 +85,13 @@ public class StatuePuzzle : MonoBehaviour
         grid.Clear();
         foreach (var entry in serializedGrid)
             grid[entry.position] = entry.content;
+
+        foreach (Statue statue in _statues)
+        {
+            statue.OnStatueMoved += Move;
+            statue.OnStatueRotate += UpdateStatueRotation;
+            statue.OnStatueEndMoving += Check;
+        }
     }
 
     [ContextMenu("Generate Grid")]
@@ -133,6 +140,30 @@ public class StatuePuzzle : MonoBehaviour
         serializedSolutions.Clear();
         foreach (var pair in solution)
             serializedSolutions.Add(new Solution { position =  pair.Key, content = pair.Value });
+
+        GenerateStatue();
+    }
+
+    public void GenerateStatue()
+    {
+        int index = 0;
+        foreach(Statue statues in _statues)
+        {
+            index++;
+            int randX, randY;
+            do
+            {
+                randX = Random.Range(0, _gridSize.x);
+                randY = Random.Range(0, _gridSize.y);
+            }
+            while (randX >= 3 && randY >= 3);
+            int randRotation = Random.Range(0, 8);
+            Quaternion rot = Quaternion.Euler(0, randRotation * 45, 0);
+            Vector3 position = Origin + new Vector3(randX * _unitGridSize, 1, randY * _unitGridSize);
+            _statues[index - 1].SetStatuesData(index, randRotation * 45, _unitGridSize, randX, randY);
+            GameObject statue = Instantiate(_statues[index - 1].gameObject, position, rot);
+            statue.transform.SetParent(gridSpawnpoint.transform);
+        }
     }
 
     public void PlaceStatueData(CellPos pos, CellContent statueData)

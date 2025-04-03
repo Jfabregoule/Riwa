@@ -151,7 +151,7 @@ Transform:
   m_GameObject: {fileID: 39399226}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -13.679, y: 0.992, z: 1.537}
+  m_LocalPosition: {x: -13.679, y: 1.165, z: 1.537}
   m_LocalScale: {x: 1.2731, y: -0.15165, z: 1.3123}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -933,6 +933,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 443843734}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &500777025
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 500777026}
+  m_Layer: 0
+  m_Name: SocketPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &500777026
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 500777025}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 607440720}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &505387576
 GameObject:
   m_ObjectHideFlags: 0
@@ -1106,37 +1137,37 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 92003fa450fc1854598b4dd02a88c4c4,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.654
+      value: -11.17
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 92003fa450fc1854598b4dd02a88c4c4,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.444
+      value: 0.44
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 92003fa450fc1854598b4dd02a88c4c4,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.36
+      value: 1.77
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 92003fa450fc1854598b4dd02a88c4c4,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.6651847
+      value: 0.7071059
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 92003fa450fc1854598b4dd02a88c4c4,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.6651847
+      value: -0.7071059
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 92003fa450fc1854598b4dd02a88c4c4,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.23985294
+      value: -0.0011676613
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 92003fa450fc1854598b4dd02a88c4c4,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.23985288
+      value: -0.0011676623
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 92003fa450fc1854598b4dd02a88c4c4,
         type: 3}
@@ -1151,7 +1182,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 92003fa450fc1854598b4dd02a88c4c4,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 39.657
+      value: -0.189
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 92003fa450fc1854598b4dd02a88c4c4,
         type: 3}
@@ -1165,7 +1196,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 92003fa450fc1854598b4dd02a88c4c4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 500777026}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 92003fa450fc1854598b4dd02a88c4c4,
         type: 3}
@@ -1209,9 +1244,6 @@ MonoBehaviour:
   _waitBeforeFall: 2
   _growingSpeed: 1
   _refreshRate: 0.01
-  _positions:
-  - {x: -14.674, y: 0.868, z: 5.97}
-  - {x: -19.26, y: 0.868, z: 5.97}
   _frictionSpeed: 3
   _minGrow: 0
   _maxGrow: 1

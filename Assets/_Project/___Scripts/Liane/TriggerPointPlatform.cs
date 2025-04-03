@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class TriggerPointPlatform : MonoBehaviour
 {
@@ -15,12 +16,22 @@ public class TriggerPointPlatform : MonoBehaviour
 
         if (!other.TryGetComponent(out VineScript vineScript)) return;
 
-        CapsuleCollider capsuleCollider = other.GetComponent<CapsuleCollider>();
+        CapsuleCollider capsule = other.GetComponent<CapsuleCollider>();
+        if (capsule == null) return; // Sécurité si jamais le collider n'est pas trouvé
 
+        Vector3 WorldScale = transform.lossyScale;
 
-        Debug.Log(other.ClosestPoint(transform.position));
+        Vector3 CollisionPoint = other.ClosestPoint(transform.position);
+        
+        float WorldRadius = capsule.radius * WorldScale.y;
+
+        //float worldHeightY = capsule.height;
+        //Vector3 pointPosition = new Vector3(CollisionPoint.x, WorldRadius, CollisionPoint.z);
+        Vector3 position = capsule.transform.TransformPoint(capsule.center);
+        vineScript.SetSocketTransform(capsule.transform.TransformPoint(capsule.center));
 
         //Instantiate(null, new Vector3());
-        //_platform.SetPlatformInfos(vineScript.GetSpline(), vineScript.FrictionSpeed);
+        //GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        //sphere.transform.position = pointPosition;
     }
 }

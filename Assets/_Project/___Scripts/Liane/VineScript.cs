@@ -11,7 +11,6 @@ public class VineScript : MonoBehaviour
     [SerializeField] private float _waitBeforeFall;
     [SerializeField] private float _growingSpeed = 1;
     [SerializeField] private float _refreshRate = 0.05f;
-    [SerializeField] private List<Vector3> _positions;
     [SerializeField] private float _frictionSpeed;
 
     public float FrictionSpeed { get { return _frictionSpeed; } set { _frictionSpeed = value; } }
@@ -29,12 +28,13 @@ public class VineScript : MonoBehaviour
     [SerializeField] private float _refreshRateFactor = 70.0f;
     private CapsuleCollider _capsuleCollider;
     private float _minColliderHeight;
-    private int _colliderDirection;
+
+    private Transform _socketPoint;
+
     void Start()
     {
-        
+        _socketPoint = transform.GetChild(0); 
         _capsuleCollider = GetComponent<CapsuleCollider>();
-        _colliderDirection = _capsuleCollider.direction;
         _minColliderHeight = _capsuleCollider.height;
         for (int i = 0; i < _renderers.Count; i++) 
         {
@@ -119,8 +119,11 @@ public class VineScript : MonoBehaviour
         _isActivated = true;
     }
 
-    public List<Vector3> GetSpline()
+
+    public void SetSocketTransform(Vector3 position)
     {
-        return _positions;
+        position.y += 0.2f; 
+        _socketPoint.transform.position = position;
     }
+
 }

@@ -26,6 +26,9 @@ public class ChangeTime : MonoBehaviour
     private int past;
     private int present;
 
+    public delegate void TimeEvent();
+    public event TimeEvent OnTimeChangeEnd;
+
     private void Start()
     {
 
@@ -68,6 +71,8 @@ public class ChangeTime : MonoBehaviour
             if(alpha == 1)
             {
                 isActivated = false;
+                UpdateShaders();
+                OnTimeChangeEnd?.Invoke();
             }
         }
     }

@@ -1,22 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class ProcessStateTempo : ChangeTempoBaseState
 {
-    public override void InitState(EnumChangeTempo enumValue, ChangeTempoStateMachine stateMachine, ACharacter character)
+    private bool _changedTime = false;
+
+    public override void InitState(ChangeTempoStateMachine stateMachine, EnumChangeTempo enumValue, ACharacter character)
     {
-        base.InitState(enumValue, stateMachine, character);
+        base.InitState(stateMachine, enumValue,character);
     }
 
     public override void EnterState()
     {
         base.EnterState();
+
+        _character.ChangeTime.isActivated = true;
+        _character.ChangeTime.OnTimeChangeEnd += TimeChangeEnded;
     }
 
     public override void ExitState()
     {
         base.ExitState();
+        _changedTime = false;
+        _character.IsChangingTime = false;
+
+        _character.ChangeTime.OnTimeChangeEnd -= TimeChangeEnded;
     }
 
     public override void UpdateState(float dT)
@@ -24,8 +35,30 @@ public class ProcessStateTempo : ChangeTempoBaseState
         base.UpdateState(dT);
     }
 
-    public override void ChangeState()
+    public override void CheckChangeState()
     {
-        base.ChangeState();
+        base.CheckChangeState();
+
+        if (_changedTime)
+        {
+            _stateMachine.ChangeState(_stateMachine.States[EnumChangeTempo.Standby]);
+        }
+    }
+
+    private void TimeChangeEnded()
+    {
+        _changedTime = true;
+
+        if (_character.IsInPast)
+        {
+            Physics.IgnoreLayerCollision(_character.gameObject.layer, Mathf.Clamp(Mathf.RoundToInt(Mathf.Log(_character.PastLayer.value, 2)), 0, 31), true);
+            Physics.IgnoreLayerCollision(_character.gameObject.layer, Mathf.Clamp(Mathf.RoundToInt(Mathf.Log(_character.PresentLayer.value, 2)), 0, 31), false);
+        }
+        else
+        {
+            Physics.IgnoreLayerCollision(_character.gameObject.layer, Mathf.Clamp(Mathf.RoundToInt(Mathf.Log(_character.PresentLayer.value, 2)), 0, 31), true);
+            Physics.IgnoreLayerCollision(_character.gameObject.layer, Mathf.Clamp(Mathf.RoundToInt(Mathf.Log(_character.PastLayer.value, 2)), 0, 31), false);
+        }
+        _character.IsInPast = !_character.IsInPast;
     }
 }

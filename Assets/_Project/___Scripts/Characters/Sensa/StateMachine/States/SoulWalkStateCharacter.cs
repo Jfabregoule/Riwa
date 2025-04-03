@@ -32,9 +32,9 @@ public class SoulWalkStateCharacter : BaseStateCharacter
 
     }
 
-    public override void ChangeState()
+    public override void CheckChangeState()
     {
-        base.ChangeState();
+        base.CheckChangeState();
 
     }
 }

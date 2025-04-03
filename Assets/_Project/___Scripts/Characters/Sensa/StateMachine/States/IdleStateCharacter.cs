@@ -17,6 +17,7 @@ public class IdleStateCharacter : BaseStateCharacter
 
         _clock = 0;
 
+        Debug.Log("ENTER");
     }
 
     public override void ExitState()
@@ -32,9 +33,14 @@ public class IdleStateCharacter : BaseStateCharacter
 
     }
 
-    public override void ChangeState()
+    public override void CheckChangeState()
     {
-        base.ChangeState();
+        base.CheckChangeState();
+
+        if (_character.IsChangingTime)
+        {
+            _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.ChangeTempo]);
+        }
 
         if (_character.Joystick.Direction.y != 0 || _character.Joystick.Direction.x != 0)
         {
@@ -48,10 +54,4 @@ public class IdleStateCharacter : BaseStateCharacter
             return;
         }
     }
-
-    public void ChangeToChangeTempo()
-    {
-        _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.ChangeTempo]);
-    }
-
 }

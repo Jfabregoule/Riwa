@@ -4,17 +4,18 @@ using UnityEngine;
 
 public class CancelStateTempo : ChangeTempoBaseState
 {
-    public override void InitState(EnumChangeTempo enumValue, ChangeTempoStateMachine stateMachine, ACharacter character)
+    public override void InitState(ChangeTempoStateMachine stateMachine, EnumChangeTempo enumValue, ACharacter character)
     {
-        base.InitState(enumValue, stateMachine, character);
+        base.InitState(stateMachine, enumValue, character);
     }
 
     public override void EnterState()
     {
+        Debug.Log("CANCEL STATE");
         base.EnterState();
     }
 
-    public override void ExitState()
+    public override void ExitState()    
     {
         base.ExitState();
     }
@@ -24,8 +25,8 @@ public class CancelStateTempo : ChangeTempoBaseState
         base.UpdateState(dT);
     }
 
-    public override void ChangeState()
+    public override void CheckChangeState()
     {
-        base.ChangeState();
+        base.CheckChangeState();
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public enum EnumChangeTempo
 {
+    Standby,
     Check,
     Process,
     Cancel
@@ -15,7 +16,7 @@ public class ChangeTempoBaseState : BaseState<EnumChangeTempo>
     new protected ChangeTempoStateMachine _stateMachine;
     protected ACharacter _character;
 
-    public virtual void InitState(EnumChangeTempo enumValue, ChangeTempoStateMachine stateMachine, ACharacter character)
+    public virtual void InitState(ChangeTempoStateMachine stateMachine, EnumChangeTempo enumValue, ACharacter character)
     {
         base.InitState(enumValue);
 
@@ -37,12 +38,12 @@ public class ChangeTempoBaseState : BaseState<EnumChangeTempo>
     public override void UpdateState(float dT)
     {
         base.UpdateState(dT);
-        ChangeState();
+        CheckChangeState();
     }
 
-    public override void ChangeState()
+    public override void CheckChangeState()
     {
-        base.ChangeState();
+        base.CheckChangeState();
     }
 
 }

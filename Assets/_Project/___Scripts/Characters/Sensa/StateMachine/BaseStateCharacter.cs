@@ -63,14 +63,13 @@ public abstract class BaseStateCharacter : BaseState<EnumStateCharacter>
     {
         //code commun à tous les states
         base.UpdateState(dT);
-        ChangeState();
     }
 
-    public override void ChangeState()
+    public override void CheckChangeState()
     {
         //code commun à tous les states
         //Ici on mettra les conditions et tout ce qui concerne les changements de state
-        base.ChangeState();
+        base.CheckChangeState();
     }
 
 }

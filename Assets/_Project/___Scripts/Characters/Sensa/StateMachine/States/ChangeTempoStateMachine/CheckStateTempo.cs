@@ -4,19 +4,46 @@ using UnityEngine;
 
 public class CheckStateTempo : ChangeTempoBaseState
 {
-    public override void InitState(EnumChangeTempo enumValue, ChangeTempoStateMachine stateMachine, ACharacter character)
+    private EnumChangeTempo _nextState = EnumChangeTempo.Standby;
+    private Vector3 _point1, _point2;
+    private float _radius;
+
+    public override void InitState(ChangeTempoStateMachine stateMachine, EnumChangeTempo enumValue, ACharacter character)
     {
-        base.InitState(enumValue, stateMachine, character);
+        base.InitState(stateMachine, enumValue, character);
     }
 
     public override void EnterState()
     {
         base.EnterState();
+
+        float security = 0.95f;
+
+        _point1 = _character.transform.position + Vector3.down * _character.CapsuleCollider.height / 2 * security;
+        _point2 = _character.transform.position + Vector3.up * _character.CapsuleCollider.height / 2 * security;
+        _radius = _character.CapsuleCollider.radius * security;
+        float castDistance = _character.CapsuleCollider.height * security;
+
+        Vector3 direction = _character.transform.up;
+        RaycastHit hit;
+
+        LayerMask layerMask = _character.IsInPast ? _character.PresentLayer : _character.PastLayer;
+
+        if (Physics.CapsuleCast(_point1, _point2, _radius, direction, out hit, castDistance, layerMask))
+        {
+            Debug.Log($"Hit {hit.collider.name} at {hit.point}");
+            _nextState = EnumChangeTempo.Cancel;
+        }
+        else
+        {
+            _nextState = EnumChangeTempo.Process;
+        }
     }
 
     public override void ExitState()
     {
         base.ExitState();
+        _nextState = EnumChangeTempo.Standby;
     }
 
     public override void UpdateState(float dT)
@@ -24,8 +51,12 @@ public class CheckStateTempo : ChangeTempoBaseState
         base.UpdateState(dT);
     }
 
-    public override void ChangeState()
+    public override void CheckChangeState()
     {
-        base.ChangeState();
+        base.CheckChangeState();
+        if (_nextState != EnumChangeTempo.Standby)
+        {
+            _stateMachine.ChangeState(_stateMachine.States[_nextState]);
+        }
     }
 }

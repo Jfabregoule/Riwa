@@ -29,9 +29,9 @@ public class HoldingStateCharacter : BaseStateCharacter
         base.UpdateState(dT);
     }
 
-    public override void ChangeState()
+    public override void CheckChangeState()
     {
-        base.ChangeState();
+        base.CheckChangeState();
 
         //A definir si on maintient appuye ou si on toggle pour retourner en idle
     }

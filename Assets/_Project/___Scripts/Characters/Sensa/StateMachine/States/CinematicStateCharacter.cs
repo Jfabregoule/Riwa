@@ -29,8 +29,8 @@ public class CinematicStateCharacter : BaseStateCharacter
         base.UpdateState(dT);
     }
 
-    public override void ChangeState()
+    public override void CheckChangeState()
     {
-        base.ChangeState();
+        base.CheckChangeState();
     }
 }

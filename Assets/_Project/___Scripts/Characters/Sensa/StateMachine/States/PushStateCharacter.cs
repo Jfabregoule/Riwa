@@ -28,9 +28,9 @@ public class PushStateCharacter : BaseStateCharacter
         base.UpdateState(dT);
     }
 
-    public override void ChangeState()
+    public override void CheckChangeState()
     {
-        base.ChangeState();
+        base.CheckChangeState();
 
         //Si on ne désactive pas le holding et qu'on lache le joystick
         _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Holding]);

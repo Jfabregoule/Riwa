@@ -29,9 +29,9 @@ public class WaitStateCharacter : BaseStateCharacter
         base.UpdateState(dT);
     }
 
-    public override void ChangeState()
+    public override void CheckChangeState()
     {
-        base.ChangeState();
+        base.CheckChangeState();
 
         if (_character.Joystick.Direction.y != 0 || _character.Joystick.Direction.x != 0)
         {

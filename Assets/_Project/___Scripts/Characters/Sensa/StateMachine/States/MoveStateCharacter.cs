@@ -36,9 +36,9 @@ public class MoveStateCharacter : BaseStateCharacter
 
     }
 
-    public override void ChangeState()
+    public override void CheckChangeState()
     {
-        base.ChangeState();
+        base.CheckChangeState();
 
         Vector2 direction = new Vector2(_character.Joystick.Direction.x ,_character.Joystick.Direction.y);
         float magnitude = direction.magnitude;

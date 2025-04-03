@@ -54,10 +54,10 @@ public abstract class BaseState<TStateEnum>
     public virtual void ExitState() { }
     public virtual void UpdateState(float dT)
     {
-        ChangeState();
+        CheckChangeState();
     }
 
-    public virtual void ChangeState()
+    public virtual void CheckChangeState()
     {
         //Ici on mettra les conditions et tout ce qui concerne les changements de state
     }

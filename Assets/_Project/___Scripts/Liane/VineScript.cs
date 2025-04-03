@@ -47,6 +47,7 @@ public class VineScript : MonoBehaviour
                 }
             }
         }
+        Debug.Log(_materials.Count);
     }
 
     // Update is called once per frame

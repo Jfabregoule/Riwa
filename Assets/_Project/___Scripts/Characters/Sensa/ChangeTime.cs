@@ -37,10 +37,10 @@ public class ChangeTime : MonoBehaviour
 
         AmbianceShapeModule = AmbianceParticles.shape;
         AmbianceEmissionModule = AmbianceParticles.emission;
-        Shader.SetGlobalInt("_Test", 1);
-        Shader.SetGlobalInt("_Test2", 0);
-        past = Shader.GetGlobalInt("_Test2");
-        present = Shader.GetGlobalInt("_Test");
+        Shader.SetGlobalInt("_PresentEnum", 1);
+        Shader.SetGlobalInt("_PastEnum", 0);
+        past = Shader.GetGlobalInt("_PresentEnum");
+        present = Shader.GetGlobalInt("_PastEnum");
     }
 
     // Update is called once per frame
@@ -79,8 +79,8 @@ public class ChangeTime : MonoBehaviour
 
     public void UpdateShaders()
     {
-        Shader.SetGlobalInt("_Test", 1 - present);
-        Shader.SetGlobalInt("_Test2", 1 - past);
+        Shader.SetGlobalInt("_PresentEnum", 1 - present);
+        Shader.SetGlobalInt("_PastEnum", 1 - past);
         past = 1 - past;
         present = 1 - present;
         radius = 0;

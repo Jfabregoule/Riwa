@@ -54,6 +54,8 @@ public class StatuePuzzle : MonoBehaviour
     [SerializeField] private int _unitGridSize = 7;
     [SerializeField] private GameObject defaultTile;
     [SerializeField] private GameObject gridSpawnpoint;
+    [Header("Debug")]
+    [SerializeField] private bool _showDebug = false;
 
     [Header("Tiles")]
     [SerializeField] private List<GameObject> tiles;
@@ -146,18 +148,18 @@ public class StatuePuzzle : MonoBehaviour
         {
             if (!grid.TryGetValue(pair.Key, out CellContent? content) || !content.HasValue)
             {
-                Debug.Log($"Erreur: Aucun élément trouvé à la position {pair.Key.x}, {pair.Key.y}, Statue attendue: {pair.Value.id}.");
+                if(_showDebug == true) Debug.Log($"Erreur: Aucun élément trouvé à la position {pair.Key.x}, {pair.Key.y}, Statue attendue: {pair.Value.id}.");
                 isGridComplete = false;
                 continue;
             }
 
             if (content.Value.id == pair.Value.id && content.Value.rotation == pair.Value.rotation)
             {
-                Debug.Log($"Statue {pair.Value.id} bien placée en {pair.Key.x}, {pair.Key.y} avec rotation {pair.Value.rotation}.");
+                if (_showDebug == true) Debug.Log($"Statue {pair.Value.id} bien placée en {pair.Key.x}, {pair.Key.y} avec rotation {pair.Value.rotation}.");
             }
             else
             {
-                Debug.Log($"Erreur: Statue {content.Value.id} mal orientée ou mal placée en {pair.Key.x}, {pair.Key.y}. Rotation attendue: {pair.Value.rotation}, actuelle: {content.Value.rotation}.");
+                if (_showDebug == true) Debug.Log($"Erreur: Statue {content.Value.id} mal orientée ou mal placée en {pair.Key.x}, {pair.Key.y}. Rotation attendue: {pair.Value.rotation}, actuelle: {content.Value.rotation}.");
                 isGridComplete = false;
             }
         }
@@ -168,10 +170,10 @@ public class StatuePuzzle : MonoBehaviour
             {
                 statues.Validate = true;
             }
-            Debug.Log("Grille complétée avec succès !");
+            if (_showDebug == true) Debug.Log("Grille complétée avec succès !");
         }
         else
-            Debug.Log("La grille n'est pas encore correctement remplie.");
+            if (_showDebug == true) Debug.Log("La grille n'est pas encore correctement remplie.");
     }
 
 
@@ -181,19 +183,19 @@ public class StatuePuzzle : MonoBehaviour
 
         if (!grid.ContainsKey(newPos))
         {
-            Debug.Log($"Mouvement impossible : {newPos.x}, {newPos.y} est hors de la grille.");
+            if (_showDebug == true) Debug.Log($"Mouvement impossible : {newPos.x}, {newPos.y} est hors de la grille.");
             return false;
         }
         if (!IsCellEmpty(newPos))
         {
-            Debug.Log($"Mouvement impossible : La case {newPos.x}, {newPos.y} est déjà occupée !");
+            if (_showDebug == true) Debug.Log($"Mouvement impossible : La case {newPos.x}, {newPos.y} est déjà occupée !");
             return false;
         }
 
         grid[oldPos] = null;
         grid[newPos] = statueData;
 
-        Debug.Log($"Statue déplacée en {newPos.x}, {newPos.y}");
+        if (_showDebug == true) Debug.Log($"Statue déplacée en {newPos.x}, {newPos.y}");
         return true;
     }
 
@@ -205,7 +207,7 @@ public class StatuePuzzle : MonoBehaviour
     private bool IsCellEmpty(CellPos pos)
     {
         bool isEmpty = !grid.ContainsKey(pos) || !grid[pos].HasValue;
-        Debug.Log($"Vérification case ({pos.x}, {pos.y}) -> Est vide ? {isEmpty} | Contenu : {grid[pos]}");
+        if (_showDebug == true) Debug.Log($"Vérification case ({pos.x}, {pos.y}) -> Est vide ? {isEmpty} | Contenu : {grid[pos]}");
         return isEmpty;
     }
 }

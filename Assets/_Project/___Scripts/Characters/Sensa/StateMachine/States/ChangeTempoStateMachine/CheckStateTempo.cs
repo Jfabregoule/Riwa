@@ -22,16 +22,15 @@ public class CheckStateTempo : ChangeTempoBaseState
         _point1 = _character.transform.position + Vector3.down * _character.CapsuleCollider.height / 2 * security;
         _point2 = _character.transform.position + Vector3.up * _character.CapsuleCollider.height / 2 * security;
         _radius = _character.CapsuleCollider.radius * security;
-        float castDistance = _character.CapsuleCollider.height * security;
+        //float castDistance = _character.CapsuleCollider.height * security;
 
-        Vector3 direction = _character.transform.up;
-        RaycastHit hit;
+        //Vector3 direction = _character.transform.up;
+        //RaycastHit hit;
 
         LayerMask layerMask = _character.IsInPast ? _character.PresentLayer : _character.PastLayer;
 
-        if (Physics.CapsuleCast(_point1, _point2, _radius, direction, out hit, castDistance, layerMask))
+        if (Physics.CheckCapsule(_point1, _point2, _radius, layerMask))
         {
-            Debug.Log($"Hit {hit.collider.name} at {hit.point}");
             _nextState = EnumChangeTempo.Cancel;
         }
         else

@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
@@ -34,8 +36,6 @@ public class SoundSystem : Singleton<SoundSystem>
     [SerializeField] private string _SFXFolderPath; // Chemin du dossier contenant les effets sonores.
     [SerializeField] private string _musicFolderPath; // Chemin du dossier contenant la musique.
     [SerializeField] private string _ambianceFolderPath; // Chemin du dossier contenant les sons d'ambiance.
-
-    private int _numberOfChannels; // Nombre de canaux audio disponibles.
 
     [SerializeField] private AudioMixerGroup _musicMixerGroup; // Groupe de mixage pour la musique.
     [SerializeField] private AudioMixerGroup _ambianceMixerGroup; // Groupe de mixage pour l'ambiance.
@@ -73,13 +73,7 @@ public class SoundSystem : Singleton<SoundSystem>
         _audioSources = new List<AudioSource>();
         _currentMusicSource = null;
         _currentAmbianceSources = new List<AudioSource>();
-        _numberOfChannels = GetComponents<AudioSource>().Length;
-
-        AudioSource[] attachedAudioSources = GetComponents<AudioSource>();
-
-        for (int i = 0; i < _numberOfChannels; i++) {
-            _audioSources.Add(attachedAudioSources[i]);
-        }
+        _audioSources.AddRange(GetComponents<AudioSource>());
 
         _player = GameObject.FindGameObjectWithTag("Player");
     }
@@ -103,28 +97,25 @@ public class SoundSystem : Singleton<SoundSystem>
 
         foreach (AudioClip audioClip in audioClips)
         {
-            string[] words = audioClip.name.Split('_');
+            string assetPath = AssetDatabase.GetAssetPath(audioClip);
 
-            if (words[0] != "SFX" || words.Length < 3)
+            string[] pathParts = assetPath.Split('/');
+
+            if (pathParts.Length < 2)
             {
-                Debug.LogWarning($"The audio clip {audioClip.name} has not the SFX_xxx_xxx format.");
+                Debug.LogWarning($"Le chemin pour le clip {audioClip.name} semble invalide.");
+                continue;
             }
 
-            string key = "";
+            string folderName = pathParts[pathParts.Length - 2];
+            string fileName = pathParts[pathParts.Length - 1];
 
-            for (int i = 1; i < words.Length; i++)
-            {
-                key += char.ToUpper(words[i][0]) + words[i].Substring(1).ToLower() + " ";
-            }
+            fileName = System.IO.Path.GetFileNameWithoutExtension(fileName);
 
-            key = key.Trim();
+            folderName = char.ToUpper(folderName[0]) + folderName.Substring(1).ToLower();
+            fileName = char.ToUpper(fileName[0]) + fileName.Substring(1).ToLower();
 
-            int index = key.Length - 1;
-
-            while (char.IsDigit(key[index]))
-                index--;
-
-            key = key.Substring(0, index + 1);
+            string key = $"{folderName} {fileName}";
 
             SoundFX existingSound = _SFXList.Find(sound => sound.key == key);
 
@@ -153,30 +144,26 @@ public class SoundSystem : Singleton<SoundSystem>
 
         foreach (AudioClip audioClip in audioClips)
         {
-            string[] words = audioClip.name.Split('_');
+            string assetPath = AssetDatabase.GetAssetPath(audioClip);
 
-            if (words[0] != "MUSIC" || words.Length < 2)
+            string[] pathParts = assetPath.Split('/');
+
+            if (pathParts.Length < 2)
             {
-                Debug.LogWarning($"The audio clip {audioClip.name} has not the MUSIC_xxx format.");
+                Debug.LogWarning($"Le chemin pour le clip {audioClip.name} semble invalide.");
+                continue;
             }
 
-            string key = "";
+            string folderName = pathParts[pathParts.Length - 2];
+            string fileName = pathParts[pathParts.Length - 1];
 
-            for (int i = 1; i < words.Length; i++)
-            {
-                key += char.ToUpper(words[i][0]) + words[i].Substring(1).ToLower() + " ";
-            }
+            fileName = System.IO.Path.GetFileNameWithoutExtension(fileName);
 
-            key = key.Trim();
+            folderName = char.ToUpper(folderName[0]) + folderName.Substring(1).ToLower();
+            fileName = char.ToUpper(fileName[0]) + fileName.Substring(1).ToLower();
 
-            int index = key.Length - 1;
+            string key = $"{folderName} {fileName}";
 
-            while (char.IsDigit(key[index]))
-                index--;
-
-            key = key.Substring(0, index + 1);
-
-                
             Track newTrack = new Track
             {
                 key = key,
@@ -196,29 +183,25 @@ public class SoundSystem : Singleton<SoundSystem>
 
         foreach (AudioClip audioClip in audioClips)
         {
-            string[] words = audioClip.name.Split('_');
+            string assetPath = AssetDatabase.GetAssetPath(audioClip);
 
-            if (words[0] != "AMBIANCE" || words.Length < 2)
+            string[] pathParts = assetPath.Split('/');
+
+            if (pathParts.Length < 2)
             {
-                Debug.LogWarning($"The audio clip {audioClip.name} has not the AMBIANCE_xxx format.");
+                Debug.LogWarning($"Le chemin pour le clip {audioClip.name} semble invalide.");
+                continue;
             }
 
-            string key = "";
+            string folderName = pathParts[pathParts.Length - 2];
+            string fileName = pathParts[pathParts.Length - 1];
 
-            for (int i = 1; i < words.Length; i++)
-            {
-                key += char.ToUpper(words[i][0]) + words[i].Substring(1).ToLower() + " ";
-            }
+            fileName = System.IO.Path.GetFileNameWithoutExtension(fileName);
 
-            key = key.Trim();
+            folderName = char.ToUpper(folderName[0]) + folderName.Substring(1).ToLower();
+            fileName = char.ToUpper(fileName[0]) + fileName.Substring(1).ToLower();
 
-            int index = key.Length - 1;
-
-            while (char.IsDigit(key[index]))
-                index--;
-
-            key = key.Substring(0, index + 1);
-
+            string key = $"{folderName} {fileName}";
 
             Track newTrack = new Track
             {
@@ -254,16 +237,26 @@ public class SoundSystem : Singleton<SoundSystem>
     /// <returns>Audio source disponible retournée.</returns>
     private AudioSource GetAvailableAudioSource()
     {
+        AudioSource oldestAudioSource = null;
+        float oldestTime = float.MaxValue;
+
         foreach (AudioSource audioSource in _audioSources)
         {
             if (!audioSource.isPlaying)
             {
                 return audioSource;
             }
+
+            float elapsedTime = Time.time - audioSource.time;
+            if (elapsedTime < oldestTime)
+            {
+                oldestTime = elapsedTime;
+                oldestAudioSource = audioSource;
+            }
         }
 
-        _audioSources[0].Stop();
-        return _audioSources[0];
+        oldestAudioSource.Stop();
+        return oldestAudioSource;
     }
 
     /// <summary>
@@ -336,18 +329,30 @@ public class SoundSystem : Singleton<SoundSystem>
     /// Change la musique actuelle avec la musique donnée.
     /// </summary>
     /// <param name="audioClip">Audioclip de la nouvelle musique.</param>
-    private void ChangeMusic(AudioClip audioClip)
+    private void ChangeMusic(AudioClip audioClip, float volume = 1.0f)
     {
-        StartCoroutine(FadeOutInMusic(audioClip));
+        StartCoroutine(FadeOutInMusic(audioClip, volume));
     }
 
     /// <summary>
     /// Change la musique actuelle avec la musique trouvée avec la clé donnée.
     /// </summary>
     /// <param name="key">Clé de la nouvelle musique.</param>
-    public void ChangeMusicByKey(string key)
+    public void ChangeMusicByKey(string key, float volume = 1.0f)
     {
-        ChangeMusic(GetMusicByKey(key));
+        ChangeMusic(GetMusicByKey(key), volume);
+    }
+
+    /// <summary>
+    /// Stop la musique en cours.
+    /// </summary>
+    public void StopMusic()
+    {
+        if (_currentMusicSource)
+        {
+            StartCoroutine(FadeOutAudio(_currentMusicSource, _fadeOutDuration));
+            _currentMusicSource = null;
+        }
     }
 
     #endregion
@@ -357,7 +362,7 @@ public class SoundSystem : Singleton<SoundSystem>
     /// <summary>
     /// Stop les sons d'ambiances en cours.
     /// </summary>
-    public void StopAmbianceSources() 
+    public void StopAllAmbianceSources() 
     {
         foreach (AudioSource audioSource in _currentAmbianceSources) 
         {
@@ -371,14 +376,15 @@ public class SoundSystem : Singleton<SoundSystem>
     /// Ajoute un nouveau son d'ambiance.
     /// </summary>
     /// <param name="audioClip">Clip audio d'ambiance à ajouter.</param>
-    private void AddAmbianceSound(AudioClip audioClip) {
+    private void AddAmbianceSound(AudioClip audioClip, float volume = 1.0f) 
+    {
         AudioSource audioSource = GetAvailableAudioSource();
         audioSource.outputAudioMixerGroup = _ambianceMixerGroup;
         audioSource.clip = audioClip;
         audioSource.loop = true;
-        audioSource.volume = 1.0f;
+        audioSource.volume = volume;
         audioSource.Play();
-        StartCoroutine(FadeInAudio(audioSource, _fadeInDuration));
+        StartCoroutine(FadeInAudio(audioSource, _fadeInDuration, volume));
         _currentAmbianceSources.Add(audioSource);
     }
 
@@ -386,12 +392,31 @@ public class SoundSystem : Singleton<SoundSystem>
     /// Ajoute un nouveau son d'ambiance.
     /// </summary>
     /// <param name="key">Clé du son d'ambiance à ajouter.</param>
-    public void AddAmbianceSoundByKey(string key)
+    public AudioSource AddAmbianceSoundByKey(string key)
     {
-        var audioClip = GetAmbianceByKey(key);
+        AudioClip audioClip = GetAmbianceByKey(key);
         if (audioClip != null)
         {
             AddAmbianceSound(audioClip);
+            return _currentAmbianceSources.ElementAt(_currentAmbianceSources.Count - 1);
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Arrête un nouveau son d'ambiance.
+    /// </summary>
+    /// <param name="key">Clé du son d'ambiance à arrêter.</param>
+    public void StopAmbianceSoundByKey(string key)
+    {
+        foreach(AudioSource audioSource in _currentAmbianceSources)
+        {
+            string audioClipKey = audioSource.clip.name.Split(" ")[1];
+            if (audioClipKey == key)
+            {
+                StartCoroutine(FadeOutAudio(audioSource, _fadeOutDuration));
+                _currentAmbianceSources.Remove(audioSource);
+            }
         }
     }
 
@@ -405,11 +430,13 @@ public class SoundSystem : Singleton<SoundSystem>
     /// <param name="audioClip">Audioclip à jouer.</param>
     /// <param name="spawnPosition">Position ou jouer le son.</param>
     /// <param name="volume">Volume du son à jouer.</param>
-    private void PlaySoundFXClip(AudioClip audioClip, Vector3 spawnPosition, float volume = 1.0f) {
+    private AudioSource PlaySoundFXClip(AudioClip audioClip, Vector3 spawnPosition, float volume = 1.0f) 
+    {
         AudioSource audioSource = CreateSoundFXSource(spawnPosition);
         audioSource.clip = audioClip;
         audioSource.volume = volume;
         PlayAndDestroy(audioSource, audioClip.length);
+        return audioSource;
     }
 
     /// <summary>
@@ -418,13 +445,14 @@ public class SoundSystem : Singleton<SoundSystem>
     /// <param name="key">Clé du son à jouer.</param>
     /// <param name="spawnPosition">Position ou jouer le son.</param>
     /// <param name="volume">Volume du son à jouer.</param>
-    public void PlaySoundFXClipByKey(string key, Vector3 spawnPosition, float volume = 1.0f)
+    public AudioSource PlaySoundFXClipByKey(string key, Vector3 spawnPosition, float volume = 1.0f)
     {
         var audioClip = GetSFXByKey(key);
         if (audioClip != null)
         {
-            PlaySoundFXClip(audioClip, spawnPosition, volume);
+            return (PlaySoundFXClip(audioClip, spawnPosition, volume));
         }
+        return null;
     }
 
     /// <summary>
@@ -432,9 +460,19 @@ public class SoundSystem : Singleton<SoundSystem>
     /// </summary>
     /// <param name="key">Clé du son à jouer.</param>
     /// <param name="volume">Volume du son à jouer.</param>
-    public void PlaySoundFXClipByKey(string key, float volume = 1.0f)
+    public AudioSource PlaySoundFXClipByKey(string key, float volume = 1.0f)
     {
-        PlaySoundFXClipByKey(key, _player.transform.position, volume);
+        AudioClip audioClip = GetSFXByKey(key);
+        if (audioClip != null)
+        {
+            AudioSource audioSource = GetAvailableAudioSource();
+            audioSource.volume = volume;
+            audioSource.loop = false;
+            audioSource.Play();
+            return audioSource;
+        }
+
+        return null;
     }
 
     /// <summary>
@@ -482,6 +520,15 @@ public class SoundSystem : Singleton<SoundSystem>
         Destroy(audioSource.gameObject, clipLength);
     }
 
+    public void StopAudioSource(AudioSource audioSource)
+    {
+        audioSource.Stop();
+        if(!audioSource.transform.parent == this)
+        {
+            Destroy(audioSource);
+        }
+    }
+
     #endregion
 
     #region Coroutines
@@ -490,7 +537,7 @@ public class SoundSystem : Singleton<SoundSystem>
     /// Fait une transition douce entre la musique en cours et une musique donnée.
     /// </summary>
     /// <param name="newClip">Nouvelle musique.</param>
-    private IEnumerator FadeOutInMusic(AudioClip newClip) 
+    private IEnumerator FadeOutInMusic(AudioClip newClip, float volume = 1.0f) 
     {
         if (_currentMusicSource != null) {
             yield return StartCoroutine(FadeOutAudio(_currentMusicSource, _fadeOutDuration));
@@ -505,7 +552,7 @@ public class SoundSystem : Singleton<SoundSystem>
 
         _currentMusicSource = newMusicSource;
 
-        yield return StartCoroutine(FadeInAudio(newMusicSource, _fadeInDuration));
+        yield return StartCoroutine(FadeInAudio(newMusicSource, _fadeInDuration, volume));
     }
 
     /// <summary>
@@ -533,7 +580,7 @@ public class SoundSystem : Singleton<SoundSystem>
     /// </summary>
     /// <param name="audioSource">AudioSource à augmenter.</param>
     /// <param name="duration">Durée avant d'atteindre 100.</param>
-    public IEnumerator FadeInAudio(AudioSource audioSource, float duration) 
+    public IEnumerator FadeInAudio(AudioSource audioSource, float duration, float maxVolume) 
     {
         float currentTime = 0f;
         audioSource.volume = 0.0f;

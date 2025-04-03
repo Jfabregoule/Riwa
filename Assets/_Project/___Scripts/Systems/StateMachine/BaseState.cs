@@ -34,7 +34,7 @@ public abstract class BaseState<TStateEnum>
 
     public Dictionary<TStateEnum, Transition> TransitionMap { get => _transitionMap; }
     public TStateEnum EnumState { get => _enumState; }
-    public BaseStateMachine<TStateEnum, BaseState<TStateEnum>> Character { get => _stateMachine; }
+    public BaseStateMachine<TStateEnum, BaseState<TStateEnum>> StateMachine { get => _stateMachine; }
 
     #endregion
 

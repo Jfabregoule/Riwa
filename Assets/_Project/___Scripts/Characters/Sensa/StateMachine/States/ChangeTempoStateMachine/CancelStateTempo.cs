@@ -11,13 +11,14 @@ public class CancelStateTempo : ChangeTempoBaseState
 
     public override void EnterState()
     {
-        Debug.Log("CANCEL STATE");
         base.EnterState();
     }
 
-    public override void ExitState()    
+    public override void ExitState()
     {
         base.ExitState();
+
+        _character.IsChangingTime = false;
     }
 
     public override void UpdateState(float dT)

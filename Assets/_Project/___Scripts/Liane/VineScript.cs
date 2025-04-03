@@ -114,7 +114,7 @@ public class VineScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.transform.parent.TryGetComponent(out Character character)) return;
+        if (!other.transform.parent.TryGetComponent(out ACharacter character)) return;
         _capsuleCollider.isTrigger = false;
         _isActivated = true;
     }

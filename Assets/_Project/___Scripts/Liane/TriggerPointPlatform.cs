@@ -27,7 +27,7 @@ public class TriggerPointPlatform : MonoBehaviour
         Vector3 position = capsule.transform.TransformPoint(capsule.center);
         position.x = CollisionPoint.x;
         position.y += WorldRadius;
-        vineScript.SetSocketTransform(position);
         vineScript.SetSocketChild(transform.parent);
+        vineScript.SetSocketTransform(position);
     }
 }

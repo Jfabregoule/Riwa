@@ -28,7 +28,7 @@ public class VineScript : MonoBehaviour
     [SerializeField] private float _refreshRateFactor = 70.0f;
     private CapsuleCollider _capsuleCollider;
     private float _minColliderHeight;
-
+    private Vector3 _test;
     void Start()
     {
         _capsuleCollider = GetComponent<CapsuleCollider>();
@@ -78,7 +78,7 @@ public class VineScript : MonoBehaviour
         _capsuleCollider.height = _minColliderHeight + value * (_maxColliderHeight - _minColliderHeight);
         _capsuleCollider.center = new Vector3(_capsuleCollider.center.x - ((_capsuleCollider.height - lastHeight) / 2), _capsuleCollider.center.y, _capsuleCollider.center.z);
 
-       _socketPoint.localPosition = -transform.right * (_capsuleCollider.height - _minColliderHeight) * transform.localScale.y;
+        _socketPoint.position = transform.TransformPoint(-transform.right * (_capsuleCollider.height - _minColliderHeight));
 
 
     }
@@ -100,7 +100,7 @@ public class VineScript : MonoBehaviour
         float lastHeight = _capsuleCollider.height;
         _capsuleCollider.height = _minColliderHeight + value * (_maxColliderHeight - _minColliderHeight);
         _capsuleCollider.center = new Vector3(_capsuleCollider.center.x - ((_capsuleCollider.height - lastHeight) / 2), _capsuleCollider.center.y, _capsuleCollider.center.z);
-        _socketPoint.localPosition = -transform.right * (_capsuleCollider.height - _minColliderHeight) * transform.localScale.y;
+        _socketPoint.position = transform.TransformPoint(-transform.right * (_capsuleCollider.height - _minColliderHeight));
 
     }
     private void VineFall()
@@ -126,8 +126,11 @@ public class VineScript : MonoBehaviour
 
     public void SetSocketTransform(Vector3 position)
     {
+        Debug.Log(_socketPoint.position);
         //position.y += 0.2f; 
         _socketPoint.transform.position = position;
+        Debug.Log(position);
+        _test = position; 
     }
 
     public void SetSocketChild(Transform child)

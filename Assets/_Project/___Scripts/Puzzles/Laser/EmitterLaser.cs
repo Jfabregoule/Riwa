@@ -39,10 +39,10 @@ public class EmitterLaser : MonoBehaviour
             {
                 if (IsPositionAlreadyAdded(hit.point)) continue;
 
-                //Vector3 reflect = Vector3.Reflect(_directions[i], hit.normal);
+                Vector3 reflect = Vector3.Reflect(_directions[i], hit.normal);
 
                 AddLaserPoint(hit.point);
-                _directions.Add(hit.normal);
+                _directions.Add(reflect);
 
                 if (!hit.collider.GetComponent<RecepterLaser>())
                 {
@@ -53,6 +53,10 @@ public class EmitterLaser : MonoBehaviour
                 {
                     _isReflecting = true;
                 }
+            }
+            else if(i == _laser.positionCount - 1)
+            {
+                break;
             }
             else
             {

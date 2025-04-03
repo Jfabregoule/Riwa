@@ -47,6 +47,16 @@ public struct Solution
     public CellContent content;
 }
 
+[System.Serializable]
+public struct StatueData
+{
+    public int id;
+    public int rotation;
+    public int unitGridSize;
+    public int posX;
+    public int posY;
+}
+
 public class StatuePuzzle : MonoBehaviour
 {
     [Header("Grid")]
@@ -57,22 +67,35 @@ public class StatuePuzzle : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private bool _showDebug = false;
 
+    /// <summary>
+    /// Specify all the statue associated tile color prefab
+    /// </summary>
     [Header("Tiles")]
     [SerializeField] private List<GameObject> tiles;
 
+    /// <summary>
+    /// Specify the statue prefab before Generating grid then specify the new generated ones
+    /// </summary>
     [Header("Statues")]
-    [SerializeField] private List<Statue> _statues;
+    [SerializeField] private List<GameObject> _statuesPrefab;
 
-    [Header("Debug")]
-    [SerializeField] private List<GridEntry> serializedGrid = new List<GridEntry>();
-    [SerializeField] private List<Solution> serializedSolutions = new List<Solution>();
+    /// <summary>
+    /// Serialized those Lists in case of bug
+    /// </summary>
+    private List<GridEntry> serializedGrid = new List<GridEntry>();
+    private List<Solution> serializedSolutions = new List<Solution>();
+    private List<StatueData> serializedStatues = new List<StatueData>();
+
+    Dictionary<CellPos, CellContent> solution = new Dictionary<CellPos, CellContent>();
+    Dictionary<CellPos, CellContent?> grid = new Dictionary<CellPos, CellContent?>();
+
+    Dictionary<CellPos, StatueData> statueData = new Dictionary<CellPos, StatueData>(); // ??????????
+
+    [SerializeField] private List<Statue> _statues = new List<Statue>();
 
     public int UnitGridSize => _unitGridSize;
     public Vector3 Origin { get; private set; }
     public Vector2Int GridSize => _gridSize;
-
-    Dictionary<CellPos, CellContent> solution = new Dictionary<CellPos, CellContent>();
-    Dictionary<CellPos, CellContent?> grid = new Dictionary<CellPos, CellContent?>();
 
     private void Awake()
     {
@@ -86,8 +109,28 @@ public class StatuePuzzle : MonoBehaviour
         foreach (var entry in serializedGrid)
             grid[entry.position] = entry.content;
 
+        statueData.Clear();
+        foreach(var entry in serializedStatues)
+        {
+            CellPos pos = new CellPos(entry.posX, entry.posY);
+            statueData[pos] = new StatueData{
+                id = entry.id,
+                rotation = entry.rotation,
+                unitGridSize = entry.unitGridSize,
+                posX = entry.posX,
+                posY = entry.posY
+            };
+        }
+
         foreach (Statue statue in _statues)
         {
+            int statueIndex = _statues.IndexOf(statue);
+            if (statueIndex >= 0 && statueIndex < serializedStatues.Count) // A l'aide ici
+            {
+                StatueData data = serializedStatues[statueIndex];
+                statue.SetStatuesData(data);
+            }
+
             statue.OnStatueMoved += Move;
             statue.OnStatueRotate += UpdateStatueRotation;
             statue.OnStatueEndMoving += Check;
@@ -146,8 +189,12 @@ public class StatuePuzzle : MonoBehaviour
 
     public void GenerateStatue()
     {
+        _statues.Clear();
         int index = 0;
-        foreach(Statue statues in _statues)
+        int finalRotation = 0;
+        int finalPosX = 0;
+        int finalPosY = 0;
+        for (int i = 0; i < _statuesPrefab.Count; i++)
         {
             index++;
             int randX, randY;
@@ -157,13 +204,23 @@ public class StatuePuzzle : MonoBehaviour
                 randY = Random.Range(0, _gridSize.y);
             }
             while (randX >= 3 && randY >= 3);
-            int randRotation = Random.Range(0, 8);
-            Quaternion rot = Quaternion.Euler(0, randRotation * 45, 0);
+            int randRotation = Random.Range(0, 8) * 45;
+            Quaternion rot = Quaternion.Euler(0, randRotation, 0);
             Vector3 position = Origin + new Vector3(randX * _unitGridSize, 1, randY * _unitGridSize);
-            _statues[index - 1].SetStatuesData(index, randRotation * 45, _unitGridSize, randX, randY);
-            GameObject statue = Instantiate(_statues[index - 1].gameObject, position, rot);
-            statue.transform.SetParent(gridSpawnpoint.transform);
+            GameObject statueGO = Instantiate(_statuesPrefab[index - 1], position, rot);
+            statueGO.transform.SetParent(gridSpawnpoint.transform);
+
+            finalRotation = randRotation;
+            finalPosX = randX;
+            finalPosY = randY;
+
+            Statue statue = statueGO.GetComponent<Statue>();
+            _statues.Add(statue);
         }
+
+        serializedStatues.Clear(); // La save tempo marche pas
+        foreach (Statue statues in _statues)
+            serializedStatues.Add(new StatueData { id = index, rotation = finalRotation, unitGridSize = _unitGridSize, posX = finalPosX, posY = finalPosY });
     }
 
     public void PlaceStatueData(CellPos pos, CellContent statueData)

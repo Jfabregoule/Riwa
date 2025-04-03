@@ -6,7 +6,7 @@ using UnityEngine;
 public class Statue : MonoBehaviour, IMovable, IRotatable
 {
     [Header("Debug")]
-    [SerializeField] private bool _startDebugLog = false;
+    [SerializeField] private bool _showDebugLog = false;
     /// <summary>
     /// The serialized variable down has to be removed when the CC will be up
     /// because the CC will be able to get the Statue his currently holding so don't need to handle if the statue is either lock or not
@@ -22,6 +22,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
 
     public bool Validate { get => _validate; set => _validate = value; }
     public bool IsLocked { get => _lockPosition; set => _lockPosition = value; }
+    public int UnitGridSize { get => _unitGridSize; set => _unitGridSize = value; }
 
     public delegate bool StatueMoveEvent(CellPos oldPos, Vector2Int nextPos, CellContent statueData);
     public delegate void StatueRotateEvent(CellPos pos, CellContent content);
@@ -34,6 +35,8 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
     public void Move(Vector2 direction)
     {
         if (_isMoving || _lockPosition || _validate) return;
+        if (_showDebugLog == true) Debug.Log("UnitgridSize: " + _unitGridSize + " | Direction: " + direction);
+        if (_showDebugLog == true) Debug.Log("PosX: " + _pos.x + " | PosY: " + _pos.y + " | Rotation: " + _content.rotation + " | ID: " + _content.id);
         bool canMove = OnStatueMoved.Invoke(_pos, Helpers.Vector2To2Int(direction.normalized), _content);
         if(!canMove) return;
         if (direction.x != 0) _pos.x += (int)direction.x;
@@ -62,8 +65,10 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
         _isMoving = true;
         float elapsedTime = 0.0f;
         Vector3 initialPosition = transform.position;
-        Vector3 destination = new Vector3(transform.localPosition.x + (_unitGridSize * direction.x), transform.localPosition.y, transform.localPosition.z + (_unitGridSize * direction.y));
-        while(elapsedTime < _lerpTime)
+        Vector3 destination = new Vector3(transform.position.x + (_unitGridSize * direction.x), transform.position.y, transform.position.z + (_unitGridSize * direction.y));
+        if (_showDebugLog == true) Debug.Log("UnitgridSize: " + _unitGridSize + " | Destination: " + destination);
+        if (_showDebugLog == true) Debug.Log("PosX: " + _pos.x + " | PosY: " + _pos.y + " | Rotation: " + _content.rotation + " | ID: " + _content.id);
+        while (elapsedTime < _lerpTime)
         {
             elapsedTime += Time.deltaTime;
             float t = elapsedTime / _lerpTime;
@@ -97,13 +102,13 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
         OnStatueEndMoving.Invoke();
     }
 
-    public void SetStatuesData(int id, int rotation, int unitGridSize, int posX, int posY)
+    public void SetStatuesData(StatueData data)
     {;
-        this._content.id = id;
-        this._content.rotation = rotation;
-        this._unitGridSize = unitGridSize;
-        this._pos.x = posX;
-        this._pos.y = posY;
+        this._content.id = data.id;
+        this._content.rotation = data.rotation;
+        this._unitGridSize = data.unitGridSize;
+        this._pos.x = data.posX;
+        this._pos.y = data.posY;
     }
 
 }

@@ -18,7 +18,7 @@ public class HoldingStateCharacter : BaseStateCharacter
 
         _subStateMachine = new HoldingStateMachine();
         _subStateMachine.InitStateMachine(_character);
-        _subStateMachine.InitState(_subStateMachine.States[EnumHolding.IdleHolding]);
+        //_subStateMachine.InitState(_subStateMachine.States[EnumHolding.IdleHolding]);
 
     }
 

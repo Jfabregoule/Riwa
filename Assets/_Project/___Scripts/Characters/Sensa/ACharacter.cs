@@ -92,7 +92,7 @@ public class ACharacter : MonoBehaviour
 
         _changeTime = GameObject.Find("Sphere").GetComponent<ChangeTime>();
 
-        _cameraHandler = GetComponentInChildren<CameraHandler>();
+        _cameraHandler = PlaygroundManager.Instance.CameraHandler;
 
     }
 

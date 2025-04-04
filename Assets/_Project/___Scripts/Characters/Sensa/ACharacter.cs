@@ -92,7 +92,7 @@ public class ACharacter : MonoBehaviour
 
         _changeTime = GameObject.Find("Sphere").GetComponent<ChangeTime>();
 
-        _cameraHandler = PlaygroundManager.Instance.CameraHandler;
+        _cameraHandler = GameManager.Instance.CameraHandler; //Il faut appeler ça après le load des 3C dans gameManager
 
     }
 

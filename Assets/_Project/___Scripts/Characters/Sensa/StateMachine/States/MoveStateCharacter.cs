@@ -24,13 +24,15 @@ public class MoveStateCharacter : BaseStateCharacter
     {
         base.UpdateState(dT);
 
+        CameraHandler cam = GameManager.Instance.CameraHandler;
+
         Vector3 movement;
         movement.x = _character.Joystick.Direction.x;
         movement.y = 0;
         movement.z = _character.Joystick.Direction.y;
 
-        Vector3 camForward = _character.CameraHandler.transform.forward;
-        Vector3 camRight = _character.CameraHandler.transform.right;
+        Vector3 camForward = cam.transform.forward;
+        Vector3 camRight = cam.transform.right;
 
         camForward.y = 0;
         camRight.y = 0;

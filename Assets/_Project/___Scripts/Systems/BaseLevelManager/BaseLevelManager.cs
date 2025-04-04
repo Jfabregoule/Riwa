@@ -17,8 +17,19 @@ public class BaseLevelManager : Singleton<BaseLevelManager>
     
     [Header("Les 3C")]
 
-    public CameraHandler CameraHandler;
-    public ACharacter Character;
-    public Joystick Joystick;
+    [SerializeField] private CameraHandler _cameraHandler;
+    [SerializeField] private ACharacter _character;
+    [SerializeField] private Joystick _joystick;
+
+    public void Start()
+    {
+        GameManager.Instance.OnLoadManager += LoadManager;
+    }
+
+    public void LoadManager()
+    {
+        GameManager.Instance.Load3C(_cameraHandler, _character, _joystick);
+
+    }
 
 }

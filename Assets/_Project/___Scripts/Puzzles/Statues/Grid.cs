@@ -87,7 +87,8 @@ public class Grid : MonoBehaviour
     [SerializeField] private List<GameObject> _statuesPrefab;
 
     /// <summary>
-    /// Serialized those Lists in case of bug
+    /// Save system without save system o_o
+    /// Remove them when the save system is up
     /// </summary>
     [HideInInspector][SerializeField] private List<GridEntry> serializedGrid = new List<GridEntry>();
     [HideInInspector][SerializeField] private List<Solution> serializedSolutions = new List<Solution>();

@@ -17,7 +17,7 @@ public class ProcessStateTempo : ChangeTempoBaseState
     {
         base.EnterState();
 
-        _character.ChangeTime.isActivated = true;
+        _character.ChangeTime.StartTimeChange();
         _character.ChangeTime.OnTimeChangeEnd += TimeChangeEnded;
     }
 

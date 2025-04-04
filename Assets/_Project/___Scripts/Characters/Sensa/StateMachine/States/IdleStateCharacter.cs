@@ -16,8 +16,6 @@ public class IdleStateCharacter : BaseStateCharacter
         base.EnterState();
 
         _clock = 0;
-
-        Debug.Log("ENTER");
     }
 
     public override void ExitState()

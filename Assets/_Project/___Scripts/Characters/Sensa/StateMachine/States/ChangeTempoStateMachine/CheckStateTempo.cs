@@ -22,10 +22,6 @@ public class CheckStateTempo : ChangeTempoBaseState
         _point1 = _character.transform.position + Vector3.down * _character.CapsuleCollider.height / 2 * security;
         _point2 = _character.transform.position + Vector3.up * _character.CapsuleCollider.height / 2 * security;
         _radius = _character.CapsuleCollider.radius * security;
-        //float castDistance = _character.CapsuleCollider.height * security;
-
-        //Vector3 direction = _character.transform.up;
-        //RaycastHit hit;
 
         LayerMask layerMask = _character.IsInPast ? _character.PresentLayer : _character.PastLayer;
 
@@ -37,7 +33,6 @@ public class CheckStateTempo : ChangeTempoBaseState
         {
             _nextState = EnumChangeTempo.Process;
         }
-        Debug.Log(_nextState);
     }
 
     public override void ExitState()
@@ -54,6 +49,7 @@ public class CheckStateTempo : ChangeTempoBaseState
     public override void CheckChangeState()
     {
         base.CheckChangeState();
+
         if (_nextState != EnumChangeTempo.Standby)
         {
             _stateMachine.ChangeState(_stateMachine.States[_nextState]);

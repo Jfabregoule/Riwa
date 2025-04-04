@@ -32,8 +32,8 @@ public class CameraHandler : MonoBehaviour
         _currentForward = _startXValue;
         _freelookCamera.m_XAxis.Value = _startXValue;
 
-        _triggerCamera1.OnExitTrigger += RotateCam2;
-        _triggerCamera2.OnExitTrigger += RotateCam1;
+        _triggerCamera1.OnExitTrigger += RotateCam1;
+        _triggerCamera2.OnExitTrigger += RotateCam2;
 
     }
 

@@ -34,6 +34,8 @@ public class ACharacter : MonoBehaviour
     [SerializeField] private LayerMask _pastLayer;
     [SerializeField] private LayerMask _presentLayer;
 
+    private CameraHandler _cameraHandler;
+
     [Header("Gameplay Statistics")]
 
     [SerializeField] private float _speed = 1;
@@ -66,6 +68,7 @@ public class ACharacter : MonoBehaviour
     public ChangeTime ChangeTime { get => _changeTime; }
     public LayerMask PastLayer { get => _pastLayer;}
     public LayerMask PresentLayer { get => _presentLayer;}
+    public CameraHandler CameraHandler { get => _cameraHandler;}
 
     #endregion
 
@@ -88,6 +91,8 @@ public class ACharacter : MonoBehaviour
         _fsmCharacter.InitState(_fsmCharacter.States[EnumStateCharacter.Idle]);
 
         _changeTime = GameObject.Find("Sphere").GetComponent<ChangeTime>();
+
+        _cameraHandler = GameManager.Instance.CameraHandler; //Il faut appeler ça après le load des 3C dans gameManager
 
     }
 

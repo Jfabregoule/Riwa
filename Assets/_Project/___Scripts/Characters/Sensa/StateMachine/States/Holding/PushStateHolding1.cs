@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RotateStateCharacter : BaseStateCharacter
+public class PushStateHolding1 : HoldingBaseState
 {
-    public override void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, ACharacter character)
+    public override void InitState(HoldingStateMachine stateMachine, EnumHolding enumValue, ACharacter character)
     {
         base.InitState(stateMachine, enumValue, character);
     }
@@ -12,7 +12,6 @@ public class RotateStateCharacter : BaseStateCharacter
     public override void EnterState()
     {
         base.EnterState();
-
     }
 
     public override void ExitState()

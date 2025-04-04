@@ -13,12 +13,9 @@ public class StateMachineCharacter : BaseStateMachine<EnumStateCharacter, BaseSt
     private const string CHANGETEMPO_NAME   = "ChangeTempo";
     private const string CINEMATIC_NAME     = "Cinematic";
     private const string HOLDING_NAME       = "Holding";
-    private const string PUSH_NAME          = "Push";
-    private const string PULL_NAME          = "Pull";
     private const string SOULIDLE_NAME      = "SoulIdle";
     private const string SOULWALK_NAME      = "SoulWalk";
     private const string WAIT_NAME          = "Wait";
-    private const string ROTATE_NAME        = "Rotate";
     private const string FALL_NAME          = "Fall";
     private const string RESPAWN_NAME       = "Respawn";
 
@@ -53,14 +50,6 @@ public class StateMachineCharacter : BaseStateMachine<EnumStateCharacter, BaseSt
         States[EnumStateCharacter.Holding].InitState(this, EnumStateCharacter.Holding, character);
         _animationMap[EnumStateCharacter.Holding] = HOLDING_NAME;
 
-        States[EnumStateCharacter.Pull] = new PullStateCharacter();
-        States[EnumStateCharacter.Pull].InitState(this, EnumStateCharacter.Pull, character);
-        _animationMap[EnumStateCharacter.Pull] = PULL_NAME;
-
-        States[EnumStateCharacter.Push] = new PushStateCharacter();
-        States[EnumStateCharacter.Push].InitState(this, EnumStateCharacter.Push, character);
-        _animationMap[EnumStateCharacter.Push] = PUSH_NAME;
-
         States[EnumStateCharacter.SoulIdle] = new SoulIdleStateCharacter();
         States[EnumStateCharacter.SoulIdle].InitState(this, EnumStateCharacter.SoulIdle, character);
         _animationMap[EnumStateCharacter.SoulIdle] = SOULIDLE_NAME;
@@ -76,10 +65,6 @@ public class StateMachineCharacter : BaseStateMachine<EnumStateCharacter, BaseSt
         States[EnumStateCharacter.Wait] = new WaitStateCharacter();
         States[EnumStateCharacter.Wait].InitState(this, EnumStateCharacter.Wait, character);
         _animationMap[EnumStateCharacter.Wait] = WAIT_NAME;
-
-        States[EnumStateCharacter.Rotate] = new RotateStateCharacter();
-        States[EnumStateCharacter.Rotate].InitState(this, EnumStateCharacter.Rotate, character);
-        _animationMap[EnumStateCharacter.Rotate] = ROTATE_NAME;
 
         States[EnumStateCharacter.Fall] = new FallStateCharacter();
         States[EnumStateCharacter.Fall].InitState(this, EnumStateCharacter.Fall, character);

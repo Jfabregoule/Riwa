@@ -57,6 +57,13 @@ public struct StatueData
     public int posY;
 }
 
+[System.Serializable]
+public struct Datas
+{
+    public Statue statue;
+    public StatueData data;
+}
+
 public class StatuePuzzle : MonoBehaviour
 {
     [Header("Grid")]
@@ -82,14 +89,14 @@ public class StatuePuzzle : MonoBehaviour
     /// <summary>
     /// Serialized those Lists in case of bug
     /// </summary>
-    private List<GridEntry> serializedGrid = new List<GridEntry>();
-    private List<Solution> serializedSolutions = new List<Solution>();
-    private List<StatueData> serializedStatues = new List<StatueData>();
+    [HideInInspector][SerializeField] private List<GridEntry> serializedGrid = new List<GridEntry>();
+    [HideInInspector][SerializeField] private List<Solution> serializedSolutions = new List<Solution>();
+    [HideInInspector][SerializeField] private List<Datas> serializedStatues = new List<Datas>();
 
     Dictionary<CellPos, CellContent> solution = new Dictionary<CellPos, CellContent>();
     Dictionary<CellPos, CellContent?> grid = new Dictionary<CellPos, CellContent?>();
 
-    Dictionary<CellPos, StatueData> statueData = new Dictionary<CellPos, StatueData>(); // ??????????
+    Dictionary<Statue, StatueData> statueData = new Dictionary<Statue, StatueData>();
 
     [SerializeField] private List<Statue> _statues = new List<Statue>();
 
@@ -110,30 +117,17 @@ public class StatuePuzzle : MonoBehaviour
             grid[entry.position] = entry.content;
 
         statueData.Clear();
-        foreach(var entry in serializedStatues)
-        {
-            CellPos pos = new CellPos(entry.posX, entry.posY);
-            statueData[pos] = new StatueData{
-                id = entry.id,
-                rotation = entry.rotation,
-                unitGridSize = entry.unitGridSize,
-                posX = entry.posX,
-                posY = entry.posY
-            };
-        }
+        foreach (var entry in serializedStatues)
+            statueData.Add(entry.statue, entry.data);
 
-        foreach (Statue statue in _statues)
+        foreach (var pair in statueData)
         {
-            int statueIndex = _statues.IndexOf(statue);
-            if (statueIndex >= 0 && statueIndex < serializedStatues.Count) // A l'aide ici
-            {
-                StatueData data = serializedStatues[statueIndex];
-                statue.SetStatuesData(data);
-            }
-
-            statue.OnStatueMoved += Move;
-            statue.OnStatueRotate += UpdateStatueRotation;
-            statue.OnStatueEndMoving += Check;
+            pair.Key.SetStatuesData(pair.Value);
+            pair.Key.OnStatueMoved += Move;
+            pair.Key.OnStatueRotate += UpdateStatueRotation;
+            pair.Key.OnStatueEndMoving += Check;
+            CellPos pos = new CellPos(pair.Value.posX, pair.Value.posY);
+            grid[pos] = new CellContent(pair.Value.id, pair.Value.rotation);
         }
     }
 
@@ -190,10 +184,8 @@ public class StatuePuzzle : MonoBehaviour
     public void GenerateStatue()
     {
         _statues.Clear();
+        serializedStatues.Clear();
         int index = 0;
-        int finalRotation = 0;
-        int finalPosX = 0;
-        int finalPosY = 0;
         for (int i = 0; i < _statuesPrefab.Count; i++)
         {
             index++;
@@ -210,17 +202,12 @@ public class StatuePuzzle : MonoBehaviour
             GameObject statueGO = Instantiate(_statuesPrefab[index - 1], position, rot);
             statueGO.transform.SetParent(gridSpawnpoint.transform);
 
-            finalRotation = randRotation;
-            finalPosX = randX;
-            finalPosY = randY;
-
             Statue statue = statueGO.GetComponent<Statue>();
             _statues.Add(statue);
+
+            serializedStatues.Add(new Datas { statue = statue, data = new StatueData { id = index, rotation = randRotation, unitGridSize = _unitGridSize, posX = randX, posY = randY } });
         }
 
-        serializedStatues.Clear(); // La save tempo marche pas
-        foreach (Statue statues in _statues)
-            serializedStatues.Add(new StatueData { id = index, rotation = finalRotation, unitGridSize = _unitGridSize, posX = finalPosX, posY = finalPosY });
     }
 
     public void PlaceStatueData(CellPos pos, CellContent statueData)

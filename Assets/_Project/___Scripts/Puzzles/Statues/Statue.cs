@@ -104,11 +104,11 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
 
     public void SetStatuesData(StatueData data)
     {;
-        this._content.id = data.id;
-        this._content.rotation = data.rotation;
-        this._unitGridSize = data.unitGridSize;
-        this._pos.x = data.posX;
-        this._pos.y = data.posY;
+        _content.id = data.id;
+        _content.rotation = data.rotation;
+        _unitGridSize = data.unitGridSize;
+        _pos.x = data.posX;
+        _pos.y = data.posY;
     }
 
 }

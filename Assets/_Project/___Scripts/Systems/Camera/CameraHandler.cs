@@ -75,8 +75,6 @@ public class CameraHandler : MonoBehaviour
 
             _currentForward = angle;
 
-            Debug.Log(_clock);
-
             yield return null;
         }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Unity.VisualScripting;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
@@ -28,11 +29,14 @@ public class VineScript : MonoBehaviour
     [SerializeField] private float _refreshRateFactor = 70.0f;
     private CapsuleCollider _capsuleCollider;
     private float _minColliderHeight;
+    private float _height;
     private Vector3 _test;
+    private Vector3 _startSocketPos;
     void Start()
     {
         _capsuleCollider = GetComponent<CapsuleCollider>();
         _minColliderHeight = _capsuleCollider.height;
+        _startSocketPos = transform.TransformPoint(_capsuleCollider.center);
         for (int i = 0; i < _renderers.Count; i++) 
         {
             for (int j = 0; j < _renderers[i].materials.Length; j++)
@@ -78,7 +82,10 @@ public class VineScript : MonoBehaviour
         _capsuleCollider.height = _minColliderHeight + value * (_maxColliderHeight - _minColliderHeight);
         _capsuleCollider.center = new Vector3(_capsuleCollider.center.x - ((_capsuleCollider.height - lastHeight) / 2), _capsuleCollider.center.y, _capsuleCollider.center.z);
 
-        _socketPoint.position = transform.TransformPoint(-transform.right * (_capsuleCollider.height - _minColliderHeight));
+        Debug.Log(_capsuleCollider.height);
+        Debug.Log(_minColliderHeight);
+        Vector3 vector = -transform.right * (_capsuleCollider.height - _minColliderHeight) * transform.localScale.y ;
+        _socketPoint.position = new Vector3(_startSocketPos.x + vector.x, _socketPoint.position.y, _startSocketPos.z + vector.z);
 
 
     }
@@ -100,7 +107,8 @@ public class VineScript : MonoBehaviour
         float lastHeight = _capsuleCollider.height;
         _capsuleCollider.height = _minColliderHeight + value * (_maxColliderHeight - _minColliderHeight);
         _capsuleCollider.center = new Vector3(_capsuleCollider.center.x - ((_capsuleCollider.height - lastHeight) / 2), _capsuleCollider.center.y, _capsuleCollider.center.z);
-        _socketPoint.position = transform.TransformPoint(-transform.right * (_capsuleCollider.height - _minColliderHeight));
+        Vector3 vector = -transform.right * (_capsuleCollider.height - _minColliderHeight) * transform.localScale.y;
+        _socketPoint.position = new Vector3(_startSocketPos.x + vector.x, _socketPoint.position.y, _startSocketPos.z + vector.z);
 
     }
     private void VineFall()

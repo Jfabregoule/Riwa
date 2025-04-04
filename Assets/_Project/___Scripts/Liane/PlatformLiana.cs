@@ -14,5 +14,9 @@ public class PlatformLiana : MonoBehaviour
     {
 
     }
-
+    
+    public void SetPlatformPosition(Vector3 position)
+    {
+        transform.localPosition = position;
+    }
 }

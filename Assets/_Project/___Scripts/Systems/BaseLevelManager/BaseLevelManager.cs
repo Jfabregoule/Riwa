@@ -23,6 +23,7 @@ public class BaseLevelManager : Singleton<BaseLevelManager>
 
     public void Start()
     {
+        _joystick = GameObject.Find("Variable Joystick").GetComponent<VariableJoystick>();
         GameManager.Instance.OnLoadManager += LoadManager;
     }
 

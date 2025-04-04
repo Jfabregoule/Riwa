@@ -3,61 +3,96 @@ using System.Collections.Generic;
 using Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
+
+[System.Serializable]
+public struct CameraSetup
+{
+    public Collider _colliderContain;
+    public TriggerCamera _triggerCamera;
+    public float _Xvalue;
+}
 
 public class CameraHandler : MonoBehaviour
 {
-    [SerializeField] private Collider _colliderContain1;
-    [SerializeField] private Collider _colliderContain2;
+    [SerializeField] private List<CameraSetup> _setups;
 
-    [SerializeField] private TriggerCamera _triggerCamera1;
-    [SerializeField] private TriggerCamera _triggerCamera2;
+    [Header("Stats")]
 
-    [SerializeField] private float _startXValue;
-    [SerializeField] private float _secondXValue;
+    [SerializeField] private float _offset = 1f;
+    [SerializeField] private Vector3 _cameraPos;
 
     private CinemachineFreeLook _freelookCamera;
+    private CinemachineVirtualCamera _virtualCamera;
     private CinemachineConfiner _confinerCamera;
+
+    private CinemachineTransposer _transposer;
 
     private float _currentForward;
     private float _startForward;
     private float _targetForward;
 
     private float _clock;
+    private Vector3 _currentPosition;
+    private Vector3 _targetPosition;
 
     private void Start()
     {
         _freelookCamera = GetComponent<CinemachineFreeLook>();
+        _virtualCamera = GetComponent<CinemachineVirtualCamera>();
         _confinerCamera = GetComponent<CinemachineConfiner>();
+        _transposer = _virtualCamera.GetCinemachineComponent<CinemachineTransposer>();
+        _cameraPos = new Vector3(0, 16, -13);
 
-        _currentForward = _startXValue;
-        _freelookCamera.m_XAxis.Value = _startXValue;
+        if (_setups.Count == 0)
+        {
+            _confinerCamera.enabled = false;
+            return;
+        }
 
-        _triggerCamera1.OnExitTrigger += RotateCam1;
-        _triggerCamera2.OnExitTrigger += RotateCam2;
+        for(int i = 0; i < _setups.Count; i++)
+        {
+            _setups[i]._triggerCamera.OnExitTrigger += RotateCam;
+        }
 
+        //Va définir le collider dans lequel la camera va se déplacer
+        _confinerCamera.enabled = true;
+        _confinerCamera.m_BoundingVolume = _setups[0]._colliderContain;
+
+        _currentForward = _setups[0]._Xvalue;
+        _freelookCamera.m_XAxis.Value = _setups[0]._Xvalue;
+
+        _transposer.m_FollowOffset = _cameraPos;
+        _currentPosition = _cameraPos;
     }
 
-    public void RotateCam1()
+    public void Update()
     {
-        _confinerCamera.m_BoundingVolume = _colliderContain1;
+        if (Mathf.Approximately(_currentPosition.x,_targetPosition.x) && Mathf.Approximately(_currentPosition.y, _targetPosition.y) && Mathf.Approximately(_currentPosition.z, _targetPosition.z)) {
 
-        _startForward = _secondXValue;
-        _targetForward = _startXValue;
+            Vector3 direction = GameManager.Instance.Joystick.Direction;
+
+            _targetPosition = _cameraPos + direction * _offset;
+
+            _currentPosition = Vector3.Lerp(_currentPosition, _targetPosition, Time.deltaTime);
+
+            _transposer.m_FollowOffset = _currentPosition;  
+
+        }
+    }
+
+    public void RotateCam(int id)
+    {
+        _confinerCamera.m_BoundingVolume = _setups[id]._colliderContain;
+
+        _startForward = _currentForward;
+        _targetForward = _setups[id]._Xvalue;
+
+        //_virtualCamera.enabled = false;
+        //_freelookCamera.enabled = true;
 
         _clock = 0;
         StartCoroutine(CameraRotation());
-    }
-
-    public void RotateCam2()
-    {
-        _confinerCamera.m_BoundingVolume = _colliderContain2;
-
-        _startForward = _startXValue;
-        _targetForward = _secondXValue;
-
-        _clock = 0;
-        StartCoroutine(CameraRotation());
-
     }
 
     public IEnumerator CameraRotation()
@@ -77,6 +112,9 @@ public class CameraHandler : MonoBehaviour
 
             yield return null;
         }
+
+        //_freelookCamera.enabled = false;
+        //_virtualCamera.enabled = true;
 
     }
 

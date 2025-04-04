@@ -64,7 +64,7 @@ public struct Datas
     public StatueData data;
 }
 
-public class StatuePuzzle : MonoBehaviour
+public class Grid : MonoBehaviour
 {
     [Header("Grid")]
     [SerializeField] private Vector2Int _gridSize = new Vector2Int(7, 7);
@@ -205,7 +205,7 @@ public class StatuePuzzle : MonoBehaviour
             Statue statue = statueGO.GetComponent<Statue>();
             _statues.Add(statue);
 
-            serializedStatues.Add(new Datas { statue = statue, data = new StatueData { id = index, rotation = randRotation, unitGridSize = _unitGridSize, posX = randX, posY = randY } });
+            serializedStatues.Add(new Datas { statue = statue, data = new StatueData { id = index, rotation = (int)randRotation, unitGridSize = _unitGridSize, posX = randX, posY = randY } });
         }
 
     }

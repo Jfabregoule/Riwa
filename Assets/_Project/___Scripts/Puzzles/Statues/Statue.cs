@@ -97,6 +97,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
         }
         _content.rotation = (int)transform.localRotation.eulerAngles.y;
         transform.localRotation = desiredRotation;
+        if (_showDebugLog == true) Debug.Log("Rotation: " + transform.localRotation.eulerAngles + " | Current content rot: " + _content.rotation);
         _isMoving = false;
         OnStatueRotate.Invoke(_pos, _content);
         OnStatueEndMoving.Invoke();

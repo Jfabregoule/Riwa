@@ -8,11 +8,11 @@ public class Labeller : MonoBehaviour
 {
     TMP_Text label;
     Vector2Int cords;
-    StatuePuzzle gridManager;
+    Grid gridManager;
 
     private void Awake()
     {
-        gridManager = FindObjectOfType<StatuePuzzle>();
+        gridManager = FindObjectOfType<Grid>();
         label = GetComponentInChildren<TMP_Text>();
 
         DisplayCords();

@@ -19,9 +19,9 @@ public class BaseLevelManager : Singleton<BaseLevelManager>
 
     [SerializeField] private CameraHandler _cameraHandler;
     [SerializeField] private ACharacter _character;
-    [SerializeField] private Joystick _joystick;
+    [SerializeField] private VariableJoystick _joystick;
 
-    public void Start()
+    public void OnEnable()
     {
         _joystick = GameObject.Find("Variable Joystick").GetComponent<VariableJoystick>();
         GameManager.Instance.OnLoadManager += LoadManager;
@@ -30,7 +30,6 @@ public class BaseLevelManager : Singleton<BaseLevelManager>
     public void LoadManager()
     {
         GameManager.Instance.Load3C(_cameraHandler, _character, _joystick);
-
     }
 
 }

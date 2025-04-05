@@ -1,11 +1,9 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TextCore.Text;
-
+using System.Collections;
 
 [DefaultExecutionOrder(-10)]
-
-
 public class GameManager : Singleton<GameManager>
 {
     private const string PLAYER_TAG = "Player";
@@ -17,34 +15,28 @@ public class GameManager : Singleton<GameManager>
 
     private CameraHandler _cameraHandler;
     private ACharacter _character;
-    private Joystick _joystick;
+    private VariableJoystick _joystick;
 
     public delegate void LoadManager();
     public event LoadManager OnLoadManager;
 
     #region Properties
 
-    public CameraHandler CameraHandler { get => _cameraHandler;}
-    public ACharacter Character { get => _character;}
+    public CameraHandler CameraHandler { get => _cameraHandler; }
+    public ACharacter Character { get => _character; }
     public Joystick Joystick { get => _joystick; }
 
     #endregion
 
     private void Start()
     {
-        //MainCamera = GameObject.FindGameObjectWithTag(MAIN_CAMERA_TAG);
-        //SoundSystem = GameObject.FindGameObjectWithTag(SOUND_MANAGER_TAG).GetComponent<SoundSystem>();
-        //Ca marche pas wola
-
         OnLoadManager?.Invoke();
-
     }
 
-    public void Load3C(CameraHandler cameraHandler, ACharacter character, Joystick Joystick)
+    public void Load3C(CameraHandler cameraHandler, ACharacter character, VariableJoystick joystick)
     {
         _cameraHandler = cameraHandler;
         _character = character;
-        _joystick = Joystick;
+        _joystick = joystick;
     }
-
 }

@@ -40,9 +40,11 @@ public class MoveStateCharacter : BaseStateCharacter
         camForward.Normalize();
         camRight.Normalize();
 
-        Vector3 moveDirection = (camForward * movement.z + camRight * movement.x).normalized;
+        Vector3 moveDirection = (camForward * movement.z + camRight * movement.x);
 
-        _character.Rb.velocity = moveDirection * _character.Speed;
+        //_character.Rb.MovePosition(_character.Rb.position + moveDirection * _character.Speed * Time.deltaTime);
+
+        _character.Rb.velocity = moveDirection * _character.Speed * Time.deltaTime * 100;
 
         if (moveDirection != Vector3.zero)
         {

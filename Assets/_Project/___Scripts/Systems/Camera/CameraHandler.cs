@@ -19,8 +19,10 @@ public class CameraHandler : MonoBehaviour
 
     [Header("Stats")]
 
-    [SerializeField] private float _offset = 1f;
     [SerializeField] private Vector3 _cameraPos;
+    [SerializeField] private float _offsetCameraMovement = 1f;
+    [SerializeField] private float _speedCameraOffset;
+    [SerializeField] private AnimationCurve _movementCameraCurve;
 
     private CinemachineFreeLook _freelookCamera;
     private CinemachineVirtualCamera _virtualCamera;
@@ -28,13 +30,18 @@ public class CameraHandler : MonoBehaviour
 
     private CinemachineTransposer _transposer;
 
+    private ACharacter _character;
+
     private float _currentForward;
     private float _startForward;
     private float _targetForward;
+    private float _clockRotate;
 
-    private float _clock;
+    private float _clockPosition;   
+    private Vector3 _startPosition;
     private Vector3 _currentPosition;
     private Vector3 _targetPosition;
+    private Vector3 _lastJoystick;
 
     private void Start()
     {
@@ -43,6 +50,13 @@ public class CameraHandler : MonoBehaviour
         _confinerCamera = GetComponent<CinemachineConfiner>();
         _transposer = _virtualCamera.GetCinemachineComponent<CinemachineTransposer>();
         _cameraPos = new Vector3(0, 16, -13);
+
+        _character = GameObject.Find("Character").GetComponent<ACharacter>();
+        //_character = GameManager.Instance.Character; // IL FAUT UNE BONNE IMPLEMENTATION DU SYSTEM
+
+        _lastJoystick = new Vector3(0,0,0);
+        _startPosition = new Vector3(0,0,0);
+        _targetPosition = new Vector3(0,0,0);
 
         if (_setups.Count == 0)
         {
@@ -68,18 +82,13 @@ public class CameraHandler : MonoBehaviour
 
     public void Update()
     {
-        if (Mathf.Approximately(_currentPosition.x,_targetPosition.x) && Mathf.Approximately(_currentPosition.y, _targetPosition.y) && Mathf.Approximately(_currentPosition.z, _targetPosition.z)) {
-
-            Vector3 direction = GameManager.Instance.Joystick.Direction;
-
-            _targetPosition = _cameraPos + direction * _offset;
-
-            _currentPosition = Vector3.Lerp(_currentPosition, _targetPosition, Time.deltaTime);
-
-            _transposer.m_FollowOffset = _currentPosition;  
-
-        }
+       if(_character.FsmCharacter.CurrentState.EnumState == EnumStateCharacter.Move ||
+          _character.FsmCharacter.CurrentState.EnumState == EnumStateCharacter.SoulWalk)
+       {
+            MoveCameraOffset();
+       }
     }
+
 
     public void RotateCam(int id)
     {
@@ -91,17 +100,17 @@ public class CameraHandler : MonoBehaviour
         //_virtualCamera.enabled = false;
         //_freelookCamera.enabled = true;
 
-        _clock = 0;
+        _clockRotate = 0;
         StartCoroutine(CameraRotation());
     }
 
     public IEnumerator CameraRotation()
     {
-        while (_clock < 1)
+        while (_clockRotate < 1)
         {
-            _clock += Time.deltaTime;
+            _clockRotate += Time.deltaTime;
 
-            float angle = Mathf.Lerp(_startForward, _targetForward, _clock);
+            float angle = Mathf.Lerp(_startForward, _targetForward, _clockRotate);
             _freelookCamera.m_XAxis.Value = angle;
 
             Vector3 vect = _freelookCamera.gameObject.transform.eulerAngles;
@@ -116,6 +125,34 @@ public class CameraHandler : MonoBehaviour
         //_freelookCamera.enabled = false;
         //_virtualCamera.enabled = true;
 
+    }
+
+    public void MoveCameraOffset()
+    {
+        //Jsuis content jlai fait sans chat gpt (ptet pas opti de faire lerp dans update mais vu qu'il se fait quasi tout le temps à voir)
+        //C'est pour avoir un leger offset smooth vers la ou on se dirige
+
+        if (GameManager.Instance.Character.Rb.velocity != _lastJoystick/* && GameManager.Instance.Character.Rb.velocity != Vector3.zero*/)
+        {
+            _clockPosition = 0;
+
+            _lastJoystick = new Vector3(GameManager.Instance.Character.Rb.velocity.x, 0, GameManager.Instance.Character.Rb.velocity.z);
+
+
+            _targetPosition = _lastJoystick * _offsetCameraMovement;
+            _startPosition = _currentPosition;
+
+        }
+
+        //Update clock
+        _clockPosition += Time.deltaTime * _speedCameraOffset;
+        _clockPosition = Mathf.Clamp(_clockPosition, 0, 1);
+
+        //_currentPosition = Vector3.Lerp(_startPosition, _targetPosition, _movementCameraCurve.Evaluate(_clockPosition));
+        _currentPosition = Vector3.Lerp(_startPosition, _targetPosition, _clockPosition);
+
+        //On set l'offset ici 
+        _transposer.m_FollowOffset = _cameraPos + _currentPosition;
     }
 
 }

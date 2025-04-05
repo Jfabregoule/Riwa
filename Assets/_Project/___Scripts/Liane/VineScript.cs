@@ -48,7 +48,6 @@ public class VineScript : MonoBehaviour
                 }
             }
         }
-        Debug.Log(_materials.Count);
     }
 
     // Update is called once per frame
@@ -83,8 +82,6 @@ public class VineScript : MonoBehaviour
         _capsuleCollider.height = _minColliderHeight + value * (_maxColliderHeight - _minColliderHeight);
         _capsuleCollider.center = new Vector3(_capsuleCollider.center.x - ((_capsuleCollider.height - lastHeight) / 2), _capsuleCollider.center.y, _capsuleCollider.center.z);
 
-        Debug.Log(_capsuleCollider.height);
-        Debug.Log(_minColliderHeight);
         Vector3 vector = -transform.right * (_capsuleCollider.height - _minColliderHeight) * transform.localScale.y ;
         _socketPoint.position = new Vector3(_startSocketPos.x + vector.x, _socketPoint.position.y, _startSocketPos.z + vector.z);
 
@@ -135,10 +132,8 @@ public class VineScript : MonoBehaviour
 
     public void SetSocketTransform(Vector3 position)
     {
-        Debug.Log(_socketPoint.position);
         //position.y += 0.2f; 
         _socketPoint.transform.position = position;
-        Debug.Log(position);
         _test = position; 
     }
 

@@ -22,8 +22,6 @@ public class VineScript : MonoBehaviour
     private float _maxGrow = 0.97f;
 
     private List<Material> _materials = new List<Material>();
-    [SerializeField] private bool _isActivated;
-    private bool _isRetracted = false;
     [Header("Capsule Collider")]
     [SerializeField] private float _maxColliderHeight;
     [SerializeField] private float _refreshRateFactor = 70.0f;
@@ -50,69 +48,54 @@ public class VineScript : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (_isActivated)
-        {
-            RaiseVine(_materials[0]);
-        }
-        if (_isRetracted)
-        {
-            RetractedVine(_materials[0]);
-        }
-    }
-
-    private void RaiseVine(Material mat)
+    private IEnumerator RaiseVine(Material mat)
     {
         float growValue = mat.GetFloat("_Grow");
-        float currentHeight = _capsuleCollider.height;
-        float value = Mathf.MoveTowards(growValue, _maxGrow, _growingSpeed * Time.deltaTime);
 
-        if(_maxGrow - growValue <= 0.01f)
+        while (_maxGrow - growValue > 0.01f)
         {
-            value = _maxGrow;
-            _isActivated = false;
-            StartCoroutine(DissolveVine());
+            growValue = Mathf.MoveTowards(growValue, _maxGrow, _growingSpeed * Time.deltaTime);
+            mat.SetFloat("_Grow", growValue);
+
+            float lastHeight = _capsuleCollider.height;
+            _capsuleCollider.height = _minColliderHeight + growValue * (_maxColliderHeight - _minColliderHeight);
+            _capsuleCollider.center = new Vector3(_capsuleCollider.center.x - ((_capsuleCollider.height - lastHeight) / 2),_capsuleCollider.center.y,_capsuleCollider.center.z);
+
+            Vector3 vector = -transform.right * (_capsuleCollider.height - _minColliderHeight) * transform.localScale.y;
+            _socketPoint.position = new Vector3(_startSocketPos.x + vector.x,_socketPoint.position.y,_startSocketPos.z + vector.z);
+
+            yield return null;
         }
 
-        mat.SetFloat("_Grow", value);
-        float lastHeight = _capsuleCollider.height;
-        float lastCenterX = _capsuleCollider.center.x;
-        _capsuleCollider.height = _minColliderHeight + value * (_maxColliderHeight - _minColliderHeight);
-        _capsuleCollider.center = new Vector3(_capsuleCollider.center.x - ((_capsuleCollider.height - lastHeight) / 2), _capsuleCollider.center.y, _capsuleCollider.center.z);
-
-        Vector3 vector = -transform.right * (_capsuleCollider.height - _minColliderHeight) * transform.localScale.y ;
-        _socketPoint.position = new Vector3(_startSocketPos.x + vector.x, _socketPoint.position.y, _startSocketPos.z + vector.z);
-
+        mat.SetFloat("_Grow", _maxGrow);
+        StartCoroutine(DissolveVine());
 
     }
 
-    private void RetractedVine(Material mat)
+    private IEnumerator RetractedVine(Material mat)
     {
         float growValue = mat.GetFloat("_Grow");
-        float currentHeight = _capsuleCollider.height;
-        float value = Mathf.MoveTowards(growValue, _minGrow, _growingSpeed * Time.deltaTime);
 
-        if (growValue - _minGrow <= 0.01f)
+        while (growValue - _minGrow > 0.01f)
         {
-            value = _minGrow;
-            _isRetracted = false;
-            _capsuleCollider.isTrigger = true;
+            growValue = Mathf.MoveTowards(growValue, _minGrow, _growingSpeed * Time.deltaTime);
+            mat.SetFloat("_Grow", growValue);
+
+            float lastHeight = _capsuleCollider.height;
+            _capsuleCollider.height = _minColliderHeight + growValue * (_maxColliderHeight - _minColliderHeight);
+            _capsuleCollider.center = new Vector3(_capsuleCollider.center.x - ((_capsuleCollider.height - lastHeight) / 2),_capsuleCollider.center.y,_capsuleCollider.center.z);
+
+            Vector3 vector = -transform.right * (_capsuleCollider.height - _minColliderHeight) * transform.localScale.y;
+            _socketPoint.position = new Vector3(_startSocketPos.x + vector.x,_socketPoint.position.y,_startSocketPos.z + vector.z);
+
+            yield return null;
+
         }
-
-        mat.SetFloat("_Grow", value);
-        float lastHeight = _capsuleCollider.height;
-        _capsuleCollider.height = _minColliderHeight + value * (_maxColliderHeight - _minColliderHeight);
-        _capsuleCollider.center = new Vector3(_capsuleCollider.center.x - ((_capsuleCollider.height - lastHeight) / 2), _capsuleCollider.center.y, _capsuleCollider.center.z);
-        Vector3 vector = -transform.right * (_capsuleCollider.height - _minColliderHeight) * transform.localScale.y;
-        _socketPoint.position = new Vector3(_startSocketPos.x + vector.x, _socketPoint.position.y, _startSocketPos.z + vector.z);
-
     }
     private void VineFall()
     {
         //_capsuleCollider.enabled = false;
-        _isRetracted = true;
+        StartCoroutine(RetractedVine(_materials[0]));
         //_capsuleCollider.isTrigger = true;
     }
     private IEnumerator DissolveVine()
@@ -124,9 +107,10 @@ public class VineScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.transform.parent.TryGetComponent(out ACharacter character)) return;
+        if (!other.transform.TryGetComponent(out ACharacter character)) return;
         _capsuleCollider.isTrigger = false;
-        _isActivated = true;
+        StartCoroutine(RaiseVine(_materials[0]));
+        //_isActivated = true;
     }
 
 

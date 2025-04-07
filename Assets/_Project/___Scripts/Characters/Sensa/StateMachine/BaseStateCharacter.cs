@@ -13,8 +13,7 @@ public enum EnumStateCharacter
     Holding,
     Push,
     Pull,
-    SoulIdle,
-    SoulWalk,
+    Soul,
     Fall,
     Rotate,
     Respawn

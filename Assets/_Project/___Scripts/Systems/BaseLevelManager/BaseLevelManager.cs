@@ -23,12 +23,6 @@ public class BaseLevelManager : Singleton<BaseLevelManager>
 
     public void OnEnable()
     {
-        GameManager.Instance.OnLoadManager += LoadManager;
-    }
-
-    public void LoadManager()
-    {
         GameManager.Instance.Load3C(_cameraHandler, _character, _joystick);
     }
-
 }

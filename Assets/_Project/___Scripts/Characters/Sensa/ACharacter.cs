@@ -45,6 +45,7 @@ public class ACharacter : MonoBehaviour
 
     [SerializeField] private float _timeBeforeWait = 2.0f;
     [SerializeField] private bool _isChangingTime = false;
+    [SerializeField] private bool _isInSoul = false;
 
     #endregion
 
@@ -69,6 +70,7 @@ public class ACharacter : MonoBehaviour
     public LayerMask PastLayer { get => _pastLayer;}
     public LayerMask PresentLayer { get => _presentLayer;}
     public CameraHandler CameraHandler { get => _cameraHandler;}
+    public bool IsInSoul { get => _isInSoul; set => _isInSoul = value; }
 
     #endregion
 

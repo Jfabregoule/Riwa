@@ -40,6 +40,11 @@ public class IdleStateCharacter : BaseStateCharacter
             _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.ChangeTempo]);
         }
 
+        if (_character.IsInSoul)
+        {
+            _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Soul]);
+        }
+
         if (_character.Joystick.Direction.y != 0 || _character.Joystick.Direction.x != 0)
         {
             _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Move]);

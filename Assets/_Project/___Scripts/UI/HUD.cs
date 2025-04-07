@@ -8,4 +8,9 @@ public class HUD : MonoBehaviour
     {
         GameManager.Instance.Character.IsChangingTime = true;
     }
+
+    public void ChangeToSoul()
+    {
+        GameManager.Instance.Character.IsInSoul = true;
+    }
 }

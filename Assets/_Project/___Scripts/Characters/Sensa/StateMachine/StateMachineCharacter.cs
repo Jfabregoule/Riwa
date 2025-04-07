@@ -13,8 +13,7 @@ public class StateMachineCharacter : BaseStateMachine<EnumStateCharacter, BaseSt
     private const string CHANGETEMPO_NAME   = "ChangeTempo";
     private const string CINEMATIC_NAME     = "Cinematic";
     private const string HOLDING_NAME       = "Holding";
-    private const string SOULIDLE_NAME      = "SoulIdle";
-    private const string SOULWALK_NAME      = "SoulWalk";
+    private const string SOUL_NAME          = "Soul";
     private const string WAIT_NAME          = "Wait";
     private const string FALL_NAME          = "Fall";
     private const string RESPAWN_NAME       = "Respawn";
@@ -46,17 +45,13 @@ public class StateMachineCharacter : BaseStateMachine<EnumStateCharacter, BaseSt
         States[EnumStateCharacter.ChangeTempo].InitState(this, EnumStateCharacter.ChangeTempo, character);
         _animationMap[EnumStateCharacter.ChangeTempo] = CHANGETEMPO_NAME;
 
+        States[EnumStateCharacter.Soul] = new SoulStateCharacter();
+        States[EnumStateCharacter.Soul].InitState(this, EnumStateCharacter.Soul, character);
+        _animationMap[EnumStateCharacter.Soul] = SOUL_NAME;
+
         States[EnumStateCharacter.Holding] = new HoldingStateCharacter();
         States[EnumStateCharacter.Holding].InitState(this, EnumStateCharacter.Holding, character);
         _animationMap[EnumStateCharacter.Holding] = HOLDING_NAME;
-
-        States[EnumStateCharacter.SoulIdle] = new SoulIdleStateCharacter();
-        States[EnumStateCharacter.SoulIdle].InitState(this, EnumStateCharacter.SoulIdle, character);
-        _animationMap[EnumStateCharacter.SoulIdle] = SOULIDLE_NAME;
-
-        States[EnumStateCharacter.SoulWalk] = new SoulWalkStateCharacter();
-        States[EnumStateCharacter.SoulWalk].InitState(this, EnumStateCharacter.SoulWalk, character);
-        _animationMap[EnumStateCharacter.SoulWalk] = SOULWALK_NAME;
 
         States[EnumStateCharacter.Cinematic] = new CinematicStateCharacter();
         States[EnumStateCharacter.Cinematic].InitState(this, EnumStateCharacter.Cinematic, character);

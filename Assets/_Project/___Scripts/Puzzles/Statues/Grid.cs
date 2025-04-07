@@ -14,6 +14,28 @@ public struct CellPos
         y = posY;
     }
 
+    public override bool Equals(object obj)
+    {
+        if (!(obj is CellPos)) return false;
+        CellPos other = (CellPos)obj;
+        return x == other.x && y == other.y;
+    }
+
+    public override int GetHashCode()
+    {
+        return x * 397 ^ y;
+    }
+
+    public static bool operator ==(CellPos a, CellPos b)
+    {
+        return a.x == b.x && a.y == b.y;
+    }
+
+    public static bool operator !=(CellPos a, CellPos b)
+    {
+        return !(a == b);
+    }
+
     public int x;
     public int y;
 }

@@ -42,6 +42,8 @@ public class MoveStateCharacter : BaseStateCharacter
 
         Vector3 moveDirection = (camForward * movement.z + camRight * movement.x);
 
+        _character.LocalDirection = moveDirection;
+
         //_character.Rb.MovePosition(_character.Rb.position + moveDirection * _character.Speed * Time.deltaTime);
 
         _character.Rb.velocity = moveDirection * _character.Speed * Time.deltaTime * 100;

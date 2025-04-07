@@ -13,7 +13,7 @@ public class WaitStateCharacter : BaseStateCharacter
     float _clockZoom;
 
     float _startZoom = 30;
-    float _endZoom = 25;
+    float _endZoom = 20;
 
     public override void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, ACharacter character)
     {

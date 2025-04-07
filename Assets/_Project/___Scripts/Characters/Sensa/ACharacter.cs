@@ -40,6 +40,7 @@ public class ACharacter : MonoBehaviour
     [SerializeField] private LayerMask _presentLayer;
 
     private CameraHandler _cameraHandler;
+    private Vector3 _localDirection;
 
     [Header("Gameplay Statistics")]
 
@@ -76,6 +77,7 @@ public class ACharacter : MonoBehaviour
     public CameraHandler CameraHandler { get => _cameraHandler;}
     public GameObject CameraTarget { get => _cameraTarget; set => _cameraTarget = value; }
     public GameObject CameraTargetParent { get => _cameraTargetParent; set => _cameraTargetParent = value; }
+    public Vector3 LocalDirection { get => _localDirection; set => _localDirection = value; }
 
     #endregion
 

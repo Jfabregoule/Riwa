@@ -138,13 +138,27 @@ public class CameraHandler : MonoBehaviour
     {
         //Jsuis content jlai fait sans chat gpt (ptet pas opti de faire lerp dans update mais vu qu'il se fait quasi tout le temps à voir)
         //C'est pour avoir un leger offset smooth vers la ou on se dirige
+        //Update: j'ai utilisé le chat pour localCamVelocity
 
         if (GameManager.Instance.Character.Rb.velocity != _lastJoystick/* && GameManager.Instance.Character.Rb.velocity != Vector3.zero*/)
         {
             _clockPosition = 0;
 
-            _lastJoystick = new Vector3(GameManager.Instance.Character.Rb.velocity.x, 0, GameManager.Instance.Character.Rb.velocity.z);
+            Vector3 movement = GameManager.Instance.Character.Rb.velocity;
+            Vector3 camForward = transform.forward;
+            Vector3 camRight = transform.right;
 
+            camForward.y = 0;
+            camRight.y = 0;
+
+            camForward.Normalize();
+            camRight.Normalize();
+
+            float x = Vector3.Dot(GameManager.Instance.Character.Rb.velocity, camRight);
+            float z = Vector3.Dot(GameManager.Instance.Character.Rb.velocity, camForward);
+            Vector3 localCamVelocity = new Vector3(x, 0, z);
+
+            _lastJoystick = localCamVelocity;
 
             _targetPosition = _lastJoystick * _offsetCameraMovement;
             _startPosition = _currentPosition;

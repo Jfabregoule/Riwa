@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-4625465515044849145
+--- !u!114 &-5734874496635513112
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,14 +20,14 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Past
-  m_Shader: {fileID: -6465566751694194690, guid: 28774c4e0eb7c8b44b0bbc7dead15376,
+  m_Name: TrailTest
+  m_Shader: {fileID: -6465566751694194690, guid: dc363c58de800de4288099640a685d2c,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 4
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -37,8 +37,8 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _NoiseTexture:
-        m_Texture: {fileID: 2800000, guid: 56ce5ddcb6a16f84283a7fb5f68bef89, type: 3}
+    - _MainText:
+        m_Texture: {fileID: 2800000, guid: e5a622c84121f524fba98ca099365888, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -55,15 +55,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _EdgeWidth: 0.09
-    - _MoveSpeed: 1
-    - _NoiseScale: 0
-    - _NoiseStrength: 1
+    - _Alpha: 0.2
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _RadiusNoiseCutOff: 0.07
-    - _RadiusNoiseOffset: 0.01
+    - _alphaClipping: 0.01
     m_Colors:
-    - _BaseColor: {r: 0, g: 1, b: 0.799103, a: 1}
-    - _OutLineColor: {r: 0.2634389, g: 1.11677, b: 1.509434, a: 0}
+    - _DissolveSpeed: {r: 0, g: 0, b: 0, a: 0}
+    - _MainColor: {r: 0, g: 1.5467882, b: 3.8431373, a: 1}
+    - _MainTextSpeed: {r: -0.3, g: 0, b: 0, a: 0}
+    - _SubColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

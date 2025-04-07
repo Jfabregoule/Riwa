@@ -28,6 +28,10 @@ public class GameManager : Singleton<GameManager>
 
     #endregion
 
+    private void OnEnable()
+    {
+    }
+
     private void Start()
     {
         OnLoadManager?.Invoke();

@@ -63,18 +63,21 @@ public class CameraHandler : MonoBehaviour
             _confinerCamera.enabled = false;
             return;
         }
-
-        for(int i = 0; i < _setups.Count; i++)
+        else
         {
-            _setups[i]._triggerCamera.OnExitTrigger += RotateCam;
+            for (int i = 0; i < _setups.Count; i++)
+            {
+                _setups[i]._triggerCamera.OnExitTrigger += RotateCam;
+            }
+
+            //Va définir le collider dans lequel la camera va se déplacer
+            _confinerCamera.enabled = true;
+            _confinerCamera.m_BoundingVolume = _setups[0]._colliderContain;
+
+            _currentForward = _setups[0]._Xvalue;
+            //_freelookCamera.m_XAxis.Value = _setups[0]._Xvalue;
+
         }
-
-        //Va définir le collider dans lequel la camera va se déplacer
-        _confinerCamera.enabled = true;
-        _confinerCamera.m_BoundingVolume = _setups[0]._colliderContain;
-
-        _currentForward = _setups[0]._Xvalue;
-        _freelookCamera.m_XAxis.Value = _setups[0]._Xvalue;
 
         _transposer.m_FollowOffset = _cameraPos;
         _currentPosition = _cameraPos;
@@ -82,11 +85,11 @@ public class CameraHandler : MonoBehaviour
 
     public void Update()
     {
-       if(_character.FsmCharacter.CurrentState.EnumState == EnumStateCharacter.Move ||
-          _character.FsmCharacter.CurrentState.EnumState == EnumStateCharacter.SoulWalk)
-       {
+        if (_character.FsmCharacter.CurrentState.EnumState == EnumStateCharacter.Move ||
+           _character.FsmCharacter.CurrentState.EnumState == EnumStateCharacter.SoulWalk)
+        {
             MoveCameraOffset();
-       }
+        }
     }
 
 
@@ -101,7 +104,7 @@ public class CameraHandler : MonoBehaviour
         //_freelookCamera.enabled = true;
 
         _clockRotate = 0;
-        StartCoroutine(CameraRotation());
+        //StartCoroutine(CameraRotation());
     }
 
     public IEnumerator CameraRotation()

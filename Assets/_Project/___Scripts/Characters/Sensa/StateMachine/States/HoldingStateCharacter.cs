@@ -25,11 +25,15 @@ public class HoldingStateCharacter : BaseStateCharacter
     public override void EnterState()
     {
         base.EnterState();
+
+        _character.InputManager.OnInteractEnd += OnInteractEnd;
     }
 
     public override void ExitState()
     {
         base.ExitState();
+
+        _character.InputManager.OnInteractEnd -= OnInteractEnd;
     }
 
     public override void UpdateState()
@@ -42,5 +46,10 @@ public class HoldingStateCharacter : BaseStateCharacter
         base.CheckChangeState();
 
         //A definir si on maintient appuye ou si on toggle pour retourner en idle
+    }
+
+    private void OnInteractEnd()
+    {
+        _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Idle]);
     }
 }

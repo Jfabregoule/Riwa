@@ -18,22 +18,24 @@ public class MoveStateCharacter : BaseStateCharacter
     {
         base.EnterState();
 
+        _character.InputManager.OnInteract += OnInteract;
+
         _cam = GameManager.Instance.CameraHandler;
     }
 
     public override void ExitState()
     {
         base.ExitState();
+
+        _character.InputManager.OnInteract -= OnInteract;
     }
 
     public override void UpdateState()
     {
         base.UpdateState();
 
-        Vector3 movement;
 
-        movement.x = _character.Joystick.Direction.x;
-        movement.y = 0;
+        Vector2 direction = _character.InputManager.GetMoveDirection();
         movement.z = _character.Joystick.Direction.y;
 
         Vector3 camForward = _cam.transform.forward;
@@ -44,13 +46,13 @@ public class MoveStateCharacter : BaseStateCharacter
 
         camForward.Normalize();
         camRight.Normalize();
-
         _moveDirection = (camForward * movement.z + camRight * movement.x).normalized;
     }
 
     public override void FixedUpdateState()
     {
         base.FixedUpdateState();
+        _moveDirection = (camForward * direction.y + camRight * direction.x).normalized;
 
         _character.Rb.velocity = _moveDirection * _character.Speed * Time.deltaTime * 100;
 
@@ -64,13 +66,18 @@ public class MoveStateCharacter : BaseStateCharacter
     {
         base.CheckChangeState();
 
-        Vector2 direction = new Vector2(_character.Joystick.Direction.x ,_character.Joystick.Direction.y);
+        Vector2 direction = _character.InputManager.GetMoveDirection();
         float magnitude = direction.magnitude;
 
-        if (_character.Joystick.Direction.y == 0 && _character.Joystick.Direction.x == 0)
+        if (_character.InputManager.GetMoveDirection() != Vector2.zero)
         {
             _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Idle]);
         }
 
+    }
+
+    private void OnInteract()
+    {
+        _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Interact]);
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class VariableJoystick : Joystick
 {
@@ -29,6 +30,8 @@ public class VariableJoystick : Joystick
         base.Start();
         fixedPosition = background.anchoredPosition;
         SetMode(joystickType);
+
+        StartCoroutine(RegisterWithInputManager());
     }
 
     public override void OnPointerDown(PointerEventData eventData)
@@ -57,6 +60,14 @@ public class VariableJoystick : Joystick
             background.anchoredPosition += difference;
         }
         base.HandleInput(magnitude, normalised, radius, cam);
+    }
+
+    private IEnumerator RegisterWithInputManager()
+    {
+        while (InputManager.Instance == null)
+            yield return null;
+
+        InputManager.Instance.RegisterJoystick(this);
     }
 }
 

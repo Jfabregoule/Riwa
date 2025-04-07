@@ -26,12 +26,12 @@ public class ACharacter : MonoBehaviour
     private Animator _animator;
     private Rigidbody _rb;
     private CapsuleCollider _capsuleCollider;
+    private InputManager _inputManager;
     private GameObject _soul;
 
     private GameObject _cameraTarget;
     private GameObject _cameraTargetParent;
 
-    private VariableJoystick _joystick; //TEMPORAIRE EN ATTENDANT L'INPUT SYSTEM
 
     private bool _canInteract;
     private bool _canInteractSoul;
@@ -65,11 +65,10 @@ public class ACharacter : MonoBehaviour
 
     //Properties
 
-    public GameObject Pawn { get => _pawn; }
-    public StateMachineCharacter FsmCharacter { get => _fsmCharacter; }
-    public Animator Animator { get => _animator; }
-    public VariableJoystick Joystick { get => _joystick; }
-    public Rigidbody Rb { get => _rb; }
+    public GameObject Pawn { get => _pawn;}
+    public StateMachineCharacter FsmCharacter { get => _fsmCharacter;}
+    public Animator Animator { get => _animator;}
+    public Rigidbody Rb { get => _rb;}
     public CapsuleCollider CapsuleCollider { get => _capsuleCollider; }
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
     public bool CanInteractSoul { get => _canInteractSoul; set => _canInteractSoul = value; }
@@ -88,6 +87,8 @@ public class ACharacter : MonoBehaviour
     public GameObject CameraTarget { get => _cameraTarget; set => _cameraTarget = value; }
     public GameObject CameraTargetParent { get => _cameraTargetParent; set => _cameraTargetParent = value; }
 
+    public InputManager InputManager { get => _inputManager;}
+
     #endregion
 
     #region Methods
@@ -96,26 +97,25 @@ public class ACharacter : MonoBehaviour
 
     public void OnEnable()
     {
-        _pawn               = transform.Find(PAWN_OBJECT).gameObject;
-        _rb                 = GetComponent<Rigidbody>();
-        _capsuleCollider    = GetComponent<CapsuleCollider>();
-        _animator           = GetComponent<Animator>();
+        _pawn = GameObject.Find(PAWN_OBJECT);
+        _rb = GetComponent<Rigidbody>();
+        _capsuleCollider = GetComponent<CapsuleCollider>();
+        _fsmCharacter = new StateMachineCharacter();
         _changeTime         = GetComponent<ChangeTime>();
 
         _soul = GameObject.Find(SOUL_OBJECT);
         _soul.SetActive(false);
 
-        _cameraTargetParent = transform.Find(CAMERA_TARGET_PARENT_OBJECT).gameObject;
+
         _cameraTarget = _cameraTargetParent.transform.Find(CAMERA_TARGET_OBJECT).gameObject;
 
-        _fsmCharacter = new StateMachineCharacter();
+
         _fsmCharacter.InitStateMachine(this);
         _fsmCharacter.InitState(_fsmCharacter.States[EnumStateCharacter.Idle]);
-    }
+
 
     public void Start()
-    {
-        _joystick = GameObject.Find("Variable Joystick").GetComponent<VariableJoystick>(); //A modifier plus tard 
+        _cameraHandler = GameManager.Instance.CameraHandler; //Il faut appeler ça après le load des 3C dans gameManager
         _cameraHandler = GameManager.Instance.CameraHandler; //Il faut appeler ça après le load des 3C dans gameManager
 
     }

@@ -26,6 +26,8 @@ public class WaitStateCharacter : BaseStateCharacter
 
         GameManager.Instance.CameraHandler.OnZoomCamera(_startZoom, _endZoom);
 
+
+        _character.InputManager.OnInteract += OnInteract;
     }
 
     public override void ExitState()
@@ -33,6 +35,8 @@ public class WaitStateCharacter : BaseStateCharacter
         base.ExitState();
 
         GameManager.Instance.CameraHandler.OnZoomCamera(_endZoom, _startZoom);
+
+        _character.InputManager.OnInteract -= OnInteract;
     }
 
     public override void UpdateState()
@@ -44,10 +48,15 @@ public class WaitStateCharacter : BaseStateCharacter
     {
         base.CheckChangeState();
 
-        if (_character.Joystick.Direction.y != 0 || _character.Joystick.Direction.x != 0)
+        if (_character.InputManager.GetMoveDirection() != Vector2.zero)
         {
             _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Move]);
         }
+    }
+
+    private void OnInteract()
+    {
+        _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Interact]);
     }
 
   

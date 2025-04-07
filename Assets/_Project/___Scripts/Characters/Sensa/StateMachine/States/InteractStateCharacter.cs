@@ -22,10 +22,13 @@ public class InteractStateCharacter : BaseStateCharacter
     public override void UpdateState()
     {
         base.UpdateState();
+        Debug.Log("Interact");
     }
 
     public override void CheckChangeState()
     {
         base.CheckChangeState();
+
+        _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Idle]);
     }
 }

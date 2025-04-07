@@ -11,6 +11,7 @@ public class ACharacter : MonoBehaviour
 
     public const string PAWN_OBJECT = "Pawn";
     public const string CAMERA_TARGET_OBJECT= "CameraTarget";
+    public const string CAMERA_TARGET_PARENT_OBJECT= "CameraTargetParent";
 
     #endregion
 
@@ -23,7 +24,9 @@ public class ACharacter : MonoBehaviour
     private Animator _animator;
     private Rigidbody _rb;
     private CapsuleCollider _capsuleCollider;
+
     private GameObject _cameraTarget;
+    private GameObject _cameraTargetParent;
 
     private VariableJoystick _joystick; //TEMPORAIRE EN ATTENDANT L'INPUT SYSTEM
 
@@ -72,6 +75,7 @@ public class ACharacter : MonoBehaviour
     public LayerMask PresentLayer { get => _presentLayer;}
     public CameraHandler CameraHandler { get => _cameraHandler;}
     public GameObject CameraTarget { get => _cameraTarget; set => _cameraTarget = value; }
+    public GameObject CameraTargetParent { get => _cameraTargetParent; set => _cameraTargetParent = value; }
 
     #endregion
 
@@ -79,23 +83,24 @@ public class ACharacter : MonoBehaviour
 
     //Methods
 
-    public void Start()
+    public void OnEnable()
     {
-        _pawn = GameObject.Find(PAWN_OBJECT);
-        _rb = GetComponent<Rigidbody>();
-        _capsuleCollider = GetComponent<CapsuleCollider>();
+        _pawn               = transform.Find(PAWN_OBJECT).gameObject;
+        _cameraTargetParent = transform.Find(CAMERA_TARGET_PARENT_OBJECT).gameObject;
+        _cameraTarget       = _cameraTargetParent.transform.Find(CAMERA_TARGET_OBJECT).gameObject;
+        _rb                 = GetComponent<Rigidbody>();
+        _capsuleCollider    = GetComponent<CapsuleCollider>();
+        _animator           = GetComponent<Animator>();
+        _changeTime         = GetComponent<ChangeTime>();
+
         _fsmCharacter = new StateMachineCharacter();
         _fsmCharacter.InitStateMachine(this);
-
-        _cameraTarget = transform.Find(CAMERA_TARGET_OBJECT).gameObject;
-        _animator = GetComponent<Animator>();
-
-        _joystick = GameObject.Find("Variable Joystick").GetComponent<VariableJoystick>(); //A modifier plus tard 
-
         _fsmCharacter.InitState(_fsmCharacter.States[EnumStateCharacter.Idle]);
+    }
 
-        _changeTime = GetComponent<ChangeTime>();
-
+    public void Start()
+    {
+        _joystick = GameObject.Find("Variable Joystick").GetComponent<VariableJoystick>(); //A modifier plus tard 
         _cameraHandler = GameManager.Instance.CameraHandler; //Il faut appeler ça après le load des 3C dans gameManager
 
     }

@@ -10,7 +10,7 @@ public struct CameraSetup
 {
     public Collider _colliderContain;
     public TriggerCamera _triggerCamera;
-    public float _Xvalue;
+    public float _angle;
 }
 
 public class CameraHandler : MonoBehaviour
@@ -19,16 +19,15 @@ public class CameraHandler : MonoBehaviour
 
     [Header("Stats")]
 
-    [SerializeField] private Vector3 _cameraPos;
+    private Vector3 _cameraPos;
+    private Vector3 _cameraRotation;
+
     [SerializeField] private float _offsetCameraMovement = 1f;
     [SerializeField] private float _speedCameraOffset;
-    [SerializeField] private AnimationCurve _movementCameraCurve;
+    [SerializeField] private float _rotationSpeed;
 
-    private CinemachineFreeLook _freelookCamera;
     private CinemachineVirtualCamera _virtualCamera;
     private CinemachineConfiner _confinerCamera;
-
-    private CinemachineTransposer _transposer;
 
     private ACharacter _character;
 
@@ -43,20 +42,23 @@ public class CameraHandler : MonoBehaviour
     private Vector3 _targetPosition;
     private Vector3 _lastJoystick;
 
+    private float _radius;
+
     private void Start()
     {
-        _freelookCamera = GetComponent<CinemachineFreeLook>();
+        _character = GameObject.Find("Character").GetComponent<ACharacter>();
         _virtualCamera = GetComponent<CinemachineVirtualCamera>();
         _confinerCamera = GetComponent<CinemachineConfiner>();
-        _transposer = _virtualCamera.GetCinemachineComponent<CinemachineTransposer>();
-        _cameraPos = new Vector3(0, 14, -11);
+        _cameraPos = _character.CameraTarget.transform.localPosition;
+        _cameraRotation = transform.localEulerAngles;
 
-        _character = GameObject.Find("Character").GetComponent<ACharacter>();
         //_character = GameManager.Instance.Character; // IL FAUT UNE BONNE IMPLEMENTATION DU SYSTEM
 
         _lastJoystick = new Vector3(0,0,0);
         _startPosition = new Vector3(0,0,0);
         _targetPosition = new Vector3(0,0,0);
+
+        _radius = _cameraPos.z;
 
         if (_setups.Count == 0)
         {
@@ -68,18 +70,17 @@ public class CameraHandler : MonoBehaviour
             for (int i = 0; i < _setups.Count; i++)
             {
                 _setups[i]._triggerCamera.OnExitTrigger += RotateCam;
+                _setups[i]._triggerCamera.Id = i;
             }
 
             //Va définir le collider dans lequel la camera va se déplacer
             _confinerCamera.enabled = true;
             _confinerCamera.m_BoundingVolume = _setups[0]._colliderContain;
 
-            _currentForward = _setups[0]._Xvalue;
-            //_freelookCamera.m_XAxis.Value = _setups[0]._Xvalue;
+            _currentForward = _setups[0]._angle;
 
         }
 
-        //_transposer.m_FollowOffset = _cameraPos;
         _currentPosition = _cameraPos;
     }
 
@@ -98,13 +99,10 @@ public class CameraHandler : MonoBehaviour
         _confinerCamera.m_BoundingVolume = _setups[id]._colliderContain;
 
         _startForward = _currentForward;
-        _targetForward = _setups[id]._Xvalue;
-
-        //_virtualCamera.enabled = false;
-        //_freelookCamera.enabled = true;
+        _targetForward = _setups[id]._angle;
 
         _clockRotate = 0;
-        //StartCoroutine(CameraRotation());
+        StartCoroutine(CameraRotation());
     }
 
     public IEnumerator CameraRotation()
@@ -114,19 +112,20 @@ public class CameraHandler : MonoBehaviour
             _clockRotate += Time.deltaTime;
 
             float angle = Mathf.Lerp(_startForward, _targetForward, _clockRotate);
-            _freelookCamera.m_XAxis.Value = angle;
 
-            Vector3 vect = _freelookCamera.gameObject.transform.eulerAngles;
-            vect.y = angle;
-            _freelookCamera.gameObject.transform.eulerAngles = vect;
+            float radians = angle * Mathf.Deg2Rad;
+            Vector3 offset = new Vector3(Mathf.Sin(radians) * _radius, _cameraPos.y, Mathf.Cos(radians) * _radius);
 
+            //_character.CameraTarget.transform.localPosition = offset;
+            //_cameraPos = offset;
+
+            transform.localEulerAngles = new Vector3(0, angle, 0) + _cameraRotation;
+
+            _character.CameraTargetParent.transform.localEulerAngles = new Vector3(0,angle,0);
             _currentForward = angle;
-
+            
             yield return null;
         }
-
-        //_freelookCamera.enabled = false;
-        //_virtualCamera.enabled = true;
 
     }
 
@@ -155,7 +154,6 @@ public class CameraHandler : MonoBehaviour
         _currentPosition = Vector3.Lerp(_startPosition, _targetPosition, _clockPosition);
 
         //On set l'offset ici 
-        //_transposer.m_FollowOffset = _cameraPos + _currentPosition;
         _character.CameraTarget.transform.localPosition = _cameraPos + _currentPosition;
     }
 

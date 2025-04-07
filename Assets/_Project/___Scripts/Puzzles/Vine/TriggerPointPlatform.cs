@@ -22,16 +22,25 @@ public class TriggerPointPlatform : MonoBehaviour
 
         Vector3 CollisionPoint = other.ClosestPoint(transform.position);
 
+
         float WorldRadius = capsule.radius * WorldScale.y;
 
         Vector3 position = capsule.transform.TransformPoint(capsule.center);
         position.x = CollisionPoint.x;
         position.y += WorldRadius;
         position.z = CollisionPoint.z;
-        vineScript.SetSocketChild(transform.parent);
-        vineScript.SetSocketTransform(position);
 
-        //_platform.SetPlatformPosition(position);
+        transform.position = position;
+        vineScript.SetSocketTransform(transform);
+        VineManager.Instance.InvokeVineChange();
+        VineManager.Instance.OnVineChange += vineScript.SetSocketPoint;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (!other.TryGetComponent(out VineScript vineScript)) return;
+
+        vineScript.SetSocketNull();
     }
 
 

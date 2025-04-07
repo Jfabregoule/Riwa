@@ -90,7 +90,7 @@ public class ACharacter : MonoBehaviour
 
         _fsmCharacter.InitState(_fsmCharacter.States[EnumStateCharacter.Idle]);
 
-        _changeTime = GameObject.Find("Sphere").GetComponent<ChangeTime>();
+        _changeTime = GetComponent<ChangeTime>();
 
         _cameraHandler = GameManager.Instance.CameraHandler; //Il faut appeler ça après le load des 3C dans gameManager
 
@@ -101,11 +101,6 @@ public class ACharacter : MonoBehaviour
         float dt = Time.deltaTime;
 
         _fsmCharacter.StateMachineUpdate(dt);
-    }
-
-    public void OnChangeTempo() //A DEGAGER QUAND Y'AURA L'INPUT SYSTEM
-    {
-        IsChangingTime = true;
     }
 
     #endregion

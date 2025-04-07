@@ -12,6 +12,8 @@ public class ACharacter : MonoBehaviour
 
     public const string PAWN_OBJECT = "Pawn";
     public const string SOUL_OBJECT = "Soul";
+    public const string CAMERA_TARGET_OBJECT= "CameraTarget";
+    public const string CAMERA_TARGET_PARENT_OBJECT= "CameraTargetParent";
 
     #endregion
 
@@ -25,6 +27,9 @@ public class ACharacter : MonoBehaviour
     private Rigidbody _rb;
     private CapsuleCollider _capsuleCollider;
     private GameObject _soul;
+
+    private GameObject _cameraTarget;
+    private GameObject _cameraTargetParent;
 
     private VariableJoystick _joystick; //TEMPORAIRE EN ATTENDANT L'INPUT SYSTEM
 
@@ -46,7 +51,7 @@ public class ACharacter : MonoBehaviour
 
     [Header("StateMachine values")]
 
-    [SerializeField] private float _timeBeforeWait = 2.0f;
+    [SerializeField] private float _timeBeforeWait = 5.0f;
     [SerializeField] private bool _isChangingTime = false;
     [SerializeField] private bool _isInSoul = false;
 
@@ -74,12 +79,15 @@ public class ACharacter : MonoBehaviour
     public bool IsChangingTime { get => _isChangingTime; set => _isChangingTime = value; }
     public bool IsInPast { get => _isInPast; set => _isInPast = value; }
     public ChangeTime ChangeTime { get => _changeTime; }
-    public LayerMask PastLayer { get => _pastLayer; }
-    public LayerMask PresentLayer { get => _presentLayer; }
-    public CameraHandler CameraHandler { get => _cameraHandler; }
     public bool IsInSoul { get => _isInSoul; set => _isInSoul = value; }
     public GameObject Soul { get => _soul; set => _soul = value; }
     public ParticleSystem SoulLinkVFX { get => _soulLinkVFX; set => _soulLinkVFX = value; }
+    public LayerMask PastLayer { get => _pastLayer;}
+    public LayerMask PresentLayer { get => _presentLayer;}
+    public CameraHandler CameraHandler { get => _cameraHandler;}
+    public GameObject CameraTarget { get => _cameraTarget; set => _cameraTarget = value; }
+    public GameObject CameraTargetParent { get => _cameraTargetParent; set => _cameraTargetParent = value; }
+    public Vector3 LocalDirection { get => _localDirection; set => _localDirection = value; }
 
     #endregion
 
@@ -87,24 +95,26 @@ public class ACharacter : MonoBehaviour
 
     //Methods
 
-    public void Start()
+    public void OnEnable()
     {
-        _pawn = GameObject.Find(PAWN_OBJECT);
+        _pawn               = transform.Find(PAWN_OBJECT).gameObject;
+        _cameraTargetParent = transform.Find(CAMERA_TARGET_PARENT_OBJECT).gameObject;
+        _cameraTarget       = _cameraTargetParent.transform.Find(CAMERA_TARGET_OBJECT).gameObject;
+        _rb                 = GetComponent<Rigidbody>();
+        _capsuleCollider    = GetComponent<CapsuleCollider>();
+        _animator           = GetComponent<Animator>();
+        _changeTime         = GetComponent<ChangeTime>();
+
         _soul = GameObject.Find(SOUL_OBJECT);
         _soul.SetActive(false);
-        _rb = GetComponent<Rigidbody>();
-        _capsuleCollider = GetComponent<CapsuleCollider>();
         _fsmCharacter = new StateMachineCharacter();
         _fsmCharacter.InitStateMachine(this);
-
-        _animator = GetComponent<Animator>();
-
-        _joystick = GameObject.Find("Variable Joystick").GetComponent<VariableJoystick>(); //A modifier plus tard 
-
         _fsmCharacter.InitState(_fsmCharacter.States[EnumStateCharacter.Idle]);
+    }
 
-        _changeTime = GetComponent<ChangeTime>();
-
+    public void Start()
+    {
+        _joystick = GameObject.Find("Variable Joystick").GetComponent<VariableJoystick>(); //A modifier plus tard 
         _cameraHandler = GameManager.Instance.CameraHandler; //Il faut appeler ça après le load des 3C dans gameManager
 
     }

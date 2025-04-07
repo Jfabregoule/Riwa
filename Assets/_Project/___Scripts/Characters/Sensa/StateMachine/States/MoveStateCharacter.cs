@@ -52,7 +52,7 @@ public class MoveStateCharacter : BaseStateCharacter
     {
         base.FixedUpdateState();
 
-        _character.Rb.velocity = _moveDirection * _character.Speed;
+        _character.Rb.velocity = _moveDirection * _character.Speed * Time.deltaTime * 100;
 
         if (_moveDirection != Vector3.zero)
         {

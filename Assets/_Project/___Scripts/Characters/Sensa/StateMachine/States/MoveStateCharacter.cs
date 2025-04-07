@@ -36,7 +36,6 @@ public class MoveStateCharacter : BaseStateCharacter
 
 
         Vector2 direction = _character.InputManager.GetMoveDirection();
-        movement.z = _character.Joystick.Direction.y;
 
         Vector3 camForward = _cam.transform.forward;
         Vector3 camRight = _cam.transform.right;
@@ -46,13 +45,12 @@ public class MoveStateCharacter : BaseStateCharacter
 
         camForward.Normalize();
         camRight.Normalize();
-        _moveDirection = (camForward * movement.z + camRight * movement.x).normalized;
+        _moveDirection = (camForward * direction.y + camRight * direction.x).normalized;
     }
 
     public override void FixedUpdateState()
     {
         base.FixedUpdateState();
-        _moveDirection = (camForward * direction.y + camRight * direction.x).normalized;
 
         _character.Rb.velocity = _moveDirection * _character.Speed * Time.deltaTime * 100;
 

@@ -101,21 +101,24 @@ public class ACharacter : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _capsuleCollider = GetComponent<CapsuleCollider>();
         _fsmCharacter = new StateMachineCharacter();
-        _changeTime         = GetComponent<ChangeTime>();
+        _changeTime = GetComponent<ChangeTime>();
+        _inputManager = InputManager.Instance;
+        _animator = GetComponent<Animator>();
 
         _soul = GameObject.Find(SOUL_OBJECT);
         _soul.SetActive(false);
 
 
+        _cameraTargetParent = transform.Find(CAMERA_TARGET_PARENT_OBJECT).gameObject;
         _cameraTarget = _cameraTargetParent.transform.Find(CAMERA_TARGET_OBJECT).gameObject;
 
 
         _fsmCharacter.InitStateMachine(this);
         _fsmCharacter.InitState(_fsmCharacter.States[EnumStateCharacter.Idle]);
-
+    }
 
     public void Start()
-        _cameraHandler = GameManager.Instance.CameraHandler; //Il faut appeler ça après le load des 3C dans gameManager
+    {
         _cameraHandler = GameManager.Instance.CameraHandler; //Il faut appeler ça après le load des 3C dans gameManager
 
     }

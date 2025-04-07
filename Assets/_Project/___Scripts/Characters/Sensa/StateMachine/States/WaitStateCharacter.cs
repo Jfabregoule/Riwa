@@ -24,9 +24,9 @@ public class WaitStateCharacter : BaseStateCharacter
         base.ExitState();
     }
 
-    public override void UpdateState(float dT)
+    public override void UpdateState()
     {
-        base.UpdateState(dT);
+        base.UpdateState();
     }
 
     public override void CheckChangeState()

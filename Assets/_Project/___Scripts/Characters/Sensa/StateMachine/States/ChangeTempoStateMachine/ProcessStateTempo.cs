@@ -30,9 +30,9 @@ public class ProcessStateTempo : ChangeTempoBaseState
         _character.ChangeTime.OnTimeChangeEnd -= TimeChangeEnded;
     }
 
-    public override void UpdateState(float dT)
+    public override void UpdateState()
     {
-        base.UpdateState(dT);
+        base.UpdateState();
     }
 
     public override void CheckChangeState()

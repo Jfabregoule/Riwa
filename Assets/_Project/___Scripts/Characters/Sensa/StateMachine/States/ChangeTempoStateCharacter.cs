@@ -36,11 +36,11 @@ public class ChangeTempoStateCharacter : BaseStateCharacter
         base.ExitState();
     }
 
-    public override void UpdateState(float dT)
+    public override void UpdateState()
     {
-        base.UpdateState(dT);
+        base.UpdateState();
 
-        _subStateMachine.StateMachineUpdate(dT);
+        _subStateMachine.StateMachineUpdate();
     }
 
     public override void CheckChangeState()

@@ -1,16 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class ACharacter : MonoBehaviour
+public class ASoul : MonoBehaviour
 {
     #region Constantes
 
-    //Constantes
-
-    public const string PAWN_OBJECT = "Pawn";
-    public const string SOUL_OBJECT = "Soul";
+    public const string CHARACTER_OBJECT = "Character";
+    public const string SOULPAWN_OBJECT = "SoulPawn";
 
     #endregion
 
@@ -18,36 +17,30 @@ public class ACharacter : MonoBehaviour
 
     //Field
 
-    private GameObject _pawn;
-    private StateMachineCharacter _fsmCharacter;
+    private GameObject _soulPawn;
+    private StateMachineSoul _fsmSoul;
     private Animator _animator;
     private Rigidbody _rb;
     private CapsuleCollider _capsuleCollider;
-    private GameObject _soul;
+    private GameObject _character;
 
     private VariableJoystick _joystick; //TEMPORAIRE EN ATTENDANT L'INPUT SYSTEM
 
     private bool _canInteract;
     private bool _canInteractSoul;
 
-    private bool _isInPast = false;
-    private ChangeTime _changeTime;
-
-    [SerializeField] private LayerMask _pastLayer;
-    [SerializeField] private LayerMask _presentLayer;
-
     private CameraHandler _cameraHandler;
 
     [Header("Gameplay Statistics")]
 
-    [SerializeField] private float _speed = 1;
+    [SerializeField] private float _speed = 7;
     [SerializeField] private float _joystickRunTreshold = 0.4f;
+    [SerializeField] private float _linkMaxDistance = 2.5f;
+    [SerializeField] private float _linkElasticity = 500f;
 
     [Header("StateMachine values")]
 
     [SerializeField] private float _timeBeforeWait = 2.0f;
-    [SerializeField] private bool _isChangingTime = false;
-    [SerializeField] private bool _isInSoul = false;
 
     #endregion
 
@@ -55,10 +48,10 @@ public class ACharacter : MonoBehaviour
 
     //Properties
 
-    public GameObject Pawn { get => _pawn; }
-    public StateMachineCharacter FsmCharacter { get => _fsmCharacter; }
-    public Animator Animator { get => _animator; }
-    public VariableJoystick Joystick { get => _joystick; }
+    public GameObject SoulPawn { get => _soulPawn;}
+    public StateMachineSoul FsmSoul { get => _fsmSoul;}
+    public Animator Animator { get => _animator;}
+    public VariableJoystick Joystick { get => _joystick;}
     public Rigidbody Rb { get => _rb; }
     public CapsuleCollider CapsuleCollider { get => _capsuleCollider; }
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
@@ -66,14 +59,10 @@ public class ACharacter : MonoBehaviour
     public float Speed { get => _speed; set => _speed = value; }
     public float JoystickRunTreshold { get => _joystickRunTreshold; set => _joystickRunTreshold = value; }
     public float TimeBeforeWait { get => _timeBeforeWait; set => _timeBeforeWait = value; }
-    public bool IsChangingTime { get => _isChangingTime; set => _isChangingTime = value; }
-    public bool IsInPast { get => _isInPast; set => _isInPast = value; }
-    public ChangeTime ChangeTime { get => _changeTime; }
-    public LayerMask PastLayer { get => _pastLayer; }
-    public LayerMask PresentLayer { get => _presentLayer; }
-    public CameraHandler CameraHandler { get => _cameraHandler; }
-    public bool IsInSoul { get => _isInSoul; set => _isInSoul = value; }
-    public GameObject Soul { get => _soul; set => _soul = value; }
+    public CameraHandler CameraHandler { get => _cameraHandler;}
+    public GameObject Character { get => _character; set => _character = value; }
+    public float LinkMaxDistance { get => _linkMaxDistance; set => _linkMaxDistance = value; }
+    public float LinkElasticity { get => _linkElasticity; set => _linkElasticity = value; }
 
     #endregion
 
@@ -83,21 +72,18 @@ public class ACharacter : MonoBehaviour
 
     public void Start()
     {
-        _pawn = GameObject.Find(PAWN_OBJECT);
-        _soul = GameObject.Find(SOUL_OBJECT);
-        _soul.SetActive(false);
+        Character = GameObject.Find(CHARACTER_OBJECT);
+        _soulPawn = GameObject.Find(SOULPAWN_OBJECT);
         _rb = GetComponent<Rigidbody>();
         _capsuleCollider = GetComponent<CapsuleCollider>();
-        _fsmCharacter = new StateMachineCharacter();
-        _fsmCharacter.InitStateMachine(this);
+        _fsmSoul = new StateMachineSoul();
+        _fsmSoul.InitStateMachine(this);
 
         _animator = GetComponent<Animator>();
 
         _joystick = GameObject.Find("Variable Joystick").GetComponent<VariableJoystick>(); //A modifier plus tard 
 
-        _fsmCharacter.InitState(_fsmCharacter.States[EnumStateCharacter.Idle]);
-
-        _changeTime = GetComponent<ChangeTime>();
+        _fsmSoul.InitState(_fsmSoul.States[EnumStateSoul.Idle]);
 
         _cameraHandler = GameManager.Instance.CameraHandler; //Il faut appeler ça après le load des 3C dans gameManager
 
@@ -105,12 +91,12 @@ public class ACharacter : MonoBehaviour
 
     private void Update()
     {
-        _fsmCharacter.StateMachineUpdate();
+        _fsmSoul.StateMachineUpdate();
     }
 
     private void FixedUpdate()
     {
-        _fsmCharacter.StateMachineFixedUpdate();
+        _fsmSoul.StateMachineFixedUpdate();
     }
 
     #endregion

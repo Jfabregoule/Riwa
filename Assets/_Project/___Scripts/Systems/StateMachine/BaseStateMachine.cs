@@ -77,9 +77,14 @@ public abstract class BaseStateMachine<TStateEnum, TBaseState>
         _currentState.EnterState();
     }
 
-    public virtual void StateMachineUpdate(float dT)
+    public virtual void StateMachineUpdate()
     {
-        _currentState.UpdateState(dT);
+        _currentState.UpdateState();
+    }
+
+    public virtual void StateMachineFixedUpdate()
+    {
+        _currentState.FixedUpdateState();
     }
 
     #endregion

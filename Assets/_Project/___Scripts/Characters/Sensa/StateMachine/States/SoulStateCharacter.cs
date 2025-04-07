@@ -10,37 +10,28 @@ public class SoulStateCharacter : BaseStateCharacter
     /// On y fera le check de si le voyage temporel est possible ou non
     /// </summary>
 
-    private SoulStateMachine _subStateMachine;
-
     public override void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, ACharacter character)
     {
         base.InitState(stateMachine, enumValue, character);
-
-        ///////////////////
-
-        _subStateMachine = new SoulStateMachine();
-        _subStateMachine.InitStateMachine(_character);
-        _subStateMachine.InitState(_subStateMachine.States[EnumSoul.IdleSoul]);
     }
 
     public override void EnterState()
     {
         base.EnterState();
-
-        _subStateMachine.ChangeState(_subStateMachine.States[EnumSoul.IdleSoul]);
-
+        _character.Soul.transform.position = _character.transform.position;
+        _character.Soul.transform.rotation = _character.transform.rotation;
+        _character.Soul.SetActive(true);
     }
 
     public override void ExitState()
     {
         base.ExitState();
+        _character.Soul.SetActive(false);
     }
 
-    public override void UpdateState(float dT)
+    public override void UpdateState()
     {
-        base.UpdateState(dT);
-
-        _subStateMachine.StateMachineUpdate(dT);
+        base.UpdateState();
     }
 
     public override void CheckChangeState()

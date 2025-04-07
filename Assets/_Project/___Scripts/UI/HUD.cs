@@ -11,6 +11,6 @@ public class HUD : MonoBehaviour
 
     public void ChangeToSoul()
     {
-        GameManager.Instance.Character.IsInSoul = true;
+        GameManager.Instance.Character.IsInSoul = !GameManager.Instance.Character.IsInSoul;
     }
 }

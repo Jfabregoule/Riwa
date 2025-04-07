@@ -2,24 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EnumStateCharacter
-{
+public enum EnumStateSoul 
+{ 
     Idle,
     Move,
-    Cinematic,
-    Wait,
-    ChangeTempo,
-    Interact,
-    Holding,
-    Push,
-    Pull,
-    Soul,
-    Fall,
-    Rotate,
-    Respawn
 }
 
-public abstract class BaseStateCharacter : BaseState<EnumStateCharacter>
+public abstract class BaseStateSoul : BaseState<EnumStateSoul>
 {
     /// <summary>
     /// Contient une instance du joueur, de la state machine du joueur et l'identifiant du state
@@ -28,28 +17,28 @@ public abstract class BaseStateCharacter : BaseState<EnumStateCharacter>
 
     //FIELDS
 
-    protected ACharacter _character;
-    new protected StateMachineCharacter _stateMachine;
+    protected ASoul _soul;
+    new protected StateMachineSoul _stateMachine;
 
     //PROPERTIES
-    protected ACharacter Character { get => _character; set => _character = value; }
+    protected ASoul Soul { get => _soul; set => _soul = value; }
 
     //FUNCTIONS
 
-    public virtual void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, ACharacter character) 
+    public virtual void InitState(StateMachineSoul stateMachine, EnumStateSoul enumValue, ASoul character) 
     {
         base.InitState(enumValue);
 
         //Je set la state machine dans le baseStateCHaracter et pas plus haut dans l'héritage car les templates ont leurs limites
         _stateMachine = stateMachine;
-        _character = character;
-        _transitionMap = new Dictionary<EnumStateCharacter, Transition>();
+        _soul = character;
+        _transitionMap = new Dictionary<EnumStateSoul, Transition>();
     }
 
     public override void EnterState() 
     {
         base.EnterState();
-        _character.Animator.SetTrigger(_stateMachine.AnimationMap[_enumState]); //Lorsque je rentre dans un state, je trigger l'animation à jouer, si l'animator est bien fait, tout est clean
+        _soul.Animator.SetTrigger(_stateMachine.AnimationMap[_enumState]); //Lorsque je rentre dans un state, je trigger l'animation à jouer, si l'animator est bien fait, tout est clean
     }
 
     public override void ExitState()

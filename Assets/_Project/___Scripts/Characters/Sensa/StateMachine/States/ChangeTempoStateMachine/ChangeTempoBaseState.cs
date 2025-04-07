@@ -35,9 +35,10 @@ public class ChangeTempoBaseState : BaseState<EnumChangeTempo>
         base.ExitState();
     }
 
-    public override void UpdateState(float dT)
+    public override void UpdateState()
     {
-        base.UpdateState(dT);
+        base.UpdateState();
+
         CheckChangeState();
     }
 

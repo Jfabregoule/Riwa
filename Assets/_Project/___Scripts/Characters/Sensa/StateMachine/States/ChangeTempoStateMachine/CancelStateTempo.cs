@@ -29,9 +29,9 @@ public class CancelStateTempo : ChangeTempoBaseState
         _character.ChangeTime.OnTimeChangeEnd -= TimeChangeEnded;
     }
 
-    public override void UpdateState(float dT)
+    public override void UpdateState()
     {
-        base.UpdateState(dT);
+        base.UpdateState();
 
         if (_changedTime)
         {

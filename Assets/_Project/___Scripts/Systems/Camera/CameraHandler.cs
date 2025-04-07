@@ -30,6 +30,7 @@ public class CameraHandler : MonoBehaviour
     private CinemachineConfiner _confinerCamera;
 
     private ACharacter _character;
+    private ASoul _soul;
 
     private float _currentForward;
     private float _startForward;
@@ -48,6 +49,11 @@ public class CameraHandler : MonoBehaviour
     private float _clockZoom;
 
     public CinemachineVirtualCamera VirtualCamera { get => _virtualCamera;}
+
+    private void Awake()
+    {
+        _soul = GameObject.Find("Soul").GetComponent<ASoul>();
+    }
 
     private void Start()
     {
@@ -91,8 +97,7 @@ public class CameraHandler : MonoBehaviour
 
     public void Update()
     {
-        if (_character.FsmCharacter.CurrentState.EnumState == EnumStateCharacter.Move ||
-           _character.FsmCharacter.CurrentState.EnumState == EnumStateCharacter.SoulWalk)
+        if (_character.FsmCharacter.CurrentState.EnumState == EnumStateCharacter.Move) 
         {
             MoveCameraOffset();
         }

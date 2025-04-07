@@ -87,7 +87,6 @@ public class ACharacter : MonoBehaviour
     public CameraHandler CameraHandler { get => _cameraHandler;}
     public GameObject CameraTarget { get => _cameraTarget; set => _cameraTarget = value; }
     public GameObject CameraTargetParent { get => _cameraTargetParent; set => _cameraTargetParent = value; }
-    public Vector3 LocalDirection { get => _localDirection; set => _localDirection = value; }
 
     #endregion
 
@@ -98,8 +97,6 @@ public class ACharacter : MonoBehaviour
     public void OnEnable()
     {
         _pawn               = transform.Find(PAWN_OBJECT).gameObject;
-        _cameraTargetParent = transform.Find(CAMERA_TARGET_PARENT_OBJECT).gameObject;
-        _cameraTarget       = _cameraTargetParent.transform.Find(CAMERA_TARGET_OBJECT).gameObject;
         _rb                 = GetComponent<Rigidbody>();
         _capsuleCollider    = GetComponent<CapsuleCollider>();
         _animator           = GetComponent<Animator>();
@@ -107,6 +104,10 @@ public class ACharacter : MonoBehaviour
 
         _soul = GameObject.Find(SOUL_OBJECT);
         _soul.SetActive(false);
+
+        _cameraTargetParent = transform.Find(CAMERA_TARGET_PARENT_OBJECT).gameObject;
+        _cameraTarget = _cameraTargetParent.transform.Find(CAMERA_TARGET_OBJECT).gameObject;
+
         _fsmCharacter = new StateMachineCharacter();
         _fsmCharacter.InitStateMachine(this);
         _fsmCharacter.InitState(_fsmCharacter.States[EnumStateCharacter.Idle]);

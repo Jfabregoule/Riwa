@@ -21,7 +21,7 @@ public class BaseLevelManager : Singleton<BaseLevelManager>
     [SerializeField] private ACharacter _character;
     [SerializeField] private VariableJoystick _joystick;
 
-    public void OnEnable()
+    public void Start()
     {
         GameManager.Instance.OnLoadManager += LoadManager;
     }

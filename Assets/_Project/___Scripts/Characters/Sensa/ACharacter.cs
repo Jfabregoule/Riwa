@@ -22,8 +22,9 @@ public class ACharacter : MonoBehaviour
     private Animator _animator;
     private Rigidbody _rb;
     private CapsuleCollider _capsuleCollider;
+    private InputManager _inputManager;
 
-    private VariableJoystick _joystick; //TEMPORAIRE EN ATTENDANT L'INPUT SYSTEM
+    //private VariableJoystick _joystick; //TEMPORAIRE EN ATTENDANT L'INPUT SYSTEM
 
     private bool _canInteract;
     private bool _canInteractSoul;
@@ -55,7 +56,7 @@ public class ACharacter : MonoBehaviour
     public GameObject Pawn { get => _pawn;}
     public StateMachineCharacter FsmCharacter { get => _fsmCharacter;}
     public Animator Animator { get => _animator;}
-    public VariableJoystick Joystick { get => _joystick;}
+    //public VariableJoystick Joystick { get => _joystick;}
     public Rigidbody Rb { get => _rb;}
     public CapsuleCollider CapsuleCollider { get => _capsuleCollider; }
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
@@ -70,6 +71,8 @@ public class ACharacter : MonoBehaviour
     public LayerMask PresentLayer { get => _presentLayer;}
     public CameraHandler CameraHandler { get => _cameraHandler;}
 
+    public InputManager InputManager { get => _inputManager;}
+
     #endregion
 
     #region Methods
@@ -82,17 +85,19 @@ public class ACharacter : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _capsuleCollider = GetComponent<CapsuleCollider>();
         _fsmCharacter = new StateMachineCharacter();
-        _fsmCharacter.InitStateMachine(this);
+        _inputManager = InputManager.Instance;
+        
 
         _animator = GetComponent<Animator>();
-
-        _joystick = GameObject.Find("Variable Joystick").GetComponent<VariableJoystick>(); //A modifier plus tard 
-
-        _fsmCharacter.InitState(_fsmCharacter.States[EnumStateCharacter.Idle]);
-
         _changeTime = GetComponent<ChangeTime>();
 
         _cameraHandler = GameManager.Instance.CameraHandler; //Il faut appeler ça après le load des 3C dans gameManager
+
+        //_joystick = GameObject.Find("Variable Joystick").GetComponent<VariableJoystick>(); //A modifier plus tard 
+        _fsmCharacter.InitStateMachine(this);
+        _fsmCharacter.InitState(_fsmCharacter.States[EnumStateCharacter.Idle]);
+
+        
 
     }
 

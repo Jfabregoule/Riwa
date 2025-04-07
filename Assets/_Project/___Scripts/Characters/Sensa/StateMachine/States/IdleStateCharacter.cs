@@ -15,12 +15,16 @@ public class IdleStateCharacter : BaseStateCharacter
     {
         base.EnterState();
 
+        _character.InputManager.OnInteract += OnInteract;
+
         _clock = 0;
     }
 
     public override void ExitState()
     {
         base.ExitState();
+
+        _character.InputManager.OnInteract -= OnInteract;
     }
 
     public override void UpdateState(float dT)
@@ -28,7 +32,6 @@ public class IdleStateCharacter : BaseStateCharacter
         base.UpdateState(dT);
 
         _clock += dT;
-
     }
 
     public override void CheckChangeState()
@@ -40,7 +43,7 @@ public class IdleStateCharacter : BaseStateCharacter
             _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.ChangeTempo]);
         }
 
-        if (_character.Joystick.Direction.y != 0 || _character.Joystick.Direction.x != 0)
+        if (_character.InputManager.GetMoveDirection() != Vector2.zero)
         {
             _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Move]);
             return;
@@ -51,5 +54,10 @@ public class IdleStateCharacter : BaseStateCharacter
             //_stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Wait]);
             return;
         }
+    }
+
+    private void OnInteract()
+    {
+        _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Interact]);
     }
 }

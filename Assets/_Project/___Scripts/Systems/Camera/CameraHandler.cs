@@ -49,7 +49,7 @@ public class CameraHandler : MonoBehaviour
         _virtualCamera = GetComponent<CinemachineVirtualCamera>();
         _confinerCamera = GetComponent<CinemachineConfiner>();
         _transposer = _virtualCamera.GetCinemachineComponent<CinemachineTransposer>();
-        _cameraPos = new Vector3(0, 16, -13);
+        _cameraPos = new Vector3(0, 14, -11);
 
         _character = GameObject.Find("Character").GetComponent<ACharacter>();
         //_character = GameManager.Instance.Character; // IL FAUT UNE BONNE IMPLEMENTATION DU SYSTEM
@@ -60,7 +60,7 @@ public class CameraHandler : MonoBehaviour
 
         if (_setups.Count == 0)
         {
-            _confinerCamera.enabled = false;
+            _confinerCamera.enabled = true;
             return;
         }
         else
@@ -79,7 +79,7 @@ public class CameraHandler : MonoBehaviour
 
         }
 
-        _transposer.m_FollowOffset = _cameraPos;
+        //_transposer.m_FollowOffset = _cameraPos;
         _currentPosition = _cameraPos;
     }
 
@@ -155,7 +155,8 @@ public class CameraHandler : MonoBehaviour
         _currentPosition = Vector3.Lerp(_startPosition, _targetPosition, _clockPosition);
 
         //On set l'offset ici 
-        _transposer.m_FollowOffset = _cameraPos + _currentPosition;
+        //_transposer.m_FollowOffset = _cameraPos + _currentPosition;
+        _character.CameraTarget.transform.localPosition = _cameraPos + _currentPosition;
     }
 
 }

@@ -10,6 +10,7 @@ public class ACharacter : MonoBehaviour
     //Constantes
 
     public const string PAWN_OBJECT = "Pawn";
+    public const string CAMERA_TARGET_OBJECT= "CameraTarget";
 
     #endregion
 
@@ -22,6 +23,7 @@ public class ACharacter : MonoBehaviour
     private Animator _animator;
     private Rigidbody _rb;
     private CapsuleCollider _capsuleCollider;
+    private GameObject _cameraTarget;
 
     private VariableJoystick _joystick; //TEMPORAIRE EN ATTENDANT L'INPUT SYSTEM
 
@@ -69,6 +71,7 @@ public class ACharacter : MonoBehaviour
     public LayerMask PastLayer { get => _pastLayer;}
     public LayerMask PresentLayer { get => _presentLayer;}
     public CameraHandler CameraHandler { get => _cameraHandler;}
+    public GameObject CameraTarget { get => _cameraTarget; set => _cameraTarget = value; }
 
     #endregion
 
@@ -84,6 +87,7 @@ public class ACharacter : MonoBehaviour
         _fsmCharacter = new StateMachineCharacter();
         _fsmCharacter.InitStateMachine(this);
 
+        _cameraTarget = transform.Find(CAMERA_TARGET_OBJECT).gameObject;
         _animator = GetComponent<Animator>();
 
         _joystick = GameObject.Find("Variable Joystick").GetComponent<VariableJoystick>(); //A modifier plus tard 

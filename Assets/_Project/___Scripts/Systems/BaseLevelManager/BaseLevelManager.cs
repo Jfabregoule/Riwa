@@ -23,16 +23,6 @@ public class BaseLevelManager : Singleton<BaseLevelManager>
 
     public void OnEnable()
     {
-    }
-
-    public void Start()
-    {
-        GameManager.Instance.OnLoadManager += LoadManager;
-        _joystick = GameObject.Find("Variable Joystick").GetComponent<VariableJoystick>();
-    }
-
-    public void LoadManager()
-    {
         GameManager.Instance.Load3C(_cameraHandler, _character, _joystick);
     }
 

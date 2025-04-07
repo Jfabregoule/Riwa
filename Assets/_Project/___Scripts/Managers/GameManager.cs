@@ -17,8 +17,6 @@ public class GameManager : Singleton<GameManager>
     private ACharacter _character;
     private VariableJoystick _joystick;
 
-    public delegate void LoadManager();
-    public event LoadManager OnLoadManager;
 
     #region Properties
 
@@ -27,16 +25,7 @@ public class GameManager : Singleton<GameManager>
     public Joystick Joystick { get => _joystick; }
 
     #endregion
-
-    private void OnEnable()
-    {
-    }
-
-    private void Start()
-    {
-        OnLoadManager?.Invoke();
-    }
-
+   
     public void Load3C(CameraHandler cameraHandler, ACharacter character, VariableJoystick joystick)
     {
         _cameraHandler = cameraHandler;

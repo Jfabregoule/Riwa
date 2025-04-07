@@ -46,7 +46,7 @@ public class MoveStateSoul : BaseStateSoul
         camForward.Normalize();
         camRight.Normalize();
 
-        _moveDirection = (camForward * movement.z + camRight * movement.x).normalized;
+        _moveDirection = (camForward * movement.z + camRight * movement.x);
     }
 
     public override void FixedUpdateState()

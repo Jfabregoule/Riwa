@@ -45,7 +45,7 @@ public class MoveStateCharacter : BaseStateCharacter
 
         camForward.Normalize();
         camRight.Normalize();
-        _moveDirection = (camForward * direction.y + camRight * direction.x).normalized;
+        _moveDirection = (camForward * direction.y + camRight * direction.x);
     }
 
     public override void FixedUpdateState()

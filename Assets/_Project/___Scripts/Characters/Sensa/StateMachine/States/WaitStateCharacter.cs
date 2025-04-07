@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class WaitStateCharacter : BaseStateCharacter
@@ -9,6 +10,11 @@ public class WaitStateCharacter : BaseStateCharacter
     /// pourra surement prendre en paramètre un sequencer, et jouera ce sequncer dans ce state
     /// </summary>
 
+    float _clockZoom;
+
+    float _startZoom = 30;
+    float _endZoom = 25;
+
     public override void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, ACharacter character)
     {
         base.InitState(stateMachine, enumValue, character);
@@ -17,11 +23,16 @@ public class WaitStateCharacter : BaseStateCharacter
     public override void EnterState()
     {
         base.EnterState();
+
+        GameManager.Instance.CameraHandler.OnZoomCamera(_startZoom, _endZoom);
+
     }
 
     public override void ExitState()
     {
         base.ExitState();
+
+        GameManager.Instance.CameraHandler.OnZoomCamera(_endZoom, _startZoom);
     }
 
     public override void UpdateState(float dT)
@@ -38,4 +49,7 @@ public class WaitStateCharacter : BaseStateCharacter
             _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Move]);
         }
     }
+
+  
+
 }

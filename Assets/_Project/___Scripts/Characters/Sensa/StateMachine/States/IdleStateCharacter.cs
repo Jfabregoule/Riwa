@@ -48,7 +48,7 @@ public class IdleStateCharacter : BaseStateCharacter
 
         if (_clock > _character.TimeBeforeWait)
         {
-            //_stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Wait]);
+            _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Wait]);
             return;
         }
     }

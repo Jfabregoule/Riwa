@@ -48,7 +48,7 @@ public class ACharacter : MonoBehaviour
 
     [Header("StateMachine values")]
 
-    [SerializeField] private float _timeBeforeWait = 2.0f;
+    [SerializeField] private float _timeBeforeWait = 5.0f;
     [SerializeField] private bool _isChangingTime = false;
 
     #endregion

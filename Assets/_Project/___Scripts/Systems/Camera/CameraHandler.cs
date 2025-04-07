@@ -44,6 +44,11 @@ public class CameraHandler : MonoBehaviour
 
     private float _radius;
 
+    private Coroutine _currentCoroutine;
+    private float _clockZoom;
+
+    public CinemachineVirtualCamera VirtualCamera { get => _virtualCamera;}
+
     private void Start()
     {
         _character = GameObject.Find("Character").GetComponent<ACharacter>();
@@ -155,6 +160,30 @@ public class CameraHandler : MonoBehaviour
 
         //On set l'offset ici 
         _character.CameraTarget.transform.localPosition = _cameraPos + _currentPosition;
+    }
+
+    public void OnZoomCamera(float startZoom, float EndZoom)
+    {
+        if(_currentCoroutine != null)
+        {
+            StopCoroutine(_currentCoroutine);
+        }
+        _clockZoom = 0;
+        _currentCoroutine = StartCoroutine(ZoomCamera(startZoom, EndZoom));
+        
+    }
+
+    public IEnumerator ZoomCamera(float startZoom, float EndZoom)
+    {
+        while (_clockZoom < 1)
+        {
+            _clockZoom += Time.deltaTime;
+
+            GameManager.Instance.CameraHandler.VirtualCamera.m_Lens.FieldOfView = Mathf.Lerp(startZoom, EndZoom, _clockZoom);
+
+            yield return null;
+
+        }
     }
 
 }

@@ -11,10 +11,12 @@ public class VineScript : MonoBehaviour
     [SerializeField] private List<MeshRenderer> _renderers;
     [SerializeField] private float _waitBeforeFall;
     [SerializeField] private float _growingSpeed = 1;
+    [SerializeField] private float _retractedSpeed = 2;
     [SerializeField] private float _refreshRate = 0.05f;
     [SerializeField] private float _frictionSpeed;
-    [SerializeField] private Transform _socketPoint;
     public float FrictionSpeed { get { return _frictionSpeed; } set { _frictionSpeed = value; } }
+
+    public Transform SocketPoint { get; private set; }
 
     [SerializeField, Range(0, 1)]
     private float _minGrow = 0.2f;
@@ -28,10 +30,11 @@ public class VineScript : MonoBehaviour
     private CapsuleCollider _capsuleCollider;
     private float _minColliderHeight;
     private float _height;
-    private Vector3 _test;
+    private float _offset;
     private Vector3 _startSocketPos;
     void Start()
     {
+        SocketPoint = null;
         _capsuleCollider = GetComponent<CapsuleCollider>();
         _minColliderHeight = _capsuleCollider.height;
         _startSocketPos = transform.TransformPoint(_capsuleCollider.center);
@@ -61,8 +64,12 @@ public class VineScript : MonoBehaviour
             _capsuleCollider.height = _minColliderHeight + growValue * (_maxColliderHeight - _minColliderHeight);
             _capsuleCollider.center = new Vector3(_capsuleCollider.center.x - ((_capsuleCollider.height - lastHeight) / 2),_capsuleCollider.center.y,_capsuleCollider.center.z);
 
-            Vector3 vector = -transform.right * (_capsuleCollider.height - _minColliderHeight) * transform.localScale.y;
-            _socketPoint.position = new Vector3(_startSocketPos.x + vector.x,_socketPoint.position.y,_startSocketPos.z + vector.z);
+ 
+            if (SocketPoint != null)
+            {
+                Vector3 vector = -transform.right * (_capsuleCollider.height - _minColliderHeight) * transform.localScale.y * _offset;
+                SocketPoint.position = new Vector3(_startSocketPos.x + vector.x,SocketPoint.position.y,_startSocketPos.z + vector.z);
+            }
 
             yield return null;
         }
@@ -78,25 +85,30 @@ public class VineScript : MonoBehaviour
 
         while (growValue - _minGrow > 0.01f)
         {
-            growValue = Mathf.MoveTowards(growValue, _minGrow, _growingSpeed * Time.deltaTime);
+            growValue = Mathf.MoveTowards(growValue, _minGrow, _retractedSpeed * Time.deltaTime);
             mat.SetFloat("_Grow", growValue);
 
             float lastHeight = _capsuleCollider.height;
             _capsuleCollider.height = _minColliderHeight + growValue * (_maxColliderHeight - _minColliderHeight);
             _capsuleCollider.center = new Vector3(_capsuleCollider.center.x - ((_capsuleCollider.height - lastHeight) / 2),_capsuleCollider.center.y,_capsuleCollider.center.z);
 
-            Vector3 vector = -transform.right * (_capsuleCollider.height - _minColliderHeight) * transform.localScale.y;
-            _socketPoint.position = new Vector3(_startSocketPos.x + vector.x,_socketPoint.position.y,_startSocketPos.z + vector.z);
+
+            //if (SocketPoint != null)
+            //{
+            //    Vector3 vector = -transform.right * (_capsuleCollider.height - _minColliderHeight) * transform.localScale.y * _offset;
+            //    SocketPoint.position = new Vector3(_startSocketPos.x + vector.x, SocketPoint.position.y, _startSocketPos.z + vector.z);
+            //}
 
             yield return null;
-
         }
+        _capsuleCollider.isTrigger = true;
     }
     private void VineFall()
     {
-        //_capsuleCollider.enabled = false;
+        //SocketPoint.GetChild(0).GetComponent<Rigidbody>()
+
         StartCoroutine(RetractedVine(_materials[0]));
-        //_capsuleCollider.isTrigger = true;
+
     }
     private IEnumerator DissolveVine()
     {
@@ -110,21 +122,28 @@ public class VineScript : MonoBehaviour
         if (!other.transform.TryGetComponent(out ACharacter character)) return;
         _capsuleCollider.isTrigger = false;
         StartCoroutine(RaiseVine(_materials[0]));
-        //_isActivated = true;
     }
 
 
-    public void SetSocketTransform(Vector3 position)
+    public void SetSocketTransform(Transform transformObject)
     {
-        //position.y += 0.2f; 
-        _socketPoint.transform.position = position;
-        _test = position; 
+        SocketPoint = transformObject;
+        float currentHeight = _capsuleCollider.height;
+        float hitDistance = Vector3.Dot(transformObject.position - transform.position, -transform.right);
+        _offset = hitDistance / (currentHeight * transform.localScale.y);
     }
 
-    public void SetSocketChild(Transform child)
+
+    public void SetSocketPoint()
     {
-        child.SetParent(_socketPoint,true);
-        child.localPosition = Vector3.zero;
+        SocketPoint = null;
+        VineManager.Instance.OnVineChange -= SetSocketPoint;
+    }
+
+    public void SetSocketNull()
+    {
+        SocketPoint.GetChild(0).GetComponent<Rigidbody>().useGravity = true;
+        SocketPoint = null;     
     }
 
 }

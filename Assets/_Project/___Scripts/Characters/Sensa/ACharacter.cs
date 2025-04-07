@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class ACharacter : MonoBehaviour
 {
@@ -49,6 +50,10 @@ public class ACharacter : MonoBehaviour
     [SerializeField] private bool _isChangingTime = false;
     [SerializeField] private bool _isInSoul = false;
 
+    [Header("VFX")]
+
+    [SerializeField] private ParticleSystem _soulLinkVFX;
+
     #endregion
 
     #region Properties
@@ -74,6 +79,7 @@ public class ACharacter : MonoBehaviour
     public CameraHandler CameraHandler { get => _cameraHandler; }
     public bool IsInSoul { get => _isInSoul; set => _isInSoul = value; }
     public GameObject Soul { get => _soul; set => _soul = value; }
+    public ParticleSystem SoulLinkVFX { get => _soulLinkVFX; set => _soulLinkVFX = value; }
 
     #endregion
 

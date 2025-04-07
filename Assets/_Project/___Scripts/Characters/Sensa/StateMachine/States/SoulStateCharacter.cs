@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class SoulStateCharacter : BaseStateCharacter
 {
@@ -20,18 +21,24 @@ public class SoulStateCharacter : BaseStateCharacter
         base.EnterState();
         _character.Soul.transform.position = _character.transform.position;
         _character.Soul.transform.rotation = _character.transform.rotation;
+        _character.SoulLinkVFX.Play();
         _character.Soul.SetActive(true);
     }
 
     public override void ExitState()
     {
         base.ExitState();
+        _character.SoulLinkVFX.Stop();
         _character.Soul.SetActive(false);
     }
 
     public override void UpdateState()
     {
         base.UpdateState();
+
+        Vector3 VFXOrientation = _character.Soul.transform.position - _character.transform.position;
+
+        _character.SoulLinkVFX.transform.forward = VFXOrientation.normalized;
     }
 
     public override void CheckChangeState()

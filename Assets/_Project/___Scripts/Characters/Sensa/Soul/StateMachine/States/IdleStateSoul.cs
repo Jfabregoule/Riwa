@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class IdleStateSoul : BaseStateSoul
 {
@@ -27,10 +28,12 @@ public class IdleStateSoul : BaseStateSoul
     {
         base.UpdateState();
 
+        Vector2 direction = _soul.InputManager.GetMoveDirection();
+
         Vector3 movement;
-        movement.x = _soul.Joystick.Direction.x;
+        movement.x = direction.x;
         movement.y = 0;
-        movement.z = _soul.Joystick.Direction.y;
+        movement.z = direction.y;
 
         Vector3 targetPosition = _soul.Rb.position + movement * _soul.Speed * Time.fixedDeltaTime;
         Vector3 toPlayer = _soul.Character.transform.position - targetPosition;
@@ -50,7 +53,7 @@ public class IdleStateSoul : BaseStateSoul
     {
         base.CheckChangeState();
 
-        if (_soul.Joystick.Direction.y != 0 || _soul.Joystick.Direction.x != 0)
+        if (_soul.InputManager.GetMoveDirection() != Vector2.zero)
         {
             _stateMachine.ChangeState(_stateMachine.States[EnumStateSoul.Move]);
             return;

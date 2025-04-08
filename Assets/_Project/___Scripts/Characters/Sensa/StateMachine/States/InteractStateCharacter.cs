@@ -29,6 +29,12 @@ public class InteractStateCharacter : BaseStateCharacter
     {
         base.CheckChangeState();
 
+        if (_character.IsInSoul)
+        {
+            _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Soul]);
+            return;
+        }
+
         _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Idle]);
     }
 }

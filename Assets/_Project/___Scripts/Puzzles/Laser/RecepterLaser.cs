@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RecepterLaser : MonoBehaviour
+public class RecepterLaser : MonoBehaviour, IActivable
 {
     private bool _isActive;
     private bool _isHitThisFrame;
 
-    [SerializeField] private GameObject[] _activables;
+    public event IActivable.ActivateEvent OnActivated;
+    public event IActivable.ActivateEvent OnDesactivated;
 
     void Update()
     {
@@ -29,29 +30,17 @@ public class RecepterLaser : MonoBehaviour
         _isHitThisFrame = true;
     }
 
-    private void Activate()
+    public void Activate()
     {
         _isActive = true;
-        foreach (var activable in _activables)
-        {
-            if (activable.TryGetComponent(out IActivable act))
-            {
-                act.Activate();
-            }  
-        }
+        OnActivated?.Invoke();
         Debug.Log("Recepteur activé !");
     }
 
-    private void Deactivate()
+    public void Deactivate()
     {
         _isActive = false;
-        foreach (var activable in _activables)
-        {
-            if (activable.TryGetComponent(out IActivable act))
-            {
-                act.Deactivate();
-            }
-        }
+        OnDesactivated?.Invoke();
         Debug.Log("Recepteur désactivé !");
     }
 }

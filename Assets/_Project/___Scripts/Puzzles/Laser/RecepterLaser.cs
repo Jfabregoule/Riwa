@@ -4,15 +4,54 @@ using UnityEngine;
 
 public class RecepterLaser : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private bool _isActive;
+    private bool _isHitThisFrame;
 
-    // Update is called once per frame
+    [SerializeField] private GameObject[] _activables;
+
     void Update()
     {
-        
+        if (!_isHitThisFrame && _isActive)
+        {
+            Deactivate();
+        }
+
+        _isHitThisFrame = false;
+    }
+
+    public void OnLaserHit()
+    {
+        if (!_isActive)
+        {
+            Activate();
+        }
+
+        _isHitThisFrame = true;
+    }
+
+    private void Activate()
+    {
+        _isActive = true;
+        foreach (var activable in _activables)
+        {
+            if (activable.TryGetComponent(out IActivable act))
+            {
+                act.Activate();
+            }  
+        }
+        Debug.Log("Recepteur activé !");
+    }
+
+    private void Deactivate()
+    {
+        _isActive = false;
+        foreach (var activable in _activables)
+        {
+            if (activable.TryGetComponent(out IActivable act))
+            {
+                act.Deactivate();
+            }
+        }
+        Debug.Log("Recepteur désactivé !");
     }
 }

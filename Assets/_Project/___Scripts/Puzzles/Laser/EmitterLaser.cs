@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class EmitterLaser : MonoBehaviour
 {
@@ -36,10 +35,15 @@ public class EmitterLaser : MonoBehaviour
                 AddLaserPoint(hit.point);
                 _directions.Add(reflect);
 
-                if (!hit.collider.GetComponent<RecepterLaser>())
+                if (!hit.collider.GetComponent<Mirror>())
                 {
                     SpawnImpact(hit.point, hit.normal);
                     _isReflecting = false;
+
+                    if (hit.collider.TryGetComponent<RecepterLaser>(out var recepter))
+                    {
+                        recepter.OnLaserHit();
+                    }
                 }
             }
             else if(i == _laser.positionCount - 1)

@@ -5,6 +5,13 @@ using UnityEngine;
 [System.Serializable]
 public struct CellPos
 {
+    public enum Direction
+    {
+        Up,
+        Down,
+        Left,
+        Right
+    }
 
     public CellPos(int posX, int posY) { x = posX; y = posY; }
 
@@ -44,6 +51,23 @@ public struct CellPos
     public static bool operator !=(CellPos a, CellPos b)
     {
         return !(a == b);
+    }
+
+    public CellPos GetCellAtDirection(Direction direction)
+    {
+        switch(direction)
+        {
+            case Direction.Up:
+                return new CellPos(x, y + 1);
+            case Direction.Down:
+                return new CellPos(x, y - 1);
+            case Direction.Left:
+                return new CellPos(x - 1, y);
+            case Direction.Right:
+                return new CellPos(x + 1, y);
+            default:
+                return this;
+        }
     }
 
     public int x;

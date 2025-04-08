@@ -64,15 +64,13 @@ public class Damier : MonoBehaviour
     public void GeneratePath()
     {
         path.Clear();
+
         CellPos start = new CellPos(0, 0);
         CellPos end = new CellPos(_damierSize - 1, _damierSize - 1);
 
-        Vector2Int up = new Vector2Int(0, 1);
-        Vector2Int down = new Vector2Int(0, -1);
-        Vector2Int right = new Vector2Int(1, 0);
-        Vector2Int left = new Vector2Int(-1, 0);
-
         List<CellPos> possibleMoves = new List<CellPos>();
+        List<CellPos> existingNeighbors = new List<CellPos>();
+
         path.Add(start);
         path.Add(new CellPos(0, 1));
 
@@ -82,11 +80,6 @@ public class Damier : MonoBehaviour
 
         int pathStart = Random.Range(0, path.Count);
         CellPos current = path[pathStart];
-        //CellPos current = new CellPos(0, 1);
-
-        Debug.Log("BASE - X: " + current.x + ", " + current.y);
-
-        List<CellPos> existingNeighbors = new List<CellPos>();
 
         System.Random random = new System.Random();
 
@@ -101,41 +94,39 @@ public class Damier : MonoBehaviour
             existingNeighbors.Clear();
             possibleMoves.Clear();
 
-            CellPos checkLeftPos = GetCellPosition(current, left);
-            CellPos checkUpPos = GetCellPosition(current, up);
-            CellPos checkDownPos = GetCellPosition(current, down);
+            CellPos currentLeft = current.GetCellAtDirection(CellPos.Direction.Left);
+            CellPos currentRight = current.GetCellAtDirection(CellPos.Direction.Right);
+            CellPos currentUp = current.GetCellAtDirection(CellPos.Direction.Up);
+            CellPos currentDown = current.GetCellAtDirection(CellPos.Direction.Down);
 
-            CellPos upFPos = GetCellPosition(current, up);
-            CellPos rightFPos = GetCellPosition(current, right);
-
-            if ((_damier.ContainsKey(upFPos) && upFPos == end) ||
-                (_damier.ContainsKey(rightFPos) && rightFPos == end))
+            if ((_damier.ContainsKey(currentUp) && currentUp == end) ||
+                (_damier.ContainsKey(currentRight) && currentRight == end))
             {
                 path.Add(current);
                 _damier[current] = false;
                 break;
             }
 
-            if (CheckDirection(current, right) && rightCounter != 2) existingNeighbors.Add(GetCellPosition(current, right));
-            if (CheckDirection(current, down) && downCounter != 2 && current.x < 4) existingNeighbors.Add(GetCellPosition(current, down));
-            if (CheckDirection(current, up) && upCounter != 2) existingNeighbors.Add(GetCellPosition(current, up));
+            if (CheckDirection(currentRight) && rightCounter != 2) existingNeighbors.Add(currentRight);
+            if (CheckDirection(currentDown) && downCounter != 2 && current.x < 4) existingNeighbors.Add(currentDown);
+            if (CheckDirection(currentUp) && upCounter != 2) existingNeighbors.Add(currentUp);
             //if (CheckDirection(current, left) && leftCounter != 2) existingNeighbors.Add(GetCellPosition(current, left));
 
-            if (existingNeighbors.Contains(checkUpPos))
+            if (existingNeighbors.Contains(currentUp))
             {
-                CellPos leftOfUp = GetCellPosition(checkUpPos, left);
+                CellPos leftOfUp = currentUp.GetCellAtDirection(CellPos.Direction.Left);
                 if (_damier.ContainsKey(leftOfUp) && _damier[leftOfUp] == false)
                 {
-                    existingNeighbors.Remove(checkUpPos);
+                    existingNeighbors.Remove(currentUp);
                 }
             }
 
-            if (existingNeighbors.Contains(checkDownPos))
+            if (existingNeighbors.Contains(currentDown))
             {
-                CellPos leftOfDown = GetCellPosition(checkDownPos, left);
+                CellPos leftOfDown = currentDown.GetCellAtDirection(CellPos.Direction.Left);
                 if (_damier.ContainsKey(leftOfDown) && _damier[leftOfDown] == false)
                 {
-                    existingNeighbors.Remove(checkDownPos);
+                    existingNeighbors.Remove(currentDown);
                 }
             }
 
@@ -158,18 +149,17 @@ public class Damier : MonoBehaviour
 
                 int blockedNeighborCount = 0;
 
-                CellPos rightPos = GetCellPosition(index, right);
-                CellPos upPos = GetCellPosition(index, up);
-                CellPos downPos = GetCellPosition(index, down);
+                CellPos rightOfSelectedCell = index.GetCellAtDirection(CellPos.Direction.Right);
+                CellPos leftOfSelectedCell = index.GetCellAtDirection(CellPos.Direction.Left);
+                CellPos upOfSelectedCell = index.GetCellAtDirection(CellPos.Direction.Up);
+                CellPos downOfSelectedCell = index.GetCellAtDirection(CellPos.Direction.Down);
 
-                if (rightPos != end && IsDirectionBreakable(index, right)) blockedNeighborCount++;
-                if (upPos != end && IsDirectionBreakable(index, up)) blockedNeighborCount++;
-                if (downPos != end && IsDirectionBreakable(index, down)) blockedNeighborCount++;
+                if (rightOfSelectedCell != end && IsTargetedCellTaken(rightOfSelectedCell)) blockedNeighborCount++;
+                if (upOfSelectedCell != end && IsTargetedCellTaken(upOfSelectedCell)) blockedNeighborCount++;
+                if (downOfSelectedCell != end && IsTargetedCellTaken(downOfSelectedCell)) blockedNeighborCount++;
 
                 if (blockedNeighborCount >= 2)
-                {
                     possibleMoves.RemoveAt(j);
-                }
             }
 
             for (int i = 0; i < possibleMoves.Count; i++)
@@ -182,7 +172,6 @@ public class Damier : MonoBehaviour
                 {
                     current = move;
                     _damier[current] = false;
-                    Debug.Log("Path completed near end at: " + move.x + ", " + move.y);
 
                     if ((current.x == 5 && current.y == 4) || (current.x == 4 && current.y == 5))
                     {
@@ -210,9 +199,9 @@ public class Damier : MonoBehaviour
                 _damier[current] = false;
             }
 
-            if (current == GetCellPosition(nextMove, up)) upCounter++;
-            if (current == GetCellPosition(nextMove, right)) rightCounter++;
-            if (current == GetCellPosition(nextMove, down)) downCounter++;
+            if (current == nextMove.GetCellAtDirection(CellPos.Direction.Up)) upCounter++;
+            if (current == nextMove.GetCellAtDirection(CellPos.Direction.Right)) rightCounter++;
+            if (current == nextMove.GetCellAtDirection(CellPos.Direction.Down)) downCounter++;
             //if(current == GetCellPosition(nextMove, left)) leftCounter++;
 
             if (upCounter == 2) upCounter = 0;
@@ -252,22 +241,14 @@ public class Damier : MonoBehaviour
 
     }
 
-    private bool CheckDirection(CellPos pos, Vector2Int direction)
+    private bool CheckDirection(CellPos pos)
     {
-        CellPos checkPos = new CellPos(pos.x + direction.x, pos.y + direction.y);
-        if (_damier.ContainsKey(checkPos)) return true;
+        if (_damier.ContainsKey(pos)) return true;
         else return false;
     }
 
-    private CellPos GetCellPosition(CellPos pos, Vector2Int direction)
+    private bool IsTargetedCellTaken(CellPos target)
     {
-        CellPos newCellPos = new CellPos(pos.x + direction.x, pos.y + direction.y);
-        return newCellPos;
-    }
-
-    private bool IsDirectionBreakable(CellPos origin, Vector2Int dir)
-    {
-        CellPos target = GetCellPosition(origin, dir);
         return _damier.ContainsKey(target) && _damier[target] == false;
     }
 

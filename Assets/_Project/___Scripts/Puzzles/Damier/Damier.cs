@@ -47,7 +47,7 @@ public class Damier : MonoBehaviour
             for (int y = 0; y < _damierSize; y++)
             {
                 GameObject cell = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                cell.transform.position = new Vector3(x * cellSize, 0, y * cellSize);
+                cell.transform.position = transform.position + new Vector3(x * cellSize, 0, y * cellSize);
                 cell.transform.localScale = new Vector3(cellSize, 0.1f, cellSize);
                 cell.GetComponent<Renderer>().material = (x + y) % 2 == 0 ? _blue : _white;
                 cell.transform.parent = transform;
@@ -90,6 +90,7 @@ public class Damier : MonoBehaviour
 
         System.Random random = new System.Random();
 
+        bool stopPathGeneration = false;
         int upCounter = 0;
         int downCounter = 0;
         int rightCounter = 0;
@@ -99,6 +100,10 @@ public class Damier : MonoBehaviour
         {
             existingNeighbors.Clear();
             possibleMoves.Clear();
+
+            CellPos checkLeftPos = GetCellPosition(current, left);
+            CellPos checkUpPos = GetCellPosition(current, up);
+            CellPos checkDownPos = GetCellPosition(current, down);
 
             CellPos upFPos = GetCellPosition(current, up);
             CellPos rightFPos = GetCellPosition(current, right);
@@ -112,9 +117,27 @@ public class Damier : MonoBehaviour
             }
 
             if (CheckDirection(current, right) && rightCounter != 2) existingNeighbors.Add(GetCellPosition(current, right));
-            if (CheckDirection(current, down) && downCounter != 2) existingNeighbors.Add(GetCellPosition(current, down));
+            if (CheckDirection(current, down) && downCounter != 2 && current.x < 4) existingNeighbors.Add(GetCellPosition(current, down));
             if (CheckDirection(current, up) && upCounter != 2) existingNeighbors.Add(GetCellPosition(current, up));
             //if (CheckDirection(current, left) && leftCounter != 2) existingNeighbors.Add(GetCellPosition(current, left));
+
+            if (existingNeighbors.Contains(checkUpPos))
+            {
+                CellPos leftOfUp = GetCellPosition(checkUpPos, left);
+                if (_damier.ContainsKey(leftOfUp) && _damier[leftOfUp] == false)
+                {
+                    existingNeighbors.Remove(checkUpPos);
+                }
+            }
+
+            if (existingNeighbors.Contains(checkDownPos))
+            {
+                CellPos leftOfDown = GetCellPosition(checkDownPos, left);
+                if (_damier.ContainsKey(leftOfDown) && _damier[leftOfDown] == false)
+                {
+                    existingNeighbors.Remove(checkDownPos);
+                }
+            }
 
             for (int i = 0; i < existingNeighbors.Count; i++)
             {
@@ -153,16 +176,21 @@ public class Damier : MonoBehaviour
             {
                 CellPos move = possibleMoves[i];
 
-                // Vérifie si la position a déjà été ajoutée
                 if (path.Contains(move)) continue;
 
                 if (move == end || IsAdjacentToEnd(move, end))
                 {
-                    path.Add(move);
                     current = move;
                     _damier[current] = false;
                     Debug.Log("Path completed near end at: " + move.x + ", " + move.y);
-                    break;
+
+                    if ((current.x == 5 && current.y == 4) || (current.x == 4 && current.y == 5))
+                    {
+                        stopPathGeneration = true;
+                        break;
+                    }
+
+                    continue;
                 }
             }
 
@@ -175,7 +203,7 @@ public class Damier : MonoBehaviour
             int moveIndex = random.Next(0, possibleMoves.Count);
             CellPos nextMove = possibleMoves[moveIndex];
 
-            if (!path.Contains(nextMove))
+            if (!path.Contains(nextMove) && stopPathGeneration == false)
             {
                 path.Add(nextMove);
                 current = nextMove;
@@ -206,7 +234,7 @@ public class Damier : MonoBehaviour
 
         foreach (Transform cell in transform)
         {
-            CellPos pos = new CellPos((int)cell.position.x, (int)cell.position.z);
+            CellPos pos = new CellPos((int)cell.position.x - (int)transform.position.x, (int)cell.position.z - (int)transform.position.z);
 
             if (_damier.TryGetValue(pos, out bool? breakable))
             {
@@ -243,8 +271,10 @@ public class Damier : MonoBehaviour
         return _damier.ContainsKey(target) && _damier[target] == false;
     }
 
-    private bool IsAdjacentToEnd(CellPos move, CellPos end)
+    bool IsAdjacentToEnd(CellPos a, CellPos b)
     {
-        return (Mathf.Abs(move.x - end.x) + Mathf.Abs(move.y - end.y)) == 1;
+        int dx = Mathf.Abs(a.x - b.x);
+        int dy = Mathf.Abs(a.y - b.y);
+        return (dx + dy) == 1;
     }
 }

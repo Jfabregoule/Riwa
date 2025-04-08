@@ -26,6 +26,16 @@ public struct CellPos
         return x * 397 ^ y;
     }
 
+    public static CellPos operator +(CellPos a, CellPos b)
+    {
+        return new CellPos(a.x + b.x, a.y + b.y);
+    }
+
+    public static CellPos operator -(CellPos a, CellPos b)
+    {
+        return new CellPos(a.x - b.x, a.y - b.y);
+    }
+
     public static bool operator ==(CellPos a, CellPos b)
     {
         return a.x == b.x && a.y == b.y;

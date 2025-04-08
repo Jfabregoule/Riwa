@@ -6,6 +6,11 @@ public class InteractTest : MonoBehaviour, IInteractable
 {
     public float OffsetRadius { get; set; }
 
+    InteractTest()
+    {
+        OffsetRadius = 1;
+    }
+
     public void Interactable()
     {
         Debug.Log("GameObject name: " + name);

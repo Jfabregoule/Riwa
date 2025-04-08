@@ -69,6 +69,7 @@ public class StateMachineCharacter : BaseStateMachine<EnumStateCharacter, BaseSt
         States[EnumStateCharacter.Respawn].InitState(this, EnumStateCharacter.Respawn, character);
         _animationMap[EnumStateCharacter.Respawn] = RESPAWN_NAME;
 
+
     }
 
 }

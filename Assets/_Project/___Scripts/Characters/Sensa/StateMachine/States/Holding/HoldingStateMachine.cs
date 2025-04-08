@@ -20,6 +20,21 @@ public class HoldingStateMachine : BaseStateMachine<EnumHolding, HoldingBaseStat
 
     public void InitStateMachine(ACharacter character)
     {
-        
+        States[EnumHolding.IdleHolding] = new IdleHoldingStateHolding();
+        States[EnumHolding.IdleHolding].InitState(this, EnumHolding.IdleHolding, character);
+        _animationMap[EnumHolding.IdleHolding] = IDLEHOLDING_NAME;
+
+        States[EnumHolding.Pull] = new PullStateHolding();
+        States[EnumHolding.Pull].InitState(this, EnumHolding.Pull, character);
+        _animationMap[EnumHolding.Pull] = PULL_NAME;
+
+        States[EnumHolding.Push] = new PushStateHolding();
+        States[EnumHolding.Push].InitState(this, EnumHolding.Push, character);
+        _animationMap[EnumHolding.Push] = PUSH_NAME;
+
+        States[EnumHolding.Rotate] = new RotateStateHolding();
+        States[EnumHolding.Rotate].InitState(this, EnumHolding.Rotate, character);
+        _animationMap[EnumHolding.Rotate] = ROTATE_NAME;
+
     }
 }

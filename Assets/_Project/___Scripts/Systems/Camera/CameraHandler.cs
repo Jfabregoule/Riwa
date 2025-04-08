@@ -196,7 +196,7 @@ public class CameraHandler : MonoBehaviour
     {
         while (_clockZoom < 1)
         {
-            _clockZoom += Time.deltaTime;
+            _clockZoom += Time.deltaTime * 0.5f;
 
             GameManager.Instance.CameraHandler.VirtualCamera.m_Lens.FieldOfView = Mathf.Lerp(startZoom, EndZoom, _clockZoom);
 

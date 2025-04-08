@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PushStateHolding1 : HoldingBaseState
+public class StandByStateInteract : InteractBaseState
 {
-    public override void InitState(HoldingStateMachine stateMachine, EnumHolding enumValue, ACharacter character)
+    public override void InitState(InteractStateMachine stateMachine, EnumInteract enumValue, ACharacter character)
     {
         base.InitState(stateMachine, enumValue, character);
     }

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.TextCore.Text;
 using UnityEngine.VFX;
 
 public class ACharacter : MonoBehaviour
@@ -36,6 +38,7 @@ public class ACharacter : MonoBehaviour
     private bool _canInteract;
     private bool _canInteractSoul;
 
+
     private bool _isInPast = false;
     private ChangeTime _changeTime;
 
@@ -51,9 +54,13 @@ public class ACharacter : MonoBehaviour
 
     [Header("StateMachine values")]
 
-    [SerializeField] private float _timeBeforeWait = 5.0f;
+    [SerializeField] private float _timeBeforeWait = 15f;
     [SerializeField] private bool _isChangingTime = false;
     [SerializeField] private bool _isInSoul = false;
+
+    public delegate void CharacterDelegate();
+    public event CharacterDelegate OnMoveToFinished;
+
 
     [Header("VFX")]
 
@@ -86,7 +93,6 @@ public class ACharacter : MonoBehaviour
     public CameraHandler CameraHandler { get => _cameraHandler;}
     public GameObject CameraTarget { get => _cameraTarget; set => _cameraTarget = value; }
     public GameObject CameraTargetParent { get => _cameraTargetParent; set => _cameraTargetParent = value; }
-
     public InputManager InputManager { get => _inputManager;}
 
     #endregion
@@ -131,6 +137,32 @@ public class ACharacter : MonoBehaviour
     private void FixedUpdate()
     {
         _fsmCharacter.StateMachineFixedUpdate();
+    }
+
+    public void MoveTo(Vector3 position)
+    {
+        StartCoroutine(CoroutineMoveTo(transform.position, position));
+    }
+
+    private IEnumerator CoroutineMoveTo(Vector3 startPos, Vector3 targetPos)
+    {
+        float clock = 0;
+
+        Vector3 direction = targetPos - startPos;
+        Vector3 startDirection = Pawn.transform.localEulerAngles;
+
+        while (clock < 1) {
+
+            transform.position = Vector3.Lerp(startPos, targetPos, clock);
+            _pawn.transform.localEulerAngles = Vector3.Lerp(-startPos, direction, clock);
+
+            clock += Time.deltaTime;
+
+            yield return null;
+        }
+
+        OnMoveToFinished?.Invoke();
+
     }
 
     #endregion

@@ -20,9 +20,12 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
     private bool _validate;
     private bool _isMoving;
 
+    private float _offsetRadius = 2;
+
     public bool Validate { get => _validate; set => _validate = value; }
     public bool IsLocked { get => _lockPosition; set => _lockPosition = value; }
     public int UnitGridSize { get => _unitGridSize; set => _unitGridSize = value; }
+    public float OffsetRadius { get => _offsetRadius; set => _offsetRadius = value; }
 
     public delegate bool StatueMoveEvent(CellPos oldPos, Vector2Int nextPos, CellContent statueData);
     public delegate void StatueRotateEvent(CellPos pos, CellContent content);
@@ -31,6 +34,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
     public event StatueMoveEvent OnStatueMoved;
     public event StatueRotateEvent OnStatueRotate;
     public event StatueEndMoving OnStatueEndMoving;
+
 
     public void Move(Vector2 direction)
     {

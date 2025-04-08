@@ -5,16 +5,15 @@ using UnityEngine.UIElements;
 
 public class TriggerPointPlatform : MonoBehaviour
 {
-    PlatformLiana _platform;
-    private void Start()
-    {
-        _platform = transform.parent.GetComponent<PlatformLiana>();
-    }
+    private List<VineScript> overlappingVines = new();
 
     private void OnTriggerEnter(Collider other)
     {
 
         if (!other.TryGetComponent(out VineScript vineScript)) return;
+
+        if (!overlappingVines.Contains(vineScript))
+            overlappingVines.Add(vineScript);
 
         CapsuleCollider capsule = other.GetComponent<CapsuleCollider>();
 
@@ -34,13 +33,19 @@ public class TriggerPointPlatform : MonoBehaviour
         vineScript.SetSocketTransform(transform);
         VineManager.Instance.InvokeVineChange();
         VineManager.Instance.OnVineChange += vineScript.SetSocketPoint;
+        Debug.Log(overlappingVines.Count);
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (!other.TryGetComponent(out VineScript vineScript)) return;
 
-        vineScript.SetSocketNull();
+        overlappingVines.Remove(vineScript);
+
+        if (overlappingVines.Count == 0)
+        {
+            vineScript.SetSocketNull();
+        }
     }
 
 

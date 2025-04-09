@@ -5,8 +5,7 @@ using UnityEngine;
 public class HoldingStateMachine : BaseStateMachine<EnumHolding, HoldingBaseState>
 {
     private const string IDLEHOLDING_NAME = "IdleHolding";
-    private const string PULL_NAME = "Pull";
-    private const string PUSH_NAME = "Push";
+    private const string MOVE_NAME = "Move";
     private const string ROTATE_NAME = "Rotate";
 
     public HoldingStateMachine()
@@ -24,13 +23,9 @@ public class HoldingStateMachine : BaseStateMachine<EnumHolding, HoldingBaseStat
         States[EnumHolding.IdleHolding].InitState(this, EnumHolding.IdleHolding, character);
         _animationMap[EnumHolding.IdleHolding] = IDLEHOLDING_NAME;
 
-        States[EnumHolding.Pull] = new PullStateHolding();
-        States[EnumHolding.Pull].InitState(this, EnumHolding.Pull, character);
-        _animationMap[EnumHolding.Pull] = PULL_NAME;
-
-        States[EnumHolding.Push] = new PushStateHolding();
-        States[EnumHolding.Push].InitState(this, EnumHolding.Push, character);
-        _animationMap[EnumHolding.Push] = PUSH_NAME;
+        States[EnumHolding.Move] = new MoveStateHolding();
+        States[EnumHolding.Move].InitState(this, EnumHolding.Move, character);
+        _animationMap[EnumHolding.Move] = MOVE_NAME;
 
         States[EnumHolding.Rotate] = new RotateStateHolding();
         States[EnumHolding.Rotate].InitState(this, EnumHolding.Rotate, character);

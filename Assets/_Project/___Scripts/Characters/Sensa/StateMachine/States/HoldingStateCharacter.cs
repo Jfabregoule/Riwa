@@ -33,12 +33,15 @@ public class HoldingStateCharacter : BaseStateCharacter
     {
         base.ExitState();
 
+        _character.SetHoldingObject(null);
         _character.InputManager.OnInteractEnd -= OnInteractEnd;
     }
 
     public override void UpdateState()
     {
         base.UpdateState();
+
+        _subStateMachine.StateMachineUpdate();
     }
 
     public override void CheckChangeState()

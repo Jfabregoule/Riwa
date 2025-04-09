@@ -30,6 +30,7 @@ public class ACharacter : MonoBehaviour
     private CapsuleCollider _capsuleCollider;
     private InputManager _inputManager;
     private GameObject _soul;
+    private GameObject _holdingObject;
 
     private bool _canInteract;
     private bool _canInteractSoul;
@@ -73,6 +74,8 @@ public class ACharacter : MonoBehaviour
     public Animator Animator { get => _animator;}
     public Rigidbody Rb { get => _rb;}
     public CapsuleCollider CapsuleCollider { get => _capsuleCollider; }
+
+    public GameObject HoldingObject { get => _holdingObject; }
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
     public bool CanInteractSoul { get => _canInteractSoul; set => _canInteractSoul = value; }
     public float Speed { get => _speed; set => _speed = value; }
@@ -154,6 +157,16 @@ public class ACharacter : MonoBehaviour
         }
 
         OnMoveToFinished?.Invoke();
+    }
+
+    public void SetHoldingObject(GameObject holdingObject)
+    {
+        holdingObject.transform.SetParent(transform);
+        _holdingObject = holdingObject;
+    }
+
+    public void MoveDir(int sens)
+    {
 
     }
 

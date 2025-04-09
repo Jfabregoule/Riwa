@@ -70,6 +70,7 @@ public class MoveStateInteract : InteractBaseState
     {
         if (_stateMachine.CurrentObjectInteract.TryGetComponent(out IHoldable holdable))
         {
+            _character.SetHoldingObject(_stateMachine.CurrentObjectInteract);
             _character.FsmCharacter.ChangeState(_character.FsmCharacter.States[EnumStateCharacter.Holding]);
             return;
         }

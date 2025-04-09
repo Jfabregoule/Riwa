@@ -23,7 +23,7 @@ public class Damier : MonoBehaviour
     [SerializeField] private GameObject _riwa;
 
     [HideInInspector][SerializeField] List<DamierDatas> serializedDamier = new List<DamierDatas>(); // Delete when Save is done
-    [SerializeField] List<CellPos> path = new List<CellPos>();
+    [HideInInspector][SerializeField] List<CellPos> path = new List<CellPos>();
 
     private float _lerpTime = 1.0f;
 

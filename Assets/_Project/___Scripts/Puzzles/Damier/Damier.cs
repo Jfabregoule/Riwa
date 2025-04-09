@@ -7,7 +7,7 @@ using UnityEngine;
 public struct DamierDatas
 {
     public CellPos pos;
-    public bool? breakable;
+    public CellData cellData;
 }
 
 [System.Serializable]
@@ -19,6 +19,9 @@ public struct CellData
         this.breakable = breakable;
         this.cell = cell;
     }
+
+    public void SetBreakable(bool? isBreakable) { breakable = isBreakable; }
+    public bool? GetIsBreakable() { return breakable; }
 
     public bool? breakable;
     public Cell cell;
@@ -41,13 +44,13 @@ public class Damier : MonoBehaviour
 
     private float _pathTravelTime = 7.0f;
 
-    Dictionary<CellPos, bool?> _damier = new Dictionary<CellPos, bool?>(); // This has to be saved later
+    Dictionary<CellPos, CellData> _damier = new Dictionary<CellPos, CellData>(); // This has to be saved later
 
     private void Awake()
     {
         _damier.Clear();
         foreach (var data in serializedDamier)
-            _damier.Add(data.pos, data.breakable);
+            _damier.Add(data.pos, data.cellData);
     }
 
     private void Start()
@@ -76,34 +79,37 @@ public class Damier : MonoBehaviour
                 collider.center = new Vector3(0f, 0.5f, 0f);
                 Cell cellScript = cell.AddComponent<Cell>();
                 cellScript.Init(new CellPos(x, y));
-                _damier[new CellPos(x, y)] = true;
+                _damier[new CellPos(x, y)] = new CellData(true, cellScript);
             }
         }
 
         serializedDamier.Clear();
         foreach(var pair in _damier)
-            serializedDamier.Add(new DamierDatas() { pos = pair.Key, breakable = pair.Value });
+            serializedDamier.Add(new DamierDatas() { pos = pair.Key, cellData = pair.Value });
     }
 
     public void GeneratePath()
     {
         path.Clear();
 
-        CellPos end = new CellPos(_damierSize - 1, _damierSize - 1);
-
+        List<CellPos> possibleMoves = new List<CellPos>();
+        List<CellPos> existingNeighbors = new List<CellPos>();
         List<CellPos> options = new List<CellPos>()
         {
             new CellPos(0, 0),
             new CellPos(0, 1)
         };
-        List<CellPos> possibleMoves = new List<CellPos>();
-        List<CellPos> existingNeighbors = new List<CellPos>();
 
-        _damier[end] = false;
+
+        CellPos end = new CellPos(_damierSize - 1, _damierSize - 1);
+        if (_damier.TryGetValue(end, out CellData startData))
+            _damier[end] = new CellData(false, startData.cell);
 
         int pathStart = Random.Range(0, options.Count);
+
         CellPos current = options[pathStart];
-        _damier[current] = false;
+        _damier[current].SetBreakable(false);
+
         path.Add(current);
 
         System.Random random = new System.Random();
@@ -128,7 +134,8 @@ public class Damier : MonoBehaviour
                 (_damier.ContainsKey(currentRight) && currentRight == end))
             {
                 path.Add(current);
-                _damier[current] = false;
+                if (_damier.TryGetValue(end, out CellData cellData))
+                    _damier[current] = new CellData(false, cellData.cell);
                 break;
             }
 
@@ -140,7 +147,7 @@ public class Damier : MonoBehaviour
             if (existingNeighbors.Contains(currentUp))
             {
                 CellPos leftOfUp = currentUp.GetCellAtDirection(CellPos.Direction.Left);
-                if (_damier.ContainsKey(leftOfUp) && _damier[leftOfUp] == false)
+                if (_damier.ContainsKey(leftOfUp) && _damier[leftOfUp].breakable == false)
                 {
                     existingNeighbors.Remove(currentUp);
                 }
@@ -149,7 +156,7 @@ public class Damier : MonoBehaviour
             if (existingNeighbors.Contains(currentDown))
             {
                 CellPos leftOfDown = currentDown.GetCellAtDirection(CellPos.Direction.Left);
-                if ((_damier.ContainsKey(leftOfDown) && _damier[leftOfDown] == false) || current.x <= 1)
+                if ((_damier.ContainsKey(leftOfDown) && _damier[leftOfDown].GetIsBreakable() == false) || current.x <= 1)
                 {
                     existingNeighbors.Remove(currentDown);
                 }
@@ -163,7 +170,7 @@ public class Damier : MonoBehaviour
             for (int i = 0; i < existingNeighbors.Count; i++)
             {
                 CellPos index = existingNeighbors[i];
-                if (_damier[current] != _damier[index])
+                if (_damier[current].GetIsBreakable() != _damier[index].GetIsBreakable())
                     possibleMoves.Add(index);
             }
 
@@ -171,7 +178,7 @@ public class Damier : MonoBehaviour
             {
                 CellPos index = possibleMoves[j];
 
-                if (_damier.ContainsKey(index) && _damier[index] == false)
+                if (_damier.ContainsKey(index) && _damier[index].GetIsBreakable() == false)
                 {
                     possibleMoves.RemoveAt(j);
                     continue;
@@ -202,7 +209,7 @@ public class Damier : MonoBehaviour
                 if (move == end || IsAdjacentToEnd(move, end))
                 {
                     current = move;
-                    _damier[current] = false;
+                    _damier[current].SetBreakable(true);
 
                     if ((current.x == 5 && current.y == 4) || (current.x == 4 && current.y == 5))
                     {
@@ -227,7 +234,7 @@ public class Damier : MonoBehaviour
             {
                 path.Add(nextMove);
                 current = nextMove;
-                _damier[current] = false;
+                _damier[current].SetBreakable(true);
             }
 
             if (current == nextMove.GetCellAtDirection(CellPos.Direction.Up)) upCounter++;
@@ -256,14 +263,14 @@ public class Damier : MonoBehaviour
         {
             CellPos pos = new CellPos((int)cell.position.x - (int)transform.position.x, (int)cell.position.z - (int)transform.position.z);
 
-            if (_damier.TryGetValue(pos, out bool? breakable))
+            if (_damier.TryGetValue(pos, out CellData data))
             {
                 Renderer rend = cell.GetComponent<Renderer>();
                 if (rend != null)
                 {
-                    if (breakable == false)
+                    if (data.breakable == false)
                     {
-                        Debug.Log(cell.name);
+                        //Debug.Log(cell.name);
                         rend.material = _green;
                     }
                 }
@@ -402,7 +409,7 @@ public class Damier : MonoBehaviour
 
     private bool IsTargetedCellTaken(CellPos target)
     {
-        return _damier.ContainsKey(target) && _damier[target] == false;
+        return _damier.ContainsKey(target) && _damier[target].GetIsBreakable() == false;
     }
 
     bool IsAdjacentToEnd(CellPos a, CellPos b)
@@ -410,5 +417,18 @@ public class Damier : MonoBehaviour
         int dx = Mathf.Abs(a.x - b.x);
         int dy = Mathf.Abs(a.y - b.y);
         return (dx + dy) == 1;
+    }
+
+    void ModifyCellDataValues(CellPos pos, bool breakable)
+    {
+        CellData tempory = _damier[pos];
+        tempory.SetBreakable(breakable);
+        _damier[pos] = tempory;
+    }
+
+    bool? GetBreakableCellDataValues(CellPos pos)
+    {
+        CellData temp = _damier[pos];
+        return temp.breakable;
     }
 }

@@ -31,10 +31,6 @@ public class ACharacter : MonoBehaviour
     private InputManager _inputManager;
     private GameObject _soul;
 
-    private GameObject _cameraTarget;
-    private GameObject _cameraTargetParent;
-
-
     private bool _canInteract;
     private bool _canInteractSoul;
 
@@ -91,8 +87,6 @@ public class ACharacter : MonoBehaviour
     public LayerMask PastLayer { get => _pastLayer;}
     public LayerMask PresentLayer { get => _presentLayer;}
     public CameraHandler CameraHandler { get => _cameraHandler;}
-    public GameObject CameraTarget { get => _cameraTarget; set => _cameraTarget = value; }
-    public GameObject CameraTargetParent { get => _cameraTargetParent; set => _cameraTargetParent = value; }
     public InputManager InputManager { get => _inputManager;}
 
     #endregion
@@ -113,10 +107,6 @@ public class ACharacter : MonoBehaviour
 
         _soul = GameObject.Find(SOUL_OBJECT);
         _soul.SetActive(false);
-
-
-        _cameraTargetParent = transform.Find(CAMERA_TARGET_PARENT_OBJECT).gameObject;
-        _cameraTarget = _cameraTargetParent.transform.Find(CAMERA_TARGET_OBJECT).gameObject;
 
 
         _fsmCharacter.InitStateMachine(this);
@@ -147,6 +137,8 @@ public class ACharacter : MonoBehaviour
     private IEnumerator CoroutineMoveTo(Vector3 startPos, Vector3 targetPos)
     {
         float clock = 0;
+
+        targetPos.y = startPos.y;
 
         Vector3 direction = targetPos - startPos;
         Vector3 startDirection = Pawn.transform.localEulerAngles;

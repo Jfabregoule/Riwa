@@ -30,7 +30,6 @@ public class CameraHandler : MonoBehaviour
     private CinemachineConfiner _confinerCamera;
 
     private ACharacter _character;
-    private ASoul _soul;
 
     private float _currentForward;
     private float _startForward;
@@ -48,22 +47,25 @@ public class CameraHandler : MonoBehaviour
     private Coroutine _currentCoroutine;
     private float _clockZoom;
 
+    private GameObject _cameraTargetParent;
+    private GameObject _cameraTarget;
+
     public CinemachineVirtualCamera VirtualCamera { get => _virtualCamera;}
 
     private void Awake()
     {
-        _soul = GameObject.Find("Soul").GetComponent<ASoul>();
+        _cameraTargetParent = transform.parent.transform.parent.gameObject;
+        _cameraTarget = transform.parent.gameObject;
+
     }
 
     private void Start()
     {
-        _character = GameObject.Find("Character").GetComponent<ACharacter>();
+        _character = GameManager.Instance.Character;
         _virtualCamera = GetComponent<CinemachineVirtualCamera>();
         _confinerCamera = GetComponent<CinemachineConfiner>();
-        _cameraPos = _character.CameraTarget.transform.localPosition;
+        _cameraPos = _cameraTarget.transform.localPosition;
         _cameraRotation = transform.localEulerAngles;
-
-        //_character = GameManager.Instance.Character; // IL FAUT UNE BONNE IMPLEMENTATION DU SYSTEM
 
         _lastJoystick = new Vector3(0,0,0);
         _startPosition = new Vector3(0,0,0);
@@ -103,6 +105,11 @@ public class CameraHandler : MonoBehaviour
         }
     }
 
+    public void FixedUpdate()
+    {
+        _cameraTargetParent.transform.position = _character.transform.position;
+    }
+
 
     public void RotateCam(int id)
     {
@@ -129,9 +136,9 @@ public class CameraHandler : MonoBehaviour
             //_character.CameraTarget.transform.localPosition = offset;
             //_cameraPos = offset;
 
-            transform.localEulerAngles = new Vector3(0, angle, 0) + _cameraRotation;
+            //transform.localEulerAngles = new Vector3(0, angle, 0) + _cameraRotation;
 
-            _character.CameraTargetParent.transform.localEulerAngles = new Vector3(0,angle,0);
+            _cameraTargetParent.transform.localEulerAngles = new Vector3(0,angle,0);
             _currentForward = angle;
             
             yield return null;
@@ -145,7 +152,9 @@ public class CameraHandler : MonoBehaviour
         //C'est pour avoir un leger offset smooth vers la ou on se dirige
         //Update: j'ai utilisé le chat pour localCamVelocity
 
-        if (GameManager.Instance.Character.Rb.velocity != _lastJoystick/* && GameManager.Instance.Character.Rb.velocity != Vector3.zero*/)
+        Vector3 playerMovement = GameManager.Instance.Character.Rb.velocity;
+
+        if (playerMovement != _lastJoystick/* && GameManager.Instance.Character.Rb.velocity != Vector3.zero*/)  
         {
             _clockPosition = 0;
 
@@ -159,8 +168,8 @@ public class CameraHandler : MonoBehaviour
             camForward.Normalize();
             camRight.Normalize();
 
-            float x = Vector3.Dot(GameManager.Instance.Character.Rb.velocity, camRight);
-            float z = Vector3.Dot(GameManager.Instance.Character.Rb.velocity, camForward);
+            float x = Vector3.Dot(playerMovement, camRight);
+            float z = Vector3.Dot(playerMovement, camForward);
             Vector3 localCamVelocity = new Vector3(x, 0, z);
 
             _lastJoystick = localCamVelocity;
@@ -178,7 +187,7 @@ public class CameraHandler : MonoBehaviour
         _currentPosition = Vector3.Lerp(_startPosition, _targetPosition, _clockPosition);
 
         //On set l'offset ici 
-        _character.CameraTarget.transform.localPosition = _cameraPos + _currentPosition;
+        _cameraTarget.transform.localPosition = _cameraPos + _currentPosition;
     }
 
     public void OnZoomCamera(float startZoom, float EndZoom)
@@ -203,6 +212,12 @@ public class CameraHandler : MonoBehaviour
             yield return null;
 
         }
+    }
+
+    public void ResetLookAt()
+    {
+        _virtualCamera.LookAt = null;
+        transform.localEulerAngles = _cameraRotation;
     }
 
 }

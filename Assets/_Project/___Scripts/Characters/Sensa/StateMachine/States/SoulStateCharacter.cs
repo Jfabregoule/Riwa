@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UIElements;
 
 public class SoulStateCharacter : BaseStateCharacter
@@ -23,6 +24,9 @@ public class SoulStateCharacter : BaseStateCharacter
         _character.Soul.transform.rotation = _character.transform.rotation;
         _character.SoulLinkVFX.Play();
         _character.Soul.SetActive(true);
+        _character.IsInSoul = true;
+
+        GameManager.Instance.CameraHandler.VirtualCamera.LookAt = _character.Soul.transform;
     }
 
     public override void ExitState()
@@ -30,6 +34,10 @@ public class SoulStateCharacter : BaseStateCharacter
         base.ExitState();
         _character.SoulLinkVFX.Stop();
         _character.Soul.SetActive(false);
+        _character.IsInSoul = false;
+
+        GameManager.Instance.CameraHandler.VirtualCamera.LookAt = null;
+
     }
 
     public override void UpdateState()

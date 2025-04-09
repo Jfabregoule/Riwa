@@ -20,9 +20,13 @@ public class Damier : MonoBehaviour
 
     [Header("Damier")]
     [SerializeField] private int _damierSize = 6;
+    [SerializeField] private GameObject _riwa;
 
     [HideInInspector][SerializeField] List<DamierDatas> serializedDamier = new List<DamierDatas>(); // Delete when Save is done
     [SerializeField] List<CellPos> path = new List<CellPos>();
+
+    private float _lerpTime = 1.0f;
+
     Dictionary<CellPos, bool?> _damier = new Dictionary<CellPos, bool?>(); // This has to be saved later
 
     private void Awake()
@@ -65,21 +69,22 @@ public class Damier : MonoBehaviour
     {
         path.Clear();
 
-        CellPos start = new CellPos(0, 0);
         CellPos end = new CellPos(_damierSize - 1, _damierSize - 1);
 
+        List<CellPos> options = new List<CellPos>()
+        {
+            new CellPos(0, 0),
+            new CellPos(0, 1)
+        };
         List<CellPos> possibleMoves = new List<CellPos>();
         List<CellPos> existingNeighbors = new List<CellPos>();
 
-        path.Add(start);
-        path.Add(new CellPos(0, 1));
-
-        _damier[start] = false;
-        _damier[new CellPos(0, 1)] = false;
         _damier[end] = false;
 
-        int pathStart = Random.Range(0, path.Count);
-        CellPos current = path[pathStart];
+        int pathStart = Random.Range(0, options.Count);
+        CellPos current = options[pathStart];
+        _damier[current] = false;
+        path.Add(current);
 
         System.Random random = new System.Random();
 
@@ -87,7 +92,7 @@ public class Damier : MonoBehaviour
         int upCounter = 0;
         int downCounter = 0;
         int rightCounter = 0;
-        //int leftCounter = 0;
+        int leftCounter = 0;
 
         while (current != end)
         {
@@ -110,7 +115,7 @@ public class Damier : MonoBehaviour
             if (CheckDirection(currentRight) && rightCounter != 2) existingNeighbors.Add(currentRight);
             if (CheckDirection(currentDown) && downCounter != 2 && current.x < 4) existingNeighbors.Add(currentDown);
             if (CheckDirection(currentUp) && upCounter != 2) existingNeighbors.Add(currentUp);
-            //if (CheckDirection(current, left) && leftCounter != 2) existingNeighbors.Add(GetCellPosition(current, left));
+            if (CheckDirection(currentLeft) && leftCounter != 2) existingNeighbors.Add(currentLeft);
 
             if (existingNeighbors.Contains(currentUp))
             {
@@ -128,6 +133,11 @@ public class Damier : MonoBehaviour
                 {
                     existingNeighbors.Remove(currentDown);
                 }
+            }
+
+            if(existingNeighbors.Contains(currentLeft))
+            {
+                if(currentLeft.y >= 4 || currentLeft.y <= 1) existingNeighbors.Remove(currentLeft);
             }
 
             for (int i = 0; i < existingNeighbors.Count; i++)
@@ -157,6 +167,7 @@ public class Damier : MonoBehaviour
                 if (rightOfSelectedCell != end && IsTargetedCellTaken(rightOfSelectedCell)) blockedNeighborCount++;
                 if (upOfSelectedCell != end && IsTargetedCellTaken(upOfSelectedCell)) blockedNeighborCount++;
                 if (downOfSelectedCell != end && IsTargetedCellTaken(downOfSelectedCell)) blockedNeighborCount++;
+                if (leftOfSelectedCell != end && IsTargetedCellTaken(leftOfSelectedCell)) blockedNeighborCount++;
 
                 if (blockedNeighborCount >= 2)
                     possibleMoves.RemoveAt(j);
@@ -202,11 +213,11 @@ public class Damier : MonoBehaviour
             if (current == nextMove.GetCellAtDirection(CellPos.Direction.Up)) upCounter++;
             if (current == nextMove.GetCellAtDirection(CellPos.Direction.Right)) rightCounter++;
             if (current == nextMove.GetCellAtDirection(CellPos.Direction.Down)) downCounter++;
-            //if(current == GetCellPosition(nextMove, left)) leftCounter++;
+            if (current == nextMove.GetCellAtDirection(CellPos.Direction.Left)) leftCounter++;
 
             if (upCounter == 2) upCounter = 0;
             if (downCounter == 2) downCounter = 0;
-            //if(leftCounter == 2) leftCounter = 0;
+            if (leftCounter == 2) leftCounter = 0;
             if (rightCounter == 2) rightCounter = 0;
         }
 
@@ -239,6 +250,53 @@ public class Damier : MonoBehaviour
             }
         }
 
+        RiwaFollowPath();
+
+    }
+
+    private void RiwaFollowPath()
+    {
+        StartCoroutine(FollowPathCoroutine());
+    }
+
+    private IEnumerator FollowPathCoroutine()
+    {
+        Vector3 startWorldPos = new Vector3(path[0].x + transform.position.x, _riwa.transform.localPosition.y, path[0].y + transform.position.z);
+        Vector3 firstLookTarget = new Vector3(path[1].x + transform.position.x, _riwa.transform.localPosition.y, path[1].y + transform.position.z);
+        Vector3 lookDir = (firstLookTarget - startWorldPos).normalized;
+        Quaternion startRot = Quaternion.LookRotation(lookDir);
+        _riwa.transform.position = startWorldPos;
+        _riwa.transform.rotation = startRot;
+        for (int i = 1; i < path.Count; i++)
+        {
+            yield return StartCoroutine(MoveRiwaToCell(path[i - 1], path[i]));
+        }
+    }
+
+    private IEnumerator MoveRiwaToCell(CellPos from, CellPos to)
+    {
+        Vector3 startPos = new Vector3(from.x + transform.position.x, _riwa.transform.localPosition.y, from.y + transform.position.z);
+        Vector3 endPos = new Vector3(to.x + transform.position.x, _riwa.transform.localPosition.y, to.y + transform.position.z);
+
+        Quaternion startRot = _riwa.transform.rotation;
+        Vector3 lookDir = (endPos - startPos).normalized;
+        Quaternion endRot = Quaternion.LookRotation(lookDir);
+
+        float elapsedTime = 0.0f;
+
+        while (elapsedTime < _lerpTime)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsedTime / _lerpTime);
+
+            _riwa.transform.position = Vector3.Lerp(startPos, endPos, t);
+            _riwa.transform.rotation = Quaternion.Slerp(startRot, endRot, t);
+
+            yield return null;
+        }
+
+        _riwa.transform.position = endPos;
+        _riwa.transform.rotation = endRot;
     }
 
     private bool CheckDirection(CellPos pos)

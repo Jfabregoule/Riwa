@@ -10,6 +10,20 @@ public struct DamierDatas
     public bool? breakable;
 }
 
+[System.Serializable]
+public struct CellData
+{
+
+    public CellData(bool? breakable, Cell cell)
+    {
+        this.breakable = breakable;
+        this.cell = cell;
+    }
+
+    public bool? breakable;
+    public Cell cell;
+}
+
 public class Damier : MonoBehaviour
 {
 
@@ -25,7 +39,7 @@ public class Damier : MonoBehaviour
     [HideInInspector][SerializeField] List<DamierDatas> serializedDamier = new List<DamierDatas>(); // Delete when Save is done
     [HideInInspector][SerializeField] List<CellPos> path = new List<CellPos>();
 
-    private float _lerpTime = 1.0f;
+    private float _pathTravelTime = 7.0f;
 
     Dictionary<CellPos, bool?> _damier = new Dictionary<CellPos, bool?>(); // This has to be saved later
 
@@ -56,7 +70,13 @@ public class Damier : MonoBehaviour
                 cell.GetComponent<Renderer>().material = (x + y) % 2 == 0 ? _blue : _white;
                 cell.transform.parent = transform;
                 cell.name = $"Cell {x} {y}";
-                _damier[new CellPos(x, y)] = null;
+                BoxCollider collider = cell.AddComponent<BoxCollider>();
+                collider.isTrigger = true;
+                collider.size = new Vector3(1f, 1f, 1f);
+                collider.center = new Vector3(0f, 0.5f, 0f);
+                Cell cellScript = cell.AddComponent<Cell>();
+                cellScript.Init(new CellPos(x, y));
+                _damier[new CellPos(x, y)] = true;
             }
         }
 
@@ -129,7 +149,7 @@ public class Damier : MonoBehaviour
             if (existingNeighbors.Contains(currentDown))
             {
                 CellPos leftOfDown = currentDown.GetCellAtDirection(CellPos.Direction.Left);
-                if (_damier.ContainsKey(leftOfDown) && _damier[leftOfDown] == false)
+                if ((_damier.ContainsKey(leftOfDown) && _damier[leftOfDown] == false) || current.x <= 1)
                 {
                     existingNeighbors.Remove(currentDown);
                 }
@@ -224,13 +244,13 @@ public class Damier : MonoBehaviour
 
         path.Add(end);
 
-        List<CellPos> keys = new List<CellPos>(_damier.Keys);
-        for (int i = 0; i < keys.Count; i++)
-        {
-            CellPos key = keys[i];
-            if (_damier[key] == null)
-                _damier[key] = true;
-        }
+        //List<CellPos> keys = new List<CellPos>(_damier.Keys);
+        //for (int i = 0; i < keys.Count; i++)
+        //{
+        //    CellPos key = keys[i];
+        //    if (_damier[key] == null)
+        //        _damier[key] = true;
+        //}
 
         foreach (Transform cell in transform)
         {
@@ -261,43 +281,118 @@ public class Damier : MonoBehaviour
 
     private IEnumerator FollowPathCoroutine()
     {
-        Vector3 startWorldPos = new Vector3(path[0].x + transform.position.x, _riwa.transform.localPosition.y, path[0].y + transform.position.z);
-        Vector3 firstLookTarget = new Vector3(path[1].x + transform.position.x, _riwa.transform.localPosition.y, path[1].y + transform.position.z);
-        Vector3 lookDir = (firstLookTarget - startWorldPos).normalized;
-        Quaternion startRot = Quaternion.LookRotation(lookDir);
-        _riwa.transform.position = startWorldPos;
-        _riwa.transform.rotation = startRot;
-        for (int i = 1; i < path.Count; i++)
+        List<Vector3> controlPoints = new List<Vector3>();
+        foreach (var cell in path)
         {
-            yield return StartCoroutine(MoveRiwaToCell(path[i - 1], path[i]));
+            controlPoints.Add(new Vector3(cell.x + transform.position.x, _riwa.transform.localPosition.y, cell.y + transform.position.z));
         }
-    }
 
-    private IEnumerator MoveRiwaToCell(CellPos from, CellPos to)
-    {
-        Vector3 startPos = new Vector3(from.x + transform.position.x, _riwa.transform.localPosition.y, from.y + transform.position.z);
-        Vector3 endPos = new Vector3(to.x + transform.position.x, _riwa.transform.localPosition.y, to.y + transform.position.z);
+        if (controlPoints.Count < 2)
+            yield break;
 
-        Quaternion startRot = _riwa.transform.rotation;
-        Vector3 lookDir = (endPos - startPos).normalized;
-        Quaternion endRot = Quaternion.LookRotation(lookDir);
+        float curveStrength = 1f;
+        for (int i = 1; i < controlPoints.Count - 1; i++)
+        {
+            Vector3 prev = controlPoints[i - 1];
+            Vector3 current = controlPoints[i];
+            Vector3 next = controlPoints[i + 1];
+
+            Vector3 dirPrev = (current - prev).normalized;
+            Vector3 dirNext = (next - current).normalized;
+
+            float angle = Vector3.Angle(dirPrev, dirNext);
+
+            if (angle > 150.0f)
+            {
+                Vector3 perpendicular = Vector3.Cross(dirPrev, dirNext).normalized;
+
+                controlPoints[i] += perpendicular * curveStrength;
+            }
+        }
 
         float elapsedTime = 0.0f;
 
-        while (elapsedTime < _lerpTime)
+        Vector3 startPos = controlPoints[0];
+        Vector3 endPos = controlPoints[controlPoints.Count - 1];
+        Vector3 prevPoint = startPos;
+
+        while (elapsedTime < _pathTravelTime)
         {
             elapsedTime += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsedTime / _lerpTime);
+            float t = Mathf.Clamp01(elapsedTime / _pathTravelTime);
 
-            _riwa.transform.position = Vector3.Lerp(startPos, endPos, t);
-            _riwa.transform.rotation = Quaternion.Slerp(startRot, endRot, t);
+            Vector3 currentPos = GetBezierPoint(t, controlPoints);
+
+            _riwa.transform.position = currentPos;
+
+            Vector3 direction = (currentPos - prevPoint).normalized;
+            Quaternion rotation = Quaternion.LookRotation(direction);
+            _riwa.transform.rotation = rotation;
+
+            prevPoint = currentPos;
 
             yield return null;
         }
 
         _riwa.transform.position = endPos;
-        _riwa.transform.rotation = endRot;
+        _riwa.transform.rotation = Quaternion.LookRotation(endPos - prevPoint);
     }
+
+    private Vector3 GetBezierPoint(float t, List<Vector3> controlPoints)
+    {
+        if (controlPoints.Count == 2)
+            return Vector3.Lerp(controlPoints[0], controlPoints[1], t);
+        else
+        {
+            List<Vector3> nextPoints = new List<Vector3>();
+
+            for (int i = 0; i < controlPoints.Count - 1; i++)
+                nextPoints.Add(Vector3.Lerp(controlPoints[i], controlPoints[i + 1], t));
+
+            return GetBezierPoint(t, nextPoints);
+        }
+    }
+
+
+    //private IEnumerator FollowPathCoroutine()
+    //{
+    //    Vector3 startWorldPos = new Vector3(path[0].x + transform.position.x, _riwa.transform.localPosition.y, path[0].y + transform.position.z);
+    //    Vector3 firstLookTarget = new Vector3(path[1].x + transform.position.x, _riwa.transform.localPosition.y, path[1].y + transform.position.z);
+    //    Vector3 lookDir = (firstLookTarget - startWorldPos).normalized;
+    //    Quaternion startRot = Quaternion.LookRotation(lookDir);
+    //    _riwa.transform.position = startWorldPos;
+    //    _riwa.transform.rotation = startRot;
+    //    for (int i = 1; i < path.Count; i++)
+    //    {
+    //        yield return StartCoroutine(MoveRiwaToCell(path[i - 1], path[i]));
+    //    }
+    //}
+
+    //private IEnumerator MoveRiwaToCell(CellPos from, CellPos to)
+    //{
+    //    Vector3 startPos = new Vector3(from.x + transform.position.x, _riwa.transform.localPosition.y, from.y + transform.position.z);
+    //    Vector3 endPos = new Vector3(to.x + transform.position.x, _riwa.transform.localPosition.y, to.y + transform.position.z);
+
+    //    Quaternion startRot = _riwa.transform.rotation;
+    //    Vector3 lookDir = (endPos - startPos).normalized;
+    //    Quaternion endRot = Quaternion.LookRotation(lookDir);
+
+    //    float elapsedTime = 0.0f;
+
+    //    while (elapsedTime < _lerpTime)
+    //    {
+    //        elapsedTime += Time.deltaTime;
+    //        float t = Mathf.Clamp01(elapsedTime / _lerpTime);
+
+    //        _riwa.transform.position = Vector3.Lerp(startPos, endPos, t);
+    //        _riwa.transform.rotation = Quaternion.Slerp(startRot, endRot, t);
+
+    //        yield return null;
+    //    }
+
+    //    _riwa.transform.position = endPos;
+    //    _riwa.transform.rotation = endRot;
+    //}
 
     private bool CheckDirection(CellPos pos)
     {

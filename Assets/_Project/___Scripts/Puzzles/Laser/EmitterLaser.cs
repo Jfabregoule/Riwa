@@ -193,6 +193,7 @@ public class EmitterLaser : MonoBehaviour
         if (CurrentActive == _activables.Length)
         {
             _isActive = false;
+            ResetLaser();
         }
         CurrentActive--;
     }

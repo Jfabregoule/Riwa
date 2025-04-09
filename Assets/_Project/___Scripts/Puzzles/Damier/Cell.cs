@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Cell : MonoBehaviour
 {
-    public delegate void CellTrigered(CellPos pos);
+    public delegate void CellTrigered(CellPos pos, Cell cell);
     public event CellTrigered OnCellTriggered;
 
     public CellPos Position { get; private set; }
 
     public void Init(CellPos pos) {  Position = pos; }
 
-    private void OnTriggerEnter(Collider other) { OnCellTriggered?.Invoke(Position); }
+    private void OnTriggerEnter(Collider other) { OnCellTriggered?.Invoke(Position, this); }
 }

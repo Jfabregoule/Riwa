@@ -7,7 +7,7 @@ using UnityEngine;
 public struct DamierDatas
 {
     public CellPos pos;
-    public CellData cellData;
+    public bool? breakable;
 }
 
 [System.Serializable]
@@ -40,17 +40,27 @@ public class Damier : MonoBehaviour
     [SerializeField] private GameObject _riwa;
 
     [HideInInspector][SerializeField] List<DamierDatas> serializedDamier = new List<DamierDatas>(); // Delete when Save is done
-    [HideInInspector][SerializeField] List<CellPos> path = new List<CellPos>();
+    [HideInInspector][SerializeField] List<Cell> serializedCells = new List<Cell>(); // Delete when Save is done too
+
+    List<CellPos> path = new List<CellPos>();
 
     private float _pathTravelTime = 7.0f;
 
-    Dictionary<CellPos, CellData> _damier = new Dictionary<CellPos, CellData>(); // This has to be saved later
+    Dictionary<CellPos, Cell> _cells = new Dictionary<CellPos, Cell>();
+    Dictionary<CellPos, bool?> _damier = new Dictionary<CellPos, bool?>(); // This has to be saved later
 
     private void Awake()
     {
         _damier.Clear();
         foreach (var data in serializedDamier)
-            _damier.Add(data.pos, data.cellData);
+            _damier.Add(data.pos, data.breakable);
+
+        _cells.Clear();
+        foreach(var cell in serializedCells)
+        {
+            _cells.Add(cell.Position, cell);
+            cell.OnCellTriggered += OnCellTriggered;
+        }
     }
 
     private void Start()
@@ -67,6 +77,7 @@ public class Damier : MonoBehaviour
         {
             for (int y = 0; y < _damierSize; y++)
             {
+                CellPos pos = new CellPos(x, y);
                 GameObject cell = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 cell.transform.position = transform.position + new Vector3(x * cellSize, 0, y * cellSize);
                 cell.transform.localScale = new Vector3(cellSize, 0.1f, cellSize);
@@ -78,38 +89,40 @@ public class Damier : MonoBehaviour
                 collider.size = new Vector3(1f, 1f, 1f);
                 collider.center = new Vector3(0f, 0.5f, 0f);
                 Cell cellScript = cell.AddComponent<Cell>();
-                cellScript.Init(new CellPos(x, y));
-                _damier[new CellPos(x, y)] = new CellData(true, cellScript);
+                cellScript.Init(pos);
+                _cells[pos] = cellScript;
+                _damier[pos] = true;
             }
         }
 
         serializedDamier.Clear();
         foreach(var pair in _damier)
-            serializedDamier.Add(new DamierDatas() { pos = pair.Key, cellData = pair.Value });
+            serializedDamier.Add(new DamierDatas() { pos = pair.Key, breakable = pair.Value });
+
+        serializedCells.Clear();
+        foreach(var pair in _cells)
+            serializedCells.Add(pair.Value);
     }
 
     public void GeneratePath()
     {
         path.Clear();
 
+        CellPos end = new CellPos(_damierSize - 1, _damierSize - 1);
+
+        List<CellPos> options = new List<CellPos>()
+         {
+             new CellPos(0, 0),
+             new CellPos(0, 1)
+         };
         List<CellPos> possibleMoves = new List<CellPos>();
         List<CellPos> existingNeighbors = new List<CellPos>();
-        List<CellPos> options = new List<CellPos>()
-        {
-            new CellPos(0, 0),
-            new CellPos(0, 1)
-        };
 
-
-        CellPos end = new CellPos(_damierSize - 1, _damierSize - 1);
-        if (_damier.TryGetValue(end, out CellData startData))
-            _damier[end] = new CellData(false, startData.cell);
+        _damier[end] = false;
 
         int pathStart = Random.Range(0, options.Count);
-
         CellPos current = options[pathStart];
-        _damier[current].SetBreakable(false);
-
+        _damier[current] = false;
         path.Add(current);
 
         System.Random random = new System.Random();
@@ -134,8 +147,7 @@ public class Damier : MonoBehaviour
                 (_damier.ContainsKey(currentRight) && currentRight == end))
             {
                 path.Add(current);
-                if (_damier.TryGetValue(end, out CellData cellData))
-                    _damier[current] = new CellData(false, cellData.cell);
+                _damier[current] = false;
                 break;
             }
 
@@ -147,7 +159,7 @@ public class Damier : MonoBehaviour
             if (existingNeighbors.Contains(currentUp))
             {
                 CellPos leftOfUp = currentUp.GetCellAtDirection(CellPos.Direction.Left);
-                if (_damier.ContainsKey(leftOfUp) && _damier[leftOfUp].breakable == false)
+                if (_damier.ContainsKey(leftOfUp) && _damier[leftOfUp] == false)
                 {
                     existingNeighbors.Remove(currentUp);
                 }
@@ -156,21 +168,22 @@ public class Damier : MonoBehaviour
             if (existingNeighbors.Contains(currentDown))
             {
                 CellPos leftOfDown = currentDown.GetCellAtDirection(CellPos.Direction.Left);
-                if ((_damier.ContainsKey(leftOfDown) && _damier[leftOfDown].GetIsBreakable() == false) || current.x <= 1)
-                {
-                    existingNeighbors.Remove(currentDown);
-                }
+                if (_damier.ContainsKey(leftOfDown) && _damier[leftOfDown] == false)
+                    if ((_damier.ContainsKey(leftOfDown) && _damier[leftOfDown] == false) || current.x <= 1)
+                    {
+                        existingNeighbors.Remove(currentDown);
+                    }
             }
 
-            if(existingNeighbors.Contains(currentLeft))
+            if (existingNeighbors.Contains(currentLeft))
             {
-                if(currentLeft.y >= 4 || currentLeft.y <= 1) existingNeighbors.Remove(currentLeft);
+                if (currentLeft.y >= 4 || currentLeft.y <= 1) existingNeighbors.Remove(currentLeft);
             }
 
             for (int i = 0; i < existingNeighbors.Count; i++)
             {
                 CellPos index = existingNeighbors[i];
-                if (_damier[current].GetIsBreakable() != _damier[index].GetIsBreakable())
+                if (_damier[current] != _damier[index])
                     possibleMoves.Add(index);
             }
 
@@ -178,7 +191,7 @@ public class Damier : MonoBehaviour
             {
                 CellPos index = possibleMoves[j];
 
-                if (_damier.ContainsKey(index) && _damier[index].GetIsBreakable() == false)
+                if (_damier.ContainsKey(index) && _damier[index] == false)
                 {
                     possibleMoves.RemoveAt(j);
                     continue;
@@ -209,7 +222,7 @@ public class Damier : MonoBehaviour
                 if (move == end || IsAdjacentToEnd(move, end))
                 {
                     current = move;
-                    _damier[current].SetBreakable(true);
+                    _damier[current] = false;
 
                     if ((current.x == 5 && current.y == 4) || (current.x == 4 && current.y == 5))
                     {
@@ -234,7 +247,7 @@ public class Damier : MonoBehaviour
             {
                 path.Add(nextMove);
                 current = nextMove;
-                _damier[current].SetBreakable(true);
+                _damier[current] = false;
             }
 
             if (current == nextMove.GetCellAtDirection(CellPos.Direction.Up)) upCounter++;
@@ -251,6 +264,13 @@ public class Damier : MonoBehaviour
 
         path.Add(end);
 
+        List<CellPos> keys = new List<CellPos>(_damier.Keys);
+        for (int i = 0; i < keys.Count; i++)
+        {
+            CellPos key = keys[i];
+            if (_damier[key] == null)
+                _damier[key] = true;
+        }
         //List<CellPos> keys = new List<CellPos>(_damier.Keys);
         //for (int i = 0; i < keys.Count; i++)
         //{
@@ -263,14 +283,14 @@ public class Damier : MonoBehaviour
         {
             CellPos pos = new CellPos((int)cell.position.x - (int)transform.position.x, (int)cell.position.z - (int)transform.position.z);
 
-            if (_damier.TryGetValue(pos, out CellData data))
+            if (_damier.TryGetValue(pos, out bool? breakable))
             {
                 Renderer rend = cell.GetComponent<Renderer>();
                 if (rend != null)
                 {
-                    if (data.breakable == false)
+                    if (breakable == false)
                     {
-                        //Debug.Log(cell.name);
+                        Debug.Log(cell.name);
                         rend.material = _green;
                     }
                 }
@@ -360,47 +380,6 @@ public class Damier : MonoBehaviour
         }
     }
 
-
-    //private IEnumerator FollowPathCoroutine()
-    //{
-    //    Vector3 startWorldPos = new Vector3(path[0].x + transform.position.x, _riwa.transform.localPosition.y, path[0].y + transform.position.z);
-    //    Vector3 firstLookTarget = new Vector3(path[1].x + transform.position.x, _riwa.transform.localPosition.y, path[1].y + transform.position.z);
-    //    Vector3 lookDir = (firstLookTarget - startWorldPos).normalized;
-    //    Quaternion startRot = Quaternion.LookRotation(lookDir);
-    //    _riwa.transform.position = startWorldPos;
-    //    _riwa.transform.rotation = startRot;
-    //    for (int i = 1; i < path.Count; i++)
-    //    {
-    //        yield return StartCoroutine(MoveRiwaToCell(path[i - 1], path[i]));
-    //    }
-    //}
-
-    //private IEnumerator MoveRiwaToCell(CellPos from, CellPos to)
-    //{
-    //    Vector3 startPos = new Vector3(from.x + transform.position.x, _riwa.transform.localPosition.y, from.y + transform.position.z);
-    //    Vector3 endPos = new Vector3(to.x + transform.position.x, _riwa.transform.localPosition.y, to.y + transform.position.z);
-
-    //    Quaternion startRot = _riwa.transform.rotation;
-    //    Vector3 lookDir = (endPos - startPos).normalized;
-    //    Quaternion endRot = Quaternion.LookRotation(lookDir);
-
-    //    float elapsedTime = 0.0f;
-
-    //    while (elapsedTime < _lerpTime)
-    //    {
-    //        elapsedTime += Time.deltaTime;
-    //        float t = Mathf.Clamp01(elapsedTime / _lerpTime);
-
-    //        _riwa.transform.position = Vector3.Lerp(startPos, endPos, t);
-    //        _riwa.transform.rotation = Quaternion.Slerp(startRot, endRot, t);
-
-    //        yield return null;
-    //    }
-
-    //    _riwa.transform.position = endPos;
-    //    _riwa.transform.rotation = endRot;
-    //}
-
     private bool CheckDirection(CellPos pos)
     {
         if (_damier.ContainsKey(pos)) return true;
@@ -409,7 +388,7 @@ public class Damier : MonoBehaviour
 
     private bool IsTargetedCellTaken(CellPos target)
     {
-        return _damier.ContainsKey(target) && _damier[target].GetIsBreakable() == false;
+        return _damier.ContainsKey(target) && _damier[target] == false;
     }
 
     bool IsAdjacentToEnd(CellPos a, CellPos b)
@@ -419,16 +398,12 @@ public class Damier : MonoBehaviour
         return (dx + dy) == 1;
     }
 
-    void ModifyCellDataValues(CellPos pos, bool breakable)
+    private void OnCellTriggered(CellPos pos, Cell cell)
     {
-        CellData tempory = _damier[pos];
-        tempory.SetBreakable(breakable);
-        _damier[pos] = tempory;
-    }
-
-    bool? GetBreakableCellDataValues(CellPos pos)
-    {
-        CellData temp = _damier[pos];
-        return temp.breakable;
+        if(_cells.TryGetValue(pos, out Cell triggeredCell) && _damier.ContainsKey(pos))
+        {
+            Destroy(cell.gameObject);
+            _damier[pos] = null;
+        }
     }
 }

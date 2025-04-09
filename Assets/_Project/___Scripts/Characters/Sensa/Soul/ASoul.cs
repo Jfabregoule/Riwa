@@ -24,7 +24,7 @@ public class ASoul : MonoBehaviour
     private CapsuleCollider _capsuleCollider;
     private GameObject _character;
 
-    private VariableJoystick _joystick; //TEMPORAIRE EN ATTENDANT L'INPUT SYSTEM
+    private InputManager _inputManager;
 
     private bool _canInteract;
     private bool _canInteractSoul;
@@ -51,7 +51,6 @@ public class ASoul : MonoBehaviour
     public GameObject SoulPawn { get => _soulPawn;}
     public StateMachineSoul FsmSoul { get => _fsmSoul;}
     public Animator Animator { get => _animator;}
-    public VariableJoystick Joystick { get => _joystick;}
     public Rigidbody Rb { get => _rb; }
     public CapsuleCollider CapsuleCollider { get => _capsuleCollider; }
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
@@ -63,6 +62,8 @@ public class ASoul : MonoBehaviour
     public GameObject Character { get => _character; set => _character = value; }
     public float LinkMaxDistance { get => _linkMaxDistance; set => _linkMaxDistance = value; }
     public float LinkElasticity { get => _linkElasticity; set => _linkElasticity = value; }
+
+    public InputManager InputManager { get => _inputManager; }
 
     #endregion
 
@@ -81,7 +82,7 @@ public class ASoul : MonoBehaviour
 
         _animator = GetComponent<Animator>();
 
-        _joystick = GameObject.Find("Variable Joystick").GetComponent<VariableJoystick>(); //A modifier plus tard 
+        _inputManager = InputManager.Instance;
 
         _fsmSoul.InitState(_fsmSoul.States[EnumStateSoul.Idle]);
 

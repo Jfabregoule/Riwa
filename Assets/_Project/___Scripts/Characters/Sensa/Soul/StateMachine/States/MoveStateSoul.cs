@@ -32,11 +32,7 @@ public class MoveStateSoul : BaseStateSoul
     {
         base.UpdateState();
 
-        Vector3 movement;
-
-        movement.x = _soul.Joystick.Direction.x;
-        movement.y = 0;
-        movement.z = _soul.Joystick.Direction.y;
+        Vector2 direction = _soul.InputManager.GetMoveDirection();
 
         Vector3 camForward = _cam.transform.forward;
         Vector3 camRight = _cam.transform.right;
@@ -46,7 +42,7 @@ public class MoveStateSoul : BaseStateSoul
         camForward.Normalize();
         camRight.Normalize();
 
-        _moveDirection = (camForward * movement.z + camRight * movement.x);
+        _moveDirection = (camForward * direction.y + camRight * direction.x);
     }
 
     public override void FixedUpdateState()
@@ -73,10 +69,10 @@ public class MoveStateSoul : BaseStateSoul
     {
         base.CheckChangeState();
 
-        Vector2 direction = new Vector2(_soul.Joystick.Direction.x , _soul.Joystick.Direction.y);
+        Vector2 direction = _soul.InputManager.GetMoveDirection();
         float magnitude = direction.magnitude;
 
-        if (_soul.Joystick.Direction.y == 0 && _soul.Joystick.Direction.x == 0)
+        if (direction != Vector2.zero)
         {
             _stateMachine.ChangeState(_stateMachine.States[EnumStateSoul.Idle]);
         }

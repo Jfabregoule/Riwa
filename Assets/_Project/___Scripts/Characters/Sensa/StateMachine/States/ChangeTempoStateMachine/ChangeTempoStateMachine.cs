@@ -14,8 +14,8 @@ public class ChangeTempoStateMachine : BaseStateMachine<EnumChangeTempo, ChangeT
         //animation map et transition pas obligatoires
 
         _transition = new BaseTransitions(); //Dans l'idéal créer une class transition par state machine 
-        States = new Dictionary<EnumChangeTempo, ChangeTempoBaseState>();
-        _animationMap = new Dictionary<EnumChangeTempo, string>(); 
+        States = new();
+        _animationMap = new(); 
     }
 
     public void InitStateMachine(ACharacter character)

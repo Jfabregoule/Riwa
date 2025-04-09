@@ -14,8 +14,8 @@ public class HoldingStateMachine : BaseStateMachine<EnumHolding, HoldingBaseStat
         //animation map et transition pas obligatoires
 
         _transition = new BaseTransitions(); //Dans l'idéal créer une class transition par state machine 
-        States = new Dictionary<EnumHolding, HoldingBaseState>();
-        _animationMap = new Dictionary<EnumHolding, string>();
+        States = new();
+        _animationMap = new();
     }
 
     public void InitStateMachine(ACharacter character)

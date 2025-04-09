@@ -1,11 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
-public class MoveStateInteract : InteractBaseState
+public class MoveStateInteract<TStateEnum> : InteractBaseState<TStateEnum>
+    where TStateEnum : Enum
 {
-    public override void InitState(InteractStateMachine stateMachine, EnumInteract enumValue, ACharacter character)
+    public override void InitState(InteractStateMachine<TStateEnum> stateMachine, EnumInteract enumValue, APawn<TStateEnum> character)
     {
         base.InitState(stateMachine, enumValue, character);
     }
@@ -70,13 +72,13 @@ public class MoveStateInteract : InteractBaseState
     {
         if (_stateMachine.CurrentObjectInteract.TryGetComponent(out IHoldable holdable))
         {
-            _character.FsmCharacter.ChangeState(_character.FsmCharacter.States[EnumStateCharacter.Holding]);
+            _character.StateMachine.ChangeState(_character.StateMachine.States[EnumStateCharacter.Holding]);
             return;
         }
 
         if (_stateMachine.CurrentObjectInteract.TryGetComponent(out ITreeStump stump))
         {
-            _character.FsmCharacter.ChangeState(_character.FsmCharacter.States[EnumStateCharacter.Soul]);
+            _character.StateMachine.ChangeState(_character.StateMachine.States[EnumStateCharacter.Soul]);
             return;
         }
 

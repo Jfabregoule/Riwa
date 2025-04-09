@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChangeTempoStateCharacter : BaseStateCharacter
+public class ChangeTempoStateCharacter : BaseStateCharacter<EnumStateCharacter>
 {
     /// <summary>
     /// State dans lequel le joueur va changer de temporalité

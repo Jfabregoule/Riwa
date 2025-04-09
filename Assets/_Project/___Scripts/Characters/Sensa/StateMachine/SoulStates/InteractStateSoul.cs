@@ -1,14 +1,12 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StandByStateInteract<TStateEnum> : InteractBaseState<TStateEnum>
-    where TStateEnum : Enum
+public class InteractStateSoul : BaseStateSoul
 {
-    public override void InitState(InteractStateMachine<TStateEnum> stateMachine, EnumInteract enumValue, APawn<TStateEnum> character)
+    public override void InitState(StateMachineSoul stateMachine, EnumStateSoul enumValue, ASoul Soul)
     {
-        base.InitState(stateMachine, enumValue, character);
+        base.InitState(stateMachine, enumValue, Soul);
     }
 
     public override void EnterState()
@@ -24,6 +22,11 @@ public class StandByStateInteract<TStateEnum> : InteractBaseState<TStateEnum>
     public override void UpdateState()
     {
         base.UpdateState();
+    }
+
+    public override void FixedUpdateState()
+    {
+        base.FixedUpdateState();
     }
 
     public override void CheckChangeState()

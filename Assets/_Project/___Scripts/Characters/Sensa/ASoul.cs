@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class ASoul : MonoBehaviour
+public class ASoul : APawn<EnumStateSoul>
 {
     #region Constantes
 
@@ -20,8 +20,6 @@ public class ASoul : MonoBehaviour
     private GameObject _soulPawn;
     private StateMachineSoul _fsmSoul;
     private Animator _animator;
-    private Rigidbody _rb;
-    private CapsuleCollider _capsuleCollider;
     private GameObject _character;
 
     private VariableJoystick _joystick; //TEMPORAIRE EN ATTENDANT L'INPUT SYSTEM
@@ -33,7 +31,6 @@ public class ASoul : MonoBehaviour
 
     [Header("Gameplay Statistics")]
 
-    [SerializeField] private float _speed = 7;
     [SerializeField] private float _joystickRunTreshold = 0.4f;
     [SerializeField] private float _linkMaxDistance = 2.5f;
     [SerializeField] private float _linkElasticity = 500f;
@@ -52,11 +49,8 @@ public class ASoul : MonoBehaviour
     public StateMachineSoul FsmSoul { get => _fsmSoul;}
     public Animator Animator { get => _animator;}
     public VariableJoystick Joystick { get => _joystick;}
-    public Rigidbody Rb { get => _rb; }
-    public CapsuleCollider CapsuleCollider { get => _capsuleCollider; }
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
     public bool CanInteractSoul { get => _canInteractSoul; set => _canInteractSoul = value; }
-    public float Speed { get => _speed; set => _speed = value; }
     public float JoystickRunTreshold { get => _joystickRunTreshold; set => _joystickRunTreshold = value; }
     public float TimeBeforeWait { get => _timeBeforeWait; set => _timeBeforeWait = value; }
     public CameraHandler CameraHandler { get => _cameraHandler;}

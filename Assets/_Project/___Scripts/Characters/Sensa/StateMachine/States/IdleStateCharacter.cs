@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IdleStateCharacter : BaseStateCharacter
+public class IdleStateCharacter : ParentIdleState<EnumStateCharacter>
 {
-    private float _clock;
+    new protected ACharacter _character;
 
-    public override void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, ACharacter character)
+    public void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, ACharacter character)
     {
         base.InitState(stateMachine, enumValue, character);
     }

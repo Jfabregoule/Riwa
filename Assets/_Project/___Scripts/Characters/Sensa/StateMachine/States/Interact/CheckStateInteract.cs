@@ -1,14 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
-public class CheckStateInteract : InteractBaseState
+public class CheckStateInteract<TStateEnum> : InteractBaseState<TStateEnum>
+    where TStateEnum : Enum
 {
 
     private readonly List<GameObject> _colliderList = new();
 
-    public override void InitState(InteractStateMachine stateMachine, EnumInteract enumValue, ACharacter character)
+    public override void InitState(InteractStateMachine<TStateEnum> stateMachine, EnumInteract enumValue, APawn<TStateEnum> character)
     {
         base.InitState(stateMachine, enumValue, character);
     }
@@ -28,8 +30,8 @@ public class CheckStateInteract : InteractBaseState
         LayerMask layerMask = _character.IsInPast ? _character.PastLayer : _character.PresentLayer;
 
         //Offset pour mettre la capsule devant le joueur
-        point1 += _character.Pawn.transform.forward * radius * 1.5f;
-        point2 += _character.Pawn.transform.forward * radius * 1.5f;
+        point1 += _character.transform.forward * radius * 1.5f;
+        point2 += _character.transform.forward * radius * 1.5f;
 
         Collider[] others = Physics.OverlapCapsule(point1, point2, radius, layerMask);
 
@@ -44,7 +46,7 @@ public class CheckStateInteract : InteractBaseState
         if (_colliderList.Count <= 0)
         {
             //Si il n'y a aucun obj interactaible, rien ne se passes
-            _character.FsmCharacter.ChangeState(_character.FsmCharacter.States[EnumStateCharacter.Idle]);
+            _character.StateMachine.GoToIdle();
             return;
         }
 
@@ -77,7 +79,7 @@ public class CheckStateInteract : InteractBaseState
         /// </summary>
 
         GameObject closestObj = _colliderList[0];
-        Vector3 playerPos = _character.Pawn.transform.position;
+        Vector3 playerPos = _character.transform.position;
 
         float distance = Vector3.Distance(closestObj.transform.position, playerPos);
 

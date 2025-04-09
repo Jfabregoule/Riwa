@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HoldingStateCharacter : BaseStateCharacter
+public class HoldingStateCharacter : BaseStateCharacter<EnumStateCharacter>
 {
     /// <summary>
     /// State dans lequel Sensa va tenir un gros objet

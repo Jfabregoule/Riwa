@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UIElements;
 
-public class SoulStateCharacter : BaseStateCharacter
+public class SoulStateCharacter : BaseStateCharacter<EnumStateCharacter>
 {
     /// <summary>
     /// State dans lequel le joueur va changer de temporalité
@@ -16,7 +16,7 @@ public class SoulStateCharacter : BaseStateCharacter
     {
         base.InitState(stateMachine, enumValue, character);
     }
-
+        
     public override void EnterState()
     {
         base.EnterState();

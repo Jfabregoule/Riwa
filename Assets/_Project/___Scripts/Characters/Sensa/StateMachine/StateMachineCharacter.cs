@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StateMachineCharacter : BaseStateMachine<EnumStateCharacter, BaseStateCharacter>
+public class StateMachineCharacter : StateMachinePawn<EnumStateCharacter, BaseStatePawn<EnumStateCharacter>>
 {
 
     #region StateNameAnimation
@@ -22,13 +22,15 @@ public class StateMachineCharacter : BaseStateMachine<EnumStateCharacter, BaseSt
 
     public StateMachineCharacter() { 
 
-        _transition = new BaseTransitions();
-        States = new Dictionary<EnumStateCharacter, BaseStateCharacter>();
-        _animationMap = new Dictionary<EnumStateCharacter, string>();
+        _transition = new();
+        States = new();
+        _animationMap = new();
     }
 
     public void InitStateMachine(ACharacter character)
     {
+        base.InitStateMachine();
+
         States[EnumStateCharacter.Idle] = new IdleStateCharacter();
         States[EnumStateCharacter.Idle].InitState(this, EnumStateCharacter.Idle, character);
         _animationMap[EnumStateCharacter.Idle] = IDLE_NAME;
@@ -70,6 +72,11 @@ public class StateMachineCharacter : BaseStateMachine<EnumStateCharacter, BaseSt
         _animationMap[EnumStateCharacter.Respawn] = RESPAWN_NAME;
 
 
+    }
+
+    public override void GoToIdle()
+    {
+        ChangeState(States[EnumStateCharacter.Idle]);
     }
 
 }

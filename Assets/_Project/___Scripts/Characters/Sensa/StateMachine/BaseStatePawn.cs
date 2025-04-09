@@ -3,52 +3,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EnumStateCharacter
-{
-    Idle,
-    Move,
-    Cinematic,
-    Wait,
-    ChangeTempo,
-    Interact,
-    Holding,
-    Push,
-    Pull,
-    Soul,
-    Fall,
-    Rotate,
-    Respawn
-}
-
-public abstract class BaseStateCharacter<TStateEnum> : BaseStatePawn<TStateEnum>
+public class BaseStatePawn<TStateEnum> : BaseState<TStateEnum>
     where TStateEnum : Enum
 {
-    /// <summary>
-    /// Contient une instance du joueur, de la state machine du joueur et l'identifiant du state
-    /// Chaque state a une map avec des transition, state actuel -> identifiant du state cible et va appeler l'event associé
-    /// </summary>
-
     //FIELDS
 
-    new protected ACharacter _character;
-    new protected StateMachineCharacter _stateMachine;
+    protected APawn<TStateEnum> _character;
+    new protected StateMachinePawn<TStateEnum, BaseStatePawn<TStateEnum>> _stateMachine;
 
     //PROPERTIES
-    new protected ACharacter Character { get => _character; set => _character = value; }
+    protected APawn<TStateEnum> Character { get => _character; set => _character = value; }
 
     //FUNCTIONS
 
-    public virtual void InitState(StateMachineCharacter stateMachine, TStateEnum enumValue, ACharacter character) 
+    public virtual void InitState(StateMachinePawn<TStateEnum, BaseStatePawn<TStateEnum>> stateMachine, TStateEnum enumValue, APawn<TStateEnum> character)
     {
         base.InitState(enumValue);
 
         //Je set la state machine dans le baseStateCHaracter et pas plus haut dans l'héritage car les templates ont leurs limites
         _stateMachine = stateMachine;
         _character = character;
-        _transitionMap = new Dictionary<TStateEnum, Transition>();
+        _transitionMap = new();
     }
 
-    public override void EnterState() 
+    public override void EnterState()
     {
         base.EnterState();
         //_character.Animator.SetTrigger(_stateMachine.AnimationMap[_enumState]); //Lorsque je rentre dans un state, je trigger l'animation à jouer, si l'animator est bien fait, tout est clean
@@ -72,5 +50,4 @@ public abstract class BaseStateCharacter<TStateEnum> : BaseStatePawn<TStateEnum>
         //Ici on mettra les conditions et tout ce qui concerne les changements de state
         base.CheckChangeState();
     }
-
 }

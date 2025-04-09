@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RespawnStateCharacter : BaseStateCharacter
+public class RespawnStateCharacter : BaseStateCharacter<EnumStateCharacter>
 {
     public override void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, ACharacter character)
     {

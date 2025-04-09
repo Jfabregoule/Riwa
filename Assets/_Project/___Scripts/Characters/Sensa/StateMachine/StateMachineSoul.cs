@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StateMachineSoul : BaseStateMachine<EnumStateSoul, BaseStateSoul>
+public class StateMachineSoul : StateMachinePawn<EnumStateSoul, BaseStatePawn<EnumStateSoul>>
 {
 
     #region StateNameAnimation
@@ -14,13 +14,15 @@ public class StateMachineSoul : BaseStateMachine<EnumStateSoul, BaseStateSoul>
 
     public StateMachineSoul() { 
 
-        _transition = new BaseTransitions();
-        States = new Dictionary<EnumStateSoul, BaseStateSoul>();
-        _animationMap = new Dictionary<EnumStateSoul, string>();
+        _transition = new();
+        States = new();
+        _animationMap = new();
     }
 
     public void InitStateMachine(ASoul Soul)
     {
+        base.InitStateMachine();
+
         States[EnumStateSoul.Idle] = new IdleStateSoul();
         States[EnumStateSoul.Idle].InitState(this, EnumStateSoul.Idle, Soul);
         _animationMap[EnumStateSoul.Idle] = IDLE_NAME;
@@ -28,6 +30,22 @@ public class StateMachineSoul : BaseStateMachine<EnumStateSoul, BaseStateSoul>
         States[EnumStateSoul.Move] = new MoveStateSoul();
         States[EnumStateSoul.Move].InitState(this, EnumStateSoul.Move, Soul);
         _animationMap[EnumStateSoul.Move] = MOVE_NAME;
+    }
+
+    public override void GoToIdle()
+    {
+        ChangeState(States[EnumStateSoul.Idle]);
+    }
+
+    public override void GoToHolding()
+    {
+        return;
+    }
+
+    public override void GoToSoul()
+    {
+        //GameManager.Instance.Character.StateMachine.ChangeState();
+        //Faire passer la soul en human
     }
 
 }

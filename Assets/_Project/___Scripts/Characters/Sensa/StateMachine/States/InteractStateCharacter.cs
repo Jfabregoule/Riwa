@@ -4,20 +4,14 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class InteractStateCharacter : BaseStateCharacter
+public class InteractStateCharacter : ParentInteractState<EnumStateCharacter>
 {
-
-    private readonly List<GameObject> _colliderList = new();
     private float _currentOffset;
 
-    private InteractStateMachine _subStateMachine;
-
-    public override void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, ACharacter character)
+    public void InitState(StateMachinePawn<EnumStateCharacter, BaseStatePawn<EnumStateCharacter>> stateMachine, EnumStateCharacter enumValue, ACharacter character)
     {
         base.InitState(stateMachine, enumValue, character);
-        _subStateMachine = new();
-        _subStateMachine.InitStateMachine(character);
-        _subStateMachine.InitState(_subStateMachine.States[EnumInteract.StandBy]);
+        
     }
 
     public override void EnterState()

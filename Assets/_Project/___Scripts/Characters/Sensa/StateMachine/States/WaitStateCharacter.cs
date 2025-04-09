@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class WaitStateCharacter : BaseStateCharacter
+public class WaitStateCharacter : BaseStateCharacter<EnumStateCharacter>
 {
     /// <summary>
     /// State ou le joueur aura les inputs bloqués pour les cinématiques

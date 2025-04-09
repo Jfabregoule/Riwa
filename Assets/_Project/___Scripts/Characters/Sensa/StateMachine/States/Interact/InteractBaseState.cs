@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,12 +11,13 @@ public enum EnumInteract
     Move
 }
 
-public class InteractBaseState : BaseState<EnumInteract>
+public class InteractBaseState<TStateEnum> : BaseState<EnumInteract>
+    where TStateEnum : Enum
 {
-    new protected InteractStateMachine _stateMachine;
-    protected ACharacter _character;
+    new protected InteractStateMachine<TStateEnum> _stateMachine;
+    protected APawn<TStateEnum> _character;
 
-    public virtual void InitState(InteractStateMachine stateMachine, EnumInteract enumValue, ACharacter character)
+    public virtual void InitState(InteractStateMachine<TStateEnum> stateMachine, EnumInteract enumValue, APawn<TStateEnum> character)
     {
         base.InitState(enumValue);
 

@@ -6,9 +6,10 @@ public enum EnumStateSoul
 { 
     Idle,
     Move,
+    Interact,
 }
 
-public abstract class BaseStateSoul : BaseState<EnumStateSoul>
+public abstract class BaseStateSoul : BaseStatePawn<EnumStateSoul>
 {
     /// <summary>
     /// Contient une instance du joueur, de la state machine du joueur et l'identifiant du state
@@ -17,11 +18,11 @@ public abstract class BaseStateSoul : BaseState<EnumStateSoul>
 
     //FIELDS
 
-    protected ASoul _soul;
+    new protected ASoul _character;
     new protected StateMachineSoul _stateMachine;
 
     //PROPERTIES
-    protected ASoul Soul { get => _soul; set => _soul = value; }
+    new protected ASoul Character { get => _character; set => _character = value; }
 
     //FUNCTIONS
 
@@ -31,14 +32,14 @@ public abstract class BaseStateSoul : BaseState<EnumStateSoul>
 
         //Je set la state machine dans le baseStateCHaracter et pas plus haut dans l'héritage car les templates ont leurs limites
         _stateMachine = stateMachine;
-        _soul = character;
-        _transitionMap = new Dictionary<EnumStateSoul, Transition>();
+        _character = character;
+        _transitionMap = new();
     }
 
     public override void EnterState() 
     {
         base.EnterState();
-        _soul.Animator.SetTrigger(_stateMachine.AnimationMap[_enumState]); //Lorsque je rentre dans un state, je trigger l'animation à jouer, si l'animator est bien fait, tout est clean
+        _character.Animator.SetTrigger(_stateMachine.AnimationMap[_enumState]); //Lorsque je rentre dans un state, je trigger l'animation à jouer, si l'animator est bien fait, tout est clean
     }
 
     public override void ExitState()

@@ -99,7 +99,7 @@ public class CameraHandler : MonoBehaviour
 
     public void Update()
     {
-        if (_character.FsmCharacter.CurrentState.EnumState == EnumStateCharacter.Move) 
+        if (_character.StateMachine.CurrentState.EnumState == EnumStateCharacter.Move) 
         {
             MoveCameraOffset();
         }

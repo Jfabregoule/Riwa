@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StandByStateInteract<TStateEnum> : InteractBaseState<TStateEnum>
+public class ParentIdleState<TStateEnum> : BaseStatePawn<TStateEnum>
     where TStateEnum : Enum
 {
-    public override void InitState(InteractStateMachine<TStateEnum> stateMachine, EnumInteract enumValue, APawn<TStateEnum> character)
+    protected float _clock;
+
+    public override void InitState(StateMachinePawn<TStateEnum, BaseStatePawn<TStateEnum>> stateMachine, TStateEnum enumValue, APawn<TStateEnum> character)
     {
         base.InitState(stateMachine, enumValue, character);
     }
@@ -14,6 +16,7 @@ public class StandByStateInteract<TStateEnum> : InteractBaseState<TStateEnum>
     public override void EnterState()
     {
         base.EnterState();
+        _clock = 0;
     }
 
     public override void ExitState()

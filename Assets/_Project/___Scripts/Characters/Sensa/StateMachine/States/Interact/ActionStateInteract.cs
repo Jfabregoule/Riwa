@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActionStateInteract : InteractBaseState
+public class ActionStateInteract<TStateEnum> : InteractBaseState<TStateEnum>
+    where TStateEnum : Enum
 {
     /// <summary>
     /// State qui va trigger l'animation de sensa qui intéragit
@@ -10,7 +12,7 @@ public class ActionStateInteract : InteractBaseState
 
     float _animClock;
 
-    public override void InitState(InteractStateMachine stateMachine, EnumInteract enumValue, ACharacter character)
+    public override void InitState(InteractStateMachine<TStateEnum> stateMachine, EnumInteract enumValue, APawn<TStateEnum> character)
     {
         base.InitState(stateMachine, enumValue, character);
     }
@@ -40,7 +42,7 @@ public class ActionStateInteract : InteractBaseState
 
         if(_animClock > 1) //Temps d'animation
         {
-            _character.FsmCharacter.ChangeState(_character.FsmCharacter.States[EnumStateCharacter.Idle]);
+            _character.StateMachine.ChangeState(_character.FsmCharacter.States[EnumStateCharacter.Idle]);
         }
     }
 }

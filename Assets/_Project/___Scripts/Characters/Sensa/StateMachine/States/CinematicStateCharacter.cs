@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CinematicStateCharacter : BaseStateCharacter
+public class CinematicStateCharacter : BaseStateCharacter<EnumStateCharacter>
 {
     /// <summary>
     /// State ou le joueur aura les inputs bloqués pour les cinématiques

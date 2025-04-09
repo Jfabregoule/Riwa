@@ -31,12 +31,14 @@ public class TriggerPointPlatform : MonoBehaviour
         vineScript.SetSocketTransform(transform);
         VineManager.Instance.InvokeVineChange();
         VineManager.Instance.OnVineChange += vineScript.SetSocketPoint;
-        Debug.Log(VineManager.Instance.TriggerVines.Count);
+        //Debug.Log(VineManager.Instance.TriggerVines.Count);
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (!other.TryGetComponent(out VineScript vineScript)) return;
+
+        Debug.Log("ça sort");
 
         VineManager.Instance.TriggerVines.Remove(vineScript);
 

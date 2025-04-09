@@ -25,7 +25,7 @@ public static class Helpers
         canvasGroup.interactable = isEnable;
         canvasGroup.blocksRaycasts = isEnable;
     }
-    public static void ActivateCanvasGroup(CanvasGroup canvasGroup)
+    public static void EnabledCanvasGroup(CanvasGroup canvasGroup)
     {
         ToggleCanvasGroup(true, canvasGroup);
     }

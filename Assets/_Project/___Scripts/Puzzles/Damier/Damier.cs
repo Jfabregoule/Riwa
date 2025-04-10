@@ -27,22 +27,6 @@ public struct DamierDatas
     public CellState cellState;
 }
 
-[System.Serializable]
-public struct CellData
-{
-
-    public CellData(CellPos pos, GameObject cell, bool? isBreakable)
-    {
-        this.cellPos = pos;
-        this.cell = cell;
-        this.breakable = isBreakable;
-    }
-
-    public CellPos cellPos;
-    public GameObject cell;
-    public bool? breakable;
-}
-
 public class Damier : MonoBehaviour
 {
 
@@ -54,15 +38,13 @@ public class Damier : MonoBehaviour
     [Header("Damier")]
     [SerializeField] private int _damierSize = 6;
     [SerializeField] private float _cellSize = 1.5f;
-    [SerializeField] private float _lerpTime = 1.5f;
+    [SerializeField] private float _lerpTime = 1.0f;
     [SerializeField] private Vector3 _rotation = Vector3.zero;
     [SerializeField] private GameObject _riwa;
 
     [HideInInspector][SerializeField] List<DamierDatas> serializedDamier = new List<DamierDatas>(); // Delete when Save is done
 
     List<CellPos> path = new List<CellPos>();
-
-    private float _pathTravelTime = 7.0f;
 
     Dictionary<CellPos, DamierDatas> _damier = new Dictionary<CellPos, DamierDatas>(); // This has to be saved later
 
@@ -307,7 +289,6 @@ public class Damier : MonoBehaviour
         if (path.Count < 2)
             yield break;
 
-        // Construction des world positions (hauteur constante)
         List<Vector3> worldPoints = new List<Vector3>();
         foreach (var cell in path)
         {
@@ -319,12 +300,10 @@ public class Damier : MonoBehaviour
             }
         }
 
-        // Position et rotation initiales
         _riwa.transform.position = worldPoints[0];
         Vector3 initialDir = (worldPoints[1] - worldPoints[0]).normalized;
         _riwa.transform.rotation = Quaternion.LookRotation(new Vector3(initialDir.x, 0, initialDir.z));
 
-        // Interpolation entre les points
         for (int i = 0; i < worldPoints.Count - 1; i++)
         {
             Vector3 p0 = i == 0 ? worldPoints[i] : worldPoints[i - 1];
@@ -352,69 +331,6 @@ public class Damier : MonoBehaviour
 
         _riwa.transform.position = worldPoints[worldPoints.Count - 1];
     }
-
-    //private IEnumerator FollowPathCoroutine()
-    //{
-    //    if (path.Count == 0)
-    //        yield break;
-
-    //    // Positionnement initial
-    //    if (_damier.TryGetValue(path[0], out DamierDatas firstCell))
-    //    {
-    //        Vector3 startPos = firstCell.cell.transform.position;
-    //        _riwa.transform.position = new Vector3(startPos.x, _riwa.transform.position.y, startPos.z);
-    //    }
-
-    //    // Orientation initiale
-    //    if (path.Count > 1 && _damier.TryGetValue(path[1], out DamierDatas nextCell))
-    //    {
-    //        Vector3 current = _riwa.transform.position;
-    //        Vector3 target = nextCell.cell.transform.position;
-    //        Vector3 lookDir = (target - current).normalized;
-    //        Quaternion rot = Quaternion.LookRotation(new Vector3(lookDir.x, 0, lookDir.z));
-    //        _riwa.transform.rotation = rot;
-    //    }
-
-    //    // Mouvement entre chaque paire de cellules
-    //    for (int i = 1; i < path.Count; i++)
-    //    {
-    //        yield return StartCoroutine(MoveRiwaToCell(path[i - 1], path[i]));
-    //    }
-    //}
-
-    //private IEnumerator MoveRiwaToCell(CellPos from, CellPos to)
-    //{
-    //    if (!_damier.TryGetValue(from, out DamierDatas dataFrom) ||
-    //        !_damier.TryGetValue(to, out DamierDatas dataTo))
-    //        yield break;
-
-    //    Vector3 startPos = dataFrom.cell.transform.position;
-    //    Vector3 endPos = dataTo.cell.transform.position;
-
-    //    // Assure la hauteur constante
-    //    startPos.y = _riwa.transform.position.y;
-    //    endPos.y = _riwa.transform.position.y;
-
-    //    Quaternion startRot = _riwa.transform.rotation;
-    //    Vector3 dir = (endPos - startPos).normalized;
-    //    Quaternion endRot = Quaternion.LookRotation(new Vector3(dir.x, 0, dir.z));
-
-    //    float elapsedTime = 0f;
-
-    //    while (elapsedTime < _lerpTime)
-    //    {
-    //        elapsedTime += Time.deltaTime;
-    //        float t = Mathf.Clamp01(elapsedTime / _lerpTime);
-
-    //        _riwa.transform.position = Vector3.Lerp(startPos, endPos, t);
-    //        _riwa.transform.rotation = Quaternion.Slerp(startRot, endRot, t);
-
-    //        yield return null;
-    //    }
-
-    //    _riwa.transform.position = endPos;
-    //    _riwa.transform.rotation = endRot;
-    //}
 
     private Vector3 InterpolationHermite(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
     {

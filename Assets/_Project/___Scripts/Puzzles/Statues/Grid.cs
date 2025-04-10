@@ -108,7 +108,7 @@ public struct StatueData
 {
     public int id;
     public int rotation;
-    public int unitGridSize;
+    public float unitGridSize;
     public int posX;
     public int posY;
 }
@@ -123,8 +123,8 @@ public struct Datas
 public class Grid : MonoBehaviour
 {
     [Header("Grid")]
-    [SerializeField] private Vector2Int _gridSize = new Vector2Int(7, 7);
-    [SerializeField] private int _unitGridSize = 7;
+    [SerializeField] private Vector2Int _gridSize = new Vector2Int(5, 5);
+    [SerializeField] private float _unitGridSize = 2.5f;
     [SerializeField] private GameObject defaultTile;
     [SerializeField] private GameObject gridSpawnpoint;
     [Header("Debug")]
@@ -157,7 +157,7 @@ public class Grid : MonoBehaviour
 
     [SerializeField] private List<Statue> _statues = new List<Statue>();
 
-    public int UnitGridSize => _unitGridSize;
+    public float UnitGridSize => _unitGridSize;
     public Vector3 Origin { get; private set; }
     public Vector2Int GridSize => _gridSize;
 
@@ -203,8 +203,8 @@ public class Grid : MonoBehaviour
         {
             for (int x = 0; x < _gridSize.x; x++)
             {
-                if (y >= 3 && x >= 3)
-                    continue;
+                //if (y >= 3 && x >= 3)
+                //    continue;
 
                 Vector3 position = Origin + new Vector3(x * _unitGridSize, 0f, y * _unitGridSize);
 
@@ -257,7 +257,7 @@ public class Grid : MonoBehaviour
             Quaternion rot = Quaternion.Euler(0, randRotation, 0);
             Vector3 position = Origin + new Vector3(randX * _unitGridSize, 1, randY * _unitGridSize);
             GameObject statueGO = Instantiate(_statuesPrefab[index - 1], position, rot);
-            statueGO.transform.SetParent(gridSpawnpoint.transform);
+            statueGO.transform.SetParent(transform);
 
             Statue statue = statueGO.GetComponent<Statue>();
             _statues.Add(statue);

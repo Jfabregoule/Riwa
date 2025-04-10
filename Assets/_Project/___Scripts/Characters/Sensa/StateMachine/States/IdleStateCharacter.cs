@@ -44,11 +44,6 @@ public class IdleStateCharacter : ParentIdleState<EnumStateCharacter>
             _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.ChangeTempo]);
         }
 
-        if (_character.IsInSoul)
-        {
-            _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Soul]);
-        }
-
         if (_character.InputManager.GetMoveDirection() != Vector2.zero)
         {
             _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Move]);

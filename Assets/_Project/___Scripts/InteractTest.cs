@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractTest : MonoBehaviour, IInteractable
+public class InteractTest : MonoBehaviour, IHoldable
 {
     public float OffsetRadius { get; set; }
 
@@ -26,5 +26,10 @@ public class InteractTest : MonoBehaviour, IInteractable
     void Update()
     {
         
+    }
+
+    public void Hold()
+    {
+        throw new System.NotImplementedException();
     }
 }

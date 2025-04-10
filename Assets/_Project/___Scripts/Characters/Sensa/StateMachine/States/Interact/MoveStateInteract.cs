@@ -72,6 +72,7 @@ public class MoveStateInteract<TStateEnum> : InteractBaseState<TStateEnum>
     {
         if (_stateMachine.CurrentObjectInteract.TryGetComponent(out IHoldable holdable))
         {
+            _character.SetHoldingObject(_stateMachine.CurrentObjectInteract);
             _character.StateMachine.ChangeState(_character.StateMachine.States[EnumStateCharacter.Holding]);
             return;
         }

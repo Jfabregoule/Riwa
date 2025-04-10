@@ -130,10 +130,11 @@ public class InputManager : Singleton<InputManager>
     #region Events Methods
 
     private void PressPerfomed() {
-        if(GetPressPosition().x > Screen.width / 2)
-        {
-            OnInteract?.Invoke();
-        }
+        //if(GetPressPosition().x > Screen.width / 2)
+        //{
+        //    OnInteract?.Invoke();
+        //}
+        OnInteract?.Invoke();
     }
     private void InteractPerfomed() => OnInteract?.Invoke();
     private void InteractCanceled() => OnInteractEnd?.Invoke();

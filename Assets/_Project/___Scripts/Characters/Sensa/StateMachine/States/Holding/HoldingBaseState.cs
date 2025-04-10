@@ -5,8 +5,7 @@ using UnityEngine;
 public enum EnumHolding
 {
     IdleHolding, 
-    Push,
-    Pull,
+    Move,
     Rotate
 }
 

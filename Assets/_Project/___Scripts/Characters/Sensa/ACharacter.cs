@@ -27,6 +27,7 @@ public class ACharacter : APawn<EnumStateCharacter>
     new private StateMachineCharacter _stateMachine;
     private Animator _animator;
     private GameObject _soul;
+    private GameObject _holdingObject;
 
     private bool _canInteract;
     private bool _canInteractSoul;
@@ -57,6 +58,8 @@ public class ACharacter : APawn<EnumStateCharacter>
 
     public GameObject Pawn { get => _pawn;}
     public Animator Animator { get => _animator;}
+
+    public GameObject HoldingObject { get => _holdingObject; }
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
     public bool CanInteractSoul { get => _canInteractSoul; set => _canInteractSoul = value; }
     public float JoystickRunTreshold { get => _joystickRunTreshold; set => _joystickRunTreshold = value; }
@@ -78,7 +81,6 @@ public class ACharacter : APawn<EnumStateCharacter>
     {
         _pawn = GameObject.Find(PAWN_OBJECT);
         _rb = GetComponent<Rigidbody>();
-        _capsuleCollider = GetComponent<CapsuleCollider>();
         _stateMachine = new StateMachineCharacter();
         _changeTime = GetComponent<ChangeTime>();
         _inputManager = InputManager.Instance;
@@ -105,6 +107,12 @@ public class ACharacter : APawn<EnumStateCharacter>
     private void FixedUpdate()
     {
         _stateMachine.StateMachineFixedUpdate();
+    }
+
+    public void SetHoldingObject(GameObject holdingObject)
+    {
+        holdingObject.transform.SetParent(transform);
+        _holdingObject = holdingObject;
     }
 
     #endregion

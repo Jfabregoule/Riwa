@@ -29,9 +29,10 @@ public class ASoul : APawn<EnumStateSoul>
 
     private CameraHandler _cameraHandler;
 
+    new private StateMachineSoul _stateMachine;
+
     [Header("Gameplay Statistics")]
 
-    [SerializeField] private float _speed = 7;
     [SerializeField] private float _joystickRunTreshold = 0.4f;
     [SerializeField] private float _linkMaxDistance = 2.5f;
     [SerializeField] private float _linkElasticity = 500f;
@@ -49,7 +50,6 @@ public class ASoul : APawn<EnumStateSoul>
     public GameObject SoulPawn { get => _soulPawn;}
     public StateMachineSoul FsmSoul { get => _fsmSoul;}
     public Animator Animator { get => _animator;}
-    
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
     public bool CanInteractSoul { get => _canInteractSoul; set => _canInteractSoul = value; }
     public float JoystickRunTreshold { get => _joystickRunTreshold; set => _joystickRunTreshold = value; }
@@ -57,6 +57,8 @@ public class ASoul : APawn<EnumStateSoul>
     public CameraHandler CameraHandler { get => _cameraHandler;}
     public GameObject Character { get => _character; set => _character = value; }
     public float LinkMaxDistance { get => _linkMaxDistance; set => _linkMaxDistance = value; }
+    public float LinkElasticity { get => _linkElasticity; set => _linkElasticity = value; }
+    new public StateMachineSoul StateMachine { get => _stateMachine; set => _stateMachine = value; }
 
     #endregion
 

@@ -70,6 +70,7 @@ public class ACharacter : APawn<EnumStateCharacter>
     public GameObject Soul { get => _soul; set => _soul = value; }
     public ParticleSystem SoulLinkVFX { get => _soulLinkVFX; set => _soulLinkVFX = value; }
     public CameraHandler CameraHandler { get => _cameraHandler;}
+    new public StateMachineCharacter StateMachine { get => _stateMachine; set => _stateMachine = value; }
 
     #endregion
 
@@ -81,7 +82,6 @@ public class ACharacter : APawn<EnumStateCharacter>
     {
         _pawn = GameObject.Find(PAWN_OBJECT);
         _rb = GetComponent<Rigidbody>();
-        _stateMachine = new StateMachineCharacter();
         _changeTime = GetComponent<ChangeTime>();
         _inputManager = InputManager.Instance;
         _animator = GetComponent<Animator>();
@@ -90,6 +90,7 @@ public class ACharacter : APawn<EnumStateCharacter>
         _soul.SetActive(false);
 
 
+        _stateMachine = new StateMachineCharacter();
         _stateMachine.InitStateMachine(this);
         _stateMachine.InitState(_stateMachine.States[EnumStateCharacter.Idle]);
     }

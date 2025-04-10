@@ -78,7 +78,7 @@ public class Damier : MonoBehaviour
             {
                 CellPos pos = new CellPos(x, y);
                 GameObject cell = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                Vector3 localPos = new Vector3(x * _cellSize, 0, y * _cellSize) - centerOffset;
+                Vector3 localPos = new Vector3(x * (_cellSize + 0.05f), 0, y * (_cellSize + 0.05f)) - centerOffset;
                 Vector3 rotatedPos = rotation * localPos;
                 cell.transform.position = transform.position + rotatedPos;
                 cell.transform.localScale = new Vector3(_cellSize, 0.1f, _cellSize);

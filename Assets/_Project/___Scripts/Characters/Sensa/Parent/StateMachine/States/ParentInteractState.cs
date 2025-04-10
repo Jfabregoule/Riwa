@@ -18,13 +18,11 @@ public class ParentInteractState<TStateEnum> : BaseStatePawn<TStateEnum>
     public override void EnterState()
     {
         base.EnterState();
-        _subStateMachine.ChangeState(_subStateMachine.States[EnumInteract.Check]);
     }
 
     public override void ExitState()
     {
         base.ExitState();
-        _subStateMachine.ChangeState(_subStateMachine.States[EnumInteract.StandBy]);
     }
 
     public override void UpdateState()

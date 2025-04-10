@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class APawn<TStateEnum> : MonoBehaviour
@@ -44,14 +45,15 @@ public class APawn<TStateEnum> : MonoBehaviour
 
         targetPos.y = startPos.y;
 
-        Vector3 direction = targetPos - startPos;
-        Vector3 startDirection = transform.localEulerAngles;
+        Vector3 direction = (targetPos - startPos).normalized;
+        Quaternion startRotation = transform.rotation;
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
 
         while (clock < 1)
         {
 
             transform.position = Vector3.Lerp(startPos, targetPos, clock);
-            transform.localEulerAngles = Vector3.Lerp(-startPos, direction, clock);
+            transform.rotation = Quaternion.Slerp(startRotation, targetRotation, Mathf.Clamp01(clock * 3)); //Pour que sensa se tourne plus vite au début 
 
             clock += Time.deltaTime;
 

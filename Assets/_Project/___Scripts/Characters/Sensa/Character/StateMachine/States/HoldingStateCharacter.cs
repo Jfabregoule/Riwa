@@ -10,9 +10,10 @@ public class HoldingStateCharacter : BaseStateCharacter<EnumStateCharacter>
     /// </summary>
 
     private HoldingStateMachine _subStateMachine;
+    new private ACharacter _character;
 
 
-    public override void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, ACharacter character)
+    public override void InitState(StateMachinePawn<EnumStateCharacter, BaseStatePawn<EnumStateCharacter>> stateMachine, EnumStateCharacter enumValue, APawn<EnumStateCharacter> character)
     {
         base.InitState(stateMachine, enumValue, character);
 

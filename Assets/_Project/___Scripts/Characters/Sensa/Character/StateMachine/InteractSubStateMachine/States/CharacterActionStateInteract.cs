@@ -11,9 +11,12 @@ public class CharacterActionStateInteract : PawnActionStateInteract<EnumStateCha
 
     float _animClock;
 
+    new private ACharacter _character;
+
     public override void InitState(PawnInteractSubstateMachine<EnumStateCharacter> stateMachine, EnumInteract enumValue, APawn<EnumStateCharacter> character)
     {
         base.InitState(stateMachine, enumValue, character);
+        _character = (ACharacter)character;
     }
 
     public override void EnterState()
@@ -24,8 +27,8 @@ public class CharacterActionStateInteract : PawnActionStateInteract<EnumStateCha
     public override void ExitState()
     {
         base.ExitState();
-        //NaTTAN
-        //_stateMachine.CurrentObjectInteract.GetComponent<IInteractable>().Interactable();
+        
+        _stateMachine.CurrentObjectInteract.GetComponent<IInteractable>().Interactable();
     }
 
     public override void UpdateState()

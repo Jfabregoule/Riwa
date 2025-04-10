@@ -11,7 +11,7 @@ public abstract class PawnInteractSubstateMachine<TStateEnum> : BaseStateMachine
     protected const string ACTION_NAME = "Action";
     protected const string MOVE_NAME = "Move";
 
-    private GameObject currentObjectInteract;
+    protected GameObject _currentObjectInteract;
 
     public PawnInteractSubstateMachine()
     {
@@ -22,7 +22,7 @@ public abstract class PawnInteractSubstateMachine<TStateEnum> : BaseStateMachine
         _animationMap = new();
     }
 
-    public GameObject CurrentObjectInteract { get => currentObjectInteract; set => currentObjectInteract = value; }
+    public GameObject CurrentObjectInteract { get => _currentObjectInteract; set => _currentObjectInteract = value; }
 
     public virtual void InitStateMachine(APawn<TStateEnum> character)
     {

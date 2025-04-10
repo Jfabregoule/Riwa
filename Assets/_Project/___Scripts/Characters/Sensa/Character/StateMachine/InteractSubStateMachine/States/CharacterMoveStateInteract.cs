@@ -6,9 +6,13 @@ using UnityEngine.TextCore.Text;
 
 public class CharacterMoveStateInteract : PawnMoveStateInteract<EnumStateCharacter>
 {
+
+    new private ACharacter _character;
+
     public override void InitState(PawnInteractSubstateMachine<EnumStateCharacter> stateMachine, EnumInteract enumValue, APawn<EnumStateCharacter> character)
     {
         base.InitState(stateMachine, enumValue, character);
+        _character = (ACharacter)character;
     }
 
     public override void EnterState()
@@ -16,6 +20,12 @@ public class CharacterMoveStateInteract : PawnMoveStateInteract<EnumStateCharact
         base.EnterState();
 
         _character.OnMoveToFinished += InteractEndOfPath;
+
+        if(_stateMachine.CurrentObjectInteract == null)
+        {
+            _character.StateMachine.ChangeState(_character.StateMachine.States[EnumStateCharacter.Idle]);
+            return;
+        }
 
         float radius = _stateMachine.CurrentObjectInteract.GetComponent<IInteractable>().OffsetRadius;
 

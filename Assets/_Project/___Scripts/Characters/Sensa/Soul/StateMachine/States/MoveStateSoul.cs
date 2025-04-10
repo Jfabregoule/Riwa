@@ -51,10 +51,10 @@ public class MoveStateSoul : ParentMoveState<EnumStateSoul>
     {
         base.CheckChangeState();
 
-        Vector2 direction = new Vector2(_character.InputManager.GetMoveDirection().x , _character.InputManager.GetMoveDirection().y);
-        float magnitude = direction.magnitude;
+        //Vector2 direction = _character.InputManager.GetMoveDirection();
+        //float magnitude = direction.magnitude;
 
-        if (_character.InputManager.GetMoveDirection().y == 0 && _character.InputManager.GetMoveDirection().x == 0)
+        if (_character.InputManager.GetMoveDirection() != Vector2.zero)
         {
             _stateMachine.ChangeState(_stateMachine.States[EnumStateSoul.Idle]);
         }

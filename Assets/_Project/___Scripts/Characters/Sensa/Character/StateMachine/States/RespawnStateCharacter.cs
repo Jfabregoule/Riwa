@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class RespawnStateCharacter : BaseStateCharacter<EnumStateCharacter>
 {
-    public override void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, ACharacter character)
+    new private ACharacter _character;
+
+    public override void InitState(StateMachinePawn<EnumStateCharacter, BaseStatePawn<EnumStateCharacter>> stateMachine, EnumStateCharacter enumValue, APawn<EnumStateCharacter> character)
     {
         base.InitState(stateMachine, enumValue, character);
+
+        _character = (ACharacter)character;
+
     }
 
     public override void EnterState()

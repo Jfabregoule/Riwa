@@ -18,7 +18,6 @@ public class ASoul : APawn<EnumStateSoul>
     //Field
 
     private GameObject _soulPawn;
-    private StateMachineSoul _fsmSoul;
     private Animator _animator;
     private GameObject _character;
 
@@ -48,7 +47,6 @@ public class ASoul : APawn<EnumStateSoul>
     //Properties
 
     public GameObject SoulPawn { get => _soulPawn;}
-    public StateMachineSoul FsmSoul { get => _fsmSoul;}
     public Animator Animator { get => _animator;}
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
     public bool CanInteractSoul { get => _canInteractSoul; set => _canInteractSoul = value; }
@@ -72,24 +70,25 @@ public class ASoul : APawn<EnumStateSoul>
         _soulPawn = GameObject.Find(SOULPAWN_OBJECT);
         _rb = GetComponent<Rigidbody>();
         _capsuleCollider = GetComponent<CapsuleCollider>();
-        _fsmSoul = new StateMachineSoul();
-        _fsmSoul.InitStateMachine(this);
+        _inputManager = InputManager.Instance;
 
-
-        _fsmSoul.InitState(_fsmSoul.States[EnumStateSoul.Idle]);
 
         _cameraHandler = GameManager.Instance.CameraHandler; //Il faut appeler ça après le load des 3C dans gameManager
+
+        _stateMachine = new StateMachineSoul();
+        _stateMachine.InitStateMachine(this);
+        _stateMachine.InitState(_stateMachine.States[EnumStateSoul.Idle]);
 
     }
 
     private void Update()
     {
-        _fsmSoul.StateMachineUpdate();
+        _stateMachine.StateMachineUpdate();
     }
 
     private void FixedUpdate()
     {
-        _fsmSoul.StateMachineFixedUpdate();
+        _stateMachine.StateMachineFixedUpdate();
     }
 
     #endregion

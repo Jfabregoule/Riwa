@@ -13,7 +13,7 @@ public class InteractStateSoul : ParentInteractState<EnumStateSoul>
         _character = (ASoul)Soul;
 
         _subStateMachine = new SoulInteractSubstateMachine();
-        _subStateMachine.InitStateMachine();
+        _subStateMachine.InitStateMachine(Soul);
         _subStateMachine.InitState(_subStateMachine.States[EnumInteract.StandBy]);
 
     }
@@ -21,16 +21,19 @@ public class InteractStateSoul : ParentInteractState<EnumStateSoul>
     public override void EnterState()
     {
         base.EnterState();
+        _subStateMachine.ChangeState(_subStateMachine.States[EnumInteract.Check]);
     }
 
     public override void ExitState()
     {
         base.ExitState();
+        _subStateMachine.ChangeState(_subStateMachine.States[EnumInteract.StandBy]);
     }
 
     public override void UpdateState()
     {
         base.UpdateState();
+        _subStateMachine.StateMachineUpdate();
     }
 
     public override void FixedUpdateState()

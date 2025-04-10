@@ -8,10 +8,7 @@ public class PawnMoveStateInteract<TStateEnum> : PawnInteractBaseSubstate<TState
 {
     public override void InitState(PawnInteractSubstateMachine<TStateEnum> stateMachine, EnumInteract enumValue, APawn<TStateEnum> character)
     {
-        base.InitState(enumValue);
-
-        _character = character;
-        _stateMachine = stateMachine;
+        base.InitState(stateMachine, enumValue, character);
     }
 
     public override void EnterState()

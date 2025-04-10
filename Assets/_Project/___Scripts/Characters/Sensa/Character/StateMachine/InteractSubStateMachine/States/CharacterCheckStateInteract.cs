@@ -9,9 +9,13 @@ public class CharacterCheckStateInteract : PawnInteractBaseSubstate<EnumStateCha
 
     private readonly List<GameObject> _colliderList = new();
 
+    new private ACharacter _character;
+
     public override void InitState(PawnInteractSubstateMachine<EnumStateCharacter> stateMachine, EnumInteract enumValue, APawn<EnumStateCharacter> character)
     {
         base.InitState(stateMachine, enumValue, character);
+        _character = (ACharacter)character; 
+
     }
 
     public override void EnterState()
@@ -45,12 +49,11 @@ public class CharacterCheckStateInteract : PawnInteractBaseSubstate<EnumStateCha
         if (_colliderList.Count <= 0)
         {
             //Si il n'y a aucun obj interactaible, rien ne se passes
-            _character.StateMachine.GoToIdle();
+            _character.StateMachine.ChangeState(_character.StateMachine.States[EnumStateCharacter.Idle]);
             return;
         }
 
-        //NATTAN
-        //_stateMachine.CurrentObjectInteract = SortObjects();
+        _stateMachine.CurrentObjectInteract = SortObjects(_character.transform.position, _colliderList);
 
     }
 
@@ -72,28 +75,5 @@ public class CharacterCheckStateInteract : PawnInteractBaseSubstate<EnumStateCha
 
     }
 
-    public GameObject SortObjects()
-    {
-        ///<summary>
-        /// Renvoie l'object interactable le plus proche du player
-        /// </summary>
-
-        GameObject closestObj = _colliderList[0];
-        Vector3 playerPos = _character.transform.position;
-
-        float distance = Vector3.Distance(closestObj.transform.position, playerPos);
-
-        for (int i = 1; i < _colliderList.Count; i++)
-        {
-            if (Vector3.Distance(_colliderList[i].transform.position, playerPos) < distance)
-            {
-                closestObj = _colliderList[i];
-                distance = Vector3.Distance(closestObj.transform.position, playerPos);
-            }
-        }
-
-        return closestObj;
-
-    }
 
 }

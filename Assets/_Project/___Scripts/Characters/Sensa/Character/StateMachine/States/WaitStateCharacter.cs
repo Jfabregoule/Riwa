@@ -10,14 +10,17 @@ public class WaitStateCharacter : BaseStateCharacter<EnumStateCharacter>
     /// pourra surement prendre en paramètre un sequencer, et jouera ce sequncer dans ce state
     /// </summary>
 
+    new private ACharacter _character;
+
     float _clockZoom;
 
     float _startZoom = 30;
     float _endZoom = 20;
 
-    public override void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, ACharacter character)
+    public override void InitState(StateMachinePawn<EnumStateCharacter, BaseStatePawn<EnumStateCharacter>> stateMachine, EnumStateCharacter enumValue, APawn<EnumStateCharacter> character)
     {
         base.InitState(stateMachine, enumValue, character);
+        _character = (ACharacter)character;
     }
 
     public override void EnterState()

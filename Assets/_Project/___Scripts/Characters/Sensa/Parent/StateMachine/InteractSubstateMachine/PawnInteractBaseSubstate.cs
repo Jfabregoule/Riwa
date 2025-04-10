@@ -47,4 +47,29 @@ public class PawnInteractBaseSubstate<TStateEnum> : BaseState<EnumInteract>
     {
         base.CheckChangeState();
     }
+
+
+    public GameObject SortObjects(Vector3 playerPos, List<GameObject> objs)
+    {
+        ///<summary>
+        /// Renvoie l'object interactable le plus proche du player
+        /// </summary>
+
+        GameObject closestObj = objs[0];
+
+        float distance = Vector3.Distance(closestObj.transform.position, playerPos);
+
+        for (int i = 1; i < objs.Count; i++)
+        {
+            if (Vector3.Distance(objs[i].transform.position, playerPos) < distance)
+            {
+                closestObj = objs[i];
+                distance = Vector3.Distance(closestObj.transform.position, playerPos);
+            }
+        }
+
+        return closestObj;
+
+    }
+
 }

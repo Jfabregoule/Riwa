@@ -37,8 +37,8 @@ public class MoveStateCharacter : ParentMoveState<EnumStateCharacter>
     {
         base.CheckChangeState();
 
-        Vector2 direction = _character.InputManager.GetMoveDirection();
-        float magnitude = direction.magnitude;
+        //Vector2 direction = _character.InputManager.GetMoveDirection();
+        //float magnitude = direction.magnitude;
 
         if (_character.InputManager.GetMoveDirection() != Vector2.zero)
         {

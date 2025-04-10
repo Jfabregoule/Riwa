@@ -11,10 +11,12 @@ public class SoulStateCharacter : BaseStateCharacter<EnumStateCharacter>
     /// L'entrée vers ce state n'a pas encore été définit
     /// On y fera le check de si le voyage temporel est possible ou non
     /// </summary>
+    new private ACharacter _character;
 
-    public override void InitState(StateMachineCharacter stateMachine, EnumStateCharacter enumValue, ACharacter character)
+    public override void InitState(StateMachinePawn<EnumStateCharacter, BaseStatePawn<EnumStateCharacter>> stateMachine, EnumStateCharacter enumValue, APawn<EnumStateCharacter> character)
     {
         base.InitState(stateMachine, enumValue, character);
+        _character = (ACharacter)character;
     }
         
     public override void EnterState()

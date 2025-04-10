@@ -15,11 +15,17 @@ public class IdleStateSoul : ParentIdleState<EnumStateSoul>
     public override void EnterState()
     {
         base.EnterState();
+
+        _character.InputManager.OnInteract += OnInteract;
+
     }
 
     public override void ExitState()
     {
         base.ExitState();
+
+        _character.InputManager.OnInteract -= OnInteract;
+
     }
 
     public override void UpdateState()
@@ -61,4 +67,10 @@ public class IdleStateSoul : ParentIdleState<EnumStateSoul>
             return;
         }
     }
+
+    private void OnInteract()
+    {
+        _stateMachine.ChangeState(_stateMachine.States[EnumStateSoul.Interact]);
+    }
+
 }

@@ -88,7 +88,7 @@ public class ACharacter : APawn<EnumStateCharacter>
 
         _soul = GameObject.Find(SOUL_OBJECT);
         _soul.SetActive(false);
-
+        _capsuleCollider = GetComponent<CapsuleCollider>();
 
         _stateMachine = new StateMachineCharacter();
         _stateMachine.InitStateMachine(this);

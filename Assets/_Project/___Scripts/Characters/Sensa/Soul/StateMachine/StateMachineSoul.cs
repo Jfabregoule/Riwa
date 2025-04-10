@@ -35,6 +35,7 @@ public class StateMachineSoul : StateMachinePawn<EnumStateSoul, BaseStatePawn<En
         States[EnumStateSoul.Interact] = new InteractStateSoul();
         States[EnumStateSoul.Interact].InitState(this, EnumStateSoul.Interact, Soul);
         _animationMap[EnumStateSoul.Interact] = INTERACT_NAME;
+
     }
 
     public override void GoToIdle()

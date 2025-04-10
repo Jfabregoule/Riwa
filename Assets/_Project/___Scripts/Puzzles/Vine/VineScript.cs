@@ -38,7 +38,6 @@ public class VineScript : MonoBehaviour
         _capsuleCollider = GetComponent<CapsuleCollider>();
         _minColliderHeight = _capsuleCollider.height;
         _startSocketPos = transform.TransformPoint(_capsuleCollider.center);
-        _capsuleCollider.isTrigger = true;
         for (int i = 0; i < _renderers.Count; i++) 
         {
             for (int j = 0; j < _renderers[i].materials.Length; j++)
@@ -102,7 +101,7 @@ public class VineScript : MonoBehaviour
 
             yield return null;
         }
-        //_capsuleCollider.isTrigger = true;
+        _capsuleCollider.isTrigger = true;
     }
     private void VineFall()
     {
@@ -121,7 +120,7 @@ public class VineScript : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!other.transform.TryGetComponent(out ACharacter character)) return;
-        //_capsuleCollider.isTrigger = false;
+        _capsuleCollider.isTrigger = false;
         StartCoroutine(RaiseVine(_materials[0]));
     }
 

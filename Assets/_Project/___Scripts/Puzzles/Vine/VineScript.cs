@@ -38,6 +38,7 @@ public class VineScript : MonoBehaviour
         _capsuleCollider = GetComponent<CapsuleCollider>();
         _minColliderHeight = _capsuleCollider.height;
         _startSocketPos = transform.TransformPoint(_capsuleCollider.center);
+        _capsuleCollider.isTrigger = true;
         for (int i = 0; i < _renderers.Count; i++) 
         {
             for (int j = 0; j < _renderers[i].materials.Length; j++)
@@ -101,7 +102,7 @@ public class VineScript : MonoBehaviour
 
             yield return null;
         }
-        _capsuleCollider.isTrigger = true;
+        //_capsuleCollider.isTrigger = true;
     }
     private void VineFall()
     {
@@ -120,7 +121,7 @@ public class VineScript : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!other.transform.TryGetComponent(out ACharacter character)) return;
-        _capsuleCollider.isTrigger = false;
+        //_capsuleCollider.isTrigger = false;
         StartCoroutine(RaiseVine(_materials[0]));
     }
 
@@ -137,13 +138,13 @@ public class VineScript : MonoBehaviour
     public void SetSocketPoint()
     {
         SocketPoint = null;
-        VineManager.Instance.OnVineChange -= SetSocketPoint;
+        //VineManager.Instance.OnVineChange -= SetSocketPoint;
     }
 
     public void SetSocketNull()
     {
-        SocketPoint.GetChild(0).GetComponent<Rigidbody>().constraints &= ~RigidbodyConstraints.FreezePositionY;
-        SocketPoint.GetChild(0).GetComponent<Rigidbody>().useGravity = true;
+        //SocketPoint.GetChild(0).GetComponent<Rigidbody>().constraints &= ~RigidbodyConstraints.FreezePositionY;
+        //SocketPoint.GetChild(0).GetComponent<Rigidbody>().useGravity = true;
 
         SocketPoint = null;     
     }

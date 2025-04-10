@@ -14,6 +14,7 @@ Shader "Unlit/VolumetricFogShader"
 
         [HDR] _LightContribution("Light Contribution", Color) = (1,1,1,1)
         _LightScattering("Light Scattering", Range(0,1)) = 0.2
+        [Toggle]_EnableFog("Enable Fog", Float) = 1
     }
     SubShader
     {
@@ -45,6 +46,7 @@ Shader "Unlit/VolumetricFogShader"
             float _DensityThreshold;
             float4 _LightContribution;
             float _LightScattering;
+            float _EnableFog;
 
             float henyey_greenstein(float angle, float scattering)
             {
@@ -91,7 +93,13 @@ Shader "Unlit/VolumetricFogShader"
                     distTravelled += _StepSize;
                 }
                 
-                return lerp(col, fogCol, 1.0 - saturate(transmittance));
+                if (_EnableFog > 0.5)
+                    {
+                        float fogAmount = 1.0 - saturate(transmittance);
+                        col.rgb += fogCol.rgb * fogAmount;
+                    }
+
+                return col;
             }
             ENDHLSL
         }

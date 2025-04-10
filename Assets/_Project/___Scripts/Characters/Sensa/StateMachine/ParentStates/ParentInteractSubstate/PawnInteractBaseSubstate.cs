@@ -3,27 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EnumInteract
+public class PawnInteractBaseSubstate<TStateEnum> : BaseState<EnumInteract>
+    where TStateEnum : Enum //Enum pour soul et character
 {
-    StandBy,
-    Check,
-    Action,
-    Move
-}
-
-public class InteractBaseState<TStateEnum> : BaseState<EnumInteract>
-    where TStateEnum : Enum
-{
-    new protected InteractStateMachine<TStateEnum> _stateMachine;
-    protected APawn<TStateEnum> _character;
-
-    public virtual void InitState(InteractStateMachine<TStateEnum> stateMachine, EnumInteract enumValue, APawn<TStateEnum> character)
+    public virtual void InitState(PawnInteractSubstateMachine<EnumInteract> stateMachine, EnumInteract enumValue, APawn<TStateEnum> character)
     {
         base.InitState(enumValue);
-
-        _stateMachine = stateMachine;
-        _character = character;
-
     }
 
     public override void EnterState()

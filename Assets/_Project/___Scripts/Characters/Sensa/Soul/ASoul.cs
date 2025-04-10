@@ -50,8 +50,6 @@ public class ASoul : APawn<EnumStateSoul>
     public StateMachineSoul FsmSoul { get => _fsmSoul;}
     public Animator Animator { get => _animator;}
     
-    public CapsuleCollider CapsuleCollider { get => _capsuleCollider; }
-    public CapsuleCollider CapsuleCollider { get => _capsuleCollider; }
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
     public bool CanInteractSoul { get => _canInteractSoul; set => _canInteractSoul = value; }
     public float JoystickRunTreshold { get => _joystickRunTreshold; set => _joystickRunTreshold = value; }
@@ -59,7 +57,6 @@ public class ASoul : APawn<EnumStateSoul>
     public CameraHandler CameraHandler { get => _cameraHandler;}
     public GameObject Character { get => _character; set => _character = value; }
     public float LinkMaxDistance { get => _linkMaxDistance; set => _linkMaxDistance = value; }
-    public InputManager InputManager { get => _inputManager; }
 
     #endregion
 

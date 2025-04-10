@@ -10,8 +10,7 @@ public class TriggerPointPlatform : MonoBehaviour
 
         if (!other.TryGetComponent(out VineScript vineScript)) return;
 
-        if (!VineManager.Instance.TriggerVines.Contains(vineScript))
-            VineManager.Instance.TriggerVines.Add(vineScript);
+        VineManager.Instance.TriggerVines.Add(vineScript);
 
         CapsuleCollider capsule = other.GetComponent<CapsuleCollider>();
 
@@ -40,7 +39,8 @@ public class TriggerPointPlatform : MonoBehaviour
 
         Debug.Log("ça sort");
 
-        VineManager.Instance.TriggerVines.Remove(vineScript);
+        if (VineManager.Instance.TriggerVines.Contains(vineScript))
+            VineManager.Instance.TriggerVines.Remove(vineScript);
 
         if (VineManager.Instance.TriggerVines.Count == 0)
         {

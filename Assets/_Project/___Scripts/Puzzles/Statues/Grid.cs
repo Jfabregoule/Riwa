@@ -163,7 +163,7 @@ public class Grid : MonoBehaviour
 
     private void Awake()
     {
-        Origin = gridSpawnpoint.transform.position;
+        Origin = transform.position;
 
         solution.Clear();
         foreach (var entry in serializedSolutions)
@@ -197,7 +197,7 @@ public class Grid : MonoBehaviour
         solution.Add(new CellPos(2, 2), new CellContent(3, 270));    // ID 3 --> Yellow Statue
         solution.Add(new CellPos(1, 4), new CellContent(4, 0));      // ID 4 --> Green Statue
 
-        Origin = gridSpawnpoint.transform.position;
+        Origin = transform.position;
 
         for (int y = 0; y < _gridSize.y; y++)
         {
@@ -214,7 +214,7 @@ public class Grid : MonoBehaviour
                     {
                         GameObject associatedStatueTile = tiles[solution.Value.id - 1];
                         GameObject st = Instantiate(associatedStatueTile, position, Quaternion.identity);
-                        st.transform.SetParent(gridSpawnpoint.transform);
+                        st.transform.SetParent(transform);
                         grid[new CellPos(solution.Key.x, solution.Key.y)] = solution.Value;
                         break;
                     }
@@ -222,7 +222,7 @@ public class Grid : MonoBehaviour
 
                 if (grid.ContainsKey(new CellPos(x, y)) && grid[new CellPos(x, y)] != null) continue;
                 GameObject tile = Instantiate(defaultTile, position, Quaternion.identity);
-                tile.transform.SetParent(gridSpawnpoint.transform);
+                tile.transform.SetParent(transform);
                 grid[new CellPos(x, y)] = null;
             }
         }

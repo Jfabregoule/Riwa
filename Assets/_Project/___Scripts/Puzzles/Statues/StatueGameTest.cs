@@ -12,7 +12,7 @@ public class StatueGameTest : MonoBehaviour
 
     private void Awake()
     {
-        _activeStatue = _statues.Find(statue => !statue.IsLocked);
+        //_activeStatue = _statues.Find(statue => !statue.IsLocked);
         _currentStatueIndex = _statues.IndexOf(_activeStatue);
     }
 
@@ -22,7 +22,7 @@ public class StatueGameTest : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.S)) _activeStatue.Move(Vector2.down);
         if (Input.GetKeyDown(KeyCode.A)) _activeStatue.Move(Vector2.left);
         if (Input.GetKeyDown(KeyCode.D)) _activeStatue.Move(Vector2.right);
-        if (Input.GetKeyDown(KeyCode.E)) _activeStatue.Rotate(45f);
+        if (Input.GetKeyDown(KeyCode.E)) _activeStatue.Rotate(45);
         if (Input.GetKeyDown(KeyCode.Tab)) SwitchStatue();
     }
 
@@ -33,8 +33,8 @@ public class StatueGameTest : MonoBehaviour
         Statue oldActiveStatue = _activeStatue;
         Statue newActiveStatue = _statues[_currentStatueIndex];
         _activeStatue = _statues[_currentStatueIndex];
-        oldActiveStatue.IsLocked = true;
-        newActiveStatue.IsLocked = false;
+        //oldActiveStatue.IsLocked = true;
+        //newActiveStatue.IsLocked = false;
         Debug.Log("Active Statue: " + _activeStatue.name);
     }
 }

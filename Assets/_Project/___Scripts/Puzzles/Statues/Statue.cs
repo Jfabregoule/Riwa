@@ -11,7 +11,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
     /// The serialized variable down has to be removed when the CC will be up
     /// because the CC will be able to get the Statue his currently holding so don't need to handle if the statue is either lock or not
     /// </summary>
-    [SerializeField] private bool _lockPosition = true;
+    //[SerializeField] private bool _lockPosition = true;
 
     private float _lerpTime = 1.5f;
     private float _unitGridSize;
@@ -23,7 +23,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
     private float _offsetRadius = 2;
 
     public bool Validate { get => _validate; set => _validate = value; }
-    public bool IsLocked { get => _lockPosition; set => _lockPosition = value; }
+    //public bool IsLocked { get => _lockPosition; set => _lockPosition = value; }
     public float UnitGridSize { get => _unitGridSize; set => _unitGridSize = value; }
     public float OffsetRadius { get => _offsetRadius; set => _offsetRadius = value; }
     public float MoveSpeed { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
@@ -39,7 +39,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
 
     public void Move(Vector3 direction)
     {
-        if (_isMoving || _lockPosition || _validate) return;
+        if (_isMoving || /*_lockPosition ||*/ _validate) return;
         if (_showDebugLog == true) Debug.Log("UnitgridSize: " + _unitGridSize + " | Direction: " + direction);
         if (_showDebugLog == true) Debug.Log("PosX: " + _pos.x + " | PosY: " + _pos.y + " | Rotation: " + _content.rotation + " | ID: " + _content.id);
         bool canMove = OnStatueMoved.Invoke(_pos, Helpers.Vector2To2Int(direction.normalized), _content);
@@ -48,15 +48,10 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
         if (direction.y != 0) _pos.y += (int)direction.y;
         StartCoroutine(LerpToTile(direction));
     }
-
-    public void Rotate(float angle)
-    {
-        if(_isMoving || _lockPosition || _validate) return;
-        StartCoroutine(LerpRotation(angle));
-    }
     public void Rotate(int sens)
     {
-        throw new System.NotImplementedException();
+        if (_isMoving || /*_lockPosition ||*/ _validate) return;
+        StartCoroutine(LerpRotation(sens));
     }
 
     public void Hold()
@@ -110,6 +105,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
         _isMoving = false;
         OnStatueRotate.Invoke(_pos, _content);
         OnStatueEndMoving.Invoke();
+        OnRotataFinish.Invoke();
     }
 
     public void SetStatuesData(StatueData data)

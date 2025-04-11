@@ -6,7 +6,7 @@ public class Mirror : MonoBehaviour, IRotatable
 {
     public float OffsetRadius { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
-    public event IRotatable.RotatableEvent OnRotataFinish;
+    public event IRotatable.RotatableEvent OnRotateFinished;
 
     public void Hold()
     {
@@ -20,6 +20,7 @@ public class Mirror : MonoBehaviour, IRotatable
 
     public void Rotate(float angle)
     {
+        OnRotateFinished?.Invoke();
         throw new System.NotImplementedException();
     }
 

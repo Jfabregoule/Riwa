@@ -22,7 +22,7 @@ public class RotateStateHolding : HoldingBaseState
         {
             _rotatable = rotatable;
             rotatable.Rotate(Sens);
-            rotatable.OnRotataFinish += Finish;
+            rotatable.OnRotateFinished += Finish;
         }
     }
 
@@ -30,7 +30,7 @@ public class RotateStateHolding : HoldingBaseState
     {
         base.ExitState();
 
-        _rotatable.OnRotataFinish -= Finish;
+        _rotatable.OnRotateFinished -= Finish;
     }
 
     public override void UpdateState()

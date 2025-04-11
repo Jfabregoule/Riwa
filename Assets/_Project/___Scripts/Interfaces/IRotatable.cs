@@ -7,5 +7,5 @@ public interface IRotatable : IHoldable
     void Rotate(int sens);
 
     public delegate void RotatableEvent();
-    event RotatableEvent OnRotataFinish;
+    event RotatableEvent OnRotateFinished;
 }

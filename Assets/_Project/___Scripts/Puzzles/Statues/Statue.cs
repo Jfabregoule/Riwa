@@ -35,7 +35,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
     public event StatueMoveEvent OnStatueMoved;
     public event StatueRotateEvent OnStatueRotate;
     public event StatueEndMoving OnStatueEndMoving;
-    public event IRotatable.RotatableEvent OnRotataFinish;
+    public event IRotatable.RotatableEvent OnRotateFinished;
 
     public void Move(Vector3 direction)
     {
@@ -105,7 +105,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
         _isMoving = false;
         OnStatueRotate.Invoke(_pos, _content);
         OnStatueEndMoving.Invoke();
-        OnRotataFinish.Invoke();
+        OnRotateFinished.Invoke();
     }
 
     public void SetStatuesData(StatueData data)

@@ -12,7 +12,6 @@ public class VineScript : MonoBehaviour
     [SerializeField] private float _waitBeforeFall;
     [SerializeField] private float _growingSpeed = 1;
     [SerializeField] private float _retractedSpeed = 2;
-    [SerializeField] private float _refreshRate = 0.05f;
     [SerializeField] private float _frictionSpeed;
     public float FrictionSpeed { get { return _frictionSpeed; } set { _frictionSpeed = value; } }
 
@@ -26,7 +25,6 @@ public class VineScript : MonoBehaviour
     private List<Material> _materials = new List<Material>();
     [Header("Capsule Collider")]
     [SerializeField] private float _maxColliderHeight;
-    [SerializeField] private float _refreshRateFactor = 70.0f;
     private CapsuleCollider _capsuleCollider;
     private float _minColliderHeight;
     private float _height;

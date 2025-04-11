@@ -2,17 +2,45 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RecepterLaser : MonoBehaviour
+public class RecepterLaser : MonoBehaviour, IActivable
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private bool _isActive;
+    private bool _isHitThisFrame;
 
-    // Update is called once per frame
+    public event IActivable.ActivateEvent OnActivated;
+    public event IActivable.ActivateEvent OnDesactivated;
+
     void Update()
     {
-        
+        if (!_isHitThisFrame && _isActive)
+        {
+            Deactivate();
+        }
+
+        _isHitThisFrame = false;
+    }
+
+    public void OnLaserHit()
+    {
+        if (!_isActive)
+        {
+            Activate();
+        }
+
+        _isHitThisFrame = true;
+    }
+
+    public void Activate()
+    {
+        _isActive = true;
+        OnActivated?.Invoke();
+        Debug.Log("Recepteur activé !");
+    }
+
+    public void Deactivate()
+    {
+        _isActive = false;
+        OnDesactivated?.Invoke();
+        Debug.Log("Recepteur désactivé !");
     }
 }

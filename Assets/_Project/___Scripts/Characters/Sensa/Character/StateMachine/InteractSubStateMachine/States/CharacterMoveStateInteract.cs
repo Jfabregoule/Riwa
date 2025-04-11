@@ -8,6 +8,7 @@ public class CharacterMoveStateInteract : PawnMoveStateInteract<EnumStateCharact
 {
 
     new private ACharacter _character;
+    private bool _endInteract;
 
     public override void InitState(PawnInteractSubstateMachine<EnumStateCharacter> stateMachine, EnumInteract enumValue, APawn<EnumStateCharacter> character)
     {
@@ -20,8 +21,11 @@ public class CharacterMoveStateInteract : PawnMoveStateInteract<EnumStateCharact
         base.EnterState();
 
         _character.OnMoveToFinished += InteractEndOfPath;
+        _character.InputManager.OnInteractEnd += EndInteract;
 
-        if(_stateMachine.CurrentObjectInteract == null)
+        _endInteract = false;
+
+        if (_stateMachine.CurrentObjectInteract == null)
         {
             _character.StateMachine.ChangeState(_character.StateMachine.States[EnumStateCharacter.Idle]);
             return;
@@ -65,6 +69,7 @@ public class CharacterMoveStateInteract : PawnMoveStateInteract<EnumStateCharact
     {
         base.ExitState();
         _character.OnMoveToFinished -= InteractEndOfPath;
+        _character.InputManager.OnInteractEnd -= EndInteract;
     }
 
     public override void UpdateState()
@@ -81,8 +86,15 @@ public class CharacterMoveStateInteract : PawnMoveStateInteract<EnumStateCharact
     {
         if (_stateMachine.CurrentObjectInteract.TryGetComponent(out IHoldable holdable))
         {
-            _character.SetHoldingObject(_stateMachine.CurrentObjectInteract);
-            _character.StateMachine.ChangeState(_character.StateMachine.States[EnumStateCharacter.Holding]);
+            if (_endInteract)
+            {
+                _character.StateMachine.ChangeState(_character.StateMachine.States[EnumStateCharacter.Idle]);
+            }
+            else
+            {
+                _character.SetHoldingObject(_stateMachine.CurrentObjectInteract);
+                _character.StateMachine.ChangeState(_character.StateMachine.States[EnumStateCharacter.Holding]);
+            }
             return;
         }
 
@@ -95,6 +107,11 @@ public class CharacterMoveStateInteract : PawnMoveStateInteract<EnumStateCharact
         //Default
         _stateMachine.ChangeState(_stateMachine.States[EnumInteract.Action]);
 
+    }
+
+    private void EndInteract()
+    {
+        _endInteract = true;
     }
 
 }

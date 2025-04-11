@@ -40,8 +40,48 @@ public class MoveStateHolding : HoldingBaseState
     {
         base.CheckChangeState();
 
-        if (_character.InputManager.GetMoveDirection() != Vector2.zero) return;
+        Vector2 joystickDir = _character.InputManager.GetMoveDirection();
 
-        _stateMachine.ChangeState(_stateMachine.States[EnumHolding.IdleHolding]);
+        if (joystickDir == Vector2.zero) {
+            _stateMachine.ChangeState(_stateMachine.States[EnumHolding.IdleHolding]);
+            return;
+        }
+
+        Vector3 inputDir = new Vector3(joystickDir.x, 0, joystickDir.y).normalized;
+
+        Vector3 playerForward = _character.transform.forward;
+        Vector3 forward = new Vector3(Mathf.Round(playerForward.x), 0, Mathf.Round(playerForward.z)).normalized;
+        Vector3 right = Vector3.Cross(Vector3.up, forward);
+
+        float dotForward = Vector3.Dot(forward, inputDir);
+        float dotRight = Vector3.Dot(right, inputDir);
+
+        if (Mathf.Abs(dotForward) > Mathf.Abs(dotRight))
+        {
+            if (dotForward > 0.5f)
+            {
+                Sens = 1;
+            }
+            else
+            {
+                Sens = -1;
+            }
+        }
+        else
+        {
+            if (!_character.HoldingObject.TryGetComponent(out IRotatable rotatable)) return;
+            if (dotRight > 0.5f)
+            {
+                //Rotate Droite
+                ((RotateStateHolding)_stateMachine.States[EnumHolding.Rotate]).Sens = 1;
+                _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Rotate]);
+            }
+            else
+            {
+                //Rotate Gauche
+                ((RotateStateHolding)_stateMachine.States[EnumHolding.Rotate]).Sens = -1;
+                _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Rotate]);
+            }
+        }   
     }
 }

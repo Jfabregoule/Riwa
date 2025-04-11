@@ -61,7 +61,7 @@ public class IdleHoldingStateHolding : HoldingBaseState
         else
         {
             if (!_character.HoldingObject.TryGetComponent(out IRotatable rotatable)) return;
-            if (dotForward > 0.5f)
+            if (dotRight > 0.5f)
             {
                 //Rotate Droite
                 ((RotateStateHolding)_stateMachine.States[EnumHolding.Rotate]).Sens = 1;

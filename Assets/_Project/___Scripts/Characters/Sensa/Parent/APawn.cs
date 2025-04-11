@@ -7,8 +7,6 @@ using UnityEngine;
 public class APawn<TStateEnum> : MonoBehaviour
     where TStateEnum : Enum
 {
-    //Envie de mourir a cause de nattan
-
     protected Rigidbody _rb;
     protected InputManager _inputManager;
     protected CapsuleCollider _capsuleCollider;

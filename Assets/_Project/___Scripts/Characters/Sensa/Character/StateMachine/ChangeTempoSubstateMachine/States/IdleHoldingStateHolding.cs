@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEditor.VersionControl.Asset;
 
 public class IdleHoldingStateHolding : HoldingBaseState
 {
@@ -46,21 +44,23 @@ public class IdleHoldingStateHolding : HoldingBaseState
 
         if (Mathf.Abs(dotForward) > Mathf.Abs(dotRight))
         {
+            if (!_character.HoldingObject.TryGetComponent(out IMovable movable)) return;
             if (dotForward > 0.5f)
             {
                 //Pull
-                ((MoveStateHolding)_stateMachine.States[EnumHolding.Rotate]).Sens = -1;
+                ((MoveStateHolding)_stateMachine.States[EnumHolding.Move]).Sens = 1;
                 _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Move]);
             } 
             else 
             {
                 //Push
-                ((MoveStateHolding)_stateMachine.States[EnumHolding.Rotate]).Sens = 1;
+                ((MoveStateHolding)_stateMachine.States[EnumHolding.Move]).Sens = -1;
                 _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Move]);
             }
         }
         else
         {
+            if (!_character.HoldingObject.TryGetComponent(out IRotatable rotatable)) return;
             if (dotForward > 0.5f)
             {
                 //Rotate Droite
@@ -70,7 +70,7 @@ public class IdleHoldingStateHolding : HoldingBaseState
             else
             {
                 //Rotate Gauche
-                ((RotateStateHolding) _stateMachine.States[EnumHolding.Rotate]).Sens = -1;
+                ((RotateStateHolding)_stateMachine.States[EnumHolding.Rotate]).Sens = -1;
                 _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Rotate]);
             }
         }

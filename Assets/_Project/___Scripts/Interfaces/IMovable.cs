@@ -5,5 +5,6 @@ using UnityEngine.UIElements.Experimental;
 
 public interface IMovable : IHoldable
 {
-    void Move(Vector2 direction);
+    public float MoveSpeed { get; set;}
+    void Move(Vector3 direction);
 }

@@ -26,6 +26,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
     public bool IsLocked { get => _lockPosition; set => _lockPosition = value; }
     public int UnitGridSize { get => _unitGridSize; set => _unitGridSize = value; }
     public float OffsetRadius { get => _offsetRadius; set => _offsetRadius = value; }
+    public float MoveSpeed { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
     public delegate bool StatueMoveEvent(CellPos oldPos, Vector2Int nextPos, CellContent statueData);
     public delegate void StatueRotateEvent(CellPos pos, CellContent content);
@@ -34,9 +35,9 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
     public event StatueMoveEvent OnStatueMoved;
     public event StatueRotateEvent OnStatueRotate;
     public event StatueEndMoving OnStatueEndMoving;
+    public event IRotatable.RotatableEvent OnRotataFinish;
 
-
-    public void Move(Vector2 direction)
+    public void Move(Vector3 direction)
     {
         if (_isMoving || _lockPosition || _validate) return;
         if (_showDebugLog == true) Debug.Log("UnitgridSize: " + _unitGridSize + " | Direction: " + direction);
@@ -52,6 +53,10 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
     {
         if(_isMoving || _lockPosition || _validate) return;
         StartCoroutine(LerpRotation(angle));
+    }
+    public void Rotate(int sens)
+    {
+        throw new System.NotImplementedException();
     }
 
     public void Hold()
@@ -115,5 +120,4 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
         _pos.x = data.posX;
         _pos.y = data.posY;
     }
-
 }

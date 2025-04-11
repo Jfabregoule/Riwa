@@ -37,7 +37,7 @@ public class HoldingBaseState : BaseState<EnumHolding>
     {
         base.UpdateState();
 
-        CheckChangeState();
+        //CheckChangeState();
     }
 
     public override void CheckChangeState()

@@ -49,7 +49,7 @@ public class SoulMoveStateInteract : PawnMoveStateInteract<EnumStateSoul>
             }
         }
 
-        _character.MoveTo(objectPoints[index] + objPos);
+        _character.MoveTo(objectPoints[index] + objPos, objPos);
     }
 
     public override void ExitState()

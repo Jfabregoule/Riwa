@@ -5,7 +5,9 @@ using UnityEngine;
 public class MoveStateHolding : HoldingBaseState
 {
     private int _sens;
-    public int Sens { get => _sens; set => value = _sens; }
+    private IMovable _movable;
+    public int Sens { get => _sens; set => _sens = value; }
+
     public override void InitState(HoldingStateMachine stateMachine, EnumHolding enumValue, ACharacter character)
     {
         base.InitState(stateMachine, enumValue, character);
@@ -14,10 +16,10 @@ public class MoveStateHolding : HoldingBaseState
     public override void EnterState()
     {
         base.EnterState();
-        //if (_character.HoldingObject.TryGetComponent(out IMovable movable))
-        //{
-        //    movable.Move(Sens);
-        //}
+        if (_character.HoldingObject.TryGetComponent(out IMovable movable))
+        {
+            _movable = movable;
+        }
     }
 
     public override void ExitState()
@@ -28,11 +30,17 @@ public class MoveStateHolding : HoldingBaseState
     public override void UpdateState()
     {
         base.UpdateState();
+
+        _movable.Move(Sens * _character.transform.forward);
+        _character.transform.position += Sens * _character.transform.forward * _movable.MoveSpeed * Time.deltaTime * 10;
+        
     }
 
     public override void CheckChangeState()
     {
         base.CheckChangeState();
+
+        if (_character.InputManager.GetMoveDirection() != Vector2.zero) return;
 
         _stateMachine.ChangeState(_stateMachine.States[EnumHolding.IdleHolding]);
     }

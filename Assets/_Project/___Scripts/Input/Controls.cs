@@ -49,17 +49,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""11613388-69b0-43a3-9f55-c0b236c3f29e"",
-                    ""path"": ""<Touchscreen>/Press"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Interact"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""7f52666e-a7b0-48ad-94ac-b76f4636a919"",
                     ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",

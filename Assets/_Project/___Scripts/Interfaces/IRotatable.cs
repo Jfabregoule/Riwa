@@ -4,5 +4,8 @@ using UnityEngine;
 
 public interface IRotatable : IHoldable
 {
-    void Rotate(float angle);
+    void Rotate(int sens);
+
+    public delegate void RotatableEvent();
+    event RotatableEvent OnRotataFinish;
 }

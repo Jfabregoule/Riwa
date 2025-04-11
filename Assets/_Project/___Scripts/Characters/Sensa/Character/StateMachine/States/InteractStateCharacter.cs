@@ -33,7 +33,7 @@ public class InteractStateCharacter : ParentInteractState<EnumStateCharacter>
     {
         base.ExitState();
 
-        _subStateMachine.InitState(_subStateMachine.States[EnumInteract.StandBy]);
+        _subStateMachine.ChangeState(_subStateMachine.States[EnumInteract.StandBy]);
 
     }
 

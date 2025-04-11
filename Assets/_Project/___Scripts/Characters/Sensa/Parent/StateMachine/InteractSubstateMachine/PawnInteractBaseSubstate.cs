@@ -40,7 +40,7 @@ public class PawnInteractBaseSubstate<TStateEnum> : BaseState<EnumInteract>
     {
         base.UpdateState();
 
-        CheckChangeState();
+        //CheckChangeState();
     }
 
     public override void CheckChangeState()

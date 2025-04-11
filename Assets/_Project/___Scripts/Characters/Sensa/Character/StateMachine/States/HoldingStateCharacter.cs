@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class HoldingStateCharacter : BaseStateCharacter<EnumStateCharacter>
 {
@@ -17,6 +18,7 @@ public class HoldingStateCharacter : BaseStateCharacter<EnumStateCharacter>
     {
         base.InitState(stateMachine, enumValue, character);
 
+        _character = (ACharacter)character;
         _subStateMachine = new HoldingStateMachine();
         _subStateMachine.InitStateMachine(_character);
         _subStateMachine.InitState(_subStateMachine.States[EnumHolding.IdleHolding]);

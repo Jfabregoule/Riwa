@@ -52,7 +52,7 @@ public class CharacterMoveStateInteract : PawnMoveStateInteract<EnumStateCharact
             }
         }
 
-        _character.MoveTo(objectPoints[index] + objPos);
+        _character.MoveTo(objectPoints[index] + objPos, objPos);
 
         //_stateMachine.CurrentObjectInteract.
 
@@ -81,8 +81,7 @@ public class CharacterMoveStateInteract : PawnMoveStateInteract<EnumStateCharact
     {
         if (_stateMachine.CurrentObjectInteract.TryGetComponent(out IHoldable holdable))
         {
-            //NATTAN
-            //_character.SetHoldingObject(_stateMachine.CurrentObjectInteract);
+            _character.SetHoldingObject(_stateMachine.CurrentObjectInteract);
             _character.StateMachine.ChangeState(_character.StateMachine.States[EnumStateCharacter.Holding]);
             return;
         }

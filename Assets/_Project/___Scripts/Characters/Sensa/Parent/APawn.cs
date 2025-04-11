@@ -34,12 +34,12 @@ public class APawn<TStateEnum> : MonoBehaviour
     public LayerMask PresentLayer { get => _presentLayer; }
     public bool IsInPast { get => isInPast; set => isInPast = value; }
 
-    public void MoveTo(Vector3 position)
+    public void MoveTo(Vector3 position, Vector3 objectPos)
     {
-        StartCoroutine(CoroutineMoveTo(transform.position, position));
+        StartCoroutine(CoroutineMoveTo(transform.position, position, objectPos));
     }
 
-    private IEnumerator CoroutineMoveTo(Vector3 startPos, Vector3 targetPos)
+    private IEnumerator CoroutineMoveTo(Vector3 startPos, Vector3 targetPos, Vector3 objectPos)
     {
         float clock = 0;
 
@@ -53,6 +53,22 @@ public class APawn<TStateEnum> : MonoBehaviour
         {
 
             transform.position = Vector3.Lerp(startPos, targetPos, clock);
+            transform.rotation = Quaternion.Slerp(startRotation, targetRotation, Mathf.Clamp01(clock * 3)); //Pour que sensa se tourne plus vite au début 
+
+            clock += Time.deltaTime;
+
+            yield return null;
+        }
+
+        clock = 0; 
+        startRotation = transform.rotation;
+        Vector3 lookDir = objectPos - transform.position;
+        lookDir.y = 0f;
+        if (lookDir != Vector3.zero)
+            targetRotation = Quaternion.LookRotation(lookDir);
+
+        while (clock < 1)
+        {
             transform.rotation = Quaternion.Slerp(startRotation, targetRotation, Mathf.Clamp01(clock * 3)); //Pour que sensa se tourne plus vite au début 
 
             clock += Time.deltaTime;

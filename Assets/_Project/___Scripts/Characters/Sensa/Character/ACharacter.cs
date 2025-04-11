@@ -45,6 +45,7 @@ public class ACharacter : APawn<EnumStateCharacter>
     [SerializeField] private float _timeBeforeWait = 15f;
     [SerializeField] private bool _isChangingTime = false;
     [SerializeField] private bool _isInSoul = false;
+    [SerializeField] private float _pushingSpeed = 1;
 
     [Header("VFX")]
 
@@ -65,6 +66,8 @@ public class ACharacter : APawn<EnumStateCharacter>
     public float JoystickRunTreshold { get => _joystickRunTreshold; set => _joystickRunTreshold = value; }
     public float TimeBeforeWait { get => _timeBeforeWait; set => _timeBeforeWait = value; }
     public bool IsChangingTime { get => _isChangingTime; set => _isChangingTime = value; }
+
+    public float PushingSpeed { get => _pushingSpeed; }
     public ChangeTime ChangeTime { get => _changeTime; }
     public bool IsInSoul { get => _isInSoul; set => _isInSoul = value; }
     public GameObject Soul { get => _soul; set => _soul = value; }
@@ -112,7 +115,6 @@ public class ACharacter : APawn<EnumStateCharacter>
 
     public void SetHoldingObject(GameObject holdingObject)
     {
-        holdingObject.transform.SetParent(transform);
         _holdingObject = holdingObject;
     }
 

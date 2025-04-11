@@ -38,7 +38,7 @@ public class BinaryChoice : MonoBehaviour
     public void SetValue(bool isEnable)
     {
         Value = isEnable;
-        OnValueChange?.Invoke(Value);
+        InvokeEvent(Value);
         UpdateVisuals();
     }
 
@@ -46,5 +46,10 @@ public class BinaryChoice : MonoBehaviour
     {
         _yesText.color = Value ? _selectedColor : _defaultColor;
         _noText.color = Value ? _defaultColor : _selectedColor;
+    }
+
+    public void InvokeEvent(bool IsEnable)
+    {
+        OnValueChange?.Invoke(IsEnable);
     }
 }

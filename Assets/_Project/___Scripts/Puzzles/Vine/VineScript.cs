@@ -137,12 +137,14 @@ public class VineScript : MonoBehaviour
     public void SetSocketPoint()
     {
         SocketPoint = null;
-        VineManager.Instance.OnVineChange -= SetSocketPoint;
+        //VineManager.Instance.OnVineChange -= SetSocketPoint;
     }
 
     public void SetSocketNull()
     {
-        SocketPoint.GetChild(0).GetComponent<Rigidbody>().useGravity = true;
+        //SocketPoint.GetChild(0).GetComponent<Rigidbody>().constraints &= ~RigidbodyConstraints.FreezePositionY;
+        //SocketPoint.GetChild(0).GetComponent<Rigidbody>().useGravity = true;
+
         SocketPoint = null;     
     }
 

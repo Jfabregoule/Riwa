@@ -5,6 +5,13 @@ using UnityEngine;
 [System.Serializable]
 public struct CellPos
 {
+    public enum Direction
+    {
+        Up,
+        Down,
+        Left,
+        Right
+    }
 
     public CellPos(int posX, int posY) { x = posX; y = posY; }
 
@@ -26,6 +33,16 @@ public struct CellPos
         return x * 397 ^ y;
     }
 
+    public static CellPos operator +(CellPos a, CellPos b)
+    {
+        return new CellPos(a.x + b.x, a.y + b.y);
+    }
+
+    public static CellPos operator -(CellPos a, CellPos b)
+    {
+        return new CellPos(a.x - b.x, a.y - b.y);
+    }
+
     public static bool operator ==(CellPos a, CellPos b)
     {
         return a.x == b.x && a.y == b.y;
@@ -34,6 +51,23 @@ public struct CellPos
     public static bool operator !=(CellPos a, CellPos b)
     {
         return !(a == b);
+    }
+
+    public CellPos GetCellAtDirection(Direction direction)
+    {
+        switch(direction)
+        {
+            case Direction.Up:
+                return new CellPos(x, y + 1);
+            case Direction.Down:
+                return new CellPos(x, y - 1);
+            case Direction.Left:
+                return new CellPos(x - 1, y);
+            case Direction.Right:
+                return new CellPos(x + 1, y);
+            default:
+                return this;
+        }
     }
 
     public int x;
@@ -74,7 +108,7 @@ public struct StatueData
 {
     public int id;
     public int rotation;
-    public int unitGridSize;
+    public float unitGridSize;
     public int posX;
     public int posY;
 }
@@ -89,8 +123,8 @@ public struct Datas
 public class Grid : MonoBehaviour
 {
     [Header("Grid")]
-    [SerializeField] private Vector2Int _gridSize = new Vector2Int(7, 7);
-    [SerializeField] private int _unitGridSize = 7;
+    [SerializeField] private Vector2Int _gridSize = new Vector2Int(5, 5);
+    [SerializeField] private float _unitGridSize = 2.5f;
     [SerializeField] private GameObject defaultTile;
     [SerializeField] private GameObject gridSpawnpoint;
     [Header("Debug")]
@@ -123,13 +157,13 @@ public class Grid : MonoBehaviour
 
     [SerializeField] private List<Statue> _statues = new List<Statue>();
 
-    public int UnitGridSize => _unitGridSize;
+    public float UnitGridSize => _unitGridSize;
     public Vector3 Origin { get; private set; }
     public Vector2Int GridSize => _gridSize;
 
     private void Awake()
     {
-        Origin = gridSpawnpoint.transform.position;
+        Origin = transform.position;
 
         solution.Clear();
         foreach (var entry in serializedSolutions)
@@ -163,14 +197,14 @@ public class Grid : MonoBehaviour
         solution.Add(new CellPos(2, 2), new CellContent(3, 270));    // ID 3 --> Yellow Statue
         solution.Add(new CellPos(1, 4), new CellContent(4, 0));      // ID 4 --> Green Statue
 
-        Origin = gridSpawnpoint.transform.position;
+        Origin = transform.position;
 
         for (int y = 0; y < _gridSize.y; y++)
         {
             for (int x = 0; x < _gridSize.x; x++)
             {
-                if (y >= 3 && x >= 3)
-                    continue;
+                //if (y >= 3 && x >= 3)
+                //    continue;
 
                 Vector3 position = Origin + new Vector3(x * _unitGridSize, 0f, y * _unitGridSize);
 
@@ -180,7 +214,7 @@ public class Grid : MonoBehaviour
                     {
                         GameObject associatedStatueTile = tiles[solution.Value.id - 1];
                         GameObject st = Instantiate(associatedStatueTile, position, Quaternion.identity);
-                        st.transform.SetParent(gridSpawnpoint.transform);
+                        st.transform.SetParent(transform);
                         grid[new CellPos(solution.Key.x, solution.Key.y)] = solution.Value;
                         break;
                     }
@@ -188,7 +222,7 @@ public class Grid : MonoBehaviour
 
                 if (grid.ContainsKey(new CellPos(x, y)) && grid[new CellPos(x, y)] != null) continue;
                 GameObject tile = Instantiate(defaultTile, position, Quaternion.identity);
-                tile.transform.SetParent(gridSpawnpoint.transform);
+                tile.transform.SetParent(transform);
                 grid[new CellPos(x, y)] = null;
             }
         }
@@ -223,7 +257,7 @@ public class Grid : MonoBehaviour
             Quaternion rot = Quaternion.Euler(0, randRotation, 0);
             Vector3 position = Origin + new Vector3(randX * _unitGridSize, 1, randY * _unitGridSize);
             GameObject statueGO = Instantiate(_statuesPrefab[index - 1], position, rot);
-            statueGO.transform.SetParent(gridSpawnpoint.transform);
+            statueGO.transform.SetParent(transform);
 
             Statue statue = statueGO.GetComponent<Statue>();
             _statues.Add(statue);

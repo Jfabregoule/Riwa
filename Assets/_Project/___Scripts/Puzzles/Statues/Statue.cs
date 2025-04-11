@@ -14,7 +14,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
     [SerializeField] private bool _lockPosition = true;
 
     private float _lerpTime = 1.5f;
-    private int _unitGridSize;
+    private float _unitGridSize;
     private CellPos _pos;
     private CellContent _content;
     private bool _validate;

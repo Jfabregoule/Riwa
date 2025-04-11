@@ -24,7 +24,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
 
     public bool Validate { get => _validate; set => _validate = value; }
     public bool IsLocked { get => _lockPosition; set => _lockPosition = value; }
-    public int UnitGridSize { get => _unitGridSize; set => _unitGridSize = value; }
+    public float UnitGridSize { get => _unitGridSize; set => _unitGridSize = value; }
     public float OffsetRadius { get => _offsetRadius; set => _offsetRadius = value; }
     public float MoveSpeed { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 

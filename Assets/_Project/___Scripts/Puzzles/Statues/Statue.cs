@@ -14,7 +14,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
     [SerializeField] private bool _lockPosition = true;
 
     private float _lerpTime = 1.5f;
-    private int _unitGridSize;
+    private float _unitGridSize;
     private CellPos _pos;
     private CellContent _content;
     private bool _validate;
@@ -22,7 +22,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
 
     public bool Validate { get => _validate; set => _validate = value; }
     public bool IsLocked { get => _lockPosition; set => _lockPosition = value; }
-    public int UnitGridSize { get => _unitGridSize; set => _unitGridSize = value; }
+    public float UnitGridSize { get => _unitGridSize; set => _unitGridSize = value; }
 
     public delegate bool StatueMoveEvent(CellPos oldPos, Vector2Int nextPos, CellContent statueData);
     public delegate void StatueRotateEvent(CellPos pos, CellContent content);

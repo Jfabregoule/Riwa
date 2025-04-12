@@ -73,10 +73,13 @@ public class CameraHandler : MonoBehaviour
 
         _radius = _cameraPos.z;
 
-        if (_setups.Count == 0)
+        if (_confinerCamera.m_BoundingVolume == null)
+        {
+            _confinerCamera.enabled = false;
+        }
+        else if (_setups.Count == 0)
         {
             _confinerCamera.enabled = true;
-            return;
         }
         else
         {

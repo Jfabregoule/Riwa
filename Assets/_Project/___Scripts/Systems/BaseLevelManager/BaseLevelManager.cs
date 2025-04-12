@@ -21,7 +21,7 @@ public class BaseLevelManager : Singleton<BaseLevelManager>
     [SerializeField] private ACharacter _character;
     [SerializeField] private VariableJoystick _joystick;
 
-    public void Start()
+    public void OnEnable()
     {
         GameManager.Instance.Load3C(_cameraHandler, _character, _joystick);
     }

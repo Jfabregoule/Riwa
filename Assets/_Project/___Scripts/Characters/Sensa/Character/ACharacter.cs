@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class ACharacter : APawn<EnumStateCharacter>
@@ -44,6 +45,9 @@ public class ACharacter : APawn<EnumStateCharacter>
     [Header("VFX")]
 
     [SerializeField] private ParticleSystem _soulLinkVFX;
+
+    private float _deltaTime;
+    public TMP_Text fpsText;
 
     #endregion
 
@@ -100,6 +104,10 @@ public class ACharacter : APawn<EnumStateCharacter>
     private void Update()
     {
         _stateMachine.StateMachineUpdate();
+
+        _deltaTime += (Time.unscaledDeltaTime - _deltaTime) * 0.1f;  // Lissage des FPS
+        float fps = 1.0f / _deltaTime;
+        fpsText.text = "FPS: " + Mathf.Ceil(fps).ToString();
     }
 
     private void FixedUpdate()

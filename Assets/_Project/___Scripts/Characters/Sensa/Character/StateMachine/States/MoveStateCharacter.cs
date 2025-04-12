@@ -39,7 +39,7 @@ public class MoveStateCharacter : ParentMoveState<EnumStateCharacter>
             _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.ChangeTempo]);
         }
 
-        else if (_character.InputManager.GetMoveDirection() != Vector2.zero)
+        else if (_character.InputManager.GetMoveDirection() == Vector2.zero)
         {
             _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Idle]);
         }

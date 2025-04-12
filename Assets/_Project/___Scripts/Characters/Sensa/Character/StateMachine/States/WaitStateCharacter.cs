@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class WaitStateCharacter : BaseStateCharacter<EnumStateCharacter>
@@ -51,7 +48,12 @@ public class WaitStateCharacter : BaseStateCharacter<EnumStateCharacter>
     {
         base.CheckChangeState();
 
-        if (_character.InputManager.GetMoveDirection() != Vector2.zero)
+        if (_character.IsChangingTime)
+        {
+            _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.ChangeTempo]);
+        }
+
+        else if (_character.InputManager.GetMoveDirection() != Vector2.zero)
         {
             _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Move]);
         }

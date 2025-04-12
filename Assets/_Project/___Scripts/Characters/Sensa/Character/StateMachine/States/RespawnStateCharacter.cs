@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class RespawnStateCharacter : BaseStateCharacter<EnumStateCharacter>
 {
     new private ACharacter _character;

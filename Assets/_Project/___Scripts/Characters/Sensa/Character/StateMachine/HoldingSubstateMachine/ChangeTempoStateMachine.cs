@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class ChangeTempoStateMachine : BaseStateMachine<EnumChangeTempo, ChangeTempoBaseState>
 {
     private const string STANDBY_NAME = "Standby";

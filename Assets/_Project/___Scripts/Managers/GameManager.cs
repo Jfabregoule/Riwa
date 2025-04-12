@@ -1,7 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.TextCore.Text;
-using System.Collections;
 
 [DefaultExecutionOrder(-10)]
 public class GameManager : Singleton<GameManager>

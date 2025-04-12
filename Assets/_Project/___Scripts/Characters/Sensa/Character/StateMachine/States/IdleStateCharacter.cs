@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class IdleStateCharacter : ParentIdleState<EnumStateCharacter>
@@ -46,13 +44,13 @@ public class IdleStateCharacter : ParentIdleState<EnumStateCharacter>
             _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.ChangeTempo]);
         }
 
-        if (_character.InputManager.GetMoveDirection() != Vector2.zero)
+        else if (_character.InputManager.GetMoveDirection() != Vector2.zero)
         {
             _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Move]);
             return;
         }
 
-        if (_clock > _character.TimeBeforeWait)
+        else if (_clock > _character.TimeBeforeWait)
         {
             _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Wait]);
             return;

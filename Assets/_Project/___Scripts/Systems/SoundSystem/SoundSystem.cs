@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.SceneManagement;
+using UnityEngine.Windows;
 
 [DefaultExecutionOrder(-2)]
 public class SoundSystem : Singleton<SoundSystem>
@@ -97,25 +98,17 @@ public class SoundSystem : Singleton<SoundSystem>
 
         foreach (AudioClip audioClip in audioClips)
         {
-            string assetPath = AssetDatabase.GetAssetPath(audioClip);
+            string fileName = audioClip.name;
+            string[] fileNameWords = fileName.Split(new char[] {'_', ' '}, StringSplitOptions.RemoveEmptyEntries);
 
-            string[] pathParts = assetPath.Split('/');
-
-            if (pathParts.Length < 2)
+            for (int i = 0; i < fileNameWords.Length; i++)
             {
-                Debug.LogWarning($"Le chemin pour le clip {audioClip.name} semble invalide.");
-                continue;
+                fileNameWords[i] = char.ToUpper(fileNameWords[i][0]) + fileNameWords[i].Substring(1).ToLower();
             }
 
-            string folderName = pathParts[pathParts.Length - 2];
-            string fileName = pathParts[pathParts.Length - 1];
+            string finalName = string.Join(" ", fileNameWords);
 
-            fileName = System.IO.Path.GetFileNameWithoutExtension(fileName);
-
-            folderName = char.ToUpper(folderName[0]) + folderName.Substring(1).ToLower();
-            fileName = char.ToUpper(fileName[0]) + fileName.Substring(1).ToLower();
-
-            string key = $"{folderName} {fileName}";
+            string key = $"{finalName}";
 
             SoundFX existingSound = _SFXList.Find(sound => sound.key == key);
 
@@ -135,6 +128,7 @@ public class SoundSystem : Singleton<SoundSystem>
         }
     }
 
+
     /// <summary>
     /// Génère les clés d'identification des musiques.
     /// </summary>
@@ -144,25 +138,17 @@ public class SoundSystem : Singleton<SoundSystem>
 
         foreach (AudioClip audioClip in audioClips)
         {
-            string assetPath = AssetDatabase.GetAssetPath(audioClip);
+            string fileName = audioClip.name;
+            string[] fileNameWords = fileName.Split(new char[] { '_', ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-            string[] pathParts = assetPath.Split('/');
-
-            if (pathParts.Length < 2)
+            for (int i = 0; i < fileNameWords.Length; i++)
             {
-                Debug.LogWarning($"Le chemin pour le clip {audioClip.name} semble invalide.");
-                continue;
+                fileNameWords[i] = char.ToUpper(fileNameWords[i][0]) + fileNameWords[i].Substring(1).ToLower();
             }
 
-            string folderName = pathParts[pathParts.Length - 2];
-            string fileName = pathParts[pathParts.Length - 1];
+            string finalName = string.Join(" ", fileNameWords);
 
-            fileName = System.IO.Path.GetFileNameWithoutExtension(fileName);
-
-            folderName = char.ToUpper(folderName[0]) + folderName.Substring(1).ToLower();
-            fileName = char.ToUpper(fileName[0]) + fileName.Substring(1).ToLower();
-
-            string key = $"{folderName} {fileName}";
+            string key = $"{finalName}";
 
             Track newTrack = new Track
             {
@@ -183,25 +169,17 @@ public class SoundSystem : Singleton<SoundSystem>
 
         foreach (AudioClip audioClip in audioClips)
         {
-            string assetPath = AssetDatabase.GetAssetPath(audioClip);
+            string fileName = audioClip.name;
+            string[] fileNameWords = fileName.Split(new char[] { '_', ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-            string[] pathParts = assetPath.Split('/');
-
-            if (pathParts.Length < 2)
+            for (int i = 0; i < fileNameWords.Length; i++)
             {
-                Debug.LogWarning($"Le chemin pour le clip {audioClip.name} semble invalide.");
-                continue;
+                fileNameWords[i] = char.ToUpper(fileNameWords[i][0]) + fileNameWords[i].Substring(1).ToLower();
             }
 
-            string folderName = pathParts[pathParts.Length - 2];
-            string fileName = pathParts[pathParts.Length - 1];
+            string finalName = string.Join(" ", fileNameWords);
 
-            fileName = System.IO.Path.GetFileNameWithoutExtension(fileName);
-
-            folderName = char.ToUpper(folderName[0]) + folderName.Substring(1).ToLower();
-            fileName = char.ToUpper(fileName[0]) + fileName.Substring(1).ToLower();
-
-            string key = $"{folderName} {fileName}";
+            string key = $"{finalName}";
 
             Track newTrack = new Track
             {
@@ -272,7 +250,7 @@ public class SoundSystem : Singleton<SoundSystem>
             {
                 if (sound.clip.Count > 1)
                 {
-                    int randomIndex = Random.Range(0, sound.clip.Count);
+                    int randomIndex = UnityEngine.Random.Range(0, sound.clip.Count);
                     return sound.clip[randomIndex];
                 }
                 else
@@ -493,7 +471,7 @@ public class SoundSystem : Singleton<SoundSystem>
         }
 
         if (clips.Count > 0) {
-            int rand = Random.Range(0, clips.Count);
+            int rand = UnityEngine.Random.Range(0, clips.Count);
             PlaySoundFXClip(clips[rand], spawnPosition, volume);
         }
     }

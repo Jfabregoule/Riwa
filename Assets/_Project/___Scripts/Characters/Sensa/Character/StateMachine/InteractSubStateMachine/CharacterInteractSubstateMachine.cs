@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class CharacterInteractSubstateMachine : PawnInteractSubstateMachine<EnumStateCharacter>
 {
     public override void InitStateMachine(APawn<EnumStateCharacter> character)

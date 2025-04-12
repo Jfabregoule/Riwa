@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ParentMoveState<TStateEnum> : BaseStatePawn<TStateEnum>
@@ -51,7 +49,7 @@ public class ParentMoveState<TStateEnum> : BaseStatePawn<TStateEnum>
     {
         base.FixedUpdateState();
 
-        _character.Rb.velocity = _moveDirection * _character.Speed * Time.deltaTime * 100;
+        _character.Rb.velocity = _moveDirection * _character.Speed;
 
         if (_moveDirection != Vector3.zero)
         {

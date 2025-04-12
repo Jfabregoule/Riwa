@@ -1,8 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class BaseStatePawn<TStateEnum> : BaseState<TStateEnum>
     where TStateEnum : Enum
 {

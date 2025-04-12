@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class CancelStateTempo : ChangeTempoBaseState
 {
     private bool _changedTime = false;

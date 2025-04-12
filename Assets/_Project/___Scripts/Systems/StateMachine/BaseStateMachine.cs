@@ -1,8 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.InputSystem.LowLevel;
 
 public abstract class BaseStateMachine<TStateEnum, TBaseState> 
     where TStateEnum : Enum

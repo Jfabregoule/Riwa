@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class HoldingStateMachine : BaseStateMachine<EnumHolding, HoldingBaseState>
 {
     private const string IDLEHOLDING_NAME = "IdleHolding";

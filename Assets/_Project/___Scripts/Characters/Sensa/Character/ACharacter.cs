@@ -99,6 +99,7 @@ public class ACharacter : APawn<EnumStateCharacter>
     public void Start()
     {
         _cameraHandler = GameManager.Instance.CameraHandler; //Il faut appeler ça après le load des 3C dans gameManager
+        Application.targetFrameRate = 300;
     }
 
     private void Update()

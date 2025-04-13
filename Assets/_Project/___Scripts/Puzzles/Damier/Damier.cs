@@ -285,8 +285,19 @@ public class Damier : MonoBehaviour
 
     private IEnumerator FollowPathCoroutine()
     {
+
         if (path.Count < 2)
             yield break;
+
+        Vector3 startPosRiwa = Vector3.zero;
+        if(_damier.TryGetValue(path[0], out DamierDatas startData))
+        {
+            startPosRiwa = startData.cell.transform.position;
+            startPosRiwa.y = _riwa.transform.position.y + 0.5f;
+        }
+
+        _riwa = Instantiate(_riwa, startPosRiwa, Quaternion.identity);
+        _riwa.transform.localScale = new Vector3(2f, 2f, 2f);
 
         List<Vector3> worldPoints = new List<Vector3>();
         foreach (var cell in path)

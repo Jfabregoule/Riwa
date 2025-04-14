@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class Helpers
@@ -30,6 +31,38 @@ public static class Helpers
     public static void DisabledCanvasGroup(CanvasGroup canvasGroup) 
     { 
         ToggleCanvasGroup(false, canvasGroup);
+    }
+
+    private static Dictionary<float, WaitForSeconds> _waitDictionay = new();
+    public static WaitForSeconds GetWait(float time)
+    {
+        if (_waitDictionay.TryGetValue(time, out WaitForSeconds wait))
+            return wait;
+
+        _waitDictionay[time] = new WaitForSeconds(time);
+        return _waitDictionay[time];
+    }
+
+    
+    public static IEnumerator<MonoBehaviour> WaitMonoBeheviour(MonoBehaviour script)
+    {
+        float startTime = 0;
+
+        while (script == null)
+        {
+            if (startTime > 5)
+            {
+                break;
+            }
+
+            startTime += Time.deltaTime;
+            yield return null;
+        }
+            
+        if(script == null)
+            yield return null;
+
+        yield return script;
     }
 }
 

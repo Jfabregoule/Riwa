@@ -36,8 +36,7 @@ public class CharacterCheckStateInteract : PawnCheckStateInteract<EnumStateChara
 
     public override void ChangeStateToMove()
     {
-        ACharacter chara = (ACharacter)_character;
-        chara.StateMachine.ChangeState(chara.StateMachine.States[EnumStateCharacter.Move]);
+        _subStateMachine.ChangeState(_subStateMachine.States[EnumInteract.Move]);
     }
 
 

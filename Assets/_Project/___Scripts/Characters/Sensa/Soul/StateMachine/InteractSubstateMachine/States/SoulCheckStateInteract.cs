@@ -36,8 +36,7 @@ public class SoulCheckStateInteract : PawnCheckStateInteract<EnumStateSoul>
 
     public override void ChangeStateToMove()
     {
-        ASoul chara = (ASoul)_character;
-        chara.StateMachine.ChangeState(chara.StateMachine.States[EnumStateSoul.Move]);
+        _subStateMachine.ChangeState(_subStateMachine.States[EnumInteract.Move]);
     }
 
 }

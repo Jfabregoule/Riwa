@@ -60,7 +60,9 @@ public class ASoul : APawn<EnumStateSoul>
 
     //Methods
 
-    public void Start()
+   
+
+    public void OnEnable()
     {
         Character = GameObject.Find(CHARACTER_OBJECT);
         _soulPawn = GameObject.Find(SOULPAWN_OBJECT);
@@ -74,6 +76,7 @@ public class ASoul : APawn<EnumStateSoul>
         _stateMachine = new StateMachineSoul();
         _stateMachine.InitStateMachine(this);
         _stateMachine.InitState(_stateMachine.States[EnumStateSoul.Idle]);
+
 
     }
 

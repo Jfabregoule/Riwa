@@ -57,5 +57,6 @@ public class ProcessStateTempo : ChangeTempoBaseState
         }
 
         _character.IsInPast = !_character.IsInPast;
+        _character.Soul.GetComponent<ASoul>().IsInPast = _character.IsInPast;
     }
 }

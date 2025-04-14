@@ -53,15 +53,6 @@ public class PawnCheckStateInteract<TStateEnum> : PawnInteractBaseSubstate<TStat
 
         _subStateMachine.CurrentObjectInteract = SortObjects(_character.transform.position, _colliderList);
 
-        //Si le offset Radius est de -1 on ne move pas
-        float radiusOffset = _subStateMachine.CurrentObjectInteract.GetComponent<IInteractable>().OffsetRadius;
-
-        if (radiusOffset < 0)
-        {
-            _stateMachine.ChangeState(_stateMachine.States[EnumInteract.Action]);
-            return;
-        }
-
     }
 
     public override void ExitState()

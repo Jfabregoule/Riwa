@@ -23,15 +23,17 @@ public class CharacterCheckStateInteract : PawnInteractBaseSubstate<EnumStateCha
 
         float security = 1.5f;
 
-        Vector3 point1 = _character.transform.position + Vector3.down * _character.CapsuleCollider.height / 2 * security;
-        Vector3 point2 = _character.transform.position + Vector3.up * _character.CapsuleCollider.height / 2 * security;
-        float radius = _character.CapsuleCollider.radius * security;
+        float heigth = _character.CapsuleCollider.height * _character.transform.localScale.x;
 
-        LayerMask layerMask = _character.IsInPast ? _character.PastLayer : _character.PresentLayer;
+        Vector3 point1 = _character.transform.position + Vector3.down * heigth / 2 * security;
+        Vector3 point2 = _character.transform.position + Vector3.up * heigth / 2 * security;
+        float radius = heigth * security;
 
         //Offset pour mettre la capsule devant le joueur
         point1 += _character.transform.forward * radius * 1.5f;
         point2 += _character.transform.forward * radius * 1.5f;
+
+        LayerMask layerMask = _character.IsInPast ? _character.PastLayer : _character.PresentLayer;
 
         Collider[] others = Physics.OverlapCapsule(point1, point2, radius, layerMask);
 

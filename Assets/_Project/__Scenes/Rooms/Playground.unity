@@ -4072,6 +4072,7 @@ GameObject:
   - component: {fileID: 443843738}
   - component: {fileID: 443843737}
   - component: {fileID: 443843736}
+  - component: {fileID: 443843739}
   m_Layer: 7
   m_Name: Cube (3)
   m_TagString: Untagged
@@ -4165,6 +4166,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 443843734}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &443843739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 443843734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d0f42e1485d36b4c94e4a26096980d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 0.5
+  _angle: 90
 --- !u!1 &466852009
 GameObject:
   m_ObjectHideFlags: 0
@@ -9667,6 +9682,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Character
+      objectReference: {fileID: 0}
+    - target: {fileID: 5028602816115742785, guid: 43c091f82cd075843b799175afd36d13,
+        type: 3}
+      propertyPath: _speed
+      value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: 8250694856005521115, guid: 43c091f82cd075843b799175afd36d13,
         type: 3}
@@ -17200,7 +17220,7 @@ Transform:
   m_GameObject: {fileID: 2136124311}
   serializedVersion: 2
   m_LocalRotation: {x: 0.42261827, y: 0, z: 0, w: 0.9063079}
-  m_LocalPosition: {x: -1.16, y: 14.980997, z: -12.139998}
+  m_LocalPosition: {x: -1.04, y: 14.019, z: -12.38}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -17325,6 +17345,11 @@ PrefabInstance:
       propertyPath: m_Follow
       value: 
       objectReference: {fileID: 728254177613612125}
+    - target: {fileID: 3011364949836892352, guid: 99963b64c11c67949b5fcd6365287d88,
+        type: 3}
+      propertyPath: m_Lens.GateFit
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3405962998659090815, guid: 99963b64c11c67949b5fcd6365287d88,
         type: 3}
       propertyPath: _setups.Array.data[0]._triggerCamera
@@ -17348,17 +17373,17 @@ PrefabInstance:
     - target: {fileID: 4029577738412181542, guid: 99963b64c11c67949b5fcd6365287d88,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.16
+      value: -1.04
       objectReference: {fileID: 0}
     - target: {fileID: 4029577738412181542, guid: 99963b64c11c67949b5fcd6365287d88,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.9809971
+      value: 0.019
       objectReference: {fileID: 0}
     - target: {fileID: 4029577738412181542, guid: 99963b64c11c67949b5fcd6365287d88,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.1399984
+      value: -1.38
       objectReference: {fileID: 0}
     - target: {fileID: 4029577738412181542, guid: 99963b64c11c67949b5fcd6365287d88,
         type: 3}

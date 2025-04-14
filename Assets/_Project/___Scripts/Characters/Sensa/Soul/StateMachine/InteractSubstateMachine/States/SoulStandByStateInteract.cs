@@ -1,12 +1,9 @@
 
 public class SoulStandByStateInteract : PawnStandByStateInteract<EnumStateSoul>
 {
-    new private ASoul _character;
-
     public override void InitState(PawnInteractSubstateMachine<EnumStateSoul> stateMachine, EnumInteract enumValue, APawn<EnumStateSoul> character)
     {
         base.InitState(stateMachine, enumValue, character);
-        _character = (ASoul)character;
     }
 
     public override void EnterState()

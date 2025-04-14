@@ -5,6 +5,7 @@ public class EmitterLaser : MonoBehaviour
 {
     [SerializeField] private GameObject _particules;
     [SerializeField] private GameObject _impact;
+    [SerializeField] private Transform _startPoint;
 
     private LineRenderer _laser;
     private List<Vector3> _directions;
@@ -25,7 +26,7 @@ public class EmitterLaser : MonoBehaviour
             if (activable.TryGetComponent(out IActivable act))
             {
                 act.OnActivated += AddActivate;
-                act.OnDesactivated += RemoveActivate;
+                //act.OnDesactivated += RemoveActivate;
             }
         }
 
@@ -34,40 +35,41 @@ public class EmitterLaser : MonoBehaviour
 
     void Update()
     {
-        if (_isActive)
+        if (!_isActive) return;
+
+        ResetLaser();
+
+        for (int i = 0; i < _laser.positionCount; i++)
         {
-            ResetLaser();
-            for (int i = 0; i < _laser.positionCount; i++)
+            if (!_isReflecting) continue;
+
+            if (Physics.Raycast(_laser.GetPosition(i), _directions[i], out RaycastHit hit, 10f))
             {
-                if (!_isReflecting) continue;
+                    
+                Vector3 reflect = Vector3.Reflect(_directions[i], hit.normal);
 
-                if (Physics.Raycast(_laser.GetPosition(i), _directions[i], out RaycastHit hit, 10f))
+                AddLaserPoint(hit.point);
+                _directions.Add(reflect);
+
+                if (!hit.collider.TryGetComponent(out Mirror mirror) || hit.normal != mirror.transform.right)
                 {
-                    Vector3 reflect = Vector3.Reflect(_directions[i], hit.normal);
-
-                    AddLaserPoint(hit.point);
-                    _directions.Add(reflect);
-
-                    if (!hit.collider.GetComponent<Mirror>())
-                    {
-                        SpawnImpact(hit.point, hit.normal);
-                        _isReflecting = false;
-
-                        if (hit.collider.TryGetComponent<RecepterLaser>(out var recepter))
-                        {
-                            recepter.OnLaserHit();
-                        }
-                    }
+                    SpawnImpact(hit.point, hit.normal);
+                    _isReflecting = false;
                 }
-                else if (i == _laser.positionCount - 1)
+
+                if (hit.collider.TryGetComponent<RecepterLaser>(out var recepter))
                 {
-                    break;
+                    recepter.OnLaserHit();
                 }
-                else
-                {
-                    RemoveLaserPoint(_laser.positionCount - i - 1);
-                    break;
-                }
+            }
+            else if (i == _laser.positionCount - 1)
+            {
+                break;
+            }
+            else
+            {
+                RemoveLaserPoint(_laser.positionCount - i - 1);
+                break;
             }
         }
     }
@@ -101,10 +103,10 @@ public class EmitterLaser : MonoBehaviour
     private void ResetLaser()
     {
         _laser.positionCount = 0;
-        AddLaserPoint(transform.position);
+        AddLaserPoint(_startPoint.position);
 
         _directions.Clear();
-        _directions.Add(transform.right);
+        _directions.Add(_startPoint.forward);
 
         _isReflecting = true;
         ResetImpact();
@@ -119,62 +121,14 @@ public class EmitterLaser : MonoBehaviour
     private void SpawnImpact(Vector3 position, Vector3 normal)
     {
         _impact.SetActive(true);
+        _particules.SetActive(true);
+        
         _impact.transform.position = position + normal * 0.01f;
         _impact.transform.rotation = Quaternion.LookRotation(-normal);
 
-        _particules.SetActive(true);
         _particules.transform.position = position;
         _particules.transform.rotation = Quaternion.LookRotation(normal);
     }
-
-    //private IEnumerator EmitteLaser()
-    //{
-    //    ResetLaser();
-    //    for (int i = 0; i < _laser.positionCount; i++)
-    //    {
-    //        if (!_isReflecting) continue;
-
-    //        if (Physics.Raycast(_laser.GetPosition(i), _directions[i], out RaycastHit hit, 10f))
-    //        {
-    //            Vector3 reflect = Vector3.Reflect(_directions[i], hit.normal);
-
-    //            AddLaserPoint(hit.point);
-    //            _directions.Add(reflect);
-
-    //            if (!hit.collider.GetComponent<Mirror>())
-    //            {
-    //                SpawnImpact(hit.point, hit.normal);
-    //                _isReflecting = false;
-
-    //                if (hit.collider.TryGetComponent<RecepterLaser>(out var recepter))
-    //                {
-    //                    recepter.OnLaserHit();
-    //                }
-    //            }
-    //        }
-    //        else if (i == _laser.positionCount - 1)
-    //        {
-    //            break;
-    //        }
-    //        else
-    //        {
-    //            RemoveLaserPoint(_laser.positionCount - i - 1);
-    //            break;
-    //        }
-    //    }
-    //}
-
-    //public void Activate()
-    //{
-    //    _isActive = true;
-    //    //StartCoroutine(EmitteLaser());
-    //}
-
-    //public void Deactivate()
-    //{
-    //    _isActive = false;
-    //    //StopCoroutine(EmitteLaser());
-    //}
 
     private void AddActivate()
     {
@@ -185,13 +139,13 @@ public class EmitterLaser : MonoBehaviour
         }
     }
 
-    private void RemoveActivate()
-    {
-        if (CurrentActive == _activables.Length)
-        {
-            _isActive = false;
-            ResetLaser();
-        }
-        CurrentActive--;
-    }
+//    private void RemoveActivate()
+//    {
+//        if (CurrentActive == _activables.Length)
+//        {
+//            _isActive = false;
+//            ResetLaser();
+//        }
+//        CurrentActive--;
+//    }
 }

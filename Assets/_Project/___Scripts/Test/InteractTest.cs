@@ -21,18 +21,6 @@ public class InteractTest : MonoBehaviour, IMovable, IRotatable
         Debug.Log("GameObject name: " + name);
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void Hold()
     {
         throw new System.NotImplementedException();

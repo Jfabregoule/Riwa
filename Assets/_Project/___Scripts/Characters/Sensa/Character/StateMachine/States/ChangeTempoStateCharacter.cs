@@ -20,6 +20,11 @@ public class ChangeTempoStateCharacter : BaseStateCharacter<EnumStateCharacter>
         _subStateMachine.InitState(_subStateMachine.States[EnumChangeTempo.Standby]);
 
         _character = (ACharacter)character;
+
+
+        BaseStateMachine<EnumChangeTempo, ChangeTempoBaseState> machine = _subStateMachine;
+        //_character.StateMachine.BackgroundSubstateMachine.Add(machine);
+
     }
 
     public override void EnterState()

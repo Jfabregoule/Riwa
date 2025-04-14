@@ -15,6 +15,7 @@ public class ProcessStateTempo : ChangeTempoBaseState
 
         _character.ChangeTime.StartTimeChange();
         _character.ChangeTime.OnTimeChangeEnd += TimeChangeEnded;
+
     }
 
     public override void ExitState()

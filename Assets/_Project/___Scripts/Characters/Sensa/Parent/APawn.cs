@@ -63,6 +63,11 @@ public class APawn<TStateEnum> : MonoBehaviour
         if (lookDir != Vector3.zero)
             targetRotation = Quaternion.LookRotation(lookDir);
 
+        if(transform.position == objectPos)
+        {
+            clock = 1.1f;
+        }
+
         while (clock < 1)
         {
             transform.rotation = Quaternion.Slerp(startRotation, targetRotation, Mathf.Clamp01(clock * 3)); //Pour que sensa se tourne plus vite au début 

@@ -11,8 +11,14 @@ public class DialogueSystem : Singleton<DialogueSystem>
     [SerializeField] private Sequencer _beginSequencer;
     [SerializeField] private Sequencer _endSequencer;
 
+    public delegate void DialogueText(string text);
+    public event DialogueText OnSentenceChanged;
+
+    public delegate void DialogueCanvasGroup(bool isActive);
+    public event DialogueCanvasGroup OnCanvasGroupChanged;
+
     public CanvasGroup FadeCanvas { get; private set; }
-    public TextMeshProUGUI DialogueText { get; private set; }
+    //public TextMeshProUGUI DialogueText { get; private set; }
     public DialogueAsset ProcessingDialogue { get; private set; }
 
     private int sectionIndex;
@@ -34,9 +40,7 @@ public class DialogueSystem : Singleton<DialogueSystem>
 
     private void OnEnable()
     {
-        //MonoBehaviour test = StartCoroutine(Helpers.WaitMonoBeheviour(InputManager.Instance));
-        StartCoroutine(SubscribeDialogueInputManager());
-        //InputManager.Instance.OnAdvanceDialogue += AdvanceDialogue;
+        StartCoroutine(Helpers.WaitMonoBeheviour(() => InputManager.Instance, SubscribeToDialogueInputManager));
     }
 
     private void OnDisable() { if (InputManager.Instance != null) InputManager.Instance.OnAdvanceDialogue -= AdvanceDialogue; }
@@ -105,7 +109,8 @@ public class DialogueSystem : Singleton<DialogueSystem>
     public void UpdateSentence()
     {
         string sentence = GetSentence();
-        DialogueText.SetText(sentence);
+        OnSentenceChanged?.Invoke(sentence);
+        //DialogueText.SetText(sentence);
 
         StartCoroutine(WaitTime(1f));
     }
@@ -115,12 +120,26 @@ public class DialogueSystem : Singleton<DialogueSystem>
         yield return Helpers.GetWait(time);
     }
 
-    private IEnumerator SubscribeDialogueInputManager()
+    private void SubscribeToDialogueInputManager(InputManager script)
     {
-        while (InputManager.Instance == null)
-            yield return null;
+        if (script != null)
+        {
+            script.OnAdvanceDialogue += AdvanceDialogue;
+            Debug.Log("Script is ready!");
+        }
+        else
+        {
+            Debug.LogWarning("Script was still null after timeout.");
+        }
+    }
 
-        InputManager.Instance.OnAdvanceDialogue += AdvanceDialogue;
+    public void InvokeCanvasGroup(bool isActive)
+    {
+        OnCanvasGroupChanged?.Invoke(isActive);
+    }
+    public void InvokeText(string text)
+    {
+        OnSentenceChanged?.Invoke(text);
     }
 
     private int GetSectionCount() => ProcessingDialogue.Sections.Length;

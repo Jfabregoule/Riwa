@@ -16,6 +16,14 @@ public class CharacterMoveStateInteract : PawnMoveStateInteract<EnumStateCharact
     {
         base.EnterState();
 
+        float radiusOffset = _stateMachine.CurrentObjectInteract.GetComponent<IInteractable>().OffsetRadius;
+
+        if (radiusOffset < 0)
+        {
+            _stateMachine.ChangeState(_stateMachine.States[EnumInteract.Action]);
+            return;
+        }
+
         _character.OnMoveToFinished += InteractEndOfPath;
         _character.InputManager.OnInteractEnd += EndInteract;
 

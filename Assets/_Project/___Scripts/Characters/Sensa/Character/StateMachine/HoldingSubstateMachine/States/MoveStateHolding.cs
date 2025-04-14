@@ -4,11 +4,17 @@ public class MoveStateHolding : HoldingBaseState
 {
     private int _sens;
     private IMovable _movable;
+
+    private Joystick _joystick;
+
     public int Sens { get => _sens; set => _sens = value; }
 
     public override void InitState(HoldingStateMachine stateMachine, EnumHolding enumValue, ACharacter character)
     {
         base.InitState(stateMachine, enumValue, character);
+
+        _joystick = GameManager.Instance.Joystick;
+
     }
 
     public override void EnterState()
@@ -17,12 +23,16 @@ public class MoveStateHolding : HoldingBaseState
         if (_character.HoldingObject.TryGetComponent(out IMovable movable))
         {
             _movable = movable;
+            _movable.OnMoveFinished += CanGoToIdle;
+
         }
+
     }
 
     public override void ExitState()
     {
         base.ExitState();
+        _movable.OnMoveFinished -= CanGoToIdle;
     }
 
     public override void UpdateState()
@@ -30,53 +40,57 @@ public class MoveStateHolding : HoldingBaseState
         base.UpdateState();
 
         Vector3 dir = Helpers.GetDominantDirection(_character.transform.forward);
-        _movable.Move(Sens * dir);
-        _character.transform.position += Sens * dir * _movable.MoveSpeed * Time.deltaTime * 10;
+        bool canMove = _movable.Move(Sens * dir);
+        if (!canMove) {
+            _stateMachine.ChangeState(_stateMachine.States[EnumHolding.IdleHolding]);
+            return;
+        }
+        _character.transform.position += Sens * dir * _movable.MoveSpeed * Time.deltaTime;
         
     }
 
     public override void CheckChangeState()
     {
         base.CheckChangeState();
+    }
+
+    public void CanGoToIdle()
+    {
 
         Vector2 joystickDir = _character.InputManager.GetMoveDirection();
 
-
-        if (joystickDir == Vector2.zero) {
+        if (joystickDir == Vector2.zero)
+        {
             _stateMachine.ChangeState(_stateMachine.States[EnumHolding.IdleHolding]);
             return;
         }
 
         //Pour calculer avec l'orientation de la caméra
 
-        Vector3 camForward = _cam.transform.forward;
-        Vector3 camRight = _cam.transform.right;
-
-        camForward.y = 0;
-        camRight.y = 0;
-
-        camForward.Normalize();
-        camRight.Normalize();
+        Vector3 camForward = Vector3.ProjectOnPlane(_cam.transform.forward, Vector3.up).normalized;
+        Vector3 camRight = Vector3.Cross(Vector3.up, camForward);
 
         /////////
 
-        Vector3 inputDir = new Vector3(joystickDir.x, 0, joystickDir.y).normalized;
+        Vector3 inputDir = (camForward * joystickDir.y + camRight * joystickDir.x).normalized;
 
-        Vector3 playerForward = _character.transform.forward;
-        Vector3 forward = new Vector3(Mathf.Round(playerForward.x), 0, Mathf.Round(playerForward.z)).normalized;
-        Vector3 right = Vector3.Cross(Vector3.up, forward);
+        Vector3 worldForward = _character.transform.forward;
+        Vector3 worldRight = _character.transform.right;
 
-        float dotForward = Vector3.Dot(forward, inputDir);
-        float dotRight = Vector3.Dot(right, inputDir);
+        float dotForward = Vector3.Dot(worldForward, inputDir);
+        float dotRight = Vector3.Dot(worldRight, inputDir);
 
         if (Mathf.Abs(dotForward) > Mathf.Abs(dotRight))
         {
+            if (!_character.HoldingObject.TryGetComponent(out IMovable movable)) return;
             if (dotForward > 0.5f)
             {
+                //Pull
                 Sens = 1;
             }
             else
             {
+                //Push
                 Sens = -1;
             }
         }
@@ -95,6 +109,9 @@ public class MoveStateHolding : HoldingBaseState
                 ((RotateStateHolding)_stateMachine.States[EnumHolding.Rotate]).Sens = -1;
                 _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Rotate]);
             }
-        }   
+        }
+
+        
     }
+
 }

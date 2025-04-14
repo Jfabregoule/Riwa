@@ -5,6 +5,8 @@ public class Box : MonoBehaviour, IMovable
     public float MoveSpeed { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
     public float OffsetRadius { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
+    public event IMovable.NoArgVoid OnMoveFinished;
+
     void Start()
     {
 
@@ -30,7 +32,7 @@ public class Box : MonoBehaviour, IMovable
         throw new System.NotImplementedException();
     }
 
-    public void Move(Vector3 direction)
+    public bool Move(Vector3 direction)
     {
         throw new System.NotImplementedException();
     }

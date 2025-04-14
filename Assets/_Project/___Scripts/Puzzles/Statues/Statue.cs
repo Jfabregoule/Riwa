@@ -15,7 +15,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
     private bool _validate;
     private bool _isMoving;
 
-    private float _offsetRadius = 0.3f;
+    private float _offsetRadius = 0.5f;
 
     public bool Validate { get => _validate; set => _validate = value; }
     public float UnitGridSize { get => _unitGridSize; set => _unitGridSize = value; }
@@ -29,20 +29,23 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
     public event StatueMoveEvent OnStatueMoved;
     public event StatueRotateEvent OnStatueRotate;
     public event StatueEndMoving OnStatueEndMoving;
-    public event IRotatable.RotatableEvent OnRotateFinished;
 
-    public void Move(Vector3 direction)
+    public event IRotatable.RotatableEvent OnRotateFinished;
+    public event IMovable.NoArgVoid OnMoveFinished;
+
+    public bool Move(Vector3 direction)
     {
 
         //Vector3 dominantDir = Helpers.GetDominantDirection(direction);
-        if (_isMoving || _validate) return;
+        if (_isMoving || _validate) return true;
         if (_showDebugLog == true) Debug.Log("UnitgridSize: " + _unitGridSize + " | Direction: " + direction);
         if (_showDebugLog == true) Debug.Log("PosX: " + _pos.x + " | PosY: " + _pos.y + " | Rotation: " + _content.rotation + " | ID: " + _content.id);
         bool canMove = OnStatueMoved.Invoke(_pos, Helpers.Vector2To2Int(new Vector2(direction.x, direction.z)), _content);
-        if (!canMove) return;
+        if (!canMove) return false;
         if (direction.x != 0) _pos.x += (int)direction.x;
         if (direction.z != 0) _pos.y += (int)direction.z;
         StartCoroutine(LerpToTile(direction));
+        return true;
     }
     public void Rotate(int sens)
     {
@@ -68,6 +71,10 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
         Vector3 destination = new Vector3(transform.position.x + (_unitGridSize * direction.x), transform.position.y, transform.position.z + (_unitGridSize * direction.z));
         if (_showDebugLog == true) Debug.Log("UnitgridSize: " + _unitGridSize + " | Destination: " + destination);
         if (_showDebugLog == true) Debug.Log("PosX: " + _pos.x + " | PosY: " + _pos.y + " | Rotation: " + _content.rotation + " | ID: " + _content.id);
+
+        float distance = Vector3.Distance(initialPosition, destination);
+        _lerpTime = distance / MoveSpeed;
+
         while (elapsedTime < _lerpTime)
         {
             elapsedTime += Time.deltaTime;
@@ -79,6 +86,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
         transform.position = destination;
         _isMoving = false;
         OnStatueEndMoving?.Invoke();
+        OnMoveFinished?.Invoke();
     }
 
     IEnumerator LerpRotation(float angle)

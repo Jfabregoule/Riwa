@@ -33,24 +33,18 @@ public class IdleHoldingStateHolding : HoldingBaseState
 
         //Pour calculer avec l'orientation de la caméra
 
-        Vector3 camForward = _cam.transform.forward;
-        Vector3 camRight = _cam.transform.right;
-
-        camForward.y = 0;
-        camRight.y = 0;
-
-        camForward.Normalize();
-        camRight.Normalize();
+        Vector3 camForward = Vector3.ProjectOnPlane(_cam.transform.forward, Vector3.up).normalized;
+        Vector3 camRight = Vector3.Cross(Vector3.up, camForward);
 
         /////////
 
         Vector3 inputDir = (camForward * joystickDir.y + camRight * joystickDir.x).normalized;
 
         Vector3 worldForward = _character.transform.forward;
-        Vector3 worldRight = Vector3.Cross(Vector3.up, worldForward);
+        Vector3 worldRight = _character.transform.right;
 
         float dotForward = Vector3.Dot(worldForward, inputDir);
-        float dotRight = Vector3.Dot(worldForward, inputDir);
+        float dotRight = Vector3.Dot(worldRight, inputDir);
 
         if (Mathf.Abs(dotForward) > Mathf.Abs(dotRight))
         {

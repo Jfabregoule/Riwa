@@ -33,7 +33,7 @@ public class ChangeTime : MonoBehaviour
     private ParticleSystem.ShapeModule _ambianceShapeModule;
     private ParticleSystem.EmissionModule _ambianceEmissionModule;
 
-    public delegate void TimeEvent();
+    public delegate void TimeEvent(bool isPast);
     public event TimeEvent OnTimeChangeEnd;
 
     #endregion
@@ -108,7 +108,7 @@ public class ChangeTime : MonoBehaviour
         }
 
         _particleActivated = false;
-        OnTimeChangeEnd?.Invoke();
+        OnTimeChangeEnd?.Invoke(_past == 1);
     }
 
     public void StartTimeChange()
@@ -147,7 +147,7 @@ public class ChangeTime : MonoBehaviour
         }
 
         UpdateShaders();
-        OnTimeChangeEnd?.Invoke();
+        OnTimeChangeEnd?.Invoke(_past == 1);
     }
 
     private void UpdateShaders()

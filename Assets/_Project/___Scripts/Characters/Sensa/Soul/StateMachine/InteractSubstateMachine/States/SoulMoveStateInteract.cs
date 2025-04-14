@@ -14,6 +14,14 @@ public class SoulMoveStateInteract : PawnMoveStateInteract<EnumStateSoul>
     {
         base.EnterState();
 
+        float radiusOffset = _stateMachine.CurrentObjectInteract.GetComponent<IInteractable>().OffsetRadius;
+
+        if (radiusOffset < 0)
+        {
+            _stateMachine.ChangeState(_stateMachine.States[EnumInteract.Action]);
+            return;
+        }
+
         _character.OnMoveToFinished += InteractEndOfPath;
 
         if (_stateMachine.CurrentObjectInteract == null)

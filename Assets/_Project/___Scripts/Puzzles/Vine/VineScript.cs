@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VineScript : MonoBehaviour, IInteractable
+public class VineScript : MonoBehaviour, IInteractableSoul
 {
     //[SerializeField] private List<MeshRenderer> _renderers;
     [SerializeField] private float _waitBeforeFall;
@@ -13,6 +13,7 @@ public class VineScript : MonoBehaviour, IInteractable
     public float FrictionSpeed { get { return _frictionSpeed; } set { _frictionSpeed = value; } }
 
     public Transform SocketPoint { get; private set; }
+
     public float OffsetRadius { get => -1; set => throw new NotImplementedException(); }
 
     [SerializeField, Range(0, 1)]
@@ -99,7 +100,6 @@ public class VineScript : MonoBehaviour, IInteractable
 
             yield return null;
         }
-        _capsuleCollider.isTrigger = true;
     }
     private void VineFall()
     {
@@ -149,6 +149,11 @@ public class VineScript : MonoBehaviour, IInteractable
     public void Interactable()
     {
         //_capsuleCollider.isTrigger = false;
+
+    }
+
+    public void InteractableSoul()
+    {
         StartCoroutine(RaiseVine());
     }
 }

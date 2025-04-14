@@ -40,7 +40,7 @@ public class CancelStateTempo : ChangeTempoBaseState
         base.CheckChangeState();
     }
 
-    private void TimeChangeEnded()
+    private void TimeChangeEnded(bool isPast)
     {
         _changedTime = true;
     }

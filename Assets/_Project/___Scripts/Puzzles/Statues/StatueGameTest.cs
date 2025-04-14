@@ -16,12 +16,12 @@ public class StatueGameTest : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.W)) _activeStatue.Move(Vector2.up);
-        if (Input.GetKeyDown(KeyCode.S)) _activeStatue.Move(Vector2.down);
-        if (Input.GetKeyDown(KeyCode.A)) _activeStatue.Move(Vector2.left);
-        if (Input.GetKeyDown(KeyCode.D)) _activeStatue.Move(Vector2.right);
-        if (Input.GetKeyDown(KeyCode.E)) _activeStatue.Rotate(45);
-        if (Input.GetKeyDown(KeyCode.Tab)) SwitchStatue();
+        //if (Input.GetKeyDown(KeyCode.W)) _activeStatue.Move(Vector2.up);
+        //if (Input.GetKeyDown(KeyCode.S)) _activeStatue.Move(Vector2.down);
+        //if (Input.GetKeyDown(KeyCode.A)) _activeStatue.Move(Vector2.left);
+        //if (Input.GetKeyDown(KeyCode.D)) _activeStatue.Move(Vector2.right);
+        //if (Input.GetKeyDown(KeyCode.E)) _activeStatue.Rotate(45);
+        //if (Input.GetKeyDown(KeyCode.Tab)) SwitchStatue();
     }
 
     private void SwitchStatue()

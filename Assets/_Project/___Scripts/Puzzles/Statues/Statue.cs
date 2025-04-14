@@ -13,6 +13,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
 
     private float _lerpTime = 1.5f;
     private float _unitGridSize;
+    private float _speed = 2f;
     private CellPos _pos;
     private CellContent _content;
     private bool _validate;
@@ -24,7 +25,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
     //public bool IsLocked { get => _lockPosition; set => _lockPosition = value; }
     public float UnitGridSize { get => _unitGridSize; set => _unitGridSize = value; }
     public float OffsetRadius { get => _offsetRadius; set => _offsetRadius = value; }
-    public float MoveSpeed { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+    public float MoveSpeed { get => _speed; set => _speed = value; }
 
     public delegate bool StatueMoveEvent(CellPos oldPos, Vector2Int nextPos, CellContent statueData);
     public delegate void StatueRotateEvent(CellPos pos, CellContent content);
@@ -80,7 +81,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
         }
         transform.position = destination;
         _isMoving = false;
-        OnStatueEndMoving.Invoke();
+        OnStatueEndMoving?.Invoke();
     }
 
     IEnumerator LerpRotation(float angle)
@@ -101,9 +102,9 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
         transform.localRotation = desiredRotation;
         if (_showDebugLog == true) Debug.Log("Rotation: " + transform.localRotation.eulerAngles + " | Current content rot: " + _content.rotation);
         _isMoving = false;
-        OnStatueRotate.Invoke(_pos, _content);
-        OnStatueEndMoving.Invoke();
-        OnRotateFinished.Invoke();
+        OnStatueRotate?.Invoke(_pos, _content);
+        OnStatueEndMoving?.Invoke();
+        OnRotateFinished?.Invoke();
     }
 
     public void SetStatuesData(StatueData data)

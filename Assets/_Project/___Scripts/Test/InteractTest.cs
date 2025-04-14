@@ -8,7 +8,7 @@ public class InteractTest : MonoBehaviour, IMovable, IRotatable
 
     public event IRotatable.RotatableEvent OnRotateFinished;
 
-    public float MoveSpeed { get => _speed; set => value = _speed; }
+    public float MoveSpeed { get => _speed; set => _speed = value; }
     public float OffsetRadius { get; set; }
 
     InteractTest()

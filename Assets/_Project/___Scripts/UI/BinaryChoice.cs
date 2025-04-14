@@ -32,10 +32,19 @@ public class BinaryChoice : MonoBehaviour
         UpdateVisuals();
     }
 
+    private void OnEnable()
+    {
+        OnValueChange += SetHanded;
+    }
+
     public void SetValue(bool isEnable)
     {
-        Value = isEnable;
-        InvokeEvent(Value);
+        InvokeEvent(isEnable);
+    }
+
+    private void SetHanded(bool isRightHanded)
+    {
+        Value = isRightHanded;
         UpdateVisuals();
     }
 

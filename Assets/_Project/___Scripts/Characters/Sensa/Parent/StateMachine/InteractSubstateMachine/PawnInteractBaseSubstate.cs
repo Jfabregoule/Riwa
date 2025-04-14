@@ -14,13 +14,13 @@ public class PawnInteractBaseSubstate<TStateEnum> : BaseState<EnumInteract>
     where TStateEnum : Enum //Enum pour soul et character
 {
     protected APawn<TStateEnum> _character;
-    new protected PawnInteractSubstateMachine<TStateEnum> _stateMachine;
+    protected PawnInteractSubstateMachine<TStateEnum> _subStateMachine;
 
     public virtual void InitState(PawnInteractSubstateMachine<TStateEnum> stateMachine, EnumInteract enumValue, APawn<TStateEnum> character)
     {
         base.InitState(enumValue);
 
-        _stateMachine = stateMachine;
+        _subStateMachine = stateMachine;
         _character = character;
 
     }

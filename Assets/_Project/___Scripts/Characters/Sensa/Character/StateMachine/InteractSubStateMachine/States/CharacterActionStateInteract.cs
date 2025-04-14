@@ -25,7 +25,7 @@ public class CharacterActionStateInteract : PawnActionStateInteract<EnumStateCha
     {
         base.ExitState();
         
-        _stateMachine.CurrentObjectInteract.GetComponent<IInteractable>().Interactable();
+        _subStateMachine.CurrentObjectInteract.GetComponent<IInteractable>().Interactable();
     }
 
     public override void UpdateState()

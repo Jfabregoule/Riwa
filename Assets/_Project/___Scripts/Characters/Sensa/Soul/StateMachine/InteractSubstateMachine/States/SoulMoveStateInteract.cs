@@ -14,7 +14,7 @@ public class SoulMoveStateInteract : PawnMoveStateInteract<EnumStateSoul>
     {
         base.EnterState();
 
-        float radiusOffset = _stateMachine.CurrentObjectInteract.GetComponent<IInteractable>().OffsetRadius;
+        float radiusOffset = _subStateMachine.CurrentObjectInteract.GetComponent<IInteractable>().OffsetRadius;
 
         if (radiusOffset < 0)
         {
@@ -24,13 +24,13 @@ public class SoulMoveStateInteract : PawnMoveStateInteract<EnumStateSoul>
 
         _character.OnMoveToFinished += InteractEndOfPath;
 
-        if (_stateMachine.CurrentObjectInteract == null)
+        if (_subStateMachine.CurrentObjectInteract == null)
         {
             _character.StateMachine.ChangeState(_character.StateMachine.States[EnumStateSoul.Idle]);
             return;
         }
 
-        float radius = _stateMachine.CurrentObjectInteract.GetComponent<IInteractable>().OffsetRadius;
+        float radius = _subStateMachine.CurrentObjectInteract.GetComponent<IInteractable>().OffsetRadius;
 
         //On va regarder quel point de grab est le plus proche de sensa
 
@@ -43,7 +43,7 @@ public class SoulMoveStateInteract : PawnMoveStateInteract<EnumStateSoul>
         objectPoints[3] = new Vector3(0, 0, -1) * radius;
 
         int index = 0;
-        Vector3 objPos = _stateMachine.CurrentObjectInteract.transform.position;
+        Vector3 objPos = _subStateMachine.CurrentObjectInteract.transform.position;
         float distance = Vector3.Distance(_character.transform.position, objPos + objectPoints[index]);
 
         for (int i = 1; i < objectPoints.Length; i++)
@@ -75,7 +75,7 @@ public class SoulMoveStateInteract : PawnMoveStateInteract<EnumStateSoul>
 
     public void InteractEndOfPath()
     {
-        if (_stateMachine.CurrentObjectInteract.TryGetComponent(out ITreeStump stump))
+        if (_subStateMachine.CurrentObjectInteract.TryGetComponent(out ITreeStump stump))
         {
             _character.StateMachine.ChangeState(_character.StateMachine.States[EnumStateSoul.Idle]);
             _character.transform.parent.GetComponent<ACharacter>().StateMachine.ChangeState(_character.transform.parent.GetComponent<ACharacter>().StateMachine.States[EnumStateCharacter.Idle]); //horrible à changer

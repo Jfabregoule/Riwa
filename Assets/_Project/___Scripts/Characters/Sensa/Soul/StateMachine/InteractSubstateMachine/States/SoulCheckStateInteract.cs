@@ -29,13 +29,15 @@ public class SoulCheckStateInteract : PawnCheckStateInteract<EnumStateSoul>
     }
 
     public override void ChangeStateToIdle()
-    { 
-        _character.StateMachine.ChangeState(_character.StateMachine.States[EnumStateSoul.Idle]);
+    {
+        ASoul chara = (ASoul)_character;
+        chara.StateMachine.ChangeState(chara.StateMachine.States[EnumStateSoul.Idle]);
     }
 
     public override void ChangeStateToMove()
     {
-        _character.StateMachine.ChangeState(_character.StateMachine.States[EnumStateSoul.Move]);
+        ASoul chara = (ASoul)_character;
+        chara.StateMachine.ChangeState(chara.StateMachine.States[EnumStateSoul.Move]);
     }
 
 }

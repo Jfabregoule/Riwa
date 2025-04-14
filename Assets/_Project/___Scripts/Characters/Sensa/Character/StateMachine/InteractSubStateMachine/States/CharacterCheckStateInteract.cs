@@ -30,14 +30,14 @@ public class CharacterCheckStateInteract : PawnCheckStateInteract<EnumStateChara
 
     public override void ChangeStateToIdle()
     {
-        StateMachineCharacter stateMachine = (StateMachineCharacter)_character.StateMachine;
-        stateMachine.ChangeState(stateMachine.States[EnumStateCharacter.Idle]);
+        ACharacter chara = (ACharacter)_character;
+        chara.StateMachine.ChangeState(chara.StateMachine.States[EnumStateCharacter.Idle]);
     }
 
     public override void ChangeStateToMove()
     {
-        StateMachineCharacter stateMachine = (StateMachineCharacter)_character.StateMachine;
-        stateMachine.ChangeState(stateMachine.States[EnumStateCharacter.Move]);
+        ACharacter chara = (ACharacter)_character;
+        chara.StateMachine.ChangeState(chara.StateMachine.States[EnumStateCharacter.Move]);
     }
 
 

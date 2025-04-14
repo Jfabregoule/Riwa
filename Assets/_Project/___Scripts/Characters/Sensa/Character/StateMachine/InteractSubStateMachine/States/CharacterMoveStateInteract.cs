@@ -13,7 +13,11 @@ public class CharacterMoveStateInteract : PawnMoveStateInteract<EnumStateCharact
     {
         base.EnterState();
 
-        float radiusOffset = _stateMachine.CurrentObjectInteract.GetComponent<IInteractable>().OffsetRadius;
+
+        Debug.Log("CharacterMoveState");
+
+
+        float radiusOffset = _subStateMachine.CurrentObjectInteract.GetComponent<IInteractable>().OffsetRadius;
 
         if (radiusOffset < 0)
         {
@@ -26,13 +30,13 @@ public class CharacterMoveStateInteract : PawnMoveStateInteract<EnumStateCharact
 
         _endInteract = false;
 
-        if (_stateMachine.CurrentObjectInteract == null)
+        if (_subStateMachine.CurrentObjectInteract == null)
         {
             _character.StateMachine.ChangeState(_character.StateMachine.States[EnumStateCharacter.Idle]);
             return;
         }
 
-        float radius = _stateMachine.CurrentObjectInteract.GetComponent<IInteractable>().OffsetRadius;
+        float radius = _subStateMachine.CurrentObjectInteract.GetComponent<IInteractable>().OffsetRadius;
 
         //On va regarder quel point de grab est le plus proche de sensa
 
@@ -45,7 +49,7 @@ public class CharacterMoveStateInteract : PawnMoveStateInteract<EnumStateCharact
         objectPoints[3] = new Vector3(0, 0, -1) * radius;
 
         int index = 0;
-        Vector3 objPos = _stateMachine.CurrentObjectInteract.transform.position;
+        Vector3 objPos = _subStateMachine.CurrentObjectInteract.transform.position;
         float distance = Vector3.Distance(_character.transform.position, objPos + objectPoints[index]);
 
         for (int i = 1; i < objectPoints.Length; i++)
@@ -85,7 +89,7 @@ public class CharacterMoveStateInteract : PawnMoveStateInteract<EnumStateCharact
 
     public void InteractEndOfPath()
     {
-        if (_stateMachine.CurrentObjectInteract.TryGetComponent(out IHoldable holdable))
+        if (_subStateMachine.CurrentObjectInteract.TryGetComponent(out IHoldable holdable))
         {
             if (_endInteract)
             {
@@ -94,13 +98,13 @@ public class CharacterMoveStateInteract : PawnMoveStateInteract<EnumStateCharact
             else
             {
                 ACharacter charac = (ACharacter)_character;
-                charac.SetHoldingObject(_stateMachine.CurrentObjectInteract);
+                charac.SetHoldingObject(_subStateMachine.CurrentObjectInteract);
                 _character.StateMachine.ChangeState(_character.StateMachine.States[EnumStateCharacter.Holding]);
             }
             return;
         }
 
-        if (_stateMachine.CurrentObjectInteract.TryGetComponent(out ITreeStump stump))
+        if (_subStateMachine.CurrentObjectInteract.TryGetComponent(out ITreeStump stump))
         {
             _character.StateMachine.ChangeState(_character.StateMachine.States[EnumStateCharacter.Soul]);
             return;

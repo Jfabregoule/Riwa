@@ -256,7 +256,6 @@ public class Grid : MonoBehaviour
             Quaternion rot = Quaternion.Euler(0, randRotation, 0);
             Vector3 position = Origin + new Vector3(randX * _unitGridSize, 0.09f, randY * _unitGridSize);
             GameObject statueGO = Instantiate(_statuesPrefab[index - 1], position, rot);
-            statueGO.transform.localRotation = Quaternion.Euler(90, randRotation, 0);
             statueGO.transform.SetParent(transform);
 
             Statue statue = statueGO.GetComponent<Statue>();

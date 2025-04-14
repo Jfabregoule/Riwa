@@ -30,7 +30,7 @@ public class InteractStateCharacter : ParentInteractState<EnumStateCharacter>
         _subStateMachine.ChangeState(_subStateMachine.States[EnumInteract.StandBy]);
 
     }
-
+    
     public override void UpdateState()
     {
         base.UpdateState();

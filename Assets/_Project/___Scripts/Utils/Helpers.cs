@@ -31,5 +31,17 @@ public static class Helpers
     { 
         ToggleCanvasGroup(false, canvasGroup);
     }
+
+    public static Vector3 GetDominantDirection(Vector3 input)
+    {
+        Vector3 result = Vector3.zero;
+
+        if (Mathf.Abs(input.x) > Mathf.Abs(input.z))
+            result.x = Mathf.Sign(input.x);
+        else
+            result.z = Mathf.Sign(input.z);
+
+        return result;
+    }
 }
 

@@ -29,8 +29,9 @@ public class MoveStateHolding : HoldingBaseState
     {
         base.UpdateState();
 
-        _movable.Move(Sens * _character.transform.forward);
-        _character.transform.position += Sens * _character.transform.forward * _movable.MoveSpeed * Time.deltaTime * 10;
+        Vector3 dir = Helpers.GetDominantDirection(_character.transform.forward);
+        _movable.Move(Sens * dir);
+        _character.transform.position += Sens * dir * _movable.MoveSpeed * Time.deltaTime * 10;
         
     }
 

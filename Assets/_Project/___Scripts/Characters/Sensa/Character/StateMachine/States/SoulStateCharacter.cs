@@ -18,7 +18,7 @@ public class SoulStateCharacter : BaseStateCharacter<EnumStateCharacter>
     public override void EnterState()
     {
         base.EnterState();
-        Debug.Log("Deubt");
+
         _character.Soul.transform.position = _character.transform.position;
         _character.Soul.transform.rotation = _character.transform.rotation;
         _character.SoulLinkVFX.Play();
@@ -26,7 +26,6 @@ public class SoulStateCharacter : BaseStateCharacter<EnumStateCharacter>
         _character.IsInSoul = true;
 
         GameManager.Instance.CameraHandler.VirtualCamera.LookAt = _character.Soul.transform;
-        Debug.Log("Fin");
     }
 
     public override void ExitState()

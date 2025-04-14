@@ -41,10 +41,24 @@ public class MoveStateHolding : HoldingBaseState
 
         Vector2 joystickDir = _character.InputManager.GetMoveDirection();
 
+
         if (joystickDir == Vector2.zero) {
             _stateMachine.ChangeState(_stateMachine.States[EnumHolding.IdleHolding]);
             return;
         }
+
+        //Pour calculer avec l'orientation de la caméra
+
+        Vector3 camForward = _cam.transform.forward;
+        Vector3 camRight = _cam.transform.right;
+
+        camForward.y = 0;
+        camRight.y = 0;
+
+        camForward.Normalize();
+        camRight.Normalize();
+
+        /////////
 
         Vector3 inputDir = new Vector3(joystickDir.x, 0, joystickDir.y).normalized;
 

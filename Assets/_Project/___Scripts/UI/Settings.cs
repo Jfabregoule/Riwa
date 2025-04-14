@@ -57,6 +57,7 @@ public class Settings : MonoBehaviour
     private void SetControlPos(bool value)
     {
         _saveData.IsRightHanded = value;
+        Debug.Log(value);
     }
 
     private void SetLanguage(int language)
@@ -64,5 +65,13 @@ public class Settings : MonoBehaviour
         _saveData.CurrentLanguage = language;
     }
 
+    public void SetMusicVolume(float level)
+    {
+        SoundMixerManager.Instance.SetMusicVolume(level);
+    }
 
+    public void SetSoundFXVolume(float level)
+    {
+        SoundMixerManager.Instance.SetSoundFXVolume(level);
+    }
 }

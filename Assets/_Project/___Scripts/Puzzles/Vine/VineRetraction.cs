@@ -27,10 +27,14 @@ public class VineRetraction : MonoBehaviour
             float zMax = _boxCollider.center.z + _boxCollider.height * 0.5f;
             float zRatio = Mathf.InverseLerp(zMin, zMax, zLocal);
 
+            float scaleRatio = 1f - zRatio;
+            //float height = 2f + scaleRatio * (6f - 2f);
+            //float centerZ = -6f + scaleRatio * (-1f);
+
             float growValue = Mathf.Lerp(0f, 1f, zRatio);
-            float height = Mathf.Lerp(6f, 2f, zRatio);
-            float centerZ = Mathf.Lerp(-0.5f, -6f, zRatio);
-            ChangeVineDatas(growValue, height - 0.5f, new Vector3(0, 0, -height - 0.5f));
+            float height = Mathf.Lerp(1f, 13.5f, zRatio);
+            float centerZ = Mathf.Lerp(-7f, 0f, zRatio);
+            ChangeVineDatas(growValue, height, new Vector3(0, 0, centerZ));
         }
     }
 

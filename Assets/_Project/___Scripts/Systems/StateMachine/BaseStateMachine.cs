@@ -37,7 +37,7 @@ public abstract class BaseStateMachine<TStateEnum, TBaseState>
     public TBaseState CurrentState { get => _currentState; }
     public BaseTransitions Transition { get => _transition; }
     public Dictionary<TStateEnum, string> AnimationMap { get => _animationMap; }
-
+    
     #endregion
 
     /*----------------------\

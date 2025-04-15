@@ -7,6 +7,7 @@ public class InteractTest : MonoBehaviour, IMovable, IRotatable
     [SerializeField] private float _angle;
 
     public event IRotatable.RotatableEvent OnRotateFinished;
+    public event IMovable.NoArgVoid OnMoveFinished;
 
     public float MoveSpeed { get => _speed; set => _speed = value; }
     public float OffsetRadius { get; set; }
@@ -26,9 +27,11 @@ public class InteractTest : MonoBehaviour, IMovable, IRotatable
         throw new System.NotImplementedException();
     }
 
-    public void Move(Vector3 direction)
+    public bool Move(Vector3 direction)
     {
-        transform.position += direction * MoveSpeed * Time.deltaTime * 10;
+        transform.position += direction * MoveSpeed * Time.deltaTime;
+        OnMoveFinished?.Invoke();
+        return true;
     }
 
     public void Rotate(int sens)

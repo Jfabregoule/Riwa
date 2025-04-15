@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class APawn<TStateEnum> : MonoBehaviour
@@ -12,6 +13,7 @@ public class APawn<TStateEnum> : MonoBehaviour
     protected StateMachinePawn<TStateEnum, BaseStatePawn<TStateEnum>> _stateMachine;
 
     [SerializeField] protected float _speed = 7;
+    [SerializeField] protected float _walkSpeed = 2;
 
     [SerializeField] protected LayerMask _pastLayer;
     [SerializeField] protected LayerMask _presentLayer;
@@ -30,29 +32,31 @@ public class APawn<TStateEnum> : MonoBehaviour
     public LayerMask PresentLayer { get => _presentLayer; }
     public bool IsInPast { get => isInPast; set => isInPast = value; }
 
-    public void MoveTo(Vector3 position, Vector3 objectPos)
+    public void MoveTo(Vector3 position, Vector3 objectPos, bool endRotate = true)
     {
-        StartCoroutine(CoroutineMoveTo(transform.position, position, objectPos));
+        StartCoroutine(CoroutineMoveTo(transform.position, position, objectPos, endRotate));
     }
 
-    private IEnumerator CoroutineMoveTo(Vector3 startPos, Vector3 targetPos, Vector3 objectPos)
-    {
-        float clock = 0;
-
+    private IEnumerator CoroutineMoveTo(Vector3 startPos, Vector3 targetPos, Vector3 objectPos, bool endRotate)
+    {   
         targetPos.y = startPos.y;
 
         Vector3 direction = (targetPos - startPos).normalized;
         Quaternion startRotation = transform.rotation;
         Quaternion targetRotation = Quaternion.LookRotation(direction);
 
-        while (clock < 1)
-        {
+        float distance = Vector3.Distance(startPos, targetPos);
+        float duration = distance / _walkSpeed; 
+        float clock = 0f;
 
-            transform.position = Vector3.Lerp(startPos, targetPos, clock);
-            transform.rotation = Quaternion.Slerp(startRotation, targetRotation, Mathf.Clamp01(clock * 3)); //Pour que sensa se tourne plus vite au début 
+        while (clock < duration)
+        {
+            float t = clock / duration;
+
+            transform.position = Vector3.Lerp(startPos, targetPos, t);
+            transform.rotation = Quaternion.Slerp(startRotation, targetRotation, Mathf.Clamp01(t * 3)); //Pour que sensa se tourne plus vite au début 
 
             clock += Time.deltaTime;
-
             yield return null;
         }
 
@@ -63,7 +67,7 @@ public class APawn<TStateEnum> : MonoBehaviour
         if (lookDir != Vector3.zero)
             targetRotation = Quaternion.LookRotation(lookDir);
 
-        if(transform.position == objectPos)
+        if(!endRotate)
         {
             clock = 1.1f;
         }

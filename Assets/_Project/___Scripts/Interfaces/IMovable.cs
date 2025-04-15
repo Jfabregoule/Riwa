@@ -3,5 +3,9 @@ using UnityEngine;
 public interface IMovable : IHoldable
 {
     public float MoveSpeed { get; set;}
-    void Move(Vector3 direction);
+    bool Move(Vector3 direction);
+
+    public delegate void NoArgVoid();
+    public event NoArgVoid OnMoveFinished;
+
 }

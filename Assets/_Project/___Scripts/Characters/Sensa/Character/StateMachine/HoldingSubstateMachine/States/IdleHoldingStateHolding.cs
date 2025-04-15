@@ -31,14 +31,20 @@ public class IdleHoldingStateHolding : HoldingBaseState
 
         if (joystickDir == Vector2.zero) return;
 
-        Vector3 inputDir = new Vector3(joystickDir.x, 0, joystickDir.y).normalized;
+        //Pour calculer avec l'orientation de la caméra
 
-        Vector3 playerForward = _character.transform.forward;
-        Vector3 forward = new Vector3(Mathf.Round(playerForward.x), 0, Mathf.Round(playerForward.z)).normalized;
-        Vector3 right = Vector3.Cross(Vector3.up, forward);
+        Vector3 camForward = Vector3.ProjectOnPlane(_cam.transform.forward, Vector3.up).normalized;
+        Vector3 camRight = Vector3.Cross(Vector3.up, camForward);
 
-        float dotForward = Vector3.Dot(forward, inputDir);
-        float dotRight = Vector3.Dot(right, inputDir);
+        /////////
+
+        Vector3 inputDir = (camForward * joystickDir.y + camRight * joystickDir.x).normalized;
+
+        Vector3 worldForward = _character.transform.forward;
+        Vector3 worldRight = _character.transform.right;
+
+        float dotForward = Vector3.Dot(worldForward, inputDir);
+        float dotRight = Vector3.Dot(worldRight, inputDir);
 
         if (Mathf.Abs(dotForward) > Mathf.Abs(dotRight))
         {

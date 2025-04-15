@@ -1,6 +1,8 @@
 public class StateMachineCharacter : StateMachinePawn<EnumStateCharacter, BaseStatePawn<EnumStateCharacter>>
 {
 
+    private ChangeTempoStateMachine _changeTempoSubstateMachine;
+
     #region StateNameAnimation
 
     private const string IDLE_NAME          = "Idle";
@@ -67,8 +69,27 @@ public class StateMachineCharacter : StateMachinePawn<EnumStateCharacter, BaseSt
         States[EnumStateCharacter.Respawn].InitState(this, EnumStateCharacter.Respawn, character);
         _animationMap[EnumStateCharacter.Respawn] = RESPAWN_NAME;
 
+        ChangeTempoStateCharacter temp = (ChangeTempoStateCharacter)States[EnumStateCharacter.ChangeTempo];
+        _changeTempoSubstateMachine = temp.SubStateMachine;
 
     }
+
+    public override void StateMachineUpdate()
+    {
+        base.StateMachineUpdate();
+
+        _changeTempoSubstateMachine.StateMachineUpdate();
+
+    }
+
+    public override void StateMachineFixedUpdate()
+    {
+        base.StateMachineFixedUpdate();
+
+        _changeTempoSubstateMachine.StateMachineFixedUpdate();
+
+    }
+
 
     public override void GoToIdle()
     {

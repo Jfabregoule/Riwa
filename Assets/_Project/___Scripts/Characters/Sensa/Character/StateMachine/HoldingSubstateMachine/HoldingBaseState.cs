@@ -9,6 +9,7 @@ public class HoldingBaseState : BaseState<EnumHolding>
 {
     new protected HoldingStateMachine _stateMachine;
     protected ACharacter _character;
+    protected CameraHandler _cam;
 
     public virtual void InitState(HoldingStateMachine stateMachine, EnumHolding enumValue, ACharacter character)
     {
@@ -16,6 +17,8 @@ public class HoldingBaseState : BaseState<EnumHolding>
 
         _stateMachine = stateMachine;
         _character = character;
+
+        _cam = GameManager.Instance.CameraHandler;
 
     }
 

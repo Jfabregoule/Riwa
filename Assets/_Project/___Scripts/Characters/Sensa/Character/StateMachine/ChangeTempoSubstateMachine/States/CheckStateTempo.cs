@@ -37,6 +37,8 @@ public class CheckStateTempo : ChangeTempoBaseState
     {
         base.ExitState();
         _nextState = EnumChangeTempo.Standby;
+
+        _character.StateMachine.ChangeState(_character.StateMachine.States[EnumStateCharacter.Idle]);
     }
 
     public override void UpdateState()

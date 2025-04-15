@@ -13,8 +13,11 @@ public class ProcessStateTempo : ChangeTempoBaseState
     {
         base.EnterState();
 
+        _changedTime = false;
+
         _character.ChangeTime.StartTimeChange();
         _character.ChangeTime.OnTimeChangeEnd += TimeChangeEnded;
+
     }
 
     public override void ExitState()

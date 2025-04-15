@@ -9,6 +9,16 @@ struct LanguageButton
     public Image image;
 }
 
+public enum EnumLanguage
+{
+    French,
+    Spanish,
+    Italian,
+    English,
+    German,
+    Japanese
+}
+
 public class LanguageSelector : MonoBehaviour
 {
     public delegate void ChangeLanguage(int language);

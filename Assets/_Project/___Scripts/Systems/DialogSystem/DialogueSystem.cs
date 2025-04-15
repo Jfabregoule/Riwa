@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor.VersionControl;
 using UnityEngine;
 
 public class DialogueSystem : Singleton<DialogueSystem>
 {
-    private const string DIALOGUE_TEXT_NAME = "SentenceText";
-
     [SerializeField] private Sequencer _beginSequencer;
     [SerializeField] private Sequencer _endSequencer;
+
+    [SerializeField] private DialogueAsset _test;
 
     public delegate void DialogueText(string text);
     public event DialogueText OnSentenceChanged;
@@ -17,22 +18,25 @@ public class DialogueSystem : Singleton<DialogueSystem>
     public delegate void DialogueCanvasGroup(bool isActive);
     public event DialogueCanvasGroup OnCanvasGroupChanged;
 
-    public CanvasGroup FadeCanvas { get; private set; }
-    //public TextMeshProUGUI DialogueText { get; private set; }
+    public delegate void DialogueCanvasGroupAlpha(float alpha);
+    public event DialogueCanvasGroupAlpha OnCanvasGroupAlphaChanged;
+
     public DialogueAsset ProcessingDialogue { get; private set; }
 
-    private int sectionIndex;
-    private int sentenceIndex;
+    private int _sectionIndex;
+    private int _sentenceIndex;
+    private int _characterIndex;
+
+    private bool _isWriting = false;
 
     public delegate void DialogueEvent(DialogueEventType eventType);
     public event DialogueEvent OnDialogueEvent;
 
-    public void Init()
+    public void Start()
     {
         ProcessingDialogue = null;
 
-        //FadeCanvas = GameManager.Instance.DialogueUI.GetComponent<CanvasGroup>();
-        //DialogueText = GameManager.Instance.DialogueUI.transform.Find(DIALOGUE_TEXT_NAME).GetComponent<TextMeshProUGUI>();
+        BeginDialogue(_test);
 
         _beginSequencer.Init();
         _endSequencer.Init();
@@ -53,8 +57,9 @@ public class DialogueSystem : Singleton<DialogueSystem>
             return;
         }
         ProcessingDialogue = asset;
-        sectionIndex = 0;
-        sentenceIndex = 0;
+        _sectionIndex = 0;
+        _sentenceIndex = 0;
+        _characterIndex = 0;
 
         if (ProcessingDialogue.OpeningTriggerEvent)
             OnDialogueEvent?.Invoke(ProcessingDialogue.OpeningEventType);
@@ -76,19 +81,58 @@ public class DialogueSystem : Singleton<DialogueSystem>
 
     private void AdvanceDialogue()
     {
-        sentenceIndex++;
-        if (sentenceIndex >= GetSentenceCount())
+        if (_isWriting)
+        {
+            _isWriting = false;
+            UpdateSentenceAll();
+            return;
+        }
+
+        _sentenceIndex++;
+        if (_sentenceIndex >= GetSentenceCount())
+        {
+            EndSection();
             UpdateSection();
+        }
         else
-            UpdateSentence();
+        {
+            if (GetSentence().UseWriting)
+            {
+                StartCoroutine(UpdateSentence());
+            }
+            else
+            {
+                UpdateSentenceAll();
+            }
+        }
+            
+    }
+
+    public void StartSection()
+    {
+        _sectionIndex = 0;
+        UpdateSection();
+    }
+
+    private void EndSection()
+    {
+        DialogueSection section = GetSection();
+        if (section.TriggerEvent)
+            OnDialogueEvent?.Invoke(section.EventType);
+        _sectionIndex++;
     }
 
     private void UpdateSection()
     {
-        sentenceIndex = 0;
+        if (_sectionIndex >= GetSectionCount())
+        {
+            _endSequencer.InitializeSequence();
+            StopAllCoroutines();
+            return;
+        }
+
+        _sentenceIndex = 0;
         DialogueSection section = GetSection();
-        if (section.TriggerEvent)
-            OnDialogueEvent?.Invoke(section.EventType);
 
         if (section.DisableDialogueInputs)
         {
@@ -99,25 +143,54 @@ public class DialogueSystem : Singleton<DialogueSystem>
             InputManager.Instance?.EnableDialogueControls();
         }
 
-        sectionIndex++;
-        if (sectionIndex >= GetSectionCount())
-            _endSequencer.InitializeSequence();
+        if (GetSentence().UseWriting)
+        {
+            StartCoroutine(UpdateSentence());
+        }
         else
-            UpdateSentence();
+        {
+            UpdateSentenceAll();
+        }
     }
 
-    public void UpdateSentence()
+    private void UpdateSentenceAll()
     {
-        string sentence = GetSentence();
-        OnSentenceChanged?.Invoke(sentence);
-        //DialogueText.SetText(sentence);
-
-        StartCoroutine(WaitTime(1f));
+        DialogueSentence sentence = GetSentence();
+        OnSentenceChanged?.Invoke(sentence.Text);
+        StopAllCoroutines();
+        if (sentence.UseTime)
+        {
+            StartCoroutine(WaitTimeAndAdvanceDialogue(sentence.TimeToPass));
+        }
     }
 
-    private IEnumerator WaitTime(float time)
+    private IEnumerator UpdateSentence()
+    {
+        _characterIndex = 0;
+        _isWriting = true;
+        DialogueSentence sentence = GetSentence();
+        string text = "";
+        for (int i = 0; i < sentence.Text.Length; i++)
+        {
+            text += GetCharacter();
+            OnSentenceChanged?.Invoke(text);
+            _characterIndex++;
+            yield return Helpers.GetWait(sentence.SpeedWriting);
+        }
+        _isWriting = false;
+
+        StopAllCoroutines();
+        if (sentence.UseTime)
+        {
+            StartCoroutine(WaitTimeAndAdvanceDialogue(sentence.TimeToPass));
+        }
+    }
+
+    private IEnumerator WaitTimeAndAdvanceDialogue(float time)
     {
         yield return Helpers.GetWait(time);
+
+        AdvanceDialogue();
     }
 
     private void SubscribeToDialogueInputManager(InputManager script)
@@ -133,17 +206,20 @@ public class DialogueSystem : Singleton<DialogueSystem>
         }
     }
 
-    public void InvokeCanvasGroup(bool isActive)
+    public void Reset()
     {
-        OnCanvasGroupChanged?.Invoke(isActive);
+        OnSentenceChanged?.Invoke("");
+        OnCanvasGroupChanged?.Invoke(false);
     }
-    public void InvokeText(string text)
+
+    public void ChangeCanvasGroupAlpha(float alpha)
     {
-        OnSentenceChanged?.Invoke(text);
+        OnCanvasGroupAlphaChanged?.Invoke(alpha);
     }
 
     private int GetSectionCount() => ProcessingDialogue.Sections.Length;
-    private int GetSentenceCount() => ProcessingDialogue.Sections[sectionIndex].Sentences.Length;
-    private DialogueSection GetSection() => ProcessingDialogue.Sections[sectionIndex];
-    private string GetSentence() => GetSection().Sentences[sentenceIndex];
+    private int GetSentenceCount() => GetSection().Sentences.Length;
+    private DialogueSection GetSection() => ProcessingDialogue.Sections[_sectionIndex];
+    private DialogueSentence GetSentence() => GetSection().Sentences[_sentenceIndex];
+    private char GetCharacter() => GetSentence().Text[_characterIndex];
 }

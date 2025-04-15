@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Configuration.Assemblies;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Dialogue Asset", menuName = "Malatre/Dialogue/Asset")]
+[CreateAssetMenu(fileName = "New Dialogue Asset", menuName = "Riwa/Dialogue/Asset")]
 public class DialogueAsset : ScriptableObject
 {
     [Header("Settings")]
@@ -20,10 +20,20 @@ public class DialogueAsset : ScriptableObject
 [System.Serializable]
 public struct DialogueSection
 {
-    [TextArea] public string[] Sentences;
     public bool DisableDialogueInputs;
+    public DialogueSentence[] Sentences;
     public bool TriggerEvent;
     public DialogueEventType EventType;
+}
+
+[System.Serializable]
+public struct DialogueSentence
+{
+    [TextArea] public string Text;
+    public bool UseWriting;
+    public float SpeedWriting;
+    public bool UseTime;
+    public float TimeToPass;
 }
 
 public enum DialogueEventType

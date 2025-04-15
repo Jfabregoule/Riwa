@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Display First Sentence", menuName = "Malatre/Dialogue/Sequences/Display First Sentence")]
+[CreateAssetMenu(fileName = "Display First Sentence", menuName = "Riwa/Dialogue/Sequences/Display First Sentence")]
 public class SequencerActionDisplayFirstSentence : SequencerAction
 {
     private DialogueSystem _dialogueSystem;
@@ -13,8 +13,8 @@ public class SequencerActionDisplayFirstSentence : SequencerAction
     }
     public override IEnumerator StartSequence(Sequencer context)
     {
-        _dialogueSystem.UpdateSentence();
         InputManager.Instance.EnableDialogueControls();
+        _dialogueSystem.StartSection();
         yield return null;
     }
 }

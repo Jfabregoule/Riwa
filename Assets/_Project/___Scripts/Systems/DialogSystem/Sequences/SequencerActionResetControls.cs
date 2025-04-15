@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Reset Controls", menuName = "Malatre/Dialogue/Sequences/Reset Controls")]
+[CreateAssetMenu(fileName = "Reset Controls", menuName = "Riwa/Dialogue/Sequences/Reset Controls")]
 public class SequencerActionResetControls : SequencerAction
 {
     private DialogueSystem _dialogueSystem;

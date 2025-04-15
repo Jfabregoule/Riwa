@@ -9,6 +9,7 @@ public class DialogueUI : MonoBehaviour
 {
     private TextMeshProUGUI _text;
     private CanvasGroup _canvasGroup;
+    private DialogueSystem _dialogueSystem;
     void OnEnable()
     {
         StartCoroutine(Helpers.WaitMonoBeheviour(() => DialogueSystem.Instance, SubcribeToDialogueEvent));
@@ -16,11 +17,18 @@ public class DialogueUI : MonoBehaviour
 
     private void OnDisable() 
     { 
-        if (DialogueSystem.Instance != null)
+        if (_dialogueSystem != null)
         {
-            DialogueSystem.Instance.OnSentenceChanged -= OnSentenceChange;
-            DialogueSystem.Instance.OnCanvasGroupChanged -= OnCanvasGroupChange;
+            _dialogueSystem.OnSentenceChanged -= OnSentenceChange;
+            _dialogueSystem.OnCanvasGroupChanged -= OnCanvasGroupChange;
+            _dialogueSystem.OnCanvasGroupAlphaChanged -= OnCanvasGroupAlphaChange;
         } 
+    }
+
+    private void Start()
+    {
+        _canvasGroup = GetComponent<CanvasGroup>();
+        _text = GetComponentInChildren<TextMeshProUGUI>();
     }
 
     private void OnSentenceChange(string sentence)
@@ -33,12 +41,19 @@ public class DialogueUI : MonoBehaviour
         Helpers.ToggleCanvasGroup(isActive, _canvasGroup);
     }
 
+    private void OnCanvasGroupAlphaChange(float alpha)
+    {
+        _canvasGroup.alpha = alpha;
+    }
+
     private void SubcribeToDialogueEvent(DialogueSystem dialogueSystem)
     {
         if (dialogueSystem != null)
         {
+            _dialogueSystem = dialogueSystem;
             dialogueSystem.OnSentenceChanged += OnSentenceChange;
             dialogueSystem.OnCanvasGroupChanged += OnCanvasGroupChange;
+            dialogueSystem.OnCanvasGroupAlphaChanged += OnCanvasGroupAlphaChange;
             Debug.Log("Script is ready!");
         }
         else

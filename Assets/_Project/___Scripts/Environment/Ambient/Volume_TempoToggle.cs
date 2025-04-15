@@ -8,11 +8,11 @@ public class Volume_TempoToggle : MonoBehaviour
     [SerializeField] private bool _isPast;
 
     [Header("Global Volume References")]
-    [SerializeField] private Volume volumePast;
-    [SerializeField] private Volume volumeFuture;
+    [SerializeField] private Volume _volumePast;
+    [SerializeField] private Volume _volumeFuture;
 
     [Header("Transition Settings")]
-    [SerializeField] private float transitionDuration = 1.5f;
+    [SerializeField] private float _transitionDuration = 1.5f;
 
     private ChangeTime _changeTime;
     private Coroutine _transitionCoroutine;
@@ -20,7 +20,7 @@ public class Volume_TempoToggle : MonoBehaviour
     private void Start()
     {
         _changeTime = GameManager.Instance.Character.GetComponent<ChangeTime>();
-        _changeTime.OnTimeChangeEnd += OnChangedTime;
+        _changeTime.OnTimeChangeStarted += OnChangedTime;
 
         SetVolumeInstant(_isPast);
     }
@@ -30,41 +30,41 @@ public class Volume_TempoToggle : MonoBehaviour
         if (_transitionCoroutine != null)
             StopCoroutine(_transitionCoroutine);
 
-        _transitionCoroutine = StartCoroutine(TransitionVolumes(isNowPast));
+        _transitionCoroutine = StartCoroutine(TransitionVolumes(!isNowPast));
     }
 
     private IEnumerator TransitionVolumes(bool toPast)
     {
         float t = 0f;
 
-        while (t < transitionDuration)
+        while (t < _transitionDuration)
         {
-            float blend = t / transitionDuration;
+            float blend = t / _transitionDuration;
 
-            if (volumePast != null)
-                volumePast.weight = toPast ? blend : 1f - blend;
+            if (_volumePast != null)
+                _volumePast.weight = toPast ? blend : 1f - blend;
 
-            if (volumeFuture != null)
-                volumeFuture.weight = toPast ? 1f - blend : blend;
+            if (_volumeFuture != null)
+                _volumeFuture.weight = toPast ? 1f - blend : blend;
 
             t += Time.deltaTime;
             yield return null;
         }
 
-        if (volumePast != null)
-            volumePast.weight = toPast ? 1f : 0f;
+        if (_volumePast != null)
+            _volumePast.weight = toPast ? 1f : 0f;
 
-        if (volumeFuture != null)
-            volumeFuture.weight = toPast ? 0f : 1f;
+        if (_volumeFuture != null)
+            _volumeFuture.weight = toPast ? 0f : 1f;
     }
 
     private void SetVolumeInstant(bool isPast)
     {
-        if (volumePast != null)
-            volumePast.weight = isPast ? 1f : 0f;
+        if (_volumePast != null)
+            _volumePast.weight = isPast ? 1f : 0f;
 
-        if (volumeFuture != null)
-            volumeFuture.weight = isPast ? 0f : 1f;
+        if (_volumeFuture != null)
+            _volumeFuture.weight = isPast ? 0f : 1f;
     }
 
     private void OnDestroy()

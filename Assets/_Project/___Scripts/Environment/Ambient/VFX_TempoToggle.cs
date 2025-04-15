@@ -7,8 +7,8 @@ public class VFX_TempoToggle : MonoBehaviour
     [SerializeField] private bool _isPast;
 
     [Header("VFX Sets")]
-    [SerializeField] private List<ParticleSystem> vfxSetPast;
-    [SerializeField] private List<ParticleSystem> vfxSetFuture;
+    [SerializeField] private List<ParticleSystem> _vfxSetPast;
+    [SerializeField] private List<ParticleSystem> _vfxSetPresent;
 
     private ChangeTime _changeTime;
 
@@ -17,34 +17,34 @@ public class VFX_TempoToggle : MonoBehaviour
         _changeTime = GameManager.Instance.Character.GetComponent<ChangeTime>();
         _changeTime.OnTimeChangeEnd += OnChangedTime;
 
-        SetVFXInstant(_isPast);
+        SetVFXInstant(!_isPast);
     }
 
     private void OnChangedTime(bool isNowPast)
     {
         if (isNowPast == _isPast)
         {
-            PlayVFX(vfxSetPast);
-            StopVFX(vfxSetFuture);
+            PlayVFX(_vfxSetPast);
+            StopVFX(_vfxSetPresent);
         }
         else
         {
-            PlayVFX(vfxSetFuture);
-            StopVFX(vfxSetPast);
+            PlayVFX(_vfxSetPresent);
+            StopVFX(_vfxSetPast);
         }
     }
 
-    private void SetVFXInstant(bool isPast)
+    private void SetVFXInstant(bool toPast)
     {
-        if (isPast)
+        if (toPast)
         {
-            PlayVFX(vfxSetPast);
-            StopVFX(vfxSetFuture);
+            PlayVFX(_vfxSetPast);
+            StopVFX(_vfxSetPresent);
         }
         else
         {
-            PlayVFX(vfxSetFuture);
-            StopVFX(vfxSetPast);
+            PlayVFX(_vfxSetPresent);
+            StopVFX(_vfxSetPast);
         }
     }
 

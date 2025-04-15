@@ -15,23 +15,14 @@ public class VFX_TempoToggle : MonoBehaviour
     private void Start()
     {
         _changeTime = GameManager.Instance.Character.GetComponent<ChangeTime>();
-        _changeTime.OnTimeChangeEnd += OnChangedTime;
+        _changeTime.OnTimeChangeStarted+= OnChangedTime;
 
-        SetVFXInstant(!_isPast);
+        SetVFXInstant(_isPast);
     }
 
     private void OnChangedTime(bool isNowPast)
     {
-        if (isNowPast == _isPast)
-        {
-            PlayVFX(_vfxSetPast);
-            StopVFX(_vfxSetPresent);
-        }
-        else
-        {
-            PlayVFX(_vfxSetPresent);
-            StopVFX(_vfxSetPast);
-        }
+        SetVFXInstant(!isNowPast);
     }
 
     private void SetVFXInstant(bool toPast)
@@ -69,6 +60,6 @@ public class VFX_TempoToggle : MonoBehaviour
     private void OnDestroy()
     {
         if (_changeTime != null)
-            _changeTime.OnTimeChangeEnd -= OnChangedTime;
+            _changeTime.OnTimeChangeStarted -= OnChangedTime;
     }
 }

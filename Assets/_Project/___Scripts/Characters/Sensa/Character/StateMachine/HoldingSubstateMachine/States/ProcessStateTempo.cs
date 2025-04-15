@@ -45,7 +45,7 @@ public class ProcessStateTempo : ChangeTempoBaseState
     {
         _changedTime = true;
 
-        if (isPast)
+        if (!isPast)
         {
             Physics.IgnoreLayerCollision(_character.gameObject.layer, Mathf.Clamp(Mathf.RoundToInt(Mathf.Log(_character.PastLayer.value, 2)), 0, 31), true);
             Physics.IgnoreLayerCollision(_character.gameObject.layer, Mathf.Clamp(Mathf.RoundToInt(Mathf.Log(_character.PresentLayer.value, 2)), 0, 31), false);

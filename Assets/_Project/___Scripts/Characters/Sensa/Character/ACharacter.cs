@@ -46,6 +46,9 @@ public class ACharacter : APawn<EnumStateCharacter>
 
     [SerializeField] private ParticleSystem _soulLinkVFX;
 
+    public delegate void NoArgVoid();
+    public NoArgVoid OnChangeTempo;
+
     #endregion
 
     #region Properties
@@ -112,6 +115,11 @@ public class ACharacter : APawn<EnumStateCharacter>
     public void SetHoldingObject(GameObject holdingObject)
     {
         _holdingObject = holdingObject;
+    }
+
+    public void TriggerChangeTempo()
+    {
+        OnChangeTempo?.Invoke();
     }
 
     #endregion

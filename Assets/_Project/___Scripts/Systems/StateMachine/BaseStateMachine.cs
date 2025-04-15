@@ -26,9 +26,6 @@ public abstract class BaseStateMachine<TStateEnum, TBaseState>
     protected BaseTransitions _transition; //Class qui va contenir toutes les transitions 
     protected Dictionary<TStateEnum, string> _animationMap; //Dicionnaire pour trigger la bonne animation pour chaque state
 
-    private readonly List<BaseStateMachine<TStateEnum, TBaseState>> backgroundSubstateMachine = new();
-
-
     #endregion
 
     /*----------------------\
@@ -41,8 +38,6 @@ public abstract class BaseStateMachine<TStateEnum, TBaseState>
     public BaseTransitions Transition { get => _transition; }
     public Dictionary<TStateEnum, string> AnimationMap { get => _animationMap; }
     
-    public List<BaseStateMachine<TStateEnum, TBaseState>>  BackgroundSubstateMachine => backgroundSubstateMachine;
-
     #endregion
 
     /*----------------------\
@@ -82,22 +77,11 @@ public abstract class BaseStateMachine<TStateEnum, TBaseState>
     public virtual void StateMachineUpdate()
     {
         _currentState.UpdateState();
-
-        foreach (var substateMachine in backgroundSubstateMachine) { 
-            substateMachine.StateMachineUpdate();
-        }
-
     }
 
     public virtual void StateMachineFixedUpdate()
     {
         _currentState.FixedUpdateState();
-
-        foreach (var substateMachine in backgroundSubstateMachine)
-        {
-            substateMachine.StateMachineFixedUpdate();
-        }
-
     }
 
     #endregion

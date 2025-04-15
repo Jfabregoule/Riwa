@@ -125,6 +125,7 @@ public class VineScript : MonoBehaviour, IInteractableSoul
 
     public void SetSocketTransform(Transform transformObject)
     {
+
         SocketPoint = transformObject;
         float currentHeight = _capsuleCollider.height;
         float hitDistance = Vector3.Dot(transformObject.position - transform.position, -transform.right);
@@ -135,20 +136,15 @@ public class VineScript : MonoBehaviour, IInteractableSoul
     public void SetSocketPoint()
     {
         SocketPoint = null;
-        //VineManager.Instance.OnVineChange -= SetSocketPoint;
     }
 
     public void SetSocketNull()
     {
-        //SocketPoint.GetChild(0).GetComponent<Rigidbody>().constraints &= ~RigidbodyConstraints.FreezePositionY;
-        //SocketPoint.GetChild(0).GetComponent<Rigidbody>().useGravity = true;
-
         SocketPoint = null;     
     }
 
     public void Interactable()
     {
-        //_capsuleCollider.isTrigger = false;
 
     }
 

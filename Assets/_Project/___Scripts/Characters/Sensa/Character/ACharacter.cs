@@ -26,6 +26,7 @@ public class ACharacter : APawn<EnumStateCharacter>
 
     private bool _canInteract;
     private bool _canInteractSoul;
+    private bool _canChangeTime = true;
 
     private ChangeTime _changeTime;
 
@@ -72,6 +73,7 @@ public class ACharacter : APawn<EnumStateCharacter>
     public ParticleSystem SoulLinkVFX { get => _soulLinkVFX; set => _soulLinkVFX = value; }
     public CameraHandler CameraHandler { get => _cameraHandler;}
     new public StateMachineCharacter StateMachine { get => _stateMachine; set => _stateMachine = value; }
+    public bool CanChangeTime { get => _canChangeTime; set => _canChangeTime = value; }
 
     #endregion
 
@@ -119,6 +121,7 @@ public class ACharacter : APawn<EnumStateCharacter>
 
     public void TriggerChangeTempo()
     {
+        if(!_canChangeTime) { return; }
         OnChangeTempo?.Invoke();
     }
 

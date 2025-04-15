@@ -106,7 +106,7 @@ public class CameraHandler : MonoBehaviour
         }
     }
 
-    public void FixedUpdate()
+    public void LateUpdate()
     {
         _cameraTargetParent.transform.position = _character.transform.position;
     }

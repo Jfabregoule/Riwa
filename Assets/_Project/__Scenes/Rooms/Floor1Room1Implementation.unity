@@ -488,7 +488,7 @@ PrefabInstance:
     - target: {fileID: -5172819382742920111, guid: e762e5767ed808e4b837f8bdc40ce588,
         type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4163866882640094145, guid: e762e5767ed808e4b837f8bdc40ce588,
         type: 3}
@@ -933,12 +933,17 @@ PrefabInstance:
     - target: {fileID: 1871119906803466866, guid: e762e5767ed808e4b837f8bdc40ce588,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -12.06
+      value: -6.21283
+      objectReference: {fileID: 0}
+    - target: {fileID: 1871119906803466866, guid: e762e5767ed808e4b837f8bdc40ce588,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.000000018925114
       objectReference: {fileID: 0}
     - target: {fileID: 1871119906803466866, guid: e762e5767ed808e4b837f8bdc40ce588,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.26
+      value: -14.48786
       objectReference: {fileID: 0}
     - target: {fileID: 2171594447175408443, guid: e762e5767ed808e4b837f8bdc40ce588,
         type: 3}
@@ -1396,7 +1401,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -5172819382742920111, guid: e762e5767ed808e4b837f8bdc40ce588,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 101016241}
+      addedObject: {fileID: 101016245}
     - targetCorrespondingSourceObject: {fileID: -6521361928245957059, guid: e762e5767ed808e4b837f8bdc40ce588,
         type: 3}
       insertIndex: -1
@@ -1464,33 +1469,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.9999987, y: 1.0000013, z: 0.99999875}
   m_Center: {x: 0.5000022, y: 0.5000008, z: 0.4576955}
---- !u!54 &101016241
-Rigidbody:
+--- !u!114 &101016245
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 101016233}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 012d5018c2289354d99c743529b51e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pastItem: {fileID: 273653159}
 --- !u!1 &116307939
 GameObject:
   m_ObjectHideFlags: 0

@@ -52,6 +52,9 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
     public delegate void NoArgVoid();
     public NoArgVoid OnChangeTempo;
 
+    public delegate void RespawnEvent();
+    public RespawnEvent OnRespawn;
+
     #endregion
 
     #region Properties

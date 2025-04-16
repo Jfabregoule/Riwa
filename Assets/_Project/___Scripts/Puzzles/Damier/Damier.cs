@@ -58,6 +58,8 @@ public class Damier : MonoBehaviour
             _damier.Add(data.cellPos, new DamierDatas(data.cellPos, data.cell, data.cellState));
             script.OnCellTriggered += OnCellTriggered;
         }
+
+        GameManager.Instance.Character.OnRespawn += RespawnBrokenTile;
     }
 
     private void Start()
@@ -93,6 +95,7 @@ public class Damier : MonoBehaviour
                 cellScript.Init(pos);
                 Rigidbody rb = cell.AddComponent<Rigidbody>();
                 rb.isKinematic = true;
+                cell.layer = 6;
                 _damier[pos] = new DamierDatas(pos, cell, CellState.Breakable);
             }
         }
@@ -391,14 +394,15 @@ public class Damier : MonoBehaviour
 
     public void RespawnBrokenTile()
     {
-        foreach (var key in _damier.Keys.ToList())
+        Floor1Room3LevelManager instance = (Floor1Room3LevelManager)Floor1Room3LevelManager.Instance;
+        foreach (var cell in instance.BrokenCells)
         {
-            if (_damier[key].cellState == CellState.Broken)
+            if (_damier[cell.Position].cellState == CellState.Broken)
             {
-                Vector3 localPosition = _damier[key].cell.transform.localPosition;
-                ChangeCellState(key, CellState.Breakable);
-                _damier[key].cell.GetComponent<Rigidbody>().isKinematic = true;
-                _damier[key].cell.transform.localPosition = new Vector3(localPosition.x, 0, localPosition.z);
+                Vector3 respawnPosition = _damier[cell.Position].cell.GetComponent<Cell>().RespawnPosition;
+                ChangeCellState(cell.Position, CellState.Breakable);
+                _damier[cell.Position].cell.GetComponent<Rigidbody>().isKinematic = true;
+                _damier[cell.Position].cell.transform.position = respawnPosition;
             }
         }
 

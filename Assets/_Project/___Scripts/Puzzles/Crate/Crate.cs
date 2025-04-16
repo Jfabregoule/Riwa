@@ -3,7 +3,7 @@ using System.Drawing;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class InteractTest : MonoBehaviour, IMovable, IRotatable
+public class Crate : MonoBehaviour, IMovable, IRotatable
 {
     ACharacter _character;
 
@@ -54,49 +54,15 @@ public class InteractTest : MonoBehaviour, IMovable, IRotatable
 
         Vector3 multiplicator = Vector3.Scale(_boxSize / 2, direction);
 
-        Vector3 size = _boxSize;
-        size.z = MoveDistance;
+
+        Vector3 size = _boxSize * 0.5f;
+        size.x = MoveDistance;
 
         LayerMask layerMask = _character.IsInPast ? _character.PastLayer : _character.PresentLayer;
 
-        Vector3 halfSize = size * 0.5f;
+        Collider[] colliders = Physics.OverlapBox(transform.position + multiplicator, size, Quaternion.Euler(new Vector3(0,90 * direction.z, 0)), layerMask);
 
-        Vector3 center = transform.position + multiplicator;
-        UnityEngine.Color color = UnityEngine.Color.red;
-        float duration = 20f;
-
-        // 8 corners
-        Vector3 p0 = center + new Vector3(-halfSize.x, -halfSize.y, -halfSize.z);
-        Vector3 p1 = center + new Vector3(halfSize.x, -halfSize.y, -halfSize.z);
-        Vector3 p2 = center + new Vector3(halfSize.x, -halfSize.y, halfSize.z);
-        Vector3 p3 = center + new Vector3(-halfSize.x, -halfSize.y, halfSize.z);
-
-        Vector3 p4 = center + new Vector3(-halfSize.x, halfSize.y, -halfSize.z);
-        Vector3 p5 = center + new Vector3(halfSize.x, halfSize.y, -halfSize.z);
-        Vector3 p6 = center + new Vector3(halfSize.x, halfSize.y, halfSize.z);
-        Vector3 p7 = center + new Vector3(-halfSize.x, halfSize.y, halfSize.z);
-
-        // Bottom square
-        Debug.DrawLine(p0, p1, color, duration);
-        Debug.DrawLine(p1, p2, color, duration);
-        Debug.DrawLine(p2, p3, color, duration);
-        Debug.DrawLine(p3, p0, color, duration);
-
-        // Top square
-        Debug.DrawLine(p4, p5, color, duration);
-        Debug.DrawLine(p5, p6, color, duration);
-        Debug.DrawLine(p6, p7, color, duration);
-        Debug.DrawLine(p7, p4, color, duration);
-
-        // Vertical edges
-        Debug.DrawLine(p0, p4, color, duration);
-        Debug.DrawLine(p1, p5, color, duration);
-        Debug.DrawLine(p2, p6, color, duration);
-        Debug.DrawLine(p3, p7, color, duration);
-
-        Quaternion q = Quaternion.Euler(Vector3.Cross(direction, Vector3.up) * 90);
-
-        Collider[] colliders = Physics.OverlapBox(transform.position + multiplicator, size, Quaternion.Euler(new Vector3(0,0,0)), layerMask);
+        Debug.Log(multiplicator);
 
         foreach(var col in colliders)
         {

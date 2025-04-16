@@ -22,14 +22,6 @@ public class VineRetraction : MonoBehaviour
         _originalCenter = _boxCollider.center;
     }
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.gameObject == _box)
-    //    {
-
-    //    }
-    //}
-
     private void OnTriggerStay(Collider other)
     {
         if(other.gameObject == _box)

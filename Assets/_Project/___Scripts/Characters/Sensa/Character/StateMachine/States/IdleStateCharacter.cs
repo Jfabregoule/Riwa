@@ -9,6 +9,8 @@ public class IdleStateCharacter : ParentIdleState<EnumStateCharacter>
         base.InitState(stateMachine, enumValue, character);
 
         _character = (ACharacter)character;
+
+        
     }
 
     public override void EnterState()
@@ -16,6 +18,7 @@ public class IdleStateCharacter : ParentIdleState<EnumStateCharacter>
         base.EnterState();
 
         _character.InputManager.OnInteract += OnInteract;
+        _character.OnChangeTempo += ChangeStateToTempo;
 
         _clock = 0;
     }
@@ -25,6 +28,7 @@ public class IdleStateCharacter : ParentIdleState<EnumStateCharacter>
         base.ExitState();
 
         _character.InputManager.OnInteract -= OnInteract;
+        _character.OnChangeTempo -= ChangeStateToTempo;
     }
 
     public override void UpdateState()
@@ -39,12 +43,7 @@ public class IdleStateCharacter : ParentIdleState<EnumStateCharacter>
     {
         base.CheckChangeState();
 
-        if (_character.IsChangingTime)
-        {
-            _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.ChangeTempo]);
-        }
-
-        else if (_character.InputManager.GetMoveDirection() != Vector2.zero)
+        if (_character.InputManager.GetMoveDirection() != Vector2.zero)
         {
             _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Move]);
             return;
@@ -61,4 +60,10 @@ public class IdleStateCharacter : ParentIdleState<EnumStateCharacter>
     {
         _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Interact]);
     }
+
+    public void ChangeStateToTempo()
+    {
+        _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.ChangeTempo]);
+    }
+
 }

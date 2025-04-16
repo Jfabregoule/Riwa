@@ -59,7 +59,7 @@ public class PawnMoveStateInteract<TStateEnum> : PawnInteractBaseSubstate<TState
             }
         }
 
-        _character.MoveTo(objectPoints[index] + objPos, objPos);
+        _character.MoveTo(objectPoints[index] + objPos, objPos, radius > 0);
     }
 
     public override void ExitState()

@@ -4,7 +4,7 @@ public class HUD : MonoBehaviour
 {
     public void ChangeTime()
     {
-        GameManager.Instance.Character.IsChangingTime = true;
+        GameManager.Instance.Character.TriggerChangeTempo();
     }
 
     public void ChangeToSoul()

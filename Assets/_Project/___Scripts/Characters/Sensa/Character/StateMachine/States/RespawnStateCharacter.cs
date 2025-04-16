@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class RespawnStateCharacter : BaseStateCharacter<EnumStateCharacter>
 {
     new private ACharacter _character;
@@ -14,6 +16,12 @@ public class RespawnStateCharacter : BaseStateCharacter<EnumStateCharacter>
     {
         base.EnterState();
 
+        _character.Rb.velocity = Vector3.zero;
+
+        _character.transform.position = _character.RespawnPosition;
+        _character.transform.localEulerAngles = _character.RespawnRotation;
+
+        _character.OnRespawn?.Invoke();
     }
 
     public override void ExitState()
@@ -29,5 +37,7 @@ public class RespawnStateCharacter : BaseStateCharacter<EnumStateCharacter>
     public override void CheckChangeState()
     {
         base.CheckChangeState();
+
+        _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Idle]);
     }
 }

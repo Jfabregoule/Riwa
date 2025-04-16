@@ -46,7 +46,6 @@ public class CharacterMoveStateInteract : PawnMoveStateInteract<EnumStateCharact
 
         if (_subStateMachine.CurrentObjectInteract.TryGetComponent(out ITreeStump stump))
         {
-            Debug.Log("Interact Fini");
             ChangeStateToSoul();
             return;
         }

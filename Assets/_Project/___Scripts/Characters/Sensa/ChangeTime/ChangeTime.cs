@@ -160,6 +160,7 @@ public class ChangeTime : MonoBehaviour
         Shader.SetGlobalFloat("_Radius", _radius);
         _particleActivated = false;
         _alpha = 0;
+
     }
 
     #endregion

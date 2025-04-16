@@ -1,6 +1,8 @@
 
 public class SoulInteractSubstateMachine : PawnInteractSubstateMachine<EnumStateSoul>
 {
+    public ACharacter Player;
+
     public override void InitStateMachine(APawn<EnumStateSoul> character)
     {
         States[EnumInteract.StandBy] = new SoulStandByStateInteract();
@@ -18,6 +20,8 @@ public class SoulInteractSubstateMachine : PawnInteractSubstateMachine<EnumState
         States[EnumInteract.Move] = new SoulMoveStateInteract();
         States[EnumInteract.Move].InitState(this, EnumInteract.Move, character);
         _animationMap[EnumInteract.Move] = MOVE_NAME;
+
+        Player = GameManager.Instance.Character;
 
     }
 

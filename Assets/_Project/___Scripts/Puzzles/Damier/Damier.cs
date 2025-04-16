@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public enum CellState
@@ -57,6 +58,8 @@ public class Damier : MonoBehaviour
             _damier.Add(data.cellPos, new DamierDatas(data.cellPos, data.cell, data.cellState));
             script.OnCellTriggered += OnCellTriggered;
         }
+
+        GameManager.Instance.Character.OnRespawn += RespawnBrokenTile;
     }
 
     private void Start()
@@ -90,6 +93,9 @@ public class Damier : MonoBehaviour
                 collider.center = new Vector3(0f, 0.5f, 0f);
                 Cell cellScript = cell.AddComponent<Cell>();
                 cellScript.Init(pos);
+                Rigidbody rb = cell.AddComponent<Rigidbody>();
+                rb.isKinematic = true;
+                cell.layer = 6;
                 _damier[pos] = new DamierDatas(pos, cell, CellState.Breakable);
             }
         }
@@ -374,8 +380,8 @@ public class Damier : MonoBehaviour
     {
         if(_damier.ContainsKey(pos) && _damier[pos].cellState == CellState.Breakable)
         {
-            Destroy(_damier[pos].cell.gameObject);
-            _damier[pos].SetCellState(CellState.Broken);
+            _damier[pos].cell.GetComponent<Rigidbody>().isKinematic = false;
+            ChangeCellState(pos, CellState.Broken);
         }
     }
 
@@ -384,5 +390,21 @@ public class Damier : MonoBehaviour
         DamierDatas data = _damier[pos];
         data.SetCellState(state);
         _damier[pos] = data;
+    }
+
+    public void RespawnBrokenTile()
+    {
+        Floor1Room3LevelManager instance = (Floor1Room3LevelManager)Floor1Room3LevelManager.Instance;
+        foreach (var cell in instance.BrokenCells)
+        {
+            if (_damier[cell.Position].cellState == CellState.Broken)
+            {
+                Vector3 respawnPosition = _damier[cell.Position].cell.GetComponent<Cell>().RespawnPosition;
+                ChangeCellState(cell.Position, CellState.Breakable);
+                _damier[cell.Position].cell.GetComponent<Rigidbody>().isKinematic = true;
+                _damier[cell.Position].cell.transform.position = respawnPosition;
+            }
+        }
+
     }
 }

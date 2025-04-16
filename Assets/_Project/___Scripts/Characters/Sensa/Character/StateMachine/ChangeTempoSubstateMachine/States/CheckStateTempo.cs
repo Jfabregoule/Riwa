@@ -17,9 +17,11 @@ public class CheckStateTempo : ChangeTempoBaseState
 
         float security = 0.95f;
 
-        _point1 = _character.transform.position + Vector3.down * _character.CapsuleCollider.height / 2 * security;
-        _point2 = _character.transform.position + Vector3.up * _character.CapsuleCollider.height / 2 * security;
-        _radius = _character.CapsuleCollider.radius * security;
+        float scale = _character.transform.localScale.x;
+        _radius = _character.CapsuleCollider.radius * security * scale;
+
+        _point1 = _character.transform.position + Vector3.up * _character.CapsuleCollider.radius * scale + Vector3.up * (1 - security);
+        _point2 = _character.transform.position + Vector3.up * _character.CapsuleCollider.height * scale - Vector3.up * _character.CapsuleCollider.radius * scale - Vector3.up * (1 - security);
 
         LayerMask layerMask = _character.IsInPast ? _character.PresentLayer : _character.PastLayer;
 

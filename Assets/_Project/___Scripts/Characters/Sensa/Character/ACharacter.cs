@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class ACharacter : APawn<EnumStateCharacter>
+public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
 {
     #region Constantes
 
@@ -32,9 +32,11 @@ public class ACharacter : APawn<EnumStateCharacter>
 
     private CameraHandler _cameraHandler;
 
-    [Header("Gameplay Statistics")]
+    [Header("Gameplay values")]
 
     [SerializeField] private float _joystickRunTreshold = 0.4f;
+    [SerializeField] private Vector3 _respawnPosition;
+    [SerializeField] private Vector3 _respawnRotation;
 
     [Header("StateMachine values")]
 
@@ -74,6 +76,8 @@ public class ACharacter : APawn<EnumStateCharacter>
     public CameraHandler CameraHandler { get => _cameraHandler;}
     new public StateMachineCharacter StateMachine { get => _stateMachine; set => _stateMachine = value; }
     public bool CanChangeTime { get => _canChangeTime; set => _canChangeTime = value; }
+    public Vector3 RespawnPosition { get => _respawnPosition; set => _respawnPosition = value; }
+    public Vector3 RespawnRotation { get => _respawnRotation; set => _respawnRotation = value; }
 
     #endregion
 
@@ -123,6 +127,11 @@ public class ACharacter : APawn<EnumStateCharacter>
     {
         if(!_canChangeTime) { return; }
         OnChangeTempo?.Invoke();
+    }
+
+    public void Respawn()
+    {
+        _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Respawn]);
     }
 
     #endregion

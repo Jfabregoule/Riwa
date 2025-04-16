@@ -35,6 +35,8 @@ public class MoveStateSoul : ParentMoveState<EnumStateSoul>
         Vector3 toPlayer = _character.Character.transform.position - targetPosition;
         float distanceToPlayer = toPlayer.magnitude;
 
+        _character.Rb.velocity = Vector3.Scale(_character.Rb.velocity, new Vector3(1, 0, 1));
+        
         if (distanceToPlayer > _character.LinkMaxDistance)
         {
             Vector3 pullForce = toPlayer.normalized * (distanceToPlayer - _character.LinkMaxDistance) * _character.LinkElasticity;

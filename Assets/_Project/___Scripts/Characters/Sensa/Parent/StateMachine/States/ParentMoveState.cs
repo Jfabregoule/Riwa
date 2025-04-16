@@ -49,7 +49,7 @@ public class ParentMoveState<TStateEnum> : BaseStatePawn<TStateEnum>
     {
         base.FixedUpdateState();
 
-        _character.Rb.velocity = _moveDirection * _character.Speed;
+        _character.Rb.velocity = _moveDirection * _character.Speed + Vector3.Scale(_character.Rb.velocity, Vector3.up);
 
         if (_moveDirection != Vector3.zero)
         {

@@ -35,12 +35,12 @@ public class DialogueSystem : Singleton<DialogueSystem>
 
     public void Start()
     {
-        ProcessingDialogue = null;
+        //ProcessingDialogue = null;
 
-        BeginDialogue(_test);
+        //BeginDialogue(_test);
 
-        _beginSequencer.Init();
-        _endSequencer.Init();
+        //_beginSequencer.Init();
+        //_endSequencer.Init();
     }
 
     private void OnEnable()

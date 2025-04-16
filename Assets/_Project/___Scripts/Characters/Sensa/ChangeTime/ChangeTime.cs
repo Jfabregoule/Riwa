@@ -34,6 +34,7 @@ public class ChangeTime : MonoBehaviour
     private ParticleSystem.EmissionModule _ambianceEmissionModule;
 
     public delegate void TimeEvent(bool isPast);
+    public event TimeEvent OnTimeChangeStarted;
     public event TimeEvent OnTimeChangeEnd;
 
     #endregion
@@ -118,6 +119,7 @@ public class ChangeTime : MonoBehaviour
 
     private IEnumerator ProcessTimeChangeCoroutine()
     {
+        OnTimeChangeStarted?.Invoke(_past == 1);
         if (!_particleActivated)
         {
             _sphere.Play();

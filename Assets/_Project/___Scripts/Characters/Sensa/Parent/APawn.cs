@@ -10,6 +10,8 @@ public class APawn<TStateEnum> : MonoBehaviour
     protected InputManager _inputManager;
     protected CapsuleCollider _capsuleCollider;
 
+    protected Animator _animator;
+
     protected StateMachinePawn<TStateEnum, BaseStatePawn<TStateEnum>> _stateMachine;
 
     [SerializeField] protected float _speed = 7;
@@ -18,7 +20,7 @@ public class APawn<TStateEnum> : MonoBehaviour
     [SerializeField] protected LayerMask _pastLayer;
     [SerializeField] protected LayerMask _presentLayer;
 
-    private bool isInPast = false;
+    protected bool isInPast = false;
 
     public delegate void PawnDelegate();
     public event PawnDelegate OnMoveToFinished;
@@ -31,6 +33,7 @@ public class APawn<TStateEnum> : MonoBehaviour
     public LayerMask PastLayer { get => _pastLayer; }
     public LayerMask PresentLayer { get => _presentLayer; }
     public bool IsInPast { get => isInPast; set => isInPast = value; }
+    public Animator Animator { get => _animator; set => _animator = value; }
 
     public void MoveTo(Vector3 position, Vector3 objectPos, bool endRotate = true)
     {

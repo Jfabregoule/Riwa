@@ -32,7 +32,9 @@ public class SoulMoveStateInteract : PawnMoveStateInteract<EnumStateSoul>
         if (_subStateMachine.CurrentObjectInteract.TryGetComponent(out ITreeStump stump))
         {
             ChangeStateToIdle();
-            _character.transform.parent.GetComponent<ACharacter>().StateMachine.ChangeState(_character.transform.parent.GetComponent<ACharacter>().StateMachine.States[EnumStateCharacter.Idle]); //horrible à changer
+
+            SoulInteractSubstateMachine stateMachine = (SoulInteractSubstateMachine)_subStateMachine;
+            stateMachine.Player.StateMachine.ChangeState(stateMachine.Player.StateMachine.States[EnumStateCharacter.Idle]);
             return;
         }
 

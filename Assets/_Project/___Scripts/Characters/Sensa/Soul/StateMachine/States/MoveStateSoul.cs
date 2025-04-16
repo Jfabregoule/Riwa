@@ -49,7 +49,7 @@ public class MoveStateSoul : ParentMoveState<EnumStateSoul>
         //Vector2 direction = _character.InputManager.GetMoveDirection();
         //float magnitude = direction.magnitude;
 
-        if (_character.InputManager.GetMoveDirection() != Vector2.zero)
+        if (_character.InputManager.GetMoveDirection() == Vector2.zero)
         {
             _stateMachine.ChangeState(_stateMachine.States[EnumStateSoul.Idle]);
         }

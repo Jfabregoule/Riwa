@@ -8,6 +8,13 @@ public class TriggerPointPlatform : MonoBehaviour
     private VineScript _currentVine;
     private VineScript _previousVine;
 
+    private Rigidbody _rb;
+
+    private void Start()
+    {
+        _rb = GetComponent<Rigidbody>();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out VineScript vineScript))
@@ -41,15 +48,17 @@ public class TriggerPointPlatform : MonoBehaviour
                 _currentVine.SetSocketNull();
                 _currentVine = null;
 
-                gameObject.GetComponent<Rigidbody>().constraints &= ~RigidbodyConstraints.FreezePositionY;
-                gameObject.GetComponent<Rigidbody>().useGravity = true;
+                _rb.constraints &= ~RigidbodyConstraints.FreezePositionY;
+                _rb.useGravity = true;
+                _rb.isKinematic = false;
 
                 if (_triggerVines.Count > 0)
                 {
                     _currentVine = _triggerVines[_triggerVines.Count - 1];
                     SetPosition(_currentVine);
-                    gameObject.GetComponent<Rigidbody>().constraints |= RigidbodyConstraints.FreezePositionY;
-                    gameObject.GetComponent<Rigidbody>().useGravity = false;
+                    _rb.constraints |= RigidbodyConstraints.FreezePositionY;
+                    _rb.useGravity = false;
+                    _rb.isKinematic = true;
                 }
             }
         }

@@ -24,6 +24,7 @@ public class SoulStateCharacter : BaseStateCharacter<EnumStateCharacter>
         _character.SoulLinkVFX.Play();
         _character.Soul.SetActive(true);
         _character.IsInSoul = true;
+        _character.Soul.transform.parent = null;
 
         GameManager.Instance.CameraHandler.VirtualCamera.LookAt = _character.Soul.transform;
     }
@@ -34,6 +35,7 @@ public class SoulStateCharacter : BaseStateCharacter<EnumStateCharacter>
         _character.SoulLinkVFX.Stop();
         _character.Soul.SetActive(false);
         _character.IsInSoul = false;
+        _character.Soul.transform.parent = _character.transform;
 
         GameManager.Instance.CameraHandler.VirtualCamera.LookAt = null;
 

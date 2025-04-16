@@ -2,31 +2,42 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor.VersionControl;
 using UnityEngine;
+using static Unity.VisualScripting.Icons;
 
 public class DialogueSystem : Singleton<DialogueSystem>
 {
-    private const string DIALOGUE_TEXT_NAME = "SentenceText";
-
     [SerializeField] private Sequencer _beginSequencer;
     [SerializeField] private Sequencer _endSequencer;
 
-    public CanvasGroup FadeCanvas { get; private set; }
-    public TextMeshProUGUI DialogueText { get; private set; }
+    [SerializeField] private DialogueAsset _test;
+
+    public delegate void DialogueText(string text);
+    public event DialogueText OnSentenceChanged;
+
+    public delegate void DialogueCanvasGroup(bool isActive);
+    public event DialogueCanvasGroup OnCanvasGroupChanged;
+
+    public delegate void DialogueCanvasGroupAlpha(float alpha);
+    public event DialogueCanvasGroupAlpha OnCanvasGroupAlphaChanged;
+
     public DialogueAsset ProcessingDialogue { get; private set; }
 
-    private int sectionIndex;
-    private int sentenceIndex;
+    private int _sectionIndex;
+    private int _sentenceIndex;
+    private int _characterIndex;
+
+    private bool _isWriting = false;
 
     public delegate void DialogueEvent(DialogueEventType eventType);
     public event DialogueEvent OnDialogueEvent;
 
-    public void Init()
+    public void Start()
     {
         ProcessingDialogue = null;
 
-        //FadeCanvas = GameManager.Instance.DialogueUI.GetComponent<CanvasGroup>();
-        //DialogueText = GameManager.Instance.DialogueUI.transform.Find(DIALOGUE_TEXT_NAME).GetComponent<TextMeshProUGUI>();
+        BeginDialogue(_test);
 
         _beginSequencer.Init();
         _endSequencer.Init();
@@ -34,12 +45,18 @@ public class DialogueSystem : Singleton<DialogueSystem>
 
     private void OnEnable()
     {
-        //MonoBehaviour test = StartCoroutine(Helpers.WaitMonoBeheviour(InputManager.Instance));
-        StartCoroutine(SubscribeDialogueInputManager());
-        //InputManager.Instance.OnAdvanceDialogue += AdvanceDialogue;
+        StartCoroutine(Helpers.WaitMonoBeheviour(() => InputManager.Instance, SubscribeToDialogueInputManager));
+        StartCoroutine(Helpers.WaitMonoBeheviour(() => GameManager.Instance.TranslateSystem, SubscribeToTranslateSystem));
     }
 
-    private void OnDisable() { if (InputManager.Instance != null) InputManager.Instance.OnAdvanceDialogue -= AdvanceDialogue; }
+    private void OnDisable() 
+    { 
+        if (InputManager.Instance != null) 
+            InputManager.Instance.OnAdvanceDialogue -= AdvanceDialogue;
+
+        if (GameManager.Instance != null)
+            GameManager.Instance.TranslateSystem.OnLanguageChanged -= UpdateSentenceTranslate;
+    }
 
     public void BeginDialogue(DialogueAsset asset)
     {
@@ -49,8 +66,9 @@ public class DialogueSystem : Singleton<DialogueSystem>
             return;
         }
         ProcessingDialogue = asset;
-        sectionIndex = 0;
-        sentenceIndex = 0;
+        _sectionIndex = 0;
+        _sentenceIndex = 0;
+        _characterIndex = 0;
 
         if (ProcessingDialogue.OpeningTriggerEvent)
             OnDialogueEvent?.Invoke(ProcessingDialogue.OpeningEventType);
@@ -72,19 +90,58 @@ public class DialogueSystem : Singleton<DialogueSystem>
 
     private void AdvanceDialogue()
     {
-        sentenceIndex++;
-        if (sentenceIndex >= GetSentenceCount())
+        if (_isWriting)
+        {
+            _isWriting = false;
+            UpdateSentenceAll();
+            return;
+        }
+
+        _sentenceIndex++;
+        if (_sentenceIndex >= GetSentenceCount())
+        {
+            EndSection();
             UpdateSection();
+        }
         else
-            UpdateSentence();
+        {
+            if (GetSentence().UseWriting)
+            {
+                StartCoroutine(UpdateSentence());
+            }
+            else
+            {
+                UpdateSentenceAll();
+            }
+        }
+            
+    }
+
+    public void StartSection()
+    {
+        _sectionIndex = 0;
+        UpdateSection();
+    }
+
+    private void EndSection()
+    {
+        DialogueSection section = GetSection();
+        if (section.TriggerEvent)
+            OnDialogueEvent?.Invoke(section.EventType);
+        _sectionIndex++;
     }
 
     private void UpdateSection()
     {
-        sentenceIndex = 0;
+        if (_sectionIndex >= GetSectionCount())
+        {
+            _endSequencer.InitializeSequence();
+            StopAllCoroutines();
+            return;
+        }
+
+        _sentenceIndex = 0;
         DialogueSection section = GetSection();
-        if (section.TriggerEvent)
-            OnDialogueEvent?.Invoke(section.EventType);
 
         if (section.DisableDialogueInputs)
         {
@@ -95,36 +152,113 @@ public class DialogueSystem : Singleton<DialogueSystem>
             InputManager.Instance?.EnableDialogueControls();
         }
 
-        sectionIndex++;
-        if (sectionIndex >= GetSectionCount())
-            _endSequencer.InitializeSequence();
+        if (GetSentence().UseWriting)
+        {
+            StartCoroutine(UpdateSentence());
+        }
         else
-            UpdateSentence();
+        {
+            UpdateSentenceAll();
+        }
     }
 
-    public void UpdateSentence()
+    private void UpdateSentenceAll()
     {
-        string sentence = GetSentence();
-        DialogueText.SetText(sentence);
-
-        StartCoroutine(WaitTime(1f));
+        DialogueSentence sentence = GetSentence();
+        OnSentenceChanged?.Invoke(GetTranslateText());
+        StopAllCoroutines();
+        if (sentence.UseTime)
+        {
+            StartCoroutine(WaitTimeAndAdvanceDialogue(sentence.TimeToPass));
+        }
     }
 
-    private IEnumerator WaitTime(float time)
+    private void UpdateSentenceTranslate()
+    {
+        OnSentenceChanged?.Invoke(GetTranslateText());
+    }
+
+    private IEnumerator UpdateSentence()
+    {
+        _characterIndex = 0;
+        _isWriting = true;
+        DialogueSentence sentence = GetSentence();
+        string text = "";
+        for (int i = 0; i < GetTranslateText().Length; i++)
+        {
+            text += GetCharacter();
+            OnSentenceChanged?.Invoke(text);
+            _characterIndex++;
+            yield return Helpers.GetWait(sentence.SpeedWriting);
+        }
+        _isWriting = false;
+
+        StopAllCoroutines();
+        if (sentence.UseTime)
+        {
+            StartCoroutine(WaitTimeAndAdvanceDialogue(sentence.TimeToPass));
+        }
+    }
+
+    private IEnumerator WaitTimeAndAdvanceDialogue(float time)
     {
         yield return Helpers.GetWait(time);
+
+        AdvanceDialogue();
     }
 
-    private IEnumerator SubscribeDialogueInputManager()
+    private void SubscribeToDialogueInputManager(InputManager script)
     {
-        while (InputManager.Instance == null)
-            yield return null;
+        if (script != null)
+        {
+            script.OnAdvanceDialogue += AdvanceDialogue;
+            Debug.Log("Script is ready!");
+        }
+        else
+        {
+            Debug.LogWarning("Script was still null after timeout.");
+        }
+    }
 
-        InputManager.Instance.OnAdvanceDialogue += AdvanceDialogue;
+    private void SubscribeToTranslateSystem(TranslateSystem script)
+    {
+        if (script != null)
+        {
+            script.OnLanguageChanged += UpdateSentenceTranslate;
+            Debug.Log("Script is ready!");
+        }
+        else
+        {
+            Debug.LogWarning("Script was still null after timeout.");
+        }
+    }
+
+    public void SkipAll()
+    {
+        if (ProcessingDialogue.IsAllSkipable)
+        {
+            _endSequencer.InitializeSequence();
+            StopAllCoroutines();
+        }
+    }
+
+    public void Reset()
+    {
+        OnSentenceChanged?.Invoke("");
+        OnCanvasGroupChanged?.Invoke(false);
+    }
+
+    public void ChangeCanvasGroupAlpha(float alpha)
+    {
+        
+        OnCanvasGroupAlphaChanged?.Invoke(alpha);
     }
 
     private int GetSectionCount() => ProcessingDialogue.Sections.Length;
-    private int GetSentenceCount() => ProcessingDialogue.Sections[sectionIndex].Sentences.Length;
-    private DialogueSection GetSection() => ProcessingDialogue.Sections[sectionIndex];
-    private string GetSentence() => GetSection().Sentences[sentenceIndex];
+    private int GetSentenceCount() => GetSection().Sentences.Length;
+    private DialogueSection GetSection() => ProcessingDialogue.Sections[_sectionIndex];
+    private DialogueSentence GetSentence() => GetSection().Sentences[_sentenceIndex];
+    private char GetCharacter() => GetTranslateText()[_characterIndex];
+
+    private string GetTranslateText() => GetSentence().TextTranslate.GetText(GameManager.Instance.TranslateSystem.GetCurrentLanguage());
 }

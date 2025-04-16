@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,44 +12,35 @@ struct LanguageButton
 
 public class LanguageSelector : MonoBehaviour
 {
-    public delegate void ChangeLanguage(int language);
-    public ChangeLanguage OnChangeLanguage;
-
     [SerializeField] private LanguageButton[] _buttonLists;
-    private Language _currentLanguage = Language.France;
-    private enum Language : int
-    {
-        France,
-        Espagnol,
-        Italien,
-        Anglais,
-        Allemand,
-        Japonais
-    }
+
+    private TranslateSystem _translateSystem;
 
     private void Start()
     {
+        _translateSystem = GameManager.Instance.TranslateSystem;
         for (int i = 0; i < _buttonLists.Length; i++)
         {
-            Language language = (Language)i;
+            TranslateSystem.EnumLanguage language = (TranslateSystem.EnumLanguage)i;
             AddListener(_buttonLists[i].button, language);
         }
-        SelectLanguage(Language.France);
+        SelectLanguage(TranslateSystem.EnumLanguage.French);
     }
 
-    private void AddListener(Button btn, Language language)
+    private void AddListener(Button btn, TranslateSystem.EnumLanguage language)
     {
         btn.onClick.AddListener(() => SelectLanguage(language));
     }
 
-    private void SelectLanguage(Language language)
+    private void SelectLanguage(TranslateSystem.EnumLanguage language)
     {
         int index = (int)language;
-        if ((int)_currentLanguage!= -1)
-            _buttonLists[(int)_currentLanguage].image.enabled = false;
+        if (GetIntCurrentLanguage() != -1)
+            _buttonLists[GetIntCurrentLanguage()].image.enabled = false;
 
         _buttonLists[index].image.enabled = true;
-        _currentLanguage = language;
-        OnChangeLanguage?.Invoke((int)_currentLanguage);
+        _translateSystem.ChangeLanguage(language);
     }
+
+    private int GetIntCurrentLanguage() => (int)_translateSystem.GetCurrentLanguage();
 }

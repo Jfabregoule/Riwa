@@ -1,4 +1,7 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public static class Helpers
@@ -17,7 +20,7 @@ public static class Helpers
         return new Vector2Int((int)vec.x, (int)vec.y);
     }
 
-    private static void ToggleCanvasGroup(bool isEnable, CanvasGroup canvasGroup)
+    public static void ToggleCanvasGroup(bool isEnable, CanvasGroup canvasGroup)
     {
         canvasGroup.alpha = isEnable ? 1 : 0;
         canvasGroup.interactable = isEnable;
@@ -57,25 +60,27 @@ public static class Helpers
     }
 
     
-    public static IEnumerator<MonoBehaviour> WaitMonoBeheviour(MonoBehaviour script)
+    public static IEnumerator WaitMonoBeheviour<T>(Func<T> script, Action<T> callback)
     {
-        float startTime = 0;
+        float timer = 0;
 
-        while (script == null)
+        T instance = script();
+
+        while (instance == null && timer < 5f)
         {
-            if (startTime > 5)
-            {
-                break;
-            }
-
-            startTime += Time.deltaTime;
+            timer += Time.deltaTime;
             yield return null;
+            instance = script();
         }
-            
-        if(script == null)
-            yield return null;
 
-        yield return script;
+        if (instance != null)
+        {
+            callback?.Invoke(instance);
+        }
+        else
+        {
+            Debug.LogWarning($"[WaitAndSubscribe] Timeout: {typeof(T).Name} was still null after {5} seconds.");
+        }
     }
 }
 

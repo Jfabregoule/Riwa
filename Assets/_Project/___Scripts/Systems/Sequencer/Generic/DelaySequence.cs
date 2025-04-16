@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Delay Sequence", menuName = "Malatre/Sequences/Delay")]
+[CreateAssetMenu(fileName = "Delay Sequence", menuName = "Riwa/Sequences/Delay")]
 public class DelaySequence : SequencerAction
 {
     [SerializeField] private float _delay;

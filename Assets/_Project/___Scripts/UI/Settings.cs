@@ -27,14 +27,14 @@ public class Settings : MonoBehaviour
         _audioBinary.OnValueChange += SetAudioBinary;
         _vibrationBinary.OnValueChange += SetVibrationBinary;
         _controlBinary.OnValueChange += SetControlPos;
-        _languageSelector.OnChangeLanguage += SetLanguage;
+        //_languageSelector.OnChangeLanguage += SetLanguage;
     }
     private void OnDisable()
     {
         _audioBinary.OnValueChange -= SetAudioBinary;
         _vibrationBinary.OnValueChange -= SetVibrationBinary;
         _controlBinary.OnValueChange -= SetControlPos;
-        _languageSelector.OnChangeLanguage -= SetLanguage;
+        //_languageSelector.OnChangeLanguage -= SetLanguage;
     }
     private void Start()
     {

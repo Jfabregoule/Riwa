@@ -4,6 +4,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEditor.VersionControl;
 using UnityEngine;
+using static Unity.VisualScripting.Icons;
 
 public class DialogueSystem : Singleton<DialogueSystem>
 {
@@ -45,9 +46,17 @@ public class DialogueSystem : Singleton<DialogueSystem>
     private void OnEnable()
     {
         StartCoroutine(Helpers.WaitMonoBeheviour(() => InputManager.Instance, SubscribeToDialogueInputManager));
+        StartCoroutine(Helpers.WaitMonoBeheviour(() => GameManager.Instance.TranslateSystem, SubscribeToTranslateSystem));
     }
 
-    private void OnDisable() { if (InputManager.Instance != null) InputManager.Instance.OnAdvanceDialogue -= AdvanceDialogue; }
+    private void OnDisable() 
+    { 
+        if (InputManager.Instance != null) 
+            InputManager.Instance.OnAdvanceDialogue -= AdvanceDialogue;
+
+        if (GameManager.Instance != null)
+            GameManager.Instance.TranslateSystem.OnLanguageChanged -= UpdateSentenceTranslate;
+    }
 
     public void BeginDialogue(DialogueAsset asset)
     {
@@ -156,12 +165,17 @@ public class DialogueSystem : Singleton<DialogueSystem>
     private void UpdateSentenceAll()
     {
         DialogueSentence sentence = GetSentence();
-        OnSentenceChanged?.Invoke(sentence.Text);
+        OnSentenceChanged?.Invoke(GetTranslateText());
         StopAllCoroutines();
         if (sentence.UseTime)
         {
             StartCoroutine(WaitTimeAndAdvanceDialogue(sentence.TimeToPass));
         }
+    }
+
+    private void UpdateSentenceTranslate()
+    {
+        OnSentenceChanged?.Invoke(GetTranslateText());
     }
 
     private IEnumerator UpdateSentence()
@@ -170,7 +184,7 @@ public class DialogueSystem : Singleton<DialogueSystem>
         _isWriting = true;
         DialogueSentence sentence = GetSentence();
         string text = "";
-        for (int i = 0; i < sentence.Text.Length; i++)
+        for (int i = 0; i < GetTranslateText().Length; i++)
         {
             text += GetCharacter();
             OnSentenceChanged?.Invoke(text);
@@ -206,6 +220,28 @@ public class DialogueSystem : Singleton<DialogueSystem>
         }
     }
 
+    private void SubscribeToTranslateSystem(TranslateSystem script)
+    {
+        if (script != null)
+        {
+            script.OnLanguageChanged += UpdateSentenceTranslate;
+            Debug.Log("Script is ready!");
+        }
+        else
+        {
+            Debug.LogWarning("Script was still null after timeout.");
+        }
+    }
+
+    public void SkipAll()
+    {
+        if (ProcessingDialogue.IsAllSkipable)
+        {
+            _endSequencer.InitializeSequence();
+            StopAllCoroutines();
+        }
+    }
+
     public void Reset()
     {
         OnSentenceChanged?.Invoke("");
@@ -214,6 +250,7 @@ public class DialogueSystem : Singleton<DialogueSystem>
 
     public void ChangeCanvasGroupAlpha(float alpha)
     {
+        
         OnCanvasGroupAlphaChanged?.Invoke(alpha);
     }
 
@@ -221,5 +258,7 @@ public class DialogueSystem : Singleton<DialogueSystem>
     private int GetSentenceCount() => GetSection().Sentences.Length;
     private DialogueSection GetSection() => ProcessingDialogue.Sections[_sectionIndex];
     private DialogueSentence GetSentence() => GetSection().Sentences[_sentenceIndex];
-    private char GetCharacter() => GetSentence().Text[_characterIndex];
+    private char GetCharacter() => GetTranslateText()[_characterIndex];
+
+    private string GetTranslateText() => GetSentence().TextTranslate.GetText(GameManager.Instance.TranslateSystem.GetCurrentLanguage());
 }

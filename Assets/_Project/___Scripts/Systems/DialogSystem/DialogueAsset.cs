@@ -13,6 +13,7 @@ public class DialogueAsset : ScriptableObject
     public DialogueEventType ClosureEventType;
     public bool DisablePlayerInputsOnOpening = true;
     public bool EnablePlayerInputsOnClosure = true;
+    public bool IsAllSkipable = false;
     [Space]
     public DialogueSection[] Sections;
 }
@@ -29,7 +30,7 @@ public struct DialogueSection
 [System.Serializable]
 public struct DialogueSentence
 {
-    [TextArea] public string Text;
+    public SentenceTranslate TextTranslate;
     public bool UseWriting;
     public float SpeedWriting;
     public bool UseTime;

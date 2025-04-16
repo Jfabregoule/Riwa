@@ -4,6 +4,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DialogueUI : MonoBehaviour
 {
@@ -44,6 +45,11 @@ public class DialogueUI : MonoBehaviour
     private void OnCanvasGroupAlphaChange(float alpha)
     {
         _canvasGroup.alpha = alpha;
+    }
+
+    public void OnSkip()
+    {
+        _dialogueSystem.SkipAll();
     }
 
     private void SubcribeToDialogueEvent(DialogueSystem dialogueSystem)

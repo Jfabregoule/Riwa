@@ -4,13 +4,27 @@ using UnityEngine;
 
 public class TranslateSystem : MonoBehaviour
 {
-    void Start()
+    public delegate void LanguageEvent();
+    public event LanguageEvent OnLanguageChanged;
+
+    private EnumLanguage CurrentLanguage;
+    public enum EnumLanguage
     {
-        
+        French,
+        Spanish,
+        Italian,
+        English,
+        German,
+        Japanese
+    }
+    public void ChangeLanguage(EnumLanguage language)
+    {
+        CurrentLanguage = language;
+        OnLanguageChanged?.Invoke();
     }
 
-    void Update()
+    public EnumLanguage GetCurrentLanguage()
     {
-        
+        return CurrentLanguage;
     }
 }

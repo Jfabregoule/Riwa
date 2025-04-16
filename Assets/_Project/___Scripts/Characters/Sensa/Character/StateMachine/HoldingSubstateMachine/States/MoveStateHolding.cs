@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class MoveStateHolding : HoldingBaseState
@@ -6,6 +7,8 @@ public class MoveStateHolding : HoldingBaseState
     private IMovable _movable;
 
     private Joystick _joystick;
+
+    private float _lerpTime = 0;
 
     public int Sens { get => _sens; set => _sens = value; }
 
@@ -24,15 +27,15 @@ public class MoveStateHolding : HoldingBaseState
         {
             _movable = movable;
             _movable.OnMoveFinished += CanGoToIdle;
-
+            _movable.OnReplacePlayer += ReplacePlayer;
         }
-
     }
 
     public override void ExitState()
     {
         base.ExitState();
         _movable.OnMoveFinished -= CanGoToIdle;
+        _movable.OnReplacePlayer -= ReplacePlayer;
     }
 
     public override void UpdateState()
@@ -46,7 +49,7 @@ public class MoveStateHolding : HoldingBaseState
             return;
         }
         _character.transform.position += Sens * dir * _movable.MoveSpeed * Time.deltaTime;
-        
+
     }
 
     public override void CheckChangeState()
@@ -87,6 +90,7 @@ public class MoveStateHolding : HoldingBaseState
             {
                 //Pull
                 Sens = 1;
+
             }
             else
             {
@@ -110,8 +114,13 @@ public class MoveStateHolding : HoldingBaseState
                 _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Rotate]);
             }
         }
+    }
 
-        
+    public void ReplacePlayer(Vector3 targetPosition)
+    {
+        Vector3 destination = ((MonoBehaviour)_movable).gameObject.transform.position; 
+        Vector3 playerPosition = destination + targetPosition * -Sens;
+        _character.transform.position = new Vector3(playerPosition.x, _character.transform.position.y, playerPosition.z);
     }
 
 }

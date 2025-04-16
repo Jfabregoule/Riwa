@@ -14,6 +14,7 @@ public class ProcessStateTempo : ChangeTempoBaseState
         base.EnterState();
 
         _changedTime = false;
+        _character.CanChangeTime = false;
 
         _character.ChangeTime.StartTimeChange();
         _character.ChangeTime.OnTimeChangeEnd += TimeChangeEnded;
@@ -47,6 +48,7 @@ public class ProcessStateTempo : ChangeTempoBaseState
     private void TimeChangeEnded(bool isPast)
     {
         _changedTime = true;
+        _character.CanChangeTime = true;
 
         if (!isPast)
         {

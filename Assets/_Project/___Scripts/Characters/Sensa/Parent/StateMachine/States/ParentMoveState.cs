@@ -43,6 +43,12 @@ public class ParentMoveState<TStateEnum> : BaseStatePawn<TStateEnum>
         camForward.Normalize();
         camRight.Normalize();
         _moveDirection = (camForward * direction.y + camRight * direction.x);
+
+
+        _character.Animator.SetFloat("MagnitudeVel", Vector3.Magnitude(_moveDirection));
+        _character.Animator.SetFloat("Xvel", _moveDirection.x);
+        _character.Animator.SetFloat("Yvel", _moveDirection.y);
+
     }
 
     public override void FixedUpdateState()

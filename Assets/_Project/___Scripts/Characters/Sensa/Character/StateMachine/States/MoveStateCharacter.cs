@@ -23,6 +23,9 @@ public class MoveStateCharacter : ParentMoveState<EnumStateCharacter>
     public override void UpdateState()
     {
         base.UpdateState();
+
+        _character.Animator.SetFloat("MagnitudeVelocity", _character.MagnitudeVelocity);
+
     }
 
     public override void FixedUpdateState()

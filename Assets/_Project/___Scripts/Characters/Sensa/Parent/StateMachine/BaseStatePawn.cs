@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 public class BaseStatePawn<TStateEnum> : BaseState<TStateEnum>
     where TStateEnum : Enum
 {
@@ -25,7 +26,10 @@ public class BaseStatePawn<TStateEnum> : BaseState<TStateEnum>
     public override void EnterState()
     {
         base.EnterState();
-        //_character.Animator.SetTrigger(_stateMachine.AnimationMap[_enumState]); //Lorsque je rentre dans un state, je trigger l'animation à jouer, si l'animator est bien fait, tout est clean
+        if (_character.Animator != null) { 
+            _character.Animator.SetTrigger(_stateMachine.AnimationMap[_enumState]); //Lorsque je rentre dans un state, je trigger l'animation à jouer, si l'animator est bien fait, tout est clean  
+            UnityEngine.Debug.Log(_stateMachine.AnimationMap[_enumState]);
+        }
     }
 
     public override void ExitState()

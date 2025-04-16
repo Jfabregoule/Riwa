@@ -20,7 +20,6 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
 
     private GameObject _pawn;
     new private StateMachineCharacter _stateMachine;
-    private Animator _animator;
     private GameObject _soul;
     private GameObject _holdingObject;
 
@@ -49,6 +48,12 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
 
     [SerializeField] private ParticleSystem _soulLinkVFX;
 
+    //Animation values
+
+    private float magnitudeVelocity;
+
+    //
+
     public delegate void NoArgVoid();
     public NoArgVoid OnChangeTempo;
 
@@ -59,8 +64,6 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
     //Properties
 
     public GameObject Pawn { get => _pawn;}
-    public Animator Animator { get => _animator;}
-
     public GameObject HoldingObject { get => _holdingObject; }
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
     public bool CanInteractSoul { get => _canInteractSoul; set => _canInteractSoul = value; }
@@ -78,6 +81,7 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
     public bool CanChangeTime { get => _canChangeTime; set => _canChangeTime = value; }
     public Vector3 RespawnPosition { get => _respawnPosition; set => _respawnPosition = value; }
     public Vector3 RespawnRotation { get => _respawnRotation; set => _respawnRotation = value; }
+    public float MagnitudeVelocity { get => magnitudeVelocity; set => magnitudeVelocity = value; }
 
     #endregion
 

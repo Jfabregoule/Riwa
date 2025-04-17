@@ -143,7 +143,7 @@ public class VineScript : MonoBehaviour, IInteractableSoul
         SocketPoint = null;     
     }
 
-    public void Interactable()
+    public void Interact()
     {
 
     }

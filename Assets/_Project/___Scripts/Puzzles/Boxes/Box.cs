@@ -25,7 +25,7 @@ public class Box : MonoBehaviour, IMovable
         throw new System.NotImplementedException();
     }
 
-    public void Interactable()
+    public void Interact()
     {
         throw new System.NotImplementedException();
     }

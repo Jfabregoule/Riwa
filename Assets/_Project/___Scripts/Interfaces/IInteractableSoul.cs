@@ -4,6 +4,5 @@ using UnityEngine;
 
 public interface IInteractableSoul : IInteractable
 {
-
     void InteractableSoul();
 }

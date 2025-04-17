@@ -40,7 +40,14 @@ public class PawnCheckStateInteract<TStateEnum> : PawnInteractBaseSubstate<TStat
         {
             if (collider.gameObject.TryGetComponent<IInteractable>(out IInteractable obj))
             {
-                _colliderList.Add(collider.gameObject);
+                RaycastHit hit;
+                if(Physics.Raycast(_character.transform.position, collider.gameObject.transform.position, out hit, layerMask))
+                {
+                    if(hit.collider.gameObject == collider.gameObject)
+                    {
+                        _colliderList.Add(collider.gameObject);
+                    }
+                }
             }
         }
 

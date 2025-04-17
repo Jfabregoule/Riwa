@@ -2,17 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TriggerPointPlatform : MonoBehaviour
+public class Platform : MonoBehaviour, IRespawnable
 {
+
+
     private readonly List<VineScript> _triggerVines = new List<VineScript>();
     private VineScript _currentVine;
     private VineScript _previousVine;
 
     private Rigidbody _rb;
 
+    [SerializeField] private Vector3 _respawnPositon;
+    [SerializeField] private Vector3 _respawnRotation;
+    public Vector3 RespawnPosition { get => _respawnPositon; set => _respawnPositon = value; }
+    public Vector3 RespawnRotation { get => _respawnRotation; set => _respawnRotation = value; }
+
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
+        Debug.Log(_respawnPositon);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -47,7 +55,6 @@ public class TriggerPointPlatform : MonoBehaviour
             {
                 _currentVine.SetSocketNull();
                 _currentVine = null;
-
                 _rb.constraints &= ~RigidbodyConstraints.FreezePositionY;
                 _rb.useGravity = true;
                 _rb.isKinematic = false;
@@ -102,5 +109,15 @@ public class TriggerPointPlatform : MonoBehaviour
         transform.position = position;
 
         vine.SetSocketTransform(transform);
+    }
+
+    public void Respawn()
+    {
+        transform.GetChild(0).SetParent(null);
+        transform.position = RespawnPosition;
+        transform.localEulerAngles = RespawnRotation;
+        _rb.constraints |= RigidbodyConstraints.FreezePositionY;
+        _rb.useGravity = false;
+        _rb.isKinematic = true;
     }
 }

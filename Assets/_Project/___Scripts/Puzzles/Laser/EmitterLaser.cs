@@ -11,6 +11,7 @@ public class EmitterLaser : MonoBehaviour
     private List<Vector3> _directions;
     private bool _isReflecting;
     private bool _isActive;
+    private int _layerMask;
 
     [SerializeField] private MonoBehaviour[] _activables;
     private int CurrentActive;
@@ -20,6 +21,9 @@ public class EmitterLaser : MonoBehaviour
         _laser = GetComponent<LineRenderer>();
 
         _directions = new List<Vector3>();
+
+        int layerToExclude = LayerMask.NameToLayer("whatIsPresentObject");
+        _layerMask = ~(1 << layerToExclude);
 
         foreach (var activable in _activables)
         {
@@ -43,7 +47,7 @@ public class EmitterLaser : MonoBehaviour
         {
             if (!_isReflecting) continue;
 
-            if (Physics.Raycast(_laser.GetPosition(i), _directions[i], out RaycastHit hit, 100f))
+            if (Physics.Raycast(_laser.GetPosition(i), _directions[i], out RaycastHit hit, 100f, _layerMask))
             {
                     
                 Vector3 reflect = Vector3.Reflect(_directions[i], hit.normal);
@@ -51,7 +55,7 @@ public class EmitterLaser : MonoBehaviour
                 AddLaserPoint(hit.point);
                 _directions.Add(reflect);
 
-                if (!hit.collider.TryGetComponent(out Mirror mirror) || hit.normal != mirror.transform.right)
+                if (!hit.collider.TryGetComponent(out Mirror mirror) || hit.normal != -mirror.transform.forward)
                 {
                     SpawnImpact(hit.point, hit.normal);
                     _isReflecting = false;

@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3190315573223768551}
+  - component: {fileID: 2606334117213759727}
+  - component: {fileID: 92788616863819522}
   m_Layer: 6
   m_Name: Pf_MirrorFixedPivot
   m_TagString: Untagged
@@ -32,6 +34,40 @@ Transform:
   - {fileID: 3535015988200923376}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &2606334117213759727
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5168165244280066160}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.57, y: 1, z: 0.1}
+  m_Center: {x: 0.02, y: 1.08, z: 0.02}
+--- !u!114 &92788616863819522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5168165244280066160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13d68da6ca8f7204c83d1ecf649e4ae2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _angle: 45
 --- !u!1 &5784775457604778505
 GameObject:
   m_ObjectHideFlags: 0
@@ -124,7 +160,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5784775457604778505}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13d68da6ca8f7204c83d1ecf649e4ae2, type: 3}
   m_Name: 
@@ -147,7 +183,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.57, y: 1, z: 0.1}
   m_Center: {x: -0.2321698, y: 1.08, z: -0.23147747}

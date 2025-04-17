@@ -59,11 +59,11 @@ public class EmitterLaser : MonoBehaviour
                 {
                     SpawnImpact(hit.point, hit.normal);
                     _isReflecting = false;
-                }
 
-                if (hit.collider.TryGetComponent<RecepterLaser>(out var recepter))
-                {
-                    recepter.OnLaserHit();
+                    if (hit.collider.TryGetComponent<RecepterLaser>(out var recepter))
+                    {
+                        recepter.OnLaserHit();
+                    }
                 }
             }
             else if (i == _laser.positionCount - 1)

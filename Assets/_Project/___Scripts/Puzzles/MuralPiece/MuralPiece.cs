@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MuralPiece : MonoBehaviour, IInteractable
 {
-    public float OffsetRadius { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+    public float OffsetRadius { get => 0f; set => OffsetRadius = value; }
 
     public delegate void MuralPieceEvent();
     public MuralPieceEvent OnPickUp;
@@ -10,5 +10,6 @@ public class MuralPiece : MonoBehaviour, IInteractable
     public void Interact()
     {
         OnPickUp?.Invoke();
+        GameObject.Destroy(gameObject);
     }
 }

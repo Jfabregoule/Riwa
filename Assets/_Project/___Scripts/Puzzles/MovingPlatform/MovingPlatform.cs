@@ -38,6 +38,8 @@ public class MovingPlatform : MonoBehaviour
 
             transform.position = target;
 
+            yield return new WaitForSeconds(2f);
+
             if (_currentIndex == _targetPositions.Count - 1)
                 _direction = -1;
             else if (_currentIndex == 0)

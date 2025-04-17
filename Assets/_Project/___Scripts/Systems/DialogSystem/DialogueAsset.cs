@@ -21,10 +21,13 @@ public class DialogueAsset : ScriptableObject
 [System.Serializable]
 public struct DialogueSection
 {
+    public DialogueUIType UIType;
     public bool DisableDialogueInputs;
     public DialogueSentence[] Sentences;
     public bool TriggerEvent;
     public DialogueEventType EventType;
+    public bool WaitEvent;
+    public DialogueEventType WaitEventType;
 }
 
 [System.Serializable]

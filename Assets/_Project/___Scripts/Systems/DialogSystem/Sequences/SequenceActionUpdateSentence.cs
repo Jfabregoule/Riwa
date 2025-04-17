@@ -1,9 +1,9 @@
 using System.Collections;
-using TMPro;
+using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "End Dialogue", menuName = "Riwa/Dialogue/Sequences/End Dialogue")]
-public class SequencerActionEndDialogue : SequencerAction
+[CreateAssetMenu(fileName = "Update Sentence", menuName = "Riwa/Dialogue/Sequences/Update Sentence")]
+public class SequenceActionUpdateSentence : SequencerAction
 {
     private DialogueSystem _dialogueSystem;
 
@@ -11,11 +11,9 @@ public class SequencerActionEndDialogue : SequencerAction
     {
         _dialogueSystem = DialogueSystem.Instance;
     }
-
     public override IEnumerator StartSequence(Sequencer context)
     {
-        _dialogueSystem.Reset();
-        _dialogueSystem.EndDialogue();
+        _dialogueSystem.UpdateSentence();
         yield return null;
     }
 }

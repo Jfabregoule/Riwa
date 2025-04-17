@@ -43,7 +43,7 @@ public class EmitterLaser : MonoBehaviour
         {
             if (!_isReflecting) continue;
 
-            if (Physics.Raycast(_laser.GetPosition(i), _directions[i], out RaycastHit hit, 10f))
+            if (Physics.Raycast(_laser.GetPosition(i), _directions[i], out RaycastHit hit, 100f))
             {
                     
                 Vector3 reflect = Vector3.Reflect(_directions[i], hit.normal);

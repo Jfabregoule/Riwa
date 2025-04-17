@@ -20,25 +20,27 @@ MonoBehaviour:
   EnablePlayerInputsOnClosure: 1
   IsAllSkipable: 1
   Sections:
-  - DisableDialogueInputs: 1
+  - UIType: 0
+    DisableDialogueInputs: 1
+    Sentences:
+    - TextTranslate: {fileID: 11400000, guid: 40062602ce381fe4dad091e4a8d20fd7, type: 2}
+      UseWriting: 1
+      SpeedWriting: 0.03
+      UseTime: 1
+      TimeToPass: 3
+    TriggerEvent: 0
+    EventType: 0
+  - UIType: 1
+    DisableDialogueInputs: 1
     Sentences:
     - TextTranslate: {fileID: 11400000, guid: 40062602ce381fe4dad091e4a8d20fd7, type: 2}
       UseWriting: 1
       SpeedWriting: 0.03
       UseTime: 1
       TimeToPass: 10
-    TriggerEvent: 0
-    EventType: 0
-  - DisableDialogueInputs: 1
-    Sentences:
     - TextTranslate: {fileID: 11400000, guid: 40062602ce381fe4dad091e4a8d20fd7, type: 2}
-      UseWriting: 0
-      SpeedWriting: 0
-      UseTime: 1
-      TimeToPass: 10
-    - TextTranslate: {fileID: 11400000, guid: 40062602ce381fe4dad091e4a8d20fd7, type: 2}
-      UseWriting: 0
-      SpeedWriting: 0
+      UseWriting: 1
+      SpeedWriting: 2
       UseTime: 0
       TimeToPass: 2
     TriggerEvent: 0

@@ -14,7 +14,7 @@ public class SequencerActionDisplayFirstSentence : SequencerAction
     public override IEnumerator StartSequence(Sequencer context)
     {
         InputManager.Instance.EnableDialogueControls();
-        _dialogueSystem.StartSection();
+        _dialogueSystem.FirstSection();
         yield return null;
     }
 }

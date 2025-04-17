@@ -1,25 +1,21 @@
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
-using UnityEditor.VersionControl;
 using UnityEngine;
-using static Unity.VisualScripting.Icons;
 
 public class DialogueSystem : Singleton<DialogueSystem>
 {
     [SerializeField] private Sequencer _beginSequencer;
+    [SerializeField] private Sequencer _transiUISequencer;
     [SerializeField] private Sequencer _endSequencer;
 
     [SerializeField] private DialogueAsset _test;
 
-    public delegate void DialogueText(string text);
+    public delegate void DialogueText(DialogueUIType uIType, string text);
     public event DialogueText OnSentenceChanged;
 
-    public delegate void DialogueCanvasGroup(bool isActive);
+    public delegate void DialogueCanvasGroup(DialogueUIType uIType, bool isActive);
     public event DialogueCanvasGroup OnCanvasGroupChanged;
 
-    public delegate void DialogueCanvasGroupAlpha(float alpha);
+    public delegate void DialogueCanvasGroupAlpha(DialogueUIType uIType, float alpha);
     public event DialogueCanvasGroupAlpha OnCanvasGroupAlphaChanged;
 
     public DialogueAsset ProcessingDialogue { get; private set; }
@@ -29,18 +25,20 @@ public class DialogueSystem : Singleton<DialogueSystem>
     private int _characterIndex;
 
     private bool _isWriting = false;
+    private DialogueUIType _currentDialogueUI;
 
     public delegate void DialogueEvent(DialogueEventType eventType);
     public event DialogueEvent OnDialogueEvent;
 
     public void Start()
     {
-        //ProcessingDialogue = null;
+        ProcessingDialogue = null;
 
         //BeginDialogue(_test);
 
-        //_beginSequencer.Init();
-        //_endSequencer.Init();
+        _beginSequencer.Init();
+        _transiUISequencer.Init();
+        _endSequencer.Init();
     }
 
     private void OnEnable()
@@ -69,6 +67,9 @@ public class DialogueSystem : Singleton<DialogueSystem>
         _sectionIndex = 0;
         _sentenceIndex = 0;
         _characterIndex = 0;
+
+        _currentDialogueUI = GetSection().UIType;
+
 
         if (ProcessingDialogue.OpeningTriggerEvent)
             OnDialogueEvent?.Invoke(ProcessingDialogue.OpeningEventType);
@@ -105,19 +106,12 @@ public class DialogueSystem : Singleton<DialogueSystem>
         }
         else
         {
-            if (GetSentence().UseWriting)
-            {
-                StartCoroutine(UpdateSentence());
-            }
-            else
-            {
-                UpdateSentenceAll();
-            }
+            UpdateSentence();
         }
             
     }
 
-    public void StartSection()
+    public void FirstSection()
     {
         _sectionIndex = 0;
         UpdateSection();
@@ -152,9 +146,20 @@ public class DialogueSystem : Singleton<DialogueSystem>
             InputManager.Instance?.EnableDialogueControls();
         }
 
+        if(_currentDialogueUI != section.UIType)
+        {
+            _transiUISequencer.InitializeSequence();
+            return;
+        }
+
+        UpdateSentence();
+    }
+
+    public void UpdateSentence()
+    {
         if (GetSentence().UseWriting)
         {
-            StartCoroutine(UpdateSentence());
+            StartCoroutine(UpdateSentenceWriting());
         }
         else
         {
@@ -165,7 +170,7 @@ public class DialogueSystem : Singleton<DialogueSystem>
     private void UpdateSentenceAll()
     {
         DialogueSentence sentence = GetSentence();
-        OnSentenceChanged?.Invoke(GetTranslateText());
+        OnSentenceChanged?.Invoke(_currentDialogueUI, GetTranslateText());
         StopAllCoroutines();
         if (sentence.UseTime)
         {
@@ -175,10 +180,10 @@ public class DialogueSystem : Singleton<DialogueSystem>
 
     private void UpdateSentenceTranslate()
     {
-        OnSentenceChanged?.Invoke(GetTranslateText());
+        OnSentenceChanged?.Invoke(_currentDialogueUI, GetTranslateText());
     }
 
-    private IEnumerator UpdateSentence()
+    private IEnumerator UpdateSentenceWriting()
     {
         _characterIndex = 0;
         _isWriting = true;
@@ -187,7 +192,7 @@ public class DialogueSystem : Singleton<DialogueSystem>
         for (int i = 0; i < GetTranslateText().Length; i++)
         {
             text += GetCharacter();
-            OnSentenceChanged?.Invoke(text);
+            OnSentenceChanged?.Invoke(_currentDialogueUI, text);
             _characterIndex++;
             yield return Helpers.GetWait(sentence.SpeedWriting);
         }
@@ -244,14 +249,18 @@ public class DialogueSystem : Singleton<DialogueSystem>
 
     public void Reset()
     {
-        OnSentenceChanged?.Invoke("");
-        OnCanvasGroupChanged?.Invoke(false);
+        OnSentenceChanged?.Invoke(_currentDialogueUI, "");
+        OnCanvasGroupChanged?.Invoke(_currentDialogueUI, false);
     }
 
     public void ChangeCanvasGroupAlpha(float alpha)
     {
-        
-        OnCanvasGroupAlphaChanged?.Invoke(alpha);
+        OnCanvasGroupAlphaChanged?.Invoke(_currentDialogueUI, alpha);
+    }
+
+    public void ChangeUI()
+    {
+        _currentDialogueUI = GetSection().UIType;
     }
 
     private int GetSectionCount() => ProcessingDialogue.Sections.Length;

@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 425887645}
   - component: {fileID: 425887644}
   - component: {fileID: 425887643}
+  - component: {fileID: 425887646}
   m_Layer: 0
   m_Name: DialogueSystem
   m_TagString: Untagged
@@ -202,8 +203,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _beginSequencer: {fileID: 425887644}
+  _transiUISequencer: {fileID: 425887646}
   _endSequencer: {fileID: 425887643}
   _test: {fileID: 11400000, guid: d93ae4ea2debf184396c27150880ffe8, type: 2}
+--- !u!114 &425887646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 425887641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e5d8709be7c39548b08fbe3b0d835c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SequenceActions:
+  - {fileID: 11400000, guid: 107fb2f97eb8e22409c47ef5b1cfbc3d, type: 2}
+  - {fileID: 11400000, guid: f7f2c8e12d2e2994e8a3bae25ba7dc20, type: 2}
+  - {fileID: 11400000, guid: ba64058b1b05b3841bf23c1f0010fef0, type: 2}
+  - {fileID: 11400000, guid: 3ea016dca17d9f74f8eee028ab4ccc9f, type: 2}
 --- !u!1 &448458945
 GameObject:
   m_ObjectHideFlags: 0

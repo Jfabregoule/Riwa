@@ -91,6 +91,7 @@ public class Damier : MonoBehaviour
                 collider.isTrigger = true;
                 collider.size = new Vector3(1f, 1f, 1f);
                 collider.center = new Vector3(0f, 0.5f, 0f);
+                BoxCollider ground = cell.AddComponent<BoxCollider>();
                 Cell cellScript = cell.AddComponent<Cell>();
                 cellScript.Init(pos);
                 Rigidbody rb = cell.AddComponent<Rigidbody>();

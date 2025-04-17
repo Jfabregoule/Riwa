@@ -15,7 +15,6 @@ public class ParentIdleState<TStateEnum> : BaseStatePawn<TStateEnum>
     {
         base.EnterState();
         _clock = 0;
-        //_character.Rb.velocity = Vector3.zero;
     }
 
     public override void ExitState()

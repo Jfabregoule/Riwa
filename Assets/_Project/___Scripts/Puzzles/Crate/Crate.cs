@@ -67,7 +67,8 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
         foreach (var col in colliders)
         {
             if (col.gameObject != gameObject
-             && !col.gameObject.TryGetComponent<ACharacter>(out ACharacter chara)) //ICI METTRE LES OBJECTS QU'ON VEUT EVITER
+             && !col.gameObject.TryGetComponent<ACharacter>(out ACharacter chara)
+             && col.isTrigger == false)
             {
                 return false;
             }

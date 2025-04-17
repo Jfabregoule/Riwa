@@ -11,7 +11,7 @@ public class InteractTest : MonoBehaviour, IInteractable
         OffsetRadius = 1.5f;
     }
 
-    public void Interactable()
+    public void Interact()
     {
         Debug.Log("Je fais ma vie");
     }

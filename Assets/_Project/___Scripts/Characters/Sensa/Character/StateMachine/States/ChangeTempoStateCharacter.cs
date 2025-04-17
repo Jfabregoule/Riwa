@@ -52,11 +52,5 @@ public class ChangeTempoStateCharacter : BaseStateCharacter<EnumStateCharacter>
     public override void CheckChangeState()
     {
         base.CheckChangeState();
-
-        if (_character.IsChangingTime == false)
-        {
-            _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Idle]);
-            return;
-        }
     }
 }

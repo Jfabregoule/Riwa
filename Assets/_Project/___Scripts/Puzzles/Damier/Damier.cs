@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cinemachine;
 using UnityEngine;
 
 public enum CellState
@@ -30,17 +31,17 @@ public struct DamierDatas
 public class Damier : MonoBehaviour
 {
 
-    [Header("Debug")]
-    [SerializeField] private Material _blue;
-    [SerializeField] private Material _white;
-    [SerializeField] private Material _green;
-
-    [Header("Damier")]
+    [Header("Damier Values")]
     [SerializeField] private int _damierSize = 6;
     [SerializeField] private float _cellSize = 1.5f;
     [SerializeField] private float _lerpTime = 1.0f;
     [SerializeField] private Vector3 _rotation = Vector3.zero;
+
+    [Header("Damier GOs")]
     [SerializeField] private GameObject _riwa;
+    [SerializeField] private GameObject _tile;
+
+    private Floor1Room3LevelManager _instance;
 
     [HideInInspector][SerializeField] List<DamierDatas> serializedDamier = new List<DamierDatas>(); // Delete when Save is done
 
@@ -64,6 +65,7 @@ public class Damier : MonoBehaviour
 
     private void Start()
     {
+        _instance = (Floor1Room3LevelManager)Floor1Room3LevelManager.Instance;
         GeneratePath();
     }
 
@@ -79,18 +81,18 @@ public class Damier : MonoBehaviour
             for (int y = 0; y < _damierSize; y++)
             {
                 CellPos pos = new CellPos(x, y);
-                GameObject cell = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                Vector3 localPos = new Vector3(x * (_cellSize + 0.05f), 0, y * (_cellSize + 0.05f)) - centerOffset;
+                GameObject cell = Instantiate(_tile);
+                Vector3 localPos = new Vector3(x * (_cellSize + 1.15f), 0, y * (_cellSize + 1.15f)) - centerOffset;
                 Vector3 rotatedPos = rotation * localPos;
                 cell.transform.position = transform.position + rotatedPos;
-                cell.transform.localScale = new Vector3(_cellSize, 0.1f, _cellSize);
-                cell.GetComponent<Renderer>().material = (x + y) % 2 == 0 ? _blue : _white;
+                cell.transform.localScale = new Vector3(_cellSize, 1f, _cellSize);
+                //cell.GetComponent<Renderer>().material = (x + y) % 2 == 0 ? _blue : _white;
                 cell.transform.parent = transform;
                 cell.name = $"Cell {x} {y}";
-                BoxCollider collider = cell.GetComponent<BoxCollider>();
+                BoxCollider collider = cell.AddComponent<BoxCollider>();
                 collider.isTrigger = true;
-                collider.size = new Vector3(1f, 1f, 1f);
-                collider.center = new Vector3(0f, 0.5f, 0f);
+                collider.center = new Vector3(0f, 0.1f, 0f);
+                BoxCollider ground = cell.AddComponent<BoxCollider>();
                 Cell cellScript = cell.AddComponent<Cell>();
                 cellScript.Init(pos);
                 Rigidbody rb = cell.AddComponent<Rigidbody>();
@@ -265,20 +267,20 @@ public class Damier : MonoBehaviour
 
         path.Add(end);
 
-        foreach (Transform cell in transform)
-        {
-            Cell cellScript = cell.GetComponent<Cell>();
-            if (cellScript == null) continue;
+        //foreach (Transform cell in transform)
+        //{
+        //    Cell cellScript = cell.GetComponent<Cell>();
+        //    if (cellScript == null) continue;
 
-            CellPos pos = cellScript.Position;
+        //    CellPos pos = cellScript.Position;
 
-            if (_damier.TryGetValue(pos, out DamierDatas datas))
-            {
-                Renderer rend = datas.cell.GetComponent<Renderer>();
-                if (rend != null && datas.cellState == CellState.NotBreakable)
-                    rend.material = _green;
-            }
-        }
+        //    if (_damier.TryGetValue(pos, out DamierDatas datas))
+        //    {
+        //        Renderer rend = datas.cell.GetComponent<Renderer>();
+        //        if (rend != null && datas.cellState == CellState.NotBreakable)
+        //            rend.material = _green;
+        //    }
+        //}
 
         RiwaFollowPath();
 
@@ -291,6 +293,8 @@ public class Damier : MonoBehaviour
 
     private IEnumerator FollowPathCoroutine()
     {
+        GameManager.Instance.Character.InputManager.DisableGameplayControls();
+        _instance.DamierCamera.Priority = 20;
 
         if (path.Count < 2)
             yield break;
@@ -346,6 +350,9 @@ public class Damier : MonoBehaviour
         }
 
         _riwa.transform.position = worldPoints[worldPoints.Count - 1];
+        Destroy(_riwa);
+        _instance.DamierCamera.Priority = 0;
+        GameManager.Instance.Character.InputManager.EnableGameplayControls();
     }
 
     private Vector3 InterpolationHermite(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
@@ -394,8 +401,7 @@ public class Damier : MonoBehaviour
 
     public void RespawnBrokenTile()
     {
-        Floor1Room3LevelManager instance = (Floor1Room3LevelManager)Floor1Room3LevelManager.Instance;
-        foreach (var cell in instance.BrokenCells)
+        foreach (var cell in _instance.BrokenCells)
         {
             if (_damier[cell.Position].cellState == CellState.Broken)
             {

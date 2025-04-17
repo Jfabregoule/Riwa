@@ -64,7 +64,7 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
 
         Debug.Log(multiplicator);
 
-        foreach(var col in colliders)
+        foreach (var col in colliders)
         {
             if (col.gameObject != gameObject
              && !col.gameObject.TryGetComponent<ACharacter>(out ACharacter chara)) //ICI METTRE LES OBJECTS QU'ON VEUT EVITER
@@ -118,9 +118,9 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
         }
         transform.position = destination;
 
-        Vector3 playerTargetPosition = destination + (direction.normalized * OffsetRadius);
+        //Vector3 playerTargetPosition = destination + (direction.normalized * OffsetRadius * transform.localScale.x);
 
-        OnReplacePlayer?.Invoke(direction.normalized * OffsetRadius);
+        OnReplacePlayer?.Invoke(direction.normalized * OffsetRadius * transform.localScale.x);
         OnMoveFinished?.Invoke();
 
         _isMoving = false;

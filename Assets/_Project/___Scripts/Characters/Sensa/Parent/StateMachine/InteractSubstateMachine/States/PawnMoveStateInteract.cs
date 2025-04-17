@@ -15,7 +15,7 @@ public class PawnMoveStateInteract<TStateEnum> : PawnInteractBaseSubstate<TState
     {
         base.EnterState();
 
-        float radiusOffset = _subStateMachine.CurrentObjectInteract.GetComponent<IInteractable>().OffsetRadius;
+        float radiusOffset = _subStateMachine.CurrentObjectInteract.GetComponent<IInteractable>().OffsetRadius * _subStateMachine.CurrentObjectInteract.transform.localScale.x;
 
         if (radiusOffset < 0)
         {
@@ -34,7 +34,7 @@ public class PawnMoveStateInteract<TStateEnum> : PawnInteractBaseSubstate<TState
             return;
         }
 
-        float radius = _subStateMachine.CurrentObjectInteract.GetComponent<IInteractable>().OffsetRadius;
+        float radius = _subStateMachine.CurrentObjectInteract.GetComponent<IInteractable>().OffsetRadius * _subStateMachine.CurrentObjectInteract.transform.localScale.x;
 
         //On va regarder quel point de grab est le plus proche de sensa
 

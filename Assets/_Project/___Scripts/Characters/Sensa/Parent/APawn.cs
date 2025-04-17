@@ -60,6 +60,7 @@ public class APawn<TStateEnum> : MonoBehaviour
             transform.rotation = Quaternion.Slerp(startRotation, targetRotation, Mathf.Clamp01(t * 3)); //Pour que sensa se tourne plus vite au début 
 
             clock += Time.deltaTime;
+
             yield return null;
         }
 
@@ -74,17 +75,18 @@ public class APawn<TStateEnum> : MonoBehaviour
         {
             clock = 1.1f;
         }
+        
+        OnMoveToFinished?.Invoke();
 
         while (clock < 1)
         {
-            transform.rotation = Quaternion.Slerp(startRotation, targetRotation, Mathf.Clamp01(clock * 3)); //Pour que sensa se tourne plus vite au début 
+            transform.rotation = Quaternion.Slerp(startRotation, targetRotation, Mathf.Clamp01(clock * 8)); //Pour que sensa se tourne plus vite au début 
 
             clock += Time.deltaTime;
 
             yield return null;
         }
 
-        OnMoveToFinished?.Invoke();
 
     }
 

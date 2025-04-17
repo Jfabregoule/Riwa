@@ -63,8 +63,6 @@ public class PawnCheckStateInteract<TStateEnum> : PawnInteractBaseSubstate<TStat
     public override void UpdateState()
     {
         base.UpdateState();
-
-        CheckChangeState();
     }
 
     public override void CheckChangeState()

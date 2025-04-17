@@ -1,7 +1,7 @@
 public class HoldingStateMachine : BaseStateMachine<EnumHolding, HoldingBaseState>
 {
     private const string IDLEHOLDING_NAME = "IdleHolding";
-    private const string MOVE_NAME = "Move";
+    private const string MOVE_NAME = "MoveHolding";
     private const string ROTATE_NAME = "Rotate";
 
     public HoldingStateMachine()

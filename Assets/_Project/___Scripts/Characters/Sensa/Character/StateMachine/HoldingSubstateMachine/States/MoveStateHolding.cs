@@ -34,6 +34,7 @@ public class MoveStateHolding : HoldingBaseState
     public override void ExitState()
     {
         base.ExitState();
+
         _movable.OnMoveFinished -= CanGoToIdle;
         _movable.OnReplacePlayer -= ReplacePlayer;
     }

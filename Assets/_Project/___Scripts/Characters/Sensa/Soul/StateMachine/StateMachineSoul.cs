@@ -19,7 +19,7 @@ public class StateMachineSoul : StateMachinePawn<EnumStateSoul, BaseStatePawn<En
 
     public void InitStateMachine(ASoul Soul)
     {
-        base.InitStateMachine();
+        base.InitStateMachine(Soul);
 
         States[EnumStateSoul.Idle] = new IdleStateSoul();
         States[EnumStateSoul.Idle].InitState(this, EnumStateSoul.Idle, Soul);

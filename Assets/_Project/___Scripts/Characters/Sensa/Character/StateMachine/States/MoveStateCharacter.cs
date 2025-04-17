@@ -18,6 +18,7 @@ public class MoveStateCharacter : ParentMoveState<EnumStateCharacter>
     public override void ExitState()
     {
         base.ExitState();
+        
     }
 
     public override void UpdateState()

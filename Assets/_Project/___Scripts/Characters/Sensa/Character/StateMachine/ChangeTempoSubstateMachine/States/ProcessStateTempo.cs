@@ -19,6 +19,20 @@ public class ProcessStateTempo : ChangeTempoBaseState
         _character.ChangeTime.StartTimeChange();
         _character.ChangeTime.OnTimeChangeEnd += TimeChangeEnded;
 
+        _character.IsInPast = !_character.IsInPast;
+        _character.Soul.GetComponent<ASoul>().IsInPast = _character.IsInPast;
+
+        if (!_character.IsInPast)
+        {
+            Physics.IgnoreLayerCollision(_character.gameObject.layer, Mathf.Clamp(Mathf.RoundToInt(Mathf.Log(_character.PastLayer.value, 2)), 0, 31), true);
+            Physics.IgnoreLayerCollision(_character.gameObject.layer, Mathf.Clamp(Mathf.RoundToInt(Mathf.Log(_character.PresentLayer.value, 2)), 0, 31), false);
+        }
+        else
+        {
+            Physics.IgnoreLayerCollision(_character.gameObject.layer, Mathf.Clamp(Mathf.RoundToInt(Mathf.Log(_character.PresentLayer.value, 2)), 0, 31), true);
+            Physics.IgnoreLayerCollision(_character.gameObject.layer, Mathf.Clamp(Mathf.RoundToInt(Mathf.Log(_character.PastLayer.value, 2)), 0, 31), false);
+        }
+
     }
 
     public override void ExitState()
@@ -50,18 +64,6 @@ public class ProcessStateTempo : ChangeTempoBaseState
         _changedTime = true;
         _character.CanChangeTime = true;
 
-        if (!isPast)
-        {
-            Physics.IgnoreLayerCollision(_character.gameObject.layer, Mathf.Clamp(Mathf.RoundToInt(Mathf.Log(_character.PastLayer.value, 2)), 0, 31), true);
-            Physics.IgnoreLayerCollision(_character.gameObject.layer, Mathf.Clamp(Mathf.RoundToInt(Mathf.Log(_character.PresentLayer.value, 2)), 0, 31), false);
-        }
-        else
-        {
-            Physics.IgnoreLayerCollision(_character.gameObject.layer, Mathf.Clamp(Mathf.RoundToInt(Mathf.Log(_character.PresentLayer.value, 2)), 0, 31), true);
-            Physics.IgnoreLayerCollision(_character.gameObject.layer, Mathf.Clamp(Mathf.RoundToInt(Mathf.Log(_character.PastLayer.value, 2)), 0, 31), false);
-        }
-
-        _character.IsInPast = !_character.IsInPast;
-        _character.Soul.GetComponent<ASoul>().IsInPast = _character.IsInPast;
+        
     }
 }

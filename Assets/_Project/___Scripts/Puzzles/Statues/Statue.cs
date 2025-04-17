@@ -110,7 +110,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
             transform.localRotation = Quaternion.Slerp(initialRotation, desiredRotation, t);
             yield return null;
         }
-        _content.rotation = (int)transform.localRotation.eulerAngles.y;
+        _content.rotation = Mathf.RoundToInt(transform.localRotation.eulerAngles.y / 45f) * 45 % 360; ;
         transform.localRotation = desiredRotation;
         if (_showDebugLog == true) Debug.Log("Rotation: " + transform.localRotation.eulerAngles + " | Current content rot: " + _content.rotation);
         _isMoving = false;

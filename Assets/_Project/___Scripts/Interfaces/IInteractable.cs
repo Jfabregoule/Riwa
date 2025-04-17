@@ -1,6 +1,6 @@
 public interface IInteractable
 {
-    void Interactable();
+    void Interact();
 
     public float OffsetRadius { get; set; }
 

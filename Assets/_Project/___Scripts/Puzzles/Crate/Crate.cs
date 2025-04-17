@@ -37,7 +37,7 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
         OffsetRadius = _boxSize.x / 2 + GameManager.Instance.Character.GetComponent<CapsuleCollider>().radius + securityRadius;
     }
 
-    public void Interactable()
+    public void Interact()
     {
     }
 

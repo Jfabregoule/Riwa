@@ -9,7 +9,7 @@ public class TreeStumpTest : MonoBehaviour, ITreeStump, IInteractable
         OffsetRadius = 0;
     }
 
-    public void Interactable()
+    public void Interact()
     {
         Debug.Log("Je passe en ame, TreeSumpTest.cs");
     }

@@ -65,7 +65,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
         throw new System.NotImplementedException();
     }
 
-    public void Interactable()
+    public void Interact()
     {
         throw new System.NotImplementedException();
     }

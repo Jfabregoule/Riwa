@@ -18,7 +18,7 @@ public class Mirror : MonoBehaviour, IRotatable
         throw new System.NotImplementedException();
     }
 
-    public void Interactable()
+    public void Interact()
     {
         throw new System.NotImplementedException();
     }

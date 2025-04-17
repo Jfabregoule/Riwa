@@ -86,7 +86,6 @@ public class Damier : MonoBehaviour
                 Vector3 rotatedPos = rotation * localPos;
                 cell.transform.position = transform.position + rotatedPos;
                 cell.transform.localScale = new Vector3(_cellSize, 1f, _cellSize);
-                //cell.GetComponent<Renderer>().material = (x + y) % 2 == 0 ? _blue : _white;
                 cell.transform.parent = transform;
                 cell.name = $"Cell {x} {y}";
                 BoxCollider collider = cell.AddComponent<BoxCollider>();
@@ -238,10 +237,7 @@ public class Damier : MonoBehaviour
             }
 
             if (possibleMoves.Count == 0)
-            {
-                Debug.LogWarning("No more possible moves from: " + current.x + ", " + current.y);
                 break;
-            }
 
             int moveIndex = random.Next(0, possibleMoves.Count);
             CellPos nextMove = possibleMoves[moveIndex];
@@ -264,23 +260,7 @@ public class Damier : MonoBehaviour
             if (rightCounter == 2) rightCounter = 0;
         }
 
-
         path.Add(end);
-
-        //foreach (Transform cell in transform)
-        //{
-        //    Cell cellScript = cell.GetComponent<Cell>();
-        //    if (cellScript == null) continue;
-
-        //    CellPos pos = cellScript.Position;
-
-        //    if (_damier.TryGetValue(pos, out DamierDatas datas))
-        //    {
-        //        Renderer rend = datas.cell.GetComponent<Renderer>();
-        //        if (rend != null && datas.cellState == CellState.NotBreakable)
-        //            rend.material = _green;
-        //    }
-        //}
 
         RiwaFollowPath();
 
@@ -288,13 +268,18 @@ public class Damier : MonoBehaviour
 
     private void RiwaFollowPath()
     {
-        StartCoroutine(FollowPathCoroutine());
+        StartCoroutine(FollowPathCoroutine(true));
     }
 
-    private IEnumerator FollowPathCoroutine()
+    private IEnumerator FollowPathCoroutine(bool dragCamera)
     {
         GameManager.Instance.Character.InputManager.DisableGameplayControls();
-        _instance.DamierCamera.Priority = 20;
+
+        if (dragCamera)
+        {
+            _instance.DamierCamera.Priority = 20;
+            yield return new WaitForSeconds(2.5f);
+        }
 
         if (path.Count < 2)
             yield break;
@@ -306,8 +291,8 @@ public class Damier : MonoBehaviour
             startPosRiwa.y = _riwa.transform.position.y + 0.5f;
         }
 
-        _riwa = Instantiate(_riwa, startPosRiwa, Quaternion.identity);
-        _riwa.transform.localScale = new Vector3(2f, 2f, 2f);
+        GameObject riwa = Instantiate(_riwa, startPosRiwa, Quaternion.identity);
+        riwa.transform.localScale = new Vector3(2f, 2f, 2f);
 
         List<Vector3> worldPoints = new List<Vector3>();
         foreach (var cell in path)
@@ -315,14 +300,14 @@ public class Damier : MonoBehaviour
             if (_damier.TryGetValue(cell, out DamierDatas data))
             {
                 Vector3 pos = data.cell.transform.position;
-                pos.y = _riwa.transform.position.y;
+                pos.y = riwa.transform.position.y;
                 worldPoints.Add(pos);
             }
         }
 
-        _riwa.transform.position = worldPoints[0];
+        riwa.transform.position = worldPoints[0];
         Vector3 initialDir = (worldPoints[1] - worldPoints[0]).normalized;
-        _riwa.transform.rotation = Quaternion.LookRotation(new Vector3(initialDir.x, 0, initialDir.z));
+        riwa.transform.rotation = Quaternion.LookRotation(new Vector3(initialDir.x, 0, initialDir.z));
 
         for (int i = 0; i < worldPoints.Count - 1; i++)
         {
@@ -339,18 +324,18 @@ public class Damier : MonoBehaviour
                 float t = Mathf.Clamp01(elapsedTime / _lerpTime);
 
                 Vector3 pos = InterpolationHermite(p0, p1, p2, p3, t);
-                _riwa.transform.position = pos;
+                riwa.transform.position = pos;
 
                 Vector3 dir = (InterpolationHermite(p0, p1, p2, p3, t + 0.05f) - pos).normalized;
                 if (dir.sqrMagnitude > 0.001f)
-                    _riwa.transform.rotation = Quaternion.LookRotation(new Vector3(dir.x, 0, dir.z));
+                    riwa.transform.rotation = Quaternion.LookRotation(new Vector3(dir.x, 0, dir.z));
 
                 yield return null;
             }
         }
 
-        _riwa.transform.position = worldPoints[worldPoints.Count - 1];
-        Destroy(_riwa);
+        riwa.transform.position = worldPoints[worldPoints.Count - 1];
+        Destroy(riwa);
         _instance.DamierCamera.Priority = 0;
         GameManager.Instance.Character.InputManager.EnableGameplayControls();
     }
@@ -401,6 +386,7 @@ public class Damier : MonoBehaviour
 
     public void RespawnBrokenTile()
     {
+        StartCoroutine(FollowPathCoroutine(false));
         foreach (var cell in _instance.BrokenCells)
         {
             if (_damier[cell.Position].cellState == CellState.Broken)

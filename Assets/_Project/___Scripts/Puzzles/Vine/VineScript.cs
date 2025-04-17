@@ -9,8 +9,6 @@ public class VineScript : MonoBehaviour, IInteractableSoul
     [SerializeField] private float _waitBeforeFall;
     [SerializeField] private float _growingSpeed = 1;
     [SerializeField] private float _retractedSpeed = 2;
-    [SerializeField] private float _frictionSpeed;
-    public float FrictionSpeed { get { return _frictionSpeed; } set { _frictionSpeed = value; } }
 
     public Transform SocketPoint { get; private set; }
 

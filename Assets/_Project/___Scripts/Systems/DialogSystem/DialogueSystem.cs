@@ -34,7 +34,7 @@ public class DialogueSystem : Singleton<DialogueSystem>
     {
         ProcessingDialogue = null;
 
-        BeginDialogue(_test);
+        //BeginDialogue(_test);
 
         _beginSequencer.Init();
         _transiUISequencer.Init();

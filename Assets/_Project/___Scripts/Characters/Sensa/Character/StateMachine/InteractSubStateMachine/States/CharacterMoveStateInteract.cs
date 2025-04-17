@@ -20,7 +20,6 @@ public class CharacterMoveStateInteract : PawnMoveStateInteract<EnumStateCharact
     public override void UpdateState()
     {
         base.UpdateState();
-        Debug.Log("Ouiiiiii");
     }
 
     public override void CheckChangeState()

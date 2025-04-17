@@ -34,7 +34,7 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
         _boxSize = GetComponent<BoxCollider>().size;
         _floorOffset = -Vector3.up * (_boxSize.y * 0.5f) - (-Vector3.up * security);
 
-        OffsetRadius = _boxSize.x / 2 + GameManager.Instance.Character.GetComponent<CapsuleCollider>().radius + securityRadius;
+        OffsetRadius = _boxSize.x / 2 + _character.GetComponent<CapsuleCollider>().radius * _character.transform.localScale.x * 1.8f + securityRadius; //J'agrandit loffset pour que l'anime de coup de boule rentre pas dans la crate
     }
 
     public void Interactable()
@@ -64,7 +64,7 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
 
         Debug.Log(multiplicator);
 
-        foreach(var col in colliders)
+        foreach (var col in colliders)
         {
             if (col.gameObject != gameObject
              && !col.gameObject.TryGetComponent<ACharacter>(out ACharacter chara)) //ICI METTRE LES OBJECTS QU'ON VEUT EVITER
@@ -118,9 +118,9 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
         }
         transform.position = destination;
 
-        Vector3 playerTargetPosition = destination + (direction.normalized * OffsetRadius);
+        //Vector3 playerTargetPosition = destination + (direction.normalized * OffsetRadius * transform.localScale.x);
 
-        OnReplacePlayer?.Invoke(direction.normalized * OffsetRadius);
+        OnReplacePlayer?.Invoke(direction.normalized * OffsetRadius * transform.localScale.x);
         OnMoveFinished?.Invoke();
 
         _isMoving = false;

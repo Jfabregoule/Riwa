@@ -15,7 +15,7 @@ public class PawnMoveStateInteract<TStateEnum> : PawnInteractBaseSubstate<TState
     {
         base.EnterState();
 
-        float radiusOffset = _subStateMachine.CurrentObjectInteract.GetComponent<IInteractable>().OffsetRadius;
+        float radiusOffset = _subStateMachine.CurrentObjectInteract.GetComponent<IInteractable>().OffsetRadius * _subStateMachine.CurrentObjectInteract.transform.localScale.x;
 
         if (radiusOffset < 0)
         {

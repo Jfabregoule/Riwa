@@ -10,7 +10,6 @@ public class IdleHoldingStateHolding : HoldingBaseState
     public override void EnterState()
     {
         base.EnterState();
-
     }
 
     public override void ExitState()
@@ -21,6 +20,7 @@ public class IdleHoldingStateHolding : HoldingBaseState
     public override void UpdateState()
     {
         base.UpdateState();
+        
     }
 
     public override void CheckChangeState()

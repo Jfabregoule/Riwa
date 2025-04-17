@@ -24,6 +24,7 @@ public class HoldingStateCharacter : BaseStateCharacter<EnumStateCharacter>
     {
         base.EnterState();
 
+        _subStateMachine.ChangeState(_subStateMachine.States[EnumHolding.IdleHolding]);
         _character.InputManager.OnInteractEnd += OnInteractEnd;
     }
 

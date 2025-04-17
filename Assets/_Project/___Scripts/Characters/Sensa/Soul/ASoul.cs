@@ -14,7 +14,6 @@ public class ASoul : APawn<EnumStateSoul>
     //Field
 
     private GameObject _soulPawn;
-    private Animator _animator;
     private GameObject _character;
 
     private VariableJoystick _joystick; //TEMPORAIRE EN ATTENDANT L'INPUT SYSTEM
@@ -43,7 +42,6 @@ public class ASoul : APawn<EnumStateSoul>
     //Properties
 
     public GameObject SoulPawn { get => _soulPawn;}
-    public Animator Animator { get => _animator;}
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
     public bool CanInteractSoul { get => _canInteractSoul; set => _canInteractSoul = value; }
     public float JoystickRunTreshold { get => _joystickRunTreshold; set => _joystickRunTreshold = value; }

@@ -27,7 +27,7 @@ public class StateMachineCharacter : StateMachinePawn<EnumStateCharacter, BaseSt
 
     public void InitStateMachine(ACharacter character)
     {
-        base.InitStateMachine();
+        base.InitStateMachine(character);
 
         States[EnumStateCharacter.Idle] = new IdleStateCharacter();
         States[EnumStateCharacter.Idle].InitState(this, EnumStateCharacter.Idle, character);

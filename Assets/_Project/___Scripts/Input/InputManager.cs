@@ -9,6 +9,8 @@ public class InputManager : Singleton<InputManager>
     private bool _gameplayEnabled;
     private bool _dialogueEnabled;
 
+    private bool _toggleJoystick = true;
+
     #region Events
 
     public delegate void PressEvent();
@@ -53,6 +55,7 @@ public class InputManager : Singleton<InputManager>
     {
         if (_gameplayEnabled) return;
         _gameplayEnabled = true;
+        _toggleJoystick = true;
         BindGameplayEvents();
 
         _controls.Gameplay.Enable();
@@ -62,6 +65,7 @@ public class InputManager : Singleton<InputManager>
     {
         if (!_gameplayEnabled) return;
         _gameplayEnabled = false;
+        _toggleJoystick = false;    
         UnbindGameplayEvents();
 
         _controls.Gameplay.Disable();
@@ -91,6 +95,7 @@ public class InputManager : Singleton<InputManager>
 
     public Vector2 GetMoveDirection()
     {
+        if (!_toggleJoystick) { return Vector2.zero; }
         return _joystick != null ? _joystick.Direction : Vector2.zero;
     }
 
@@ -137,6 +142,9 @@ public class InputManager : Singleton<InputManager>
     private void InteractPerfomed() => OnInteract?.Invoke();
     private void InteractCanceled() => OnInteractEnd?.Invoke();
     private void AdvanceDialoguePerfomed() => OnAdvanceDialogue?.Invoke();
+
+    public void InteractTrue() => OnInteract?.Invoke();
+    public void InteractFalse() => OnInteractEnd?.Invoke();
 
     #endregion
 

@@ -1,11 +1,17 @@
 using System;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class ParentMoveState<TStateEnum> : BaseStatePawn<TStateEnum>
     where TStateEnum : Enum
 {
     protected CameraHandler _cam;
     protected Vector3 _moveDirection;
+
+    protected Vector3 _lastDirection;
+    protected Vector3 _startDirection;
+    protected Vector3 _targetDirection;
+    protected float _animClock = 0;
 
     public override void InitState(StateMachinePawn<TStateEnum, BaseStatePawn<TStateEnum>> stateMachine, TStateEnum enumValue, APawn<TStateEnum> character)
     {
@@ -19,6 +25,10 @@ public class ParentMoveState<TStateEnum> : BaseStatePawn<TStateEnum>
         _character.InputManager.OnInteract += OnInteract;
 
         _cam = GameManager.Instance.CameraHandler;
+
+        _lastDirection = _character.transform.localEulerAngles;
+        _targetDirection = _character.transform.localEulerAngles;
+        _startDirection = _character.transform.localEulerAngles;
     }
 
     public override void ExitState()
@@ -44,6 +54,27 @@ public class ParentMoveState<TStateEnum> : BaseStatePawn<TStateEnum>
         camRight.Normalize();
         _moveDirection = (camForward * direction.y + camRight * direction.x);
 
+        if (_lastDirection != _moveDirection && _moveDirection != Vector3.zero)
+        {
+            _startDirection = _lastDirection;
+            _lastDirection = _moveDirection;
+            _targetDirection = _moveDirection;
+            _animClock = 0;
+
+        }
+
+        _animClock += Time.deltaTime * 20;
+        //_character.transform.forward = Vector3.Lerp(_startDirection, _targetDirection, _animClock);
+
+        Quaternion targetRotation = Quaternion.LookRotation(_targetDirection);
+        _character.transform.rotation = Quaternion.Slerp(
+            _character.transform.rotation,
+            targetRotation,
+            _animClock
+        );
+
+        //if (_moveDirection != Vector3.zero)
+        //    _character.transform.forward = _moveDirection;
 
         _character.Animator.SetFloat("MagnitudeVel", Vector3.Magnitude(_moveDirection));
         _character.Animator.SetFloat("Xvel", _moveDirection.x);
@@ -57,10 +88,6 @@ public class ParentMoveState<TStateEnum> : BaseStatePawn<TStateEnum>
 
         _character.Rb.velocity = _moveDirection * _character.Speed + Vector3.Scale(_character.Rb.velocity, Vector3.up);
 
-        if (_moveDirection != Vector3.zero)
-        {
-            _character.transform.forward = _moveDirection;
-        }
     }
 
     public override void CheckChangeState()

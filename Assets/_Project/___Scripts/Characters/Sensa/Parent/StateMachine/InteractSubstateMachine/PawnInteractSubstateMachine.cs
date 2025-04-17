@@ -6,8 +6,8 @@ public abstract class PawnInteractSubstateMachine<TStateEnum> : BaseStateMachine
 {
     protected const string STANDBY_NAME = "StandBy";
     protected const string CHECK_NAME = "Check";
-    protected const string ACTION_NAME = "Action";
-    protected const string MOVE_NAME = "Move";
+    protected const string ACTION_NAME = "ActionInteract";
+    protected const string MOVE_NAME = "MoveInteract";
 
     protected GameObject _currentObjectInteract;
 

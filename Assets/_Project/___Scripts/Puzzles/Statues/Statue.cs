@@ -34,7 +34,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
 
     public void Start()
     {
-        OffsetRadius = 0.5f;
+        OffsetRadius = 0.8f;
         MoveSpeed = 2f;
         MoveDistance = _unitGridSize;
     }

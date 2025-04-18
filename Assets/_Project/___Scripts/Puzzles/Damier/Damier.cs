@@ -273,10 +273,9 @@ public class Damier : MonoBehaviour
 
     private IEnumerator FollowPathCoroutine(bool dragCamera)
     {
-        GameManager.Instance.Character.InputManager.DisableGameplayControls();
-
         if (dragCamera)
         {
+            GameManager.Instance.Character.InputManager.DisableGameplayControls();
             _instance.DamierCamera.Priority = 20;
             yield return new WaitForSeconds(2.5f);
         }

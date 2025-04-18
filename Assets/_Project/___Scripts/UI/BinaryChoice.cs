@@ -16,8 +16,8 @@ public class BinaryChoice : MonoBehaviour
     [SerializeField] private Color _selectedColor;
     [SerializeField] private Color _defaultColor;
 
-    public delegate void ValueChange(bool value);
-    public ValueChange OnValueChange;
+    public delegate void ValueChangeEvent(bool value);
+    public ValueChangeEvent OnValueChange;
 
     public bool Value {  get; private set; }
 

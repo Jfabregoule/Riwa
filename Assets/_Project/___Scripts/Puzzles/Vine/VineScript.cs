@@ -14,13 +14,14 @@ public class VineScript : MonoBehaviour, IInteractableSoul
 
     public float OffsetRadius { get => -1; set => throw new NotImplementedException(); }
 
+    public bool IsActive { get; private set; }
+
     [SerializeField, Range(0, 1)]
     private float _minGrow = 0.2f;
     [SerializeField, Range(0, 1)]
     private float _maxGrow = 0.97f;
 
     private Material _material;
-    //private List<Material> _materials = new List<Material>();
     [Header("Capsule Collider")]
     [SerializeField] private float _maxColliderHeight;
     private CapsuleCollider _capsuleCollider;
@@ -28,26 +29,22 @@ public class VineScript : MonoBehaviour, IInteractableSoul
     private float _height;
     private float _offset;
     private Vector3 _startSocketPos;
+
     void Start()
     {
         SocketPoint = null;
+        IsActive = false;
         _capsuleCollider = GetComponent<CapsuleCollider>();
         _minColliderHeight = _capsuleCollider.height;
         _startSocketPos = transform.TransformPoint(_capsuleCollider.center);
         _material = GetComponent<MeshRenderer>().material;
-        //for (int i = 0; i < _renderers.Count; i++) 
-        //{
-        //    for (int j = 0; j < _renderers[i].materials.Length; j++)
-        //    {
-        //        if (_renderers[i].materials[j].HasProperty("_Grow"))
-        //        {
-        //            _renderers[i].materials[j].SetFloat("_Grow",_minGrow);
-        //            _materials.Add(_renderers[i].materials[j]);
-        //        }
-        //    }
-        //}
+        GameManager.Instance.Character.OnRespawn += RetractedAllVines;
     }
 
+    private void OnDisable()
+    {
+        GameManager.Instance.Character.OnRespawn -= RetractedAllVines;
+    }
     private IEnumerator RaiseVine()
     {
         float growValue = _material.GetFloat("_Grow");
@@ -104,6 +101,7 @@ public class VineScript : MonoBehaviour, IInteractableSoul
         //SocketPoint.GetChild(0).GetComponent<Rigidbody>()
 
         StartCoroutine(RetractedVine());
+        IsActive = false;
 
     }
     private IEnumerator DissolveVine()
@@ -148,6 +146,16 @@ public class VineScript : MonoBehaviour, IInteractableSoul
 
     public void InteractableSoul()
     {
+        IsActive = true;
         StartCoroutine(RaiseVine());
+    }
+
+    private void RetractedAllVines()
+    {
+        if (IsActive)
+        {
+            StopAllCoroutines();
+            StartCoroutine(RetractedVine());
+        }
     }
 }

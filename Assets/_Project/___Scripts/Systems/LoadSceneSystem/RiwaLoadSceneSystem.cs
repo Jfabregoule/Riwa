@@ -3,10 +3,10 @@ public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
     private int _currentFloorNum = 1;
     private int _currentRoomNum = 1;
 
-    private void Start()
-    {
-        EnqueueScenes(new[] { new SceneData("HUD"), new SceneData("Floor1Room1") }, false);
-    }
+    //private void Start()
+    //{
+    //    EnqueueScenes(new[] { new SceneData("HUD"), new SceneData("Floor1Room1") }, false);
+    //}
 
     /// <summary>
     /// Charge une nouvelle scène de salle tout en déchargeant la salle actuelle.

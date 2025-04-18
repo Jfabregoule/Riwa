@@ -28,7 +28,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             ""id"": ""91780517-5c09-40dc-bbdc-ad7419d51666"",
             ""actions"": [
                 {
-                    ""name"": ""Interact"",
+                    ""name"": ""Touch"",
                     ""type"": ""Button"",
                     ""id"": ""26621da2-3b71-4ea0-b5e7-e44cbd207a03"",
                     ""expectedControlType"": ""Button"",
@@ -62,31 +62,18 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""1104b7f8-c24c-4b00-814f-9593886451ce"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""7f52666e-a7b0-48ad-94ac-b76f4636a919"",
-                    ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Interact"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""aa8c34e6-f642-48d1-9010-7a8fd06533ee"",
-                    ""path"": ""<Touchscreen>/touch0/press"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Interact"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
                 {
                     ""name"": """",
                     ""id"": ""fb9d22d9-191c-4b3f-a589-e558fcfe8aa2"",
@@ -117,6 +104,28 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Options"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""aa8c34e6-f642-48d1-9010-7a8fd06533ee"",
+                    ""path"": ""<Touchscreen>/touch0/press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Touch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""47aba340-d6df-4e29-8ee0-ad660725a126"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -155,10 +164,11 @@ public partial class @Controls: IInputActionCollection2, IDisposable
 }");
         // Gameplay
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
-        m_Gameplay_Interact = m_Gameplay.FindAction("Interact", throwIfNotFound: true);
+        m_Gameplay_Touch = m_Gameplay.FindAction("Touch", throwIfNotFound: true);
         m_Gameplay_PressPosition = m_Gameplay.FindAction("PressPosition", throwIfNotFound: true);
         m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
         m_Gameplay_Options = m_Gameplay.FindAction("Options", throwIfNotFound: true);
+        m_Gameplay_Interact = m_Gameplay.FindAction("Interact", throwIfNotFound: true);
         // Dialogue
         m_Dialogue = asset.FindActionMap("Dialogue", throwIfNotFound: true);
         m_Dialogue_Advance = m_Dialogue.FindAction("Advance", throwIfNotFound: true);
@@ -223,18 +233,20 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     // Gameplay
     private readonly InputActionMap m_Gameplay;
     private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
-    private readonly InputAction m_Gameplay_Interact;
+    private readonly InputAction m_Gameplay_Touch;
     private readonly InputAction m_Gameplay_PressPosition;
     private readonly InputAction m_Gameplay_Move;
     private readonly InputAction m_Gameplay_Options;
+    private readonly InputAction m_Gameplay_Interact;
     public struct GameplayActions
     {
         private @Controls m_Wrapper;
         public GameplayActions(@Controls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Interact => m_Wrapper.m_Gameplay_Interact;
+        public InputAction @Touch => m_Wrapper.m_Gameplay_Touch;
         public InputAction @PressPosition => m_Wrapper.m_Gameplay_PressPosition;
         public InputAction @Move => m_Wrapper.m_Gameplay_Move;
         public InputAction @Options => m_Wrapper.m_Gameplay_Options;
+        public InputAction @Interact => m_Wrapper.m_Gameplay_Interact;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -244,9 +256,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_GameplayActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_GameplayActionsCallbackInterfaces.Add(instance);
-            @Interact.started += instance.OnInteract;
-            @Interact.performed += instance.OnInteract;
-            @Interact.canceled += instance.OnInteract;
+            @Touch.started += instance.OnTouch;
+            @Touch.performed += instance.OnTouch;
+            @Touch.canceled += instance.OnTouch;
             @PressPosition.started += instance.OnPressPosition;
             @PressPosition.performed += instance.OnPressPosition;
             @PressPosition.canceled += instance.OnPressPosition;
@@ -256,13 +268,16 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Options.started += instance.OnOptions;
             @Options.performed += instance.OnOptions;
             @Options.canceled += instance.OnOptions;
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
         {
-            @Interact.started -= instance.OnInteract;
-            @Interact.performed -= instance.OnInteract;
-            @Interact.canceled -= instance.OnInteract;
+            @Touch.started -= instance.OnTouch;
+            @Touch.performed -= instance.OnTouch;
+            @Touch.canceled -= instance.OnTouch;
             @PressPosition.started -= instance.OnPressPosition;
             @PressPosition.performed -= instance.OnPressPosition;
             @PressPosition.canceled -= instance.OnPressPosition;
@@ -272,6 +287,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Options.started -= instance.OnOptions;
             @Options.performed -= instance.OnOptions;
             @Options.canceled -= instance.OnOptions;
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -337,10 +355,11 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     public DialogueActions @Dialogue => new DialogueActions(this);
     public interface IGameplayActions
     {
-        void OnInteract(InputAction.CallbackContext context);
+        void OnTouch(InputAction.CallbackContext context);
         void OnPressPosition(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
         void OnOptions(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
     }
     public interface IDialogueActions
     {

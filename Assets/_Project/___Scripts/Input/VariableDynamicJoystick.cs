@@ -10,11 +10,6 @@ public class VariableDynamicJoystick : MonoBehaviour
     void OnEnable()
     {
         StartCoroutine(Helpers.WaitMonoBeheviour(() => InputManager.Instance, SubscribeToInputManager));
-
-        _canvasGroup = GetComponentInChildren<CanvasGroup>();
-        RectTransform[] rects = _canvasGroup.GetComponentsInChildren<RectTransform>();
-        _background = rects[0];
-        _handle = rects[1];
     }
 
     void OnDisable()
@@ -24,6 +19,14 @@ public class VariableDynamicJoystick : MonoBehaviour
             _inputManager.OnInteract -= OnTouchStarted;
             _inputManager.OnInteractEnd -= OnTouchEnded;
         }
+    }
+
+    private void Start()
+    {
+        _canvasGroup = GetComponentInChildren<CanvasGroup>();
+        RectTransform[] rects = _canvasGroup.GetComponentsInChildren<RectTransform>();
+        _background = rects[0];
+        _handle = rects[1];
     }
 
     private void OnTouchStarted()
@@ -44,8 +47,8 @@ public class VariableDynamicJoystick : MonoBehaviour
         if (script != null)
         {
             _inputManager = script;
-            script.OnInteract += OnTouchStarted;
-            script.OnInteractEnd += OnTouchEnded;
+            script.OnMove += OnTouchStarted;
+            script.OnMoveEnd += OnTouchEnded;
             Debug.Log("Script is ready!");
         }
         else

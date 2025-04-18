@@ -107,10 +107,10 @@ public class LoadSceneSystem<T> : Singleton<T> where T : LoadSceneSystem<T>
     /// </summary>
     /// <param name="scenesToUnload">Les scènes à décharger</param>
     /// <param name="scenesToLoad">Les scènes à charger</param>
-    public void ChangeScene(IEnumerable<SceneData> scenesToUnload, IEnumerable<SceneData> scenesToLoad)
+    public IEnumerator ChangeScene(IEnumerable<SceneData> scenesToUnload, IEnumerable<SceneData> scenesToLoad)
     {
         // Démarrer l'écran de chargement
-        StartCoroutine(ChangeSceneCoroutine(scenesToUnload, scenesToLoad));
+        yield return StartCoroutine(ChangeSceneCoroutine(scenesToUnload, scenesToLoad));
     }
 
     #endregion

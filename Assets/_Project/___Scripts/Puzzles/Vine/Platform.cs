@@ -62,7 +62,7 @@ public class Platform : MonoBehaviour, IRespawnable
                 _rb.constraints &= ~RigidbodyConstraints.FreezePositionY;
                 _rb.useGravity = true;
                 _rb.isKinematic = false;
-
+                Debug.Log(other.name);
                 if (_triggerVines.Count > 0)
                 {
                     _currentVine = _triggerVines[_triggerVines.Count - 1];

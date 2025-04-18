@@ -1,8 +1,11 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InputManager : Singleton<InputManager>
 {
     private Controls _controls;
+
+    private bool[] _touchMove;
 
     private bool _gameplayEnabled;
     private bool _dialogueEnabled;
@@ -12,6 +15,9 @@ public class InputManager : Singleton<InputManager>
     public delegate void PressEvent();
     public event PressEvent OnInteract;
     public event PressEvent OnInteractEnd;
+    public event PressEvent OnMove;
+    public event PressEvent OnMoveEnd;
+    public event PressEvent OnOpenOptions;
     public event PressEvent OnAdvanceDialogue;
 
     #endregion
@@ -20,6 +26,8 @@ public class InputManager : Singleton<InputManager>
     {
         base.Awake();
         _controls = new Controls();
+
+        _touchMove = new bool[2] { false, false };
 
         _gameplayEnabled = true;
         _dialogueEnabled = false;
@@ -112,13 +120,31 @@ public class InputManager : Singleton<InputManager>
     #region Bind / Unbind Methods
     private void BindGameplayEvents()
     {
-        _controls.Gameplay.Interact.performed += ctx => PressPerfomed();
+        _controls.Gameplay.Touch.performed += ctx => TouchPerfomed();
+        _controls.Gameplay.Touch.canceled += ctx => TouchCanceled();
+
+        //_controls.Gameplay.SecondTouch.performed += ctx => TouchPerfomed(1);
+        //_controls.Gameplay.SecondTouch.canceled += ctx => TouchCanceled(1);
+
+        _controls.Gameplay.Options.performed += ctx => OptionsPerfomed();
+
+        //Pour PC
+        _controls.Gameplay.Interact.performed += ctx => InteractPerfomed();
         _controls.Gameplay.Interact.canceled += ctx => InteractCanceled();
     }
 
     private void UnbindGameplayEvents()
     {
-        _controls.Gameplay.Interact.performed -= ctx => PressPerfomed();
+        _controls.Gameplay.Touch.performed -= ctx => TouchPerfomed();
+        _controls.Gameplay.Touch.canceled -= ctx => TouchCanceled();
+
+        //_controls.Gameplay.SecondTouch.performed -= ctx => TouchPerfomed();
+        //_controls.Gameplay.SecondTouch.canceled -= ctx => TouchCanceled();
+
+        _controls.Gameplay.Options.performed -= ctx => OptionsPerfomed();
+
+        //Pour PC
+        _controls.Gameplay.Interact.performed -= ctx => InteractPerfomed();
         _controls.Gameplay.Interact.canceled -= ctx => InteractCanceled();
     }
 
@@ -135,19 +161,62 @@ public class InputManager : Singleton<InputManager>
 
     #region Events Methods
 
-    private void PressPerfomed() {
-        //if (GetPressPosition().x > Screen.width / 2)
-        //{
-        //    OnInteract?.Invoke();
-        //}
-        OnInteract?.Invoke();
+    private void TouchPerfomed() 
+    {
+        var touches = Touchscreen.current.touches;
+
+        for (int i = 0; i < touches.Count; i++)
+        {
+            if (i > 2) return;
+            var touch = touches[i];
+            if (touch.press.isPressed)
+            {
+                Vector2 pos = touch.position.ReadValue();
+                if (pos.x > Screen.width / 2)
+                {
+                    _touchMove[i] = false;
+                    OnInteract?.Invoke();
+                }
+                else
+                {
+                    _touchMove[i] = true;
+                    OnMove?.Invoke();
+                }
+            }
+        }
+        
     }
+
+    private void TouchCanceled()
+    {
+        var touches = Touchscreen.current.touches;
+
+        for (int i = 0; i < touches.Count; i++)
+        {
+            if (i > 2) return;
+            var touch = touches[i];
+            if (!touch.press.isPressed)
+            {
+                if (!_touchMove[i])
+                {
+                    OnInteractEnd?.Invoke();
+                }
+                else
+                {
+                    OnMoveEnd?.Invoke();
+                }
+            }
+        }
+    }
+
     private void InteractPerfomed() => OnInteract?.Invoke();
     private void InteractCanceled() => OnInteractEnd?.Invoke();
     private void AdvanceDialoguePerfomed() => OnAdvanceDialogue?.Invoke();
 
     public void InteractTrue() => OnInteract?.Invoke();
     public void InteractFalse() => OnInteractEnd?.Invoke();
+
+    public void OptionsPerfomed() => OnOpenOptions?.Invoke();
 
     #endregion
 }

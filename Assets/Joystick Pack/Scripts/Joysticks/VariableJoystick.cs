@@ -31,7 +31,7 @@ public class VariableJoystick : Joystick
         fixedPosition = background.anchoredPosition;
         SetMode(joystickType);
 
-        StartCoroutine(RegisterWithInputManager());
+        //StartCoroutine(RegisterWithInputManager());
     }
 
     public override void OnPointerDown(PointerEventData eventData)
@@ -62,13 +62,13 @@ public class VariableJoystick : Joystick
         base.HandleInput(magnitude, normalised, radius, cam);
     }
 
-    private IEnumerator RegisterWithInputManager()
-    {
-        while (InputManager.Instance == null)
-            yield return null;
+    //private IEnumerator RegisterWithInputManager()
+    //{
+    //    while (InputManager.Instance == null)
+    //        yield return null;
 
-        InputManager.Instance.RegisterJoystick(this);
-    }
+    //    InputManager.Instance.RegisterJoystick(this);
+    //}
 }
 
 public enum JoystickType { Fixed, Floating, Dynamic }

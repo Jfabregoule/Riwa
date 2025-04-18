@@ -66,6 +66,12 @@ public class Damier : MonoBehaviour
     private void Start()
     {
         _instance = (Floor1Room3LevelManager)Floor1Room3LevelManager.Instance;
+        StartCoroutine(WaitToGeneratePath());
+    }
+
+    private IEnumerator WaitToGeneratePath()
+    {
+        yield return new WaitForSeconds(2.5f);
         GeneratePath();
     }
 

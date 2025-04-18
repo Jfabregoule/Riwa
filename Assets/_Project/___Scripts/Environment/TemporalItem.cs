@@ -27,7 +27,8 @@ public class TemporalItem : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(HasSignificantChange())
+
+        if(HasSignificantChange() && GameManager.Instance.Character.IsInPast)
         {
             transform.position = pastItem.transform.position;
             transform.rotation = pastItem.transform.rotation;

@@ -9,10 +9,13 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
     private float _lerpTime = 1.5f;
     private float _unitGridSize;
     private float _angle = 45f;
+    private float _blend;
     private CellPos _pos;
     private CellContent _content;
     private bool _validate;
     private bool _isMoving;
+
+    private Animator _animator;
 
     public bool Validate { get => _validate; set => _validate = value; }
     public float UnitGridSize { get => _unitGridSize; set => _unitGridSize = value; }
@@ -37,6 +40,13 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
         OffsetRadius = 0.8f;
         MoveSpeed = 2f;
         MoveDistance = _unitGridSize;
+        _blend = 0f;
+        _animator = GetComponent<Animator>();
+    }
+
+    private void FixedUpdate()
+    {
+        if (_validate) _animator.SetBool("isValidate", true);
     }
 
     public bool Move(Vector3 direction)

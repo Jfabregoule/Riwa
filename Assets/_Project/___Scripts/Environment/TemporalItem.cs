@@ -10,30 +10,28 @@ public class TemporalItem : MonoBehaviour
     private float positionThreshold = 0.1f;
     private float rotationThreshold = 0.1f;
 
-    private void OnEnable()
+    private void Start()
     {
-        if (HasSignificantChange())
+        GameManager.Instance.Character.ChangeTime.OnTimeChangeStarted += ChangeCheck;
+    }
+
+    private void ChangeCheck(bool isPast)
+    {
+        if (!isPast)
         {
-            transform.position = pastItem.transform.position;
-            transform.rotation = pastItem.transform.rotation;
+            lastPosition = pastItem.transform.position;
+            lastRotation = pastItem.transform.rotation;
+        }
+        else
+        {
+            if (HasSignificantChange())
+            {
+                transform.position = pastItem.transform.position;
+                transform.rotation = pastItem.transform.rotation;
+            }
         }
     }
 
-    private void OnDisable()
-    {
-        lastPosition = pastItem.transform.position;
-        lastRotation = pastItem.transform.rotation;
-    }
-
-    private void FixedUpdate()
-    {
-
-        if(HasSignificantChange() && GameManager.Instance.Character.IsInPast)
-        {
-            transform.position = pastItem.transform.position;
-            transform.rotation = pastItem.transform.rotation;
-        }
-    }
 
     private bool HasSignificantChange()
     {

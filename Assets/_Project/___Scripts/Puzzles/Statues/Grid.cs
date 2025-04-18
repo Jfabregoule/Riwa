@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -124,16 +125,10 @@ public class Grid : MonoBehaviour
     [Header("Grid")]
     [SerializeField] private Vector2Int _gridSize = new Vector2Int(5, 5);
     [SerializeField] private float _unitGridSize = 2.5f;
-    [SerializeField] private GameObject defaultTile;
-    [SerializeField] private GameObject gridSpawnpoint;
+    [SerializeField] private GameObject _defaultTile;
+    [SerializeField] private GameObject _stair;
     [Header("Debug")]
     [SerializeField] private bool _showDebug = false;
-
-    /// <summary>
-    /// Specify all the statue associated tile color prefab
-    /// </summary>
-    [Header("Tiles")]
-    [SerializeField] private List<GameObject> tiles;
 
     /// <summary>
     /// Specify the statue prefab before Generating grid then specify the new generated ones
@@ -149,12 +144,14 @@ public class Grid : MonoBehaviour
     [HideInInspector][SerializeField] private List<Solution> serializedSolutions = new List<Solution>();
     [HideInInspector][SerializeField] private List<Datas> serializedStatues = new List<Datas>();
 
+    [SerializeField] private List<Statue> _statues = new List<Statue>();
+
     Dictionary<CellPos, CellContent> solution = new Dictionary<CellPos, CellContent>();
     Dictionary<CellPos, CellContent?> grid = new Dictionary<CellPos, CellContent?>();
 
     Dictionary<Statue, StatueData> statueData = new Dictionary<Statue, StatueData>();
 
-    [SerializeField] private List<Statue> _statues = new List<Statue>();
+    private Floor1Room4LevelManager _room4LevelManager;
 
     public float UnitGridSize => _unitGridSize;
     public Vector3 Origin { get; private set; }
@@ -185,6 +182,12 @@ public class Grid : MonoBehaviour
             CellPos pos = new CellPos(pair.Value.posX, pair.Value.posY);
             grid[pos] = new CellContent(pair.Value.id, pair.Value.rotation);
         }
+
+    }
+
+    private void Start()
+    {
+        _room4LevelManager = (Floor1Room4LevelManager)Floor1Room4LevelManager.Instance;
     }
 
     [ContextMenu("Generate Grid")]
@@ -211,8 +214,7 @@ public class Grid : MonoBehaviour
                 {
                     if(solution.Key.Equals(new CellPos(x, y)))
                     {
-                        GameObject associatedStatueTile = tiles[solution.Value.id - 1];
-                        GameObject st = Instantiate(associatedStatueTile, position, Quaternion.identity);
+                        GameObject st = Instantiate(_defaultTile, position, Quaternion.identity);
                         st.transform.SetParent(transform);
                         grid[new CellPos(solution.Key.x, solution.Key.y)] = solution.Value;
                         break;
@@ -220,7 +222,7 @@ public class Grid : MonoBehaviour
                 }
 
                 if (grid.ContainsKey(new CellPos(x, y)) && grid[new CellPos(x, y)] != null) continue;
-                GameObject tile = Instantiate(defaultTile, position, Quaternion.identity);
+                GameObject tile = Instantiate(_defaultTile, position, Quaternion.identity);
                 tile.transform.SetParent(transform);
                 grid[new CellPos(x, y)] = null;
             }
@@ -300,11 +302,42 @@ public class Grid : MonoBehaviour
             foreach(Statue statues in _statues)
             {
                 statues.Validate = true;
+                StartCoroutine(StairAppear());
             }
             if (_showDebug == true) Debug.Log("Grille complétée avec succès !");
         }
         else
             if (_showDebug == true) Debug.Log("La grille n'est pas encore correctement remplie.");
+    }
+
+    private IEnumerator StairAppear()
+    {
+
+        yield return new WaitForSeconds(1f);
+
+        _room4LevelManager.StairCamera.Priority = 20;
+        GameManager.Instance.Character.InputManager.DisableGameplayControls();
+
+        yield return new WaitForSeconds(1.5f);
+
+        float elapsedTime = 0f;
+        float lerpTime = 2f;
+
+        Vector3 initialPos = _stair.transform.position;
+        Vector3 finalPos = new Vector3(initialPos.x, -initialPos.y, initialPos.z);
+        
+        while(elapsedTime < lerpTime)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / lerpTime;
+            t = Mathf.Clamp01(t);
+            _stair.transform.position = Vector3.Lerp(initialPos, finalPos, t);
+            yield return null;
+        }
+
+        _stair.transform.position = finalPos;
+        _room4LevelManager.StairCamera.Priority = 0;
+        GameManager.Instance.Character.InputManager.EnableGameplayControls();
     }
 
 

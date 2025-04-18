@@ -4,6 +4,7 @@ public enum EnumStateSoul
     Idle,
     Move,
     Interact,
+    Disable,
 }
 
 public abstract class BaseStateSoul : BaseStatePawn<EnumStateSoul>

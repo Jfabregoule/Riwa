@@ -3,13 +3,11 @@ using UnityEngine;
 public class IdleStateSoul : ParentIdleState<EnumStateSoul>
 {
     private ACharacter _sensa;
-    new protected ASoul _character;
 
     public override void InitState(StateMachinePawn<EnumStateSoul, BaseStatePawn<EnumStateSoul>> stateMachine, EnumStateSoul enumValue, APawn<EnumStateSoul> Soul)
     {
         base.InitState(stateMachine, enumValue, Soul);
         _sensa = GameManager.Instance.Character;
-        _character = (ASoul)Soul;
     }
 
     public override void EnterState()
@@ -32,6 +30,8 @@ public class IdleStateSoul : ParentIdleState<EnumStateSoul>
     {
         base.UpdateState();
 
+        ASoul soul = (ASoul)_character;
+
         Vector3 movement;
         movement.x = _character.InputManager.GetMoveDirection().x;
         movement.y = 0;
@@ -41,9 +41,9 @@ public class IdleStateSoul : ParentIdleState<EnumStateSoul>
         Vector3 toPlayer = _sensa.transform.position - targetPosition;
         float distanceToPlayer = toPlayer.magnitude;
 
-        if (distanceToPlayer > _character.LinkMaxDistance)
+        if (distanceToPlayer > soul.LinkMaxDistance)
         {
-            Vector3 pullForce = toPlayer.normalized * (distanceToPlayer - _character.LinkMaxDistance) * _character.LinkElasticity;
+            Vector3 pullForce = toPlayer.normalized * (distanceToPlayer - soul.LinkMaxDistance) * soul.LinkElasticity;
             _character.Rb.velocity += pullForce * Time.fixedDeltaTime;
         }
 
@@ -55,13 +55,15 @@ public class IdleStateSoul : ParentIdleState<EnumStateSoul>
     {
         base.CheckChangeState();
 
+        ASoul soul = (ASoul)_character;
+
         if (_character.InputManager.GetMoveDirection().y != 0 || _character.InputManager.GetMoveDirection().x != 0)
         {
             _stateMachine.ChangeState(_stateMachine.States[EnumStateSoul.Move]);
             return;
         }
 
-        if (_clock > _character.TimeBeforeWait)
+        if (_clock > soul.TimeBeforeWait)
         {
             //_stateMachine.ChangeState(_stateMachine.States[EnumStateSoul.Wait]);
             return;
@@ -69,7 +71,7 @@ public class IdleStateSoul : ParentIdleState<EnumStateSoul>
     }
 
     private void OnInteract()
-    {
+    { 
         _stateMachine.ChangeState(_stateMachine.States[EnumStateSoul.Interact]);
     }
 

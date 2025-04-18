@@ -67,15 +67,20 @@ public class ASoul : APawn<EnumStateSoul>
         _rb = GetComponent<Rigidbody>();
         _capsuleCollider = GetComponent<CapsuleCollider>();
         _inputManager = InputManager.Instance;
-
+        Animator = GetComponent<Animator>();    
 
         _cameraHandler = GameManager.Instance.CameraHandler; //Il faut appeler ça après le load des 3C dans gameManager
 
         _stateMachine = new StateMachineSoul();
         _stateMachine.InitStateMachine(this);
-        _stateMachine.InitState(_stateMachine.States[EnumStateSoul.Idle]);
+        _stateMachine.InitState(_stateMachine.States[EnumStateSoul.Disable]);
 
 
+    }
+
+    private void Start()
+    {
+        _character = GameManager.Instance.Character.gameObject;
     }
 
     private void Update()

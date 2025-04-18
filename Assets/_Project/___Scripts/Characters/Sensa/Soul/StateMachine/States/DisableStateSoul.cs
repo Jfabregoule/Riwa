@@ -1,6 +1,10 @@
-public class FallStateCharacter : BaseStateCharacter<EnumStateCharacter>
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class DisableStateSoul : BaseStatePawn<EnumStateSoul>
 {
-    public override void InitState(StateMachinePawn<EnumStateCharacter, BaseStatePawn<EnumStateCharacter>> stateMachine, EnumStateCharacter enumValue, APawn<EnumStateCharacter> character)
+    public override void InitState(StateMachinePawn<EnumStateSoul, BaseStatePawn<EnumStateSoul>> stateMachine, EnumStateSoul enumValue, APawn<EnumStateSoul> character)
     {
         base.InitState(stateMachine, enumValue, character);
     }
@@ -8,7 +12,6 @@ public class FallStateCharacter : BaseStateCharacter<EnumStateCharacter>
     public override void EnterState()
     {
         base.EnterState();
-
     }
 
     public override void ExitState()

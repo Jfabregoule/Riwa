@@ -5,7 +5,7 @@ public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
 
     private void Start()
     {
-        EnqueueScenes(new[] { new SceneData("HUD"), new SceneData("Floor1Room1") }, false);
+        //EnqueueScenes(new[] { new SceneData("HUD"), new SceneData("Floor1Room1") }, false);
     }
 
     /// <summary>

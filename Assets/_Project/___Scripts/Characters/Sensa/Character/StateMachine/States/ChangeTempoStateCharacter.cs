@@ -7,8 +7,6 @@ public class ChangeTempoStateCharacter : BaseStateCharacter<EnumStateCharacter>
     /// </summary>
 
     private ChangeTempoStateMachine _subStateMachine;
-    new private ACharacter _character;
-
     public ChangeTempoStateMachine SubStateMachine { get => _subStateMachine;}
 
     public override void InitState(StateMachinePawn<EnumStateCharacter, BaseStatePawn<EnumStateCharacter>> stateMachine, EnumStateCharacter enumValue, APawn<EnumStateCharacter> character)
@@ -20,9 +18,6 @@ public class ChangeTempoStateCharacter : BaseStateCharacter<EnumStateCharacter>
         _subStateMachine = new ChangeTempoStateMachine();
         _subStateMachine.InitStateMachine((ACharacter)character);
         _subStateMachine.InitState(_subStateMachine.States[EnumChangeTempo.Standby]);
-
-        _character = (ACharacter)character;
-
 
         BaseStateMachine<EnumChangeTempo, ChangeTempoBaseState> machine = _subStateMachine;
         //_character.StateMachine.BackgroundSubstateMachine.Add(machine);

@@ -2,12 +2,9 @@ using UnityEngine;
 
 public class MoveStateCharacter : ParentMoveState<EnumStateCharacter>
 {
-    new protected ACharacter _character;
-
     public override void InitState(StateMachinePawn<EnumStateCharacter, BaseStatePawn<EnumStateCharacter>> stateMachine, EnumStateCharacter enumValue, APawn<EnumStateCharacter> character)
     {
         base.InitState(stateMachine, enumValue, character);
-        _character = (ACharacter)character;
     }
 
     public override void EnterState()
@@ -25,7 +22,9 @@ public class MoveStateCharacter : ParentMoveState<EnumStateCharacter>
     {
         base.UpdateState();
 
-        _character.Animator.SetFloat("MagnitudeVelocity", _character.MagnitudeVelocity);
+        ACharacter chara = (ACharacter)_character;
+
+        chara.Animator.SetFloat("MagnitudeVelocity", chara.MagnitudeVelocity);
 
     }
 
@@ -38,12 +37,14 @@ public class MoveStateCharacter : ParentMoveState<EnumStateCharacter>
     {
         base.CheckChangeState();
 
-        if (_character.IsChangingTime)
+        ACharacter chara = (ACharacter)_character;
+
+        if (chara.IsChangingTime)
         {
             _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.ChangeTempo]);
         }
 
-        else if (_character.InputManager.GetMoveDirection() == Vector2.zero)
+        else if (chara.InputManager.GetMoveDirection() == Vector2.zero)
         {
             _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Idle]);
         }

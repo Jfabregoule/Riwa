@@ -7,6 +7,7 @@ public class StateMachineSoul : StateMachinePawn<EnumStateSoul, BaseStatePawn<En
     private const string IDLE_NAME          = "Idle";
     private const string MOVE_NAME          = "Move";
     private const string INTERACT_NAME      = "Interact";
+    private const string DISABLE_NAME      = "Disable";
 
     #endregion
 
@@ -33,6 +34,9 @@ public class StateMachineSoul : StateMachinePawn<EnumStateSoul, BaseStatePawn<En
         States[EnumStateSoul.Interact].InitState(this, EnumStateSoul.Interact, Soul);
         _animationMap[EnumStateSoul.Interact] = INTERACT_NAME;
 
+        States[EnumStateSoul.Disable] = new DisableStateSoul();
+        States[EnumStateSoul.Disable].InitState(this, EnumStateSoul.Disable, Soul);
+        _animationMap[EnumStateSoul.Disable] = DISABLE_NAME;
     }
 
     public override void GoToIdle()

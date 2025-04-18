@@ -313,7 +313,7 @@ public class Grid : MonoBehaviour
     private IEnumerator StairAppear()
     {
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2.5f);
 
         _room4LevelManager.StairCamera.Priority = 20;
         GameManager.Instance.Character.InputManager.DisableGameplayControls();

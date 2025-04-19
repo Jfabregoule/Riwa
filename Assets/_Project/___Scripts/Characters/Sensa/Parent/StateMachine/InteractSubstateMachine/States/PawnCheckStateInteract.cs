@@ -52,8 +52,8 @@ public class PawnCheckStateInteract<TStateEnum> : PawnInteractBaseSubstate<TStat
             if (collider.gameObject.TryGetComponent<IInteractable>(out IInteractable obj))
             {
                 RaycastHit hit;
-                
-                if (Physics.Raycast(_character.transform.position, (collider.gameObject.transform.position - _character.transform.position).normalized, out hit, 5f * _character.transform.localScale.x, layerMask))
+
+                if (Physics.Raycast(_character.transform.position + Vector3.up * heigth / 2, (collider.gameObject.transform.position + Vector3.up * heigth / 2 - _character.transform.position).normalized, out hit, radius * 2, layerMask))
                 {
                     if (hit.collider.gameObject == collider.gameObject)
                     {

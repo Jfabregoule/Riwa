@@ -55,7 +55,7 @@ public class EmitterLaser : MonoBehaviour
                 AddLaserPoint(hit.point);
                 _directions.Add(reflect);
 
-                if (!hit.collider.TryGetComponent(out Mirror mirror) || hit.normal != -mirror.transform.forward)
+                if (!hit.collider.TryGetComponent(out Mirror mirror) || hit.normal != -mirror.transform.right)
                 {
                     SpawnImpact(hit.point, hit.normal);
                     _isReflecting = false;

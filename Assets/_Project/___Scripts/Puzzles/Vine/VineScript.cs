@@ -38,12 +38,17 @@ public class VineScript : MonoBehaviour, IInteractableSoul
         _minColliderHeight = _capsuleCollider.height;
         _startSocketPos = transform.TransformPoint(_capsuleCollider.center);
         _material = GetComponent<MeshRenderer>().material;
+    }
+
+    private void OnEnable()
+    {
         GameManager.Instance.Character.OnRespawn += RetractedAllVines;
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.Character.OnRespawn -= RetractedAllVines;
+        if (GameManager.Instance)
+            GameManager.Instance.Character.OnRespawn -= RetractedAllVines;
     }
     private IEnumerator RaiseVine()
     {

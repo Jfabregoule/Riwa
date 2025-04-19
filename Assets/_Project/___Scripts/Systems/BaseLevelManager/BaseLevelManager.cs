@@ -19,8 +19,16 @@ public class BaseLevelManager : Singleton<BaseLevelManager>
     [SerializeField] private ACharacter _character;
     [SerializeField] private VariableJoystick _joystick;
 
+    [Header("Player setup")]
+
+    [SerializeField] private Vector3 _playerSpawnPosition;
+    [SerializeField] private Vector3 _playerSpawnRotation;
+
     public void OnEnable()
     {
         GameManager.Instance.Load3C(_cameraHandler, _character, _joystick);
+
+        _character.RespawnPosition = _playerSpawnPosition;
+        _character.RespawnRotation = _playerSpawnRotation;
     }
 }

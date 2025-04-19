@@ -397,9 +397,12 @@ public class Damier : MonoBehaviour
             if (_damier[cell.Position].cellState == CellState.Broken)
             {
                 Vector3 respawnPosition = _damier[cell.Position].cell.GetComponent<Cell>().RespawnPosition;
+                Vector3 respawnRotation = _damier[cell.Position].cell.GetComponent<Cell>().RespawnRotation;
                 ChangeCellState(cell.Position, CellState.Breakable);
                 _damier[cell.Position].cell.GetComponent<Rigidbody>().isKinematic = true;
                 _damier[cell.Position].cell.transform.position = respawnPosition;
+                _damier[cell.Position].cell.transform.localEulerAngles = respawnRotation;
+
             }
         }
 

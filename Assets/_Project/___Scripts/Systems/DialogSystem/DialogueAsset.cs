@@ -22,25 +22,40 @@ public class DialogueAsset : ScriptableObject
 public struct DialogueSection
 {
     public DialogueUIType UIType;
-    public bool DisableDialogueInputs;
     public DialogueSentence[] Sentences;
     public bool TriggerEvent;
     public DialogueEventType EventType;
-    public bool WaitEvent;
-    public DialogueEventType WaitEventType;
 }
 
 [System.Serializable]
 public struct DialogueSentence
 {
     public SentenceTranslate TextTranslate;
-    public bool UseWriting;
+
+    public DialogueOptions Options;
+
     public float SpeedWriting;
-    public bool UseTime;
     public float TimeToPass;
+    public WaitDialogueEventType WaitEventType;
+}
+
+[System.Flags]
+public enum DialogueOptions
+{
+    None = 0,
+    UseWriting = 1 << 0,
+    DisableDialogueInputs = 1 << 1,
+    UseTime = 1 << 2,
+    WaitEvent = 1 << 3
 }
 
 public enum DialogueEventType
 {
     None,
+}
+
+public enum WaitDialogueEventType
+{
+    None,
+    Test
 }

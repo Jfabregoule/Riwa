@@ -1,4 +1,7 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DialogueSystem : Singleton<DialogueSystem>
@@ -8,6 +11,7 @@ public class DialogueSystem : Singleton<DialogueSystem>
     [SerializeField] private Sequencer _endSequencer;
 
     [SerializeField] private DialogueAsset _test;
+    public DialogueEventRegistry EventRegistery { get; private set; }
 
     public delegate void DialogueText(DialogueUIType uIType, string text);
     public event DialogueText OnSentenceChanged;
@@ -34,7 +38,9 @@ public class DialogueSystem : Singleton<DialogueSystem>
     {
         ProcessingDialogue = null;
 
-        //BeginDialogue(_test);
+        EventRegistery = new DialogueEventRegistry();
+
+        BeginDialogue(_test);
 
         _beginSequencer.Init();
         _transiUISequencer.Init();
@@ -89,8 +95,9 @@ public class DialogueSystem : Singleton<DialogueSystem>
             OnDialogueEvent?.Invoke(ProcessingDialogue.ClosureEventType);
     }
 
-    private void AdvanceDialogue()
+    public void AdvanceDialogue()
     {
+        EventRegistery.Unregister(GetSentence().WaitEventType, AdvanceDialogue);
         if (_isWriting)
         {
             _isWriting = false;
@@ -137,16 +144,7 @@ public class DialogueSystem : Singleton<DialogueSystem>
         _sentenceIndex = 0;
         DialogueSection section = GetSection();
 
-        if (section.DisableDialogueInputs)
-        {
-            InputManager.Instance?.DisableDialogueControls();
-        }
-        else
-        {
-            InputManager.Instance?.EnableDialogueControls();
-        }
-
-        if(_currentDialogueUI != section.UIType)
+        if (_currentDialogueUI != section.UIType)
         {
             _transiUISequencer.InitializeSequence();
             return;
@@ -157,7 +155,18 @@ public class DialogueSystem : Singleton<DialogueSystem>
 
     public void UpdateSentence()
     {
-        if (GetSentence().UseWriting)
+        DialogueSentence sentence = GetSentence();
+
+        if ((sentence.Options & DialogueOptions.DisableDialogueInputs) != 0)
+        {
+            InputManager.Instance?.DisableDialogueControls();
+        }
+        else
+        {
+            InputManager.Instance?.EnableDialogueControls();
+        }
+
+        if ((sentence.Options & DialogueOptions.UseWriting) != 0)
         {
             StartCoroutine(UpdateSentenceWriting());
         }
@@ -172,10 +181,7 @@ public class DialogueSystem : Singleton<DialogueSystem>
         DialogueSentence sentence = GetSentence();
         OnSentenceChanged?.Invoke(_currentDialogueUI, GetTranslateText());
         StopAllCoroutines();
-        if (sentence.UseTime)
-        {
-            StartCoroutine(WaitTimeAndAdvanceDialogue(sentence.TimeToPass));
-        }
+        CheckToPassSentence(sentence);
     }
 
     private void UpdateSentenceTranslate()
@@ -199,9 +205,19 @@ public class DialogueSystem : Singleton<DialogueSystem>
         _isWriting = false;
 
         StopAllCoroutines();
-        if (sentence.UseTime)
+        CheckToPassSentence(sentence);
+    }
+
+    private void CheckToPassSentence(DialogueSentence sentence)
+    {
+        if ((sentence.Options & DialogueOptions.UseTime) != 0)
         {
             StartCoroutine(WaitTimeAndAdvanceDialogue(sentence.TimeToPass));
+        }
+
+        if ((sentence.Options & DialogueOptions.WaitEvent) != 0)
+        {
+            EventRegistery.Register(sentence.WaitEventType, AdvanceDialogue);
         }
     }
 

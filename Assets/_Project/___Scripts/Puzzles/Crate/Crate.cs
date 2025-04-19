@@ -67,9 +67,10 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
         foreach (var col in colliders)
         {
             if (col.gameObject != gameObject
-             && !col.gameObject.TryGetComponent<ACharacter>(out ACharacter chara)
+             && col.gameObject.TryGetComponent<ACharacter>(out ACharacter chara)
              && col.isTrigger == false)
             {
+                Debug.Log("Hit: " + col.name);
                 return false;
             }
         }

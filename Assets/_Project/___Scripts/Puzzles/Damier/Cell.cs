@@ -9,6 +9,7 @@ public class Cell : MonoBehaviour, IRespawnable
 
     public delegate void CellTrigered(CellPos pos, Cell cell);
     public event CellTrigered OnCellTriggered;
+    public event IRespawnable.RespawnEvent OnRespawn;
 
     public CellPos Position { get; private set; }
     public Vector3 RespawnPosition { get => _respawnPosition; set => _respawnPosition = value; }

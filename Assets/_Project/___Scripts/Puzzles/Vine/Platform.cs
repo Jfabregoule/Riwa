@@ -14,6 +14,9 @@ public class Platform : MonoBehaviour, IRespawnable
 
     [SerializeField] private Vector3 _respawnPositon;
     [SerializeField] private Vector3 _respawnRotation;
+
+    public event IRespawnable.RespawnEvent OnRespawn;
+
     public Vector3 RespawnPosition { get => _respawnPositon; set => _respawnPositon = value; }
     public Vector3 RespawnRotation { get => _respawnRotation; set => _respawnRotation = value; }
 
@@ -27,6 +30,7 @@ public class Platform : MonoBehaviour, IRespawnable
     {
         if (other.TryGetComponent(out VineScript vineScript))
         {
+            if (!vineScript.IsActive) return;
             if (!_triggerVines.Contains(vineScript))
                 _triggerVines.Add(vineScript);
 
@@ -58,7 +62,7 @@ public class Platform : MonoBehaviour, IRespawnable
                 _rb.constraints &= ~RigidbodyConstraints.FreezePositionY;
                 _rb.useGravity = true;
                 _rb.isKinematic = false;
-
+                Debug.Log(other.name);
                 if (_triggerVines.Count > 0)
                 {
                     _currentVine = _triggerVines[_triggerVines.Count - 1];
@@ -113,7 +117,7 @@ public class Platform : MonoBehaviour, IRespawnable
 
     public void Respawn()
     {
-        transform.GetChild(0).SetParent(null);
+        //transform.GetChild(0).SetParent(null);
         transform.position = RespawnPosition;
         transform.localEulerAngles = RespawnRotation;
         _rb.constraints |= RigidbodyConstraints.FreezePositionY;

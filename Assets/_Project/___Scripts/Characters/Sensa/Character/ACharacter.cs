@@ -57,8 +57,7 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
     public delegate void NoArgVoid();
     public NoArgVoid OnChangeTempo;
 
-    public delegate void RespawnEvent();
-    public RespawnEvent OnRespawn;
+    public event IRespawnable.RespawnEvent OnRespawn;
 
     #endregion
 
@@ -139,6 +138,7 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
 
     public void Respawn()
     {
+        OnRespawn?.Invoke();
         _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Respawn]);
     }
 

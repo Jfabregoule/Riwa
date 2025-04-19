@@ -18,9 +18,9 @@ public class RiwaSoundSystem : SoundSystem<RiwaSoundSystem>
     [SerializeField] private AudioMixerGroup _sfxPastMixerGroup; // Groupe de mixage pour les SFX du passé.
     [SerializeField] private AudioMixerGroup _sfxPresentMixerGroup; // Groupe de mixage pour les SFX du présent.
 
-    private Dictionary<Temporality, AudioMixerGroup> _musicMixerGroups; // Dictionnaire des musiques groups contenant les groupes de chaque temporalité associé à leur clé.
-    private Dictionary<Temporality, AudioMixerGroup> _ambianceMixerGroups; // Dictionnaire des ambiance groups contenant les groupes de chaque temporalité associé à leur clé.
-    private Dictionary<Temporality, AudioMixerGroup> _sfxMixerGroups; // Dictionnaire des sfx groups contenant les groupes de chaque temporalité associé à leur clé.
+    private Dictionary<EnumTemporality, AudioMixerGroup> _musicMixerGroups; // Dictionnaire des musiques groups contenant les groupes de chaque temporalité associé à leur clé.
+    private Dictionary<EnumTemporality, AudioMixerGroup> _ambianceMixerGroups; // Dictionnaire des ambiance groups contenant les groupes de chaque temporalité associé à leur clé.
+    private Dictionary<EnumTemporality, AudioMixerGroup> _sfxMixerGroups; // Dictionnaire des sfx groups contenant les groupes de chaque temporalité associé à leur clé.
 
     [Header("Temporality Starting Sounds")]
     [Space(10)]
@@ -35,8 +35,8 @@ public class RiwaSoundSystem : SoundSystem<RiwaSoundSystem>
     private List<AudioSource> _currentPastAmbianceSources; // Liste des sources audio d'ambiance du passé.
     private List<AudioSource> _currentPresentAmbianceSources; // Liste des sources audio d'ambiance du présent.
 
-    private Dictionary<Temporality, AudioSource> _currentMusicSources;
-    private Dictionary<Temporality, List<AudioSource>> _currentAmbianceSources;
+    private Dictionary<EnumTemporality, AudioSource> _currentMusicSources;
+    private Dictionary<EnumTemporality, List<AudioSource>> _currentAmbianceSources;
 
     #endregion
 
@@ -54,28 +54,28 @@ public class RiwaSoundSystem : SoundSystem<RiwaSoundSystem>
         _currentPastAmbianceSources = new List<AudioSource>();
         _currentPresentAmbianceSources = new List<AudioSource>();
 
-        _musicMixerGroups = new Dictionary<Temporality, AudioMixerGroup>
+        _musicMixerGroups = new Dictionary<EnumTemporality, AudioMixerGroup>
     {
-        { Temporality.Past, _musicPastMixerGroup },
-        { Temporality.Present, _musicPresentMixerGroup }
+        { EnumTemporality.Past, _musicPastMixerGroup },
+        { EnumTemporality.Present, _musicPresentMixerGroup }
     };
 
-        _ambianceMixerGroups = new Dictionary<Temporality, AudioMixerGroup>
+        _ambianceMixerGroups = new Dictionary<EnumTemporality, AudioMixerGroup>
     {
-        { Temporality.Past, _ambiancePastMixerGroup },
-        { Temporality.Present, _ambiancePresentMixerGroup }
+        { EnumTemporality.Past, _ambiancePastMixerGroup },
+        { EnumTemporality.Present, _ambiancePresentMixerGroup }
     };
 
-        _currentMusicSources = new Dictionary<Temporality, AudioSource>
+        _currentMusicSources = new Dictionary<EnumTemporality, AudioSource>
     {
-        { Temporality.Past, _currentPastMusicSource },
-        { Temporality.Present, _currentPresentMusicSource }
+        { EnumTemporality.Past, _currentPastMusicSource },
+        { EnumTemporality.Present, _currentPresentMusicSource }
     };
 
-        _currentAmbianceSources = new Dictionary<Temporality, List<AudioSource>>
+        _currentAmbianceSources = new Dictionary<EnumTemporality, List<AudioSource>>
     {
-        { Temporality.Past, _currentPastAmbianceSources },
-        { Temporality.Present, _currentPresentAmbianceSources }
+        { EnumTemporality.Past, _currentPastAmbianceSources },
+        { EnumTemporality.Present, _currentPresentAmbianceSources }
     };
 
     }
@@ -85,9 +85,9 @@ public class RiwaSoundSystem : SoundSystem<RiwaSoundSystem>
         base.Start();
 
         if (_startingPastMusic != null)
-            ChangeMusic(_startingPastMusic, Temporality.Past);
+            ChangeMusic(_startingPastMusic, EnumTemporality.Past);
         if (_startingPresentMusic != null)
-            ChangeMusic(_startingPresentMusic, Temporality.Present);
+            ChangeMusic(_startingPresentMusic, EnumTemporality.Present);
 
         //if (_startingAmbianceSounds.Count > 0)
         //    AddAmbianceSounds(_startingAmbianceSounds);
@@ -101,7 +101,7 @@ public class RiwaSoundSystem : SoundSystem<RiwaSoundSystem>
     /// Change la musique actuelle avec la musique donnée.
     /// </summary>
     /// <param name="audioClip">Audioclip de la nouvelle musique.</param>
-    private void ChangeMusic(AudioClip audioClip, Temporality temporality, float volume = 1.0f)
+    private void ChangeMusic(AudioClip audioClip, EnumTemporality temporality, float volume = 1.0f)
     {
         StartCoroutine(FadeOutInMusic(audioClip, temporality, volume));
     }
@@ -111,7 +111,7 @@ public class RiwaSoundSystem : SoundSystem<RiwaSoundSystem>
     /// </summary>
     /// <param name="key">Clé de la nouvelle musique.</param>
     /// <param name="temporality">Temporalité affectée.</param>
-    public void ChangeMusicByKey(string key, Temporality temporality, float volume = 1.0f)
+    public void ChangeMusicByKey(string key, EnumTemporality temporality, float volume = 1.0f)
     {
         ChangeMusic(GetMusicByKey(key), temporality, volume);
     }
@@ -120,7 +120,7 @@ public class RiwaSoundSystem : SoundSystem<RiwaSoundSystem>
     /// Stop la musique en cours d'une temporalité donnée.
     /// </summary>
     /// <param name="temporality">Temporalité affectée.</param>
-    public void StopMusic(Temporality temporality)
+    public void StopMusic(EnumTemporality temporality)
     {
         if (_currentMusicSources[temporality])
         {
@@ -134,7 +134,7 @@ public class RiwaSoundSystem : SoundSystem<RiwaSoundSystem>
     /// </summary>
     public void StopAllMusics()
     {
-        foreach (Temporality temporality in System.Enum.GetValues(typeof(Temporality)))
+        foreach (EnumTemporality temporality in System.Enum.GetValues(typeof(EnumTemporality)))
         {
             if (_currentMusicSources[temporality])
             {
@@ -151,7 +151,7 @@ public class RiwaSoundSystem : SoundSystem<RiwaSoundSystem>
     /// <summary>
     /// Stop les sons d'ambiances en cours d'une temporalité donnée.
     /// </summary>
-    public void StopAllAmbianceSources(Temporality temporality)
+    public void StopAllAmbianceSources(EnumTemporality temporality)
     {
         foreach (AudioSource audioSource in _currentAmbianceSources[temporality])
         {
@@ -164,7 +164,7 @@ public class RiwaSoundSystem : SoundSystem<RiwaSoundSystem>
     /// <summary>
     /// Ajoute un nouveau son d'ambiance pour une temporalité donnée.
     /// </summary>
-    private void AddAmbianceSound(AudioClip audioClip, Temporality temporality, float volume = 1.0f)
+    private void AddAmbianceSound(AudioClip audioClip, EnumTemporality temporality, float volume = 1.0f)
     {
         AudioSource audioSource = GetAvailableAudioSource();
         audioSource.outputAudioMixerGroup = _ambianceMixerGroups[temporality];
@@ -179,7 +179,7 @@ public class RiwaSoundSystem : SoundSystem<RiwaSoundSystem>
     /// <summary>
     /// Ajoute plusieurs sons d'ambiance pour une temporalité donnée.
     /// </summary>
-    private void AddAmbianceSounds(List<AudioClip> audioClips, Temporality temporality, float volume = 1.0f)
+    private void AddAmbianceSounds(List<AudioClip> audioClips, EnumTemporality temporality, float volume = 1.0f)
     {
         foreach (AudioClip audioClip in audioClips)
         {
@@ -190,7 +190,7 @@ public class RiwaSoundSystem : SoundSystem<RiwaSoundSystem>
     /// <summary>
     /// Ajoute un nouveau son d'ambiance via sa clé pour une temporalité donnée.
     /// </summary>
-    public AudioSource AddAmbianceSoundByKey(string key, Temporality temporality)
+    public AudioSource AddAmbianceSoundByKey(string key, EnumTemporality temporality)
     {
         AudioClip audioClip = GetAmbianceByKey(key);
         if (audioClip != null)
@@ -204,7 +204,7 @@ public class RiwaSoundSystem : SoundSystem<RiwaSoundSystem>
     /// <summary>
     /// Arrête un son d'ambiance via sa clé pour une temporalité donnée.
     /// </summary>
-    public void StopAmbianceSoundByKey(string key, Temporality temporality)
+    public void StopAmbianceSoundByKey(string key, EnumTemporality temporality)
     {
         List<AudioSource> sources = _currentAmbianceSources[temporality];
 
@@ -225,7 +225,7 @@ public class RiwaSoundSystem : SoundSystem<RiwaSoundSystem>
     /// </summary>
     public void StopAllAmbiances()
     {
-        foreach (Temporality temporality in System.Enum.GetValues(typeof(Temporality)))
+        foreach (EnumTemporality temporality in System.Enum.GetValues(typeof(EnumTemporality)))
         {
             StopAllAmbianceSources(temporality);
         }
@@ -238,7 +238,7 @@ public class RiwaSoundSystem : SoundSystem<RiwaSoundSystem>
     /// <summary>
     /// Joue un son ponctuel à une position donnée, pour une temporalité.
     /// </summary>
-    private AudioSource PlaySoundFXClip(AudioClip audioClip, Temporality temporality, Vector3 spawnPosition, float volume = 1.0f)
+    private AudioSource PlaySoundFXClip(AudioClip audioClip, EnumTemporality temporality, Vector3 spawnPosition, float volume = 1.0f)
     {
         AudioSource audioSource = CreateSoundFXSource(spawnPosition);
         audioSource.clip = audioClip;
@@ -251,7 +251,7 @@ public class RiwaSoundSystem : SoundSystem<RiwaSoundSystem>
     /// <summary>
     /// Joue un son ponctuel par clé à une position donnée, pour une temporalité.
     /// </summary>
-    public AudioSource PlaySoundFXClipByKey(string key, Temporality temporality, Vector3 spawnPosition, float volume = 1.0f)
+    public AudioSource PlaySoundFXClipByKey(string key, EnumTemporality temporality, Vector3 spawnPosition, float volume = 1.0f)
     {
         var audioClip = GetSFXByKey(key);
         if (audioClip != null)
@@ -264,7 +264,7 @@ public class RiwaSoundSystem : SoundSystem<RiwaSoundSystem>
     /// <summary>
     /// Joue un SFX 2D sur un AudioSource libre, pour une temporalité.
     /// </summary>
-    public AudioSource PlaySoundFXClipByKey(string key, Temporality temporality, float volume = 1.0f)
+    public AudioSource PlaySoundFXClipByKey(string key, EnumTemporality temporality, float volume = 1.0f)
     {
         AudioClip audioClip = GetSFXByKey(key);
         if (audioClip != null)
@@ -284,7 +284,7 @@ public class RiwaSoundSystem : SoundSystem<RiwaSoundSystem>
     /// <summary>
     /// Joue un son aléatoire parmi une liste, pour une temporalité.
     /// </summary>
-    public void PlayRandomSoundFXClipByKeys(string[] keys, Temporality temporality, Vector3 spawnPosition, float volume = 1.0f)
+    public void PlayRandomSoundFXClipByKeys(string[] keys, EnumTemporality temporality, Vector3 spawnPosition, float volume = 1.0f)
     {
         List<AudioClip> clips = new List<AudioClip>();
         foreach (var key in keys)
@@ -330,7 +330,7 @@ public class RiwaSoundSystem : SoundSystem<RiwaSoundSystem>
     /// </summary>
     /// <param name="newClip">Nouvelle musique.</param>
     /// <param name="temporality">Temporalité affectée.</param>
-    private IEnumerator FadeOutInMusic(AudioClip newClip, Temporality temporality, float volume = 1.0f)
+    private IEnumerator FadeOutInMusic(AudioClip newClip, EnumTemporality temporality, float volume = 1.0f)
     {
         if (_currentMusicSources[temporality] != null)
         {

@@ -12,7 +12,7 @@ public class TemporalItem : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.Character.ChangeTime.OnTimeChangeStarted += ChangeCheck;
+        GameManager.Instance.OnTimeChangeStarted += ChangeCheck;
     }
 
     private void OnEnable()
@@ -24,9 +24,9 @@ public class TemporalItem : MonoBehaviour
         }
     }
 
-    private void ChangeCheck(bool isPast)
+    private void ChangeCheck(EnumTemporality temporality)
     {
-        if (!isPast)
+        if (temporality == EnumTemporality.Present)
         {
             lastPosition = pastItem.transform.position;
             lastRotation = pastItem.transform.rotation;

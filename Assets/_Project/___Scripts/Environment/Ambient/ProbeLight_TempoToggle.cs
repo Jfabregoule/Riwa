@@ -26,9 +26,9 @@ public class ProbeLight_TempoToggle : MonoBehaviour
             GameManager.Instance.OnTimeChangeStarted -= SetProbeSetInstant;
     }
 
-    private void SetProbeSetInstant(Temporality temporality)
+    private void SetProbeSetInstant(EnumTemporality temporality)
     {
-        LightProbeData data = temporality == Temporality.Present ? _presentLightData : _pastLightData;
+        LightProbeData data = temporality == EnumTemporality.Present ? _presentLightData : _pastLightData;
 
         if (data == null || data.bakedProbes == null)
         {

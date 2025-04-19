@@ -32,7 +32,7 @@ public class Volume_TempoToggle : MonoBehaviour
             GameManager.Instance.OnTimeChangeStarted -= BlendVolumes;
     }
 
-    private void BlendVolumes(Temporality temporality)
+    private void BlendVolumes(EnumTemporality temporality)
     {
         if (_transitionCoroutine != null)
             StopCoroutine(_transitionCoroutine);
@@ -40,7 +40,7 @@ public class Volume_TempoToggle : MonoBehaviour
         _transitionCoroutine = StartCoroutine(TransitionVolumes(temporality));
     }
 
-    private IEnumerator TransitionVolumes(Temporality temporality)
+    private IEnumerator TransitionVolumes(EnumTemporality temporality)
     {
         float t = 0f;
 
@@ -49,28 +49,28 @@ public class Volume_TempoToggle : MonoBehaviour
             float blend = t / _transitionDuration;
 
             if (_volumePast != null)
-                _volumePast.weight = temporality == Temporality.Past ? blend : 1f - blend;
+                _volumePast.weight = temporality == EnumTemporality.Past ? blend : 1f - blend;
 
             if (_volumePresent != null)
-                _volumePresent.weight = temporality == Temporality.Present ? 1f - blend : blend;
+                _volumePresent.weight = temporality == EnumTemporality.Present ? 1f - blend : blend;
 
             t += Time.deltaTime;
             yield return null;
         }
 
         if (_volumePast != null)
-            _volumePast.weight = temporality == Temporality.Past ? 1f : 0f;
+            _volumePast.weight = temporality == EnumTemporality.Past ? 1f : 0f;
 
         if (_volumePresent != null)
-            _volumePresent.weight = temporality == Temporality.Present ? 0f : 1f;
+            _volumePresent.weight = temporality == EnumTemporality.Present ? 0f : 1f;
     }
 
-    private void SetVolumeInstant(Temporality temporality)
+    private void SetVolumeInstant(EnumTemporality temporality)
     {
         if (_volumePast != null)
-            _volumePast.weight = temporality == Temporality.Past ? 1f : 0f;
+            _volumePast.weight = temporality == EnumTemporality.Past ? 1f : 0f;
 
         if (_volumePresent != null)
-            _volumePresent.weight = temporality == Temporality.Past ? 0f : 1f;
+            _volumePresent.weight = temporality == EnumTemporality.Past ? 0f : 1f;
     }
 }

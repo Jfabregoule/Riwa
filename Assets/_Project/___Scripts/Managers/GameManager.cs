@@ -3,7 +3,7 @@ using UnityEngine;
 using static Statue;
 
 
-public enum Temporality
+public enum EnumTemporality
 {
     Past,
     Present
@@ -24,9 +24,9 @@ public class GameManager : Singleton<GameManager>
     private CameraHandler _cameraHandler;
     private ACharacter _character;
     private VariableJoystick _joystick;
-    private Temporality _currentTemporality;
+    private EnumTemporality _currentTemporality;
 
-    public delegate void ChangeTimeEvent(Temporality temporality);
+    public delegate void ChangeTimeEvent(EnumTemporality temporality);
     public event ChangeTimeEvent OnTimeChangeStarted;
     public event ChangeTimeEvent OnTimeChangeEnded;
     public event Action OnTimeChangeAborted;
@@ -36,14 +36,14 @@ public class GameManager : Singleton<GameManager>
     public CameraHandler CameraHandler { get => _cameraHandler; }
     public ACharacter Character { get => _character; }
     public Joystick Joystick { get => _joystick; }
-    public Temporality CurrentTemporality { get => _currentTemporality; set => _currentTemporality = value; }
+    public EnumTemporality CurrentTemporality { get => _currentTemporality; set => _currentTemporality = value; }
 
     #endregion
 
     private void Start()
     {
         TranslateSystem = GameObject.FindGameObjectWithTag(TRANSLATE_TAG).GetComponent<TranslateSystem>();
-        CurrentTemporality = Temporality.Present;
+        CurrentTemporality = EnumTemporality.Present;
     }
 
     public void Load3C(CameraHandler cameraHandler, ACharacter character, VariableJoystick joystick)
@@ -55,13 +55,13 @@ public class GameManager : Singleton<GameManager>
 
     public void TimeChangeStarted()
     {
-        if (_currentTemporality == Temporality.Present)
+        if (_currentTemporality == EnumTemporality.Present)
         {
-            _currentTemporality = Temporality.Past;
+            _currentTemporality = EnumTemporality.Past;
         }
-        else if (_currentTemporality == Temporality.Past)
+        else if (_currentTemporality == EnumTemporality.Past)
         {
-            _currentTemporality = Temporality.Present;
+            _currentTemporality = EnumTemporality.Present;
         }
 
         OnTimeChangeStarted?.Invoke(_currentTemporality);

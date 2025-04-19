@@ -25,24 +25,24 @@ public class RiwaSoundMixerManager : SoundMixerManager<RiwaSoundMixerManager>
             GameManager.Instance.OnTimeChangeStarted -= BlendToTemporality;
     }
 
-    public void SetMusicVolume(float level, Temporality temporality)
+    public void SetMusicVolume(float level, EnumTemporality temporality)
     {
         _audioMixer.SetFloat($"MusicVolume{temporality}", level == 0f ? -80f : Mathf.Log10(level) * 20f);
     }
 
-    public void SetSoundFXVolume(float level, Temporality temporality)
+    public void SetSoundFXVolume(float level, EnumTemporality temporality)
     {
         _audioMixer.SetFloat($"SoundFXVolume{temporality}", level == 0f ? -80f : Mathf.Log10(level) * 20f);
     }
 
-    public void SetAmbianceVolume(float level, Temporality temporality)
+    public void SetAmbianceVolume(float level, EnumTemporality temporality)
     {
         _audioMixer.SetFloat($"AmbianceVolume{temporality}", level == 0f ? -80f : Mathf.Log10(level) * 20f);
     }
 
-    public void BlendToTemporality(Temporality toTemporality)
+    public void BlendToTemporality(EnumTemporality toTemporality)
     {
-        Temporality fromTemporality = toTemporality == Temporality.Past ? Temporality.Present : Temporality.Past;
+        EnumTemporality fromTemporality = toTemporality == EnumTemporality.Past ? EnumTemporality.Present : EnumTemporality.Past;
 
         StartCoroutine(FadeMixerGroupVolume($"Music{fromTemporality}Volume", 0f, _mixerBlendDuration, false));
         StartCoroutine(FadeMixerGroupVolume($"Music{toTemporality}Volume", 1f, _mixerBlendDuration, true));

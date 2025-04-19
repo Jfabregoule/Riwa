@@ -59,7 +59,7 @@ public class ProcessStateTempo : ChangeTempoBaseState
         }
     }
 
-    private void TimeChangeEnded(Temporality temporality)
+    private void TimeChangeEnded(EnumTemporality temporality)
     {
         _changedTime = true;
         _character.CanChangeTime = true;

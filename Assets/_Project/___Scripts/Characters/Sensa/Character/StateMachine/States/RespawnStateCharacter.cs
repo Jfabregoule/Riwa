@@ -17,8 +17,6 @@ public class RespawnStateCharacter : BaseStateCharacter<EnumStateCharacter>
 
         _character.transform.position = chara.RespawnPosition;
         _character.transform.localEulerAngles = chara.RespawnRotation;
-
-        chara.OnRespawn?.Invoke();
     }
 
     public override void ExitState()

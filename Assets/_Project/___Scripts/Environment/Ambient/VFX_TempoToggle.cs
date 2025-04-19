@@ -26,9 +26,9 @@ public class VFX_TempoToggle : MonoBehaviour
             GameManager.Instance.OnTimeChangeStarted -= SetVFXInstant;
     }
 
-    private void SetVFXInstant(Temporality temporality)
+    private void SetVFXInstant(EnumTemporality temporality)
     {
-        if (temporality == Temporality.Past)
+        if (temporality == EnumTemporality.Past)
         {
             PlayVFX(_vfxSetPast);
             StopVFX(_vfxSetPresent);

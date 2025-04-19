@@ -5,8 +5,6 @@ public class CinematicStateCharacter : BaseStateCharacter<EnumStateCharacter>
     /// pourra surement prendre en paramètre un sequencer, et jouera ce sequncer dans ce state
     /// </summary>
 
-    new private ACharacter _character;
-
     public override void InitState(StateMachinePawn<EnumStateCharacter, BaseStatePawn<EnumStateCharacter>> stateMachine, EnumStateCharacter enumValue, APawn<EnumStateCharacter> character)
     {
         base.InitState(stateMachine, enumValue, character);

@@ -6,18 +6,15 @@ public class HoldingStateCharacter : BaseStateCharacter<EnumStateCharacter>
     /// </summary>
 
     private HoldingStateMachine _subStateMachine;
-    new private ACharacter _character;
-
 
     public override void InitState(StateMachinePawn<EnumStateCharacter, BaseStatePawn<EnumStateCharacter>> stateMachine, EnumStateCharacter enumValue, APawn<EnumStateCharacter> character)
     {
         base.InitState(stateMachine, enumValue, character);
 
-        _character = (ACharacter)character;
         _subStateMachine = new HoldingStateMachine();
-        _subStateMachine.InitStateMachine(_character);
+        _subStateMachine.InitStateMachine((ACharacter)character);
         _subStateMachine.InitState(_subStateMachine.States[EnumHolding.IdleHolding]);
-
+        _character.Animator.ResetTrigger(_subStateMachine.AnimationMap[EnumHolding.IdleHolding]);
     }
 
     public override void EnterState()
@@ -32,8 +29,10 @@ public class HoldingStateCharacter : BaseStateCharacter<EnumStateCharacter>
     {
         base.ExitState();
 
-        _character.SetHoldingObject(null);
-        _character.InputManager.OnInteractEnd -= OnInteractEnd;
+        ACharacter chara = (ACharacter)_character;
+
+        chara.SetHoldingObject(null);
+        chara.InputManager.OnInteractEnd -= OnInteractEnd;
     }
 
     public override void UpdateState()

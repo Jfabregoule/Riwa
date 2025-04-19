@@ -29,6 +29,8 @@ public class MoveStateHolding : HoldingBaseState
             _movable.OnMoveFinished += CanGoToIdle;
             _movable.OnReplacePlayer += ReplacePlayer;
         }
+
+        _character.Animator.ResetTrigger(_stateMachine.AnimationMap[EnumHolding.IdleHolding]);
     }
 
     public override void ExitState()

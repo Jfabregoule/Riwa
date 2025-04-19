@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class WaitStateCharacter : BaseStateCharacter<EnumStateCharacter>
@@ -6,9 +7,7 @@ public class WaitStateCharacter : BaseStateCharacter<EnumStateCharacter>
     /// State ou le joueur aura les inputs bloqués pour les cinématiques
     /// pourra surement prendre en paramètre un sequencer, et jouera ce sequncer dans ce state
     /// </summary>
-
-    new private ACharacter _character;
-
+    
     float _clockZoom;
 
     float _startZoom = 30;
@@ -17,7 +16,6 @@ public class WaitStateCharacter : BaseStateCharacter<EnumStateCharacter>
     public override void InitState(StateMachinePawn<EnumStateCharacter, BaseStatePawn<EnumStateCharacter>> stateMachine, EnumStateCharacter enumValue, APawn<EnumStateCharacter> character)
     {
         base.InitState(stateMachine, enumValue, character);
-        _character = (ACharacter)character;
     }
 
     public override void EnterState()
@@ -48,7 +46,9 @@ public class WaitStateCharacter : BaseStateCharacter<EnumStateCharacter>
     {
         base.CheckChangeState();
 
-        if (_character.IsChangingTime)
+        ACharacter chara = (ACharacter)_character;
+
+        if (chara.IsChangingTime)
         {
             _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.ChangeTempo]);
         }

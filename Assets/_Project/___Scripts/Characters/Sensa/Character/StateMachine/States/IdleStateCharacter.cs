@@ -2,23 +2,20 @@ using UnityEngine;
 
 public class IdleStateCharacter : ParentIdleState<EnumStateCharacter>
 {
-    new protected ACharacter _character;
-
     public override void InitState(StateMachinePawn<EnumStateCharacter, BaseStatePawn<EnumStateCharacter>> stateMachine, EnumStateCharacter enumValue, APawn<EnumStateCharacter> character)
     {
         base.InitState(stateMachine, enumValue, character);
 
-        _character = (ACharacter)character;
-
-        
     }
 
     public override void EnterState()
     {
         base.EnterState();
 
-        _character.InputManager.OnInteract += OnInteract;
-        _character.OnChangeTempo += ChangeStateToTempo;
+        ACharacter chara = (ACharacter)_character;
+
+        chara.InputManager.OnInteract += OnInteract;
+        chara.OnChangeTempo += ChangeStateToTempo;
 
         _clock = 0;
     }
@@ -27,8 +24,10 @@ public class IdleStateCharacter : ParentIdleState<EnumStateCharacter>
     {
         base.ExitState();
 
-        _character.InputManager.OnInteract -= OnInteract;
-        _character.OnChangeTempo -= ChangeStateToTempo;
+        ACharacter chara = (ACharacter)_character;
+
+        chara.InputManager.OnInteract -= OnInteract;
+        chara.OnChangeTempo -= ChangeStateToTempo;
     }
 
     public override void UpdateState()
@@ -43,13 +42,15 @@ public class IdleStateCharacter : ParentIdleState<EnumStateCharacter>
     {
         base.CheckChangeState();
 
+        ACharacter chara = (ACharacter)_character;
+
         if (_character.InputManager.GetMoveDirection() != Vector2.zero)
         {
             _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Move]);
             return;
         }
 
-        else if (_clock > _character.TimeBeforeWait)
+        else if (_clock > chara.TimeBeforeWait)
         {
             _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Wait]);
             return;

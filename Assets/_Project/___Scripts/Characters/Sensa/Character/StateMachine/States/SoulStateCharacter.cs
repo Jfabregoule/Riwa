@@ -26,6 +26,9 @@ public class SoulStateCharacter : BaseStateCharacter<EnumStateCharacter>
         _character.IsInSoul = true;
         _character.Soul.transform.parent = null;
 
+        ASoul soul = _character.Soul.GetComponent<ASoul>();
+        soul.StateMachine.ChangeState(soul.StateMachine.States[EnumStateSoul.Idle]);
+
         GameManager.Instance.CameraHandler.VirtualCamera.LookAt = _character.Soul.transform;
     }
 
@@ -36,6 +39,9 @@ public class SoulStateCharacter : BaseStateCharacter<EnumStateCharacter>
         _character.Soul.SetActive(false);
         _character.IsInSoul = false;
         _character.Soul.transform.parent = _character.transform;
+
+        ASoul soul = _character.Soul.GetComponent<ASoul>();
+        soul.StateMachine.ChangeState(soul.StateMachine.States[EnumStateSoul.Disable]);
 
         GameManager.Instance.CameraHandler.VirtualCamera.LookAt = null;
 

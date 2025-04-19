@@ -20,27 +20,46 @@ public class PawnCheckStateInteract<TStateEnum> : PawnInteractBaseSubstate<TStat
 
         _colliderList.Clear();
 
-        float security = 1.5f;
+        float security = 3f;
 
         float heigth = _character.CapsuleCollider.height * _character.transform.localScale.x;
 
-        Vector3 point1 = _character.transform.position + Vector3.down * heigth / 2 * security;
-        Vector3 point2 = _character.transform.position + Vector3.up * heigth / 2 * security;
-        float radius = heigth * security;
+        Vector3 point1 = _character.transform.position;
+        Vector3 point2 = _character.transform.position + Vector3.up * heigth;
+        float radius = _character.CapsuleCollider.radius * _character.transform.localScale.x * security;
 
         //Offset pour mettre la capsule devant le joueur
-        point1 += _character.transform.forward * radius * 1.5f;
-        point2 += _character.transform.forward * radius * 1.5f;
+        point1 += _character.transform.forward * radius * 0.8f;
+        point2 += _character.transform.forward * radius * 0.8f;
 
         LayerMask layerMask = _character.IsInPast ? _character.PastLayer : _character.PresentLayer;
 
         Collider[] others = Physics.OverlapCapsule(point1, point2, radius, layerMask);
+        Debug.DrawLine(point2, point2 + Vector3.right * radius, Color.white, 10f);
+        Debug.DrawLine(point1, point1 + Vector3.right * radius, Color.magenta, 10f);
+
+        Debug.DrawLine(point2, point2 + Vector3.forward * radius, Color.white, 10f);
+        Debug.DrawLine(point1, point1 + Vector3.forward * radius, Color.magenta, 10f);
+
+        Debug.DrawLine(point2, point2 + -Vector3.right * radius, Color.white, 10f);
+        Debug.DrawLine(point1, point1 + -Vector3.right * radius, Color.magenta, 10f);
+
+        Debug.DrawLine(point2, point2 + -Vector3.forward * radius, Color.white, 10f);
+        Debug.DrawLine(point1, point1 + -Vector3.forward * radius, Color.magenta, 10f);
 
         foreach (Collider collider in others)
         {
             if (collider.gameObject.TryGetComponent<IInteractable>(out IInteractable obj))
             {
-                _colliderList.Add(collider.gameObject);
+                RaycastHit hit;
+                
+                if (Physics.Raycast(_character.transform.position, (collider.gameObject.transform.position - _character.transform.position).normalized, out hit, 5f * _character.transform.localScale.x, layerMask))
+                {
+                    if (hit.collider.gameObject == collider.gameObject)
+                    {
+                        _colliderList.Add(collider.gameObject);
+                    }
+                }
             }
         }
 

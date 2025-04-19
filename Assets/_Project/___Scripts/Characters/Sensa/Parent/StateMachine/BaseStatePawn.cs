@@ -35,6 +35,10 @@ public class BaseStatePawn<TStateEnum> : BaseState<TStateEnum>
     {
         base.ExitState();
         //code commun à tous les states
+        if (_character.Animator != null)
+        {
+            _character.Animator.ResetTrigger(_stateMachine.AnimationMap[_enumState]); //Lorsque je rentre dans un state, je trigger l'animation   jouer, si l'animator est bien fait, tout est clean  
+        }
     }
 
     public override void UpdateState()

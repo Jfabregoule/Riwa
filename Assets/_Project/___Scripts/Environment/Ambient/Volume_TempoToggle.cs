@@ -9,31 +9,38 @@ public class Volume_TempoToggle : MonoBehaviour
 
     [Header("Global Volume References")]
     [SerializeField] private Volume _volumePast;
-    [SerializeField] private Volume _volumeFuture;
+    [SerializeField] private Volume _volumePresent;
 
     [Header("Transition Settings")]
     [SerializeField] private float _transitionDuration = 1.5f;
 
-    private ChangeTime _changeTime;
     private Coroutine _transitionCoroutine;
 
     private void Start()
     {
-        _changeTime = GameManager.Instance.Character.GetComponent<ChangeTime>();
-        _changeTime.OnTimeChangeStarted += OnChangedTime;
-
-        SetVolumeInstant(_isPast);
+        SetVolumeInstant(GameManager.Instance.CurrentTemporality);
     }
 
-    private void OnChangedTime(bool isNowPast)
+    private void OnEnable()
+    {
+        GameManager.Instance.OnTimeChangeStarted += BlendVolumes;
+    }
+
+    private void OnDisable()
+    {
+        if (GameManager.Instance)
+            GameManager.Instance.OnTimeChangeStarted -= BlendVolumes;
+    }
+
+    private void BlendVolumes(Temporality temporality)
     {
         if (_transitionCoroutine != null)
             StopCoroutine(_transitionCoroutine);
 
-        _transitionCoroutine = StartCoroutine(TransitionVolumes(!isNowPast));
+        _transitionCoroutine = StartCoroutine(TransitionVolumes(temporality));
     }
 
-    private IEnumerator TransitionVolumes(bool toPast)
+    private IEnumerator TransitionVolumes(Temporality temporality)
     {
         float t = 0f;
 
@@ -42,34 +49,28 @@ public class Volume_TempoToggle : MonoBehaviour
             float blend = t / _transitionDuration;
 
             if (_volumePast != null)
-                _volumePast.weight = toPast ? blend : 1f - blend;
+                _volumePast.weight = temporality == Temporality.Past ? blend : 1f - blend;
 
-            if (_volumeFuture != null)
-                _volumeFuture.weight = toPast ? 1f - blend : blend;
+            if (_volumePresent != null)
+                _volumePresent.weight = temporality == Temporality.Present ? 1f - blend : blend;
 
             t += Time.deltaTime;
             yield return null;
         }
 
         if (_volumePast != null)
-            _volumePast.weight = toPast ? 1f : 0f;
+            _volumePast.weight = temporality == Temporality.Past ? 1f : 0f;
 
-        if (_volumeFuture != null)
-            _volumeFuture.weight = toPast ? 0f : 1f;
+        if (_volumePresent != null)
+            _volumePresent.weight = temporality == Temporality.Present ? 0f : 1f;
     }
 
-    private void SetVolumeInstant(bool isPast)
+    private void SetVolumeInstant(Temporality temporality)
     {
         if (_volumePast != null)
-            _volumePast.weight = isPast ? 1f : 0f;
+            _volumePast.weight = temporality == Temporality.Past ? 1f : 0f;
 
-        if (_volumeFuture != null)
-            _volumeFuture.weight = isPast ? 0f : 1f;
-    }
-
-    private void OnDestroy()
-    {
-        if (_changeTime != null)
-            _changeTime.OnTimeChangeEnd -= OnChangedTime;
+        if (_volumePresent != null)
+            _volumePresent.weight = temporality == Temporality.Past ? 0f : 1f;
     }
 }

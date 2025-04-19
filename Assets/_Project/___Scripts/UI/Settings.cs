@@ -67,11 +67,11 @@ public class Settings : MonoBehaviour
 
     public void SetMusicVolume(float level)
     {
-        SoundMixerManager.Instance.SetMusicVolume(level);
+        RiwaSoundMixerManager.Instance.SetMusicVolume(level);
     }
 
     public void SetSoundFXVolume(float level)
     {
-        SoundMixerManager.Instance.SetSoundFXVolume(level);
+        RiwaSoundMixerManager.Instance.SetSoundFXVolume(level);
     }
 }

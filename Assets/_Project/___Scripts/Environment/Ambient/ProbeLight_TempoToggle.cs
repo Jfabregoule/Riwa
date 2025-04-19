@@ -10,24 +10,25 @@ public class ProbeLight_TempoToggle : MonoBehaviour
     [SerializeField] private LightProbeData _pastLightData;
     [SerializeField] private LightProbeData _presentLightData;
 
-    private ChangeTime _changeTime;
-
     private void Start()
     {
-        _changeTime = GameManager.Instance.Character.GetComponent<ChangeTime>();
-        _changeTime.OnTimeChangeStarted += OnChangedTime;
-
-        SetProbeSetInstant(_isPast);
+        SetProbeSetInstant(GameManager.Instance.CurrentTemporality);
     }
 
-    private void OnChangedTime(bool isNowPast)
+    private void OnEnable()
     {
-        SetProbeSetInstant(isNowPast);
+        GameManager.Instance.OnTimeChangeStarted += SetProbeSetInstant;
     }
 
-    private void SetProbeSetInstant(bool isPast)
+    private void OnDisable()
     {
-        var data = isPast ? _presentLightData : _pastLightData;
+        if (GameManager.Instance)
+            GameManager.Instance.OnTimeChangeStarted -= SetProbeSetInstant;
+    }
+
+    private void SetProbeSetInstant(Temporality temporality)
+    {
+        LightProbeData data = temporality == Temporality.Present ? _presentLightData : _pastLightData;
 
         if (data == null || data.bakedProbes == null)
         {
@@ -36,11 +37,5 @@ public class ProbeLight_TempoToggle : MonoBehaviour
         }
 
         LightmapSettings.lightProbes.bakedProbes = data.bakedProbes;
-    }
-
-    private void OnDestroy()
-    {
-        if (_changeTime != null)
-            _changeTime.OnTimeChangeStarted -= OnChangedTime;
     }
 }

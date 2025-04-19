@@ -10,24 +10,25 @@ public class VFX_TempoToggle : MonoBehaviour
     [SerializeField] private List<ParticleSystem> _vfxSetPast;
     [SerializeField] private List<ParticleSystem> _vfxSetPresent;
 
-    private ChangeTime _changeTime;
-
     private void Start()
     {
-        _changeTime = GameManager.Instance.Character.GetComponent<ChangeTime>();
-        _changeTime.OnTimeChangeStarted+= OnChangedTime;
-
-        SetVFXInstant(_isPast);
+        SetVFXInstant(GameManager.Instance.CurrentTemporality);
     }
 
-    private void OnChangedTime(bool isNowPast)
+    private void OnEnable()
     {
-        SetVFXInstant(!isNowPast);
+        GameManager.Instance.OnTimeChangeStarted += SetVFXInstant;
     }
 
-    private void SetVFXInstant(bool toPast)
+    private void OnDisable()
     {
-        if (toPast)
+        if (GameManager.Instance)
+            GameManager.Instance.OnTimeChangeStarted -= SetVFXInstant;
+    }
+
+    private void SetVFXInstant(Temporality temporality)
+    {
+        if (temporality == Temporality.Past)
         {
             PlayVFX(_vfxSetPast);
             StopVFX(_vfxSetPresent);
@@ -55,11 +56,5 @@ public class VFX_TempoToggle : MonoBehaviour
             if (vfx != null && vfx.isPlaying)
                 vfx.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         }
-    }
-
-    private void OnDestroy()
-    {
-        if (_changeTime != null)
-            _changeTime.OnTimeChangeStarted -= OnChangedTime;
     }
 }

@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
+using Newtonsoft.Json.Bson;
 using UnityEngine;
 
 public class ActivableDoor : MonoBehaviour
@@ -8,7 +10,10 @@ public class ActivableDoor : MonoBehaviour
     [SerializeField] Vector3 _openingOffset;
     [SerializeField] float _lerpTime = 1.0f;
 
+    [SerializeField] private List<CinemachineVirtualCamera> _doorCameras; // NEED REF CURRENT LEVEL MANAGER
+
     private List<IActivable> _activables = new List<IActivable>();
+    private List<IActivable> _activatedItem = new List<IActivable>();
     private Vector3 _closedPosition;
     private Vector3 _openedPosition;
     private Coroutine _currentLerp;
@@ -29,8 +34,8 @@ public class ActivableDoor : MonoBehaviour
     {
         foreach (IActivable activable in _activables)
         {
-            activable.OnActivated += OpenDoor;
-            activable.OnDesactivated += CloseDoor;
+            activable.OnActivated += () => HandleActivatedActivable(activable, true);
+            activable.OnDesactivated += () => HandleActivatedActivable(activable, false);
         }
     }
 
@@ -38,9 +43,20 @@ public class ActivableDoor : MonoBehaviour
     {
         foreach (IActivable activable in _activables)
         {
-            activable.OnActivated -= OpenDoor;
-            activable.OnDesactivated -= CloseDoor;
+            activable.OnActivated -= () => HandleActivatedActivable(activable, true);
+            activable.OnDesactivated -= () => HandleActivatedActivable(activable, false);
         }
+    }
+
+    private void HandleActivatedActivable(IActivable activatedOne, bool save)
+    {
+        if(save)
+            _activatedItem.Add(activatedOne);
+        else
+            _activatedItem.Remove(activatedOne);
+
+        if (_activatedItem.Count == _activables.Count) 
+            OpenDoor();
     }
 
     private void OpenDoor()
@@ -57,6 +73,12 @@ public class ActivableDoor : MonoBehaviour
 
     private IEnumerator LerpDoorPosition(Vector3 targetPosition)
     {
+
+        _doorCameras[0].Priority = 20;
+        yield return new WaitForSeconds(2f);
+        _doorCameras[1].Priority = 25;
+        yield return new WaitForSeconds(2f);
+
         Vector3 start = transform.position;
         float elapsed = 0f;
 
@@ -68,5 +90,10 @@ public class ActivableDoor : MonoBehaviour
         }
 
         transform.position = targetPosition;
+
+        _doorCameras[1].Priority = 0;
+        yield return new WaitForSeconds(2f);
+        _doorCameras[0].Priority = 0;
+        yield return new WaitForSeconds(2f);
     }
 }

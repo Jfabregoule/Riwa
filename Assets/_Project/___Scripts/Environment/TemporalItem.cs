@@ -15,6 +15,15 @@ public class TemporalItem : MonoBehaviour
         GameManager.Instance.Character.ChangeTime.OnTimeChangeStarted += ChangeCheck;
     }
 
+    private void OnEnable()
+    {
+        if (HasSignificantChange())
+        {
+            transform.position = pastItem.transform.position;
+            transform.rotation = pastItem.transform.rotation;
+        }
+    }
+
     private void ChangeCheck(bool isPast)
     {
         if (!isPast)

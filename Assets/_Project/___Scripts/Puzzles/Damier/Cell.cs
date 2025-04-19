@@ -27,7 +27,11 @@ public class Cell : MonoBehaviour, IRespawnable
     private void OnTriggerEnter(Collider other) 
     {
         if (((1 << other.gameObject.layer) & whatIsPlayer) != 0)
-            OnCellTriggered?.Invoke(Position, this); 
+        {
+            OnCellTriggered?.Invoke(Position, this);
+            ACharacter chara = GameManager.Instance.Character;
+            chara.StateMachine.ChangeState(chara.StateMachine.States[EnumStateCharacter.Fall]);
+        }
     }
 
     public void Respawn()

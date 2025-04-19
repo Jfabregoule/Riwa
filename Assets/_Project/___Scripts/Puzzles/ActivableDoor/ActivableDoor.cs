@@ -74,10 +74,13 @@ public class ActivableDoor : MonoBehaviour
     private IEnumerator LerpDoorPosition(Vector3 targetPosition)
     {
 
-        _doorCameras[0].Priority = 20;
-        yield return new WaitForSeconds(2f);
-        _doorCameras[1].Priority = 25;
-        yield return new WaitForSeconds(2f);
+        if (_doorCameras.Count > 0)
+        {
+            _doorCameras[0].Priority = 20;
+            yield return new WaitForSeconds(2f);
+            _doorCameras[1].Priority = 25;
+            yield return new WaitForSeconds(2f);
+        }
 
         Vector3 start = transform.position;
         float elapsed = 0f;

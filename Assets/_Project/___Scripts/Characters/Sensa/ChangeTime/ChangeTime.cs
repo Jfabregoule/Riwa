@@ -34,8 +34,7 @@ public class ChangeTime : MonoBehaviour
     private ParticleSystem.EmissionModule _ambianceEmissionModule;
 
     public delegate void TimeEvent(bool isPast);
-    public event TimeEvent OnTimeChangeStarted;
-    public event TimeEvent OnTimeChangeEnd;
+
 
     #endregion
 
@@ -109,7 +108,7 @@ public class ChangeTime : MonoBehaviour
         }
 
         _particleActivated = false;
-        OnTimeChangeEnd?.Invoke(_past == 1);
+        GameManager.Instance.TimeChangeAborted();
     }
 
     public void StartTimeChange()
@@ -119,7 +118,7 @@ public class ChangeTime : MonoBehaviour
 
     private IEnumerator ProcessTimeChangeCoroutine()
     {
-        OnTimeChangeStarted?.Invoke(_past == 1);
+        GameManager.Instance.TimeChangeStarted();
         if (!_particleActivated)
         {
             _sphere.Play();
@@ -149,7 +148,7 @@ public class ChangeTime : MonoBehaviour
         }
 
         UpdateShaders();
-        OnTimeChangeEnd?.Invoke(_past == 1);
+        GameManager.Instance.TimeChangeEnded();
     }
 
     private void UpdateShaders()

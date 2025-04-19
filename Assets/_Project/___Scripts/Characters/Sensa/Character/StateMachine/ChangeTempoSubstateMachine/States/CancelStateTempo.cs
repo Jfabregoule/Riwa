@@ -11,8 +11,8 @@ public class CancelStateTempo : ChangeTempoBaseState
     {
         base.EnterState();
 
+        GameManager.Instance.OnTimeChangeAborted += TimeChangeAborted;
         _character.ChangeTime.AbortChangeTime();
-        _character.ChangeTime.OnTimeChangeEnd += TimeChangeEnded;
     }
 
     public override void ExitState()
@@ -22,7 +22,7 @@ public class CancelStateTempo : ChangeTempoBaseState
         _changedTime = false;
         _character.IsChangingTime = false;
 
-        _character.ChangeTime.OnTimeChangeEnd -= TimeChangeEnded;
+        GameManager.Instance.OnTimeChangeAborted -= TimeChangeAborted;
     }
 
     public override void UpdateState()
@@ -40,7 +40,7 @@ public class CancelStateTempo : ChangeTempoBaseState
         base.CheckChangeState();
     }
 
-    private void TimeChangeEnded(bool isPast)
+    private void TimeChangeAborted()
     {
         _changedTime = true;
     }

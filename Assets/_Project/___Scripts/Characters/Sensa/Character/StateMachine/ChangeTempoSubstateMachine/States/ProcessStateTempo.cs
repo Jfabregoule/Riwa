@@ -17,7 +17,7 @@ public class ProcessStateTempo : ChangeTempoBaseState
         _character.CanChangeTime = false;
 
         _character.ChangeTime.StartTimeChange();
-        _character.ChangeTime.OnTimeChangeEnd += TimeChangeEnded;
+        GameManager.Instance.OnTimeChangeEnded += TimeChangeEnded;
 
         _character.IsInPast = !_character.IsInPast;
         _character.Soul.GetComponent<ASoul>().IsInPast = _character.IsInPast;
@@ -41,7 +41,7 @@ public class ProcessStateTempo : ChangeTempoBaseState
         _changedTime = false;
         _character.IsChangingTime = false;
 
-        _character.ChangeTime.OnTimeChangeEnd -= TimeChangeEnded;
+        GameManager.Instance.OnTimeChangeEnded -= TimeChangeEnded;
     }
 
     public override void UpdateState()
@@ -59,11 +59,9 @@ public class ProcessStateTempo : ChangeTempoBaseState
         }
     }
 
-    private void TimeChangeEnded(bool isPast)
+    private void TimeChangeEnded(Temporality temporality)
     {
         _changedTime = true;
         _character.CanChangeTime = true;
-
-        
     }
 }

@@ -52,10 +52,12 @@ public enum DialogueOptions
 public enum DialogueEventType
 {
     None,
+    CameraStartFloor1Room2
 }
 
 public enum WaitDialogueEventType
 {
     None,
-    Test
+    Test,
+    SequenceCinematicFloor1Room2
 }

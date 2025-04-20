@@ -23,14 +23,14 @@ public class TranslateSystem : MonoBehaviour
 
     private void Start()
     {
-        DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.Test, test);
+        //DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.Test, test);
         //DialogueSystem.Instance.RegisterWaitEvent(WaitDialogueEventType.Test, () => test?.Invoke());
     }
     public void ChangeLanguage(EnumLanguage language)
     {
         CurrentLanguage = language;
         OnLanguageChanged?.Invoke();
-        DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.Test);
+        //DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.Test);
     }
 
     public EnumLanguage GetCurrentLanguage()

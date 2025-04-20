@@ -24,7 +24,7 @@ public class InteractStateCharacter : ParentInteractState<EnumStateCharacter>
         base.ExitState();
 
         _subStateMachine.ChangeState(_subStateMachine.States[EnumInteract.StandBy]);
-
+        _character?.InteractEnd();
     }
     
     public override void UpdateState()

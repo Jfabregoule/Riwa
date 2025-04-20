@@ -19,10 +19,7 @@ public class ProcessStateTempo : ChangeTempoBaseState
         _character.ChangeTime.StartTimeChange();
         GameManager.Instance.OnTimeChangeEnded += TimeChangeEnded;
 
-        _character.IsInPast = !_character.IsInPast;
-        _character.Soul.GetComponent<ASoul>().IsInPast = _character.IsInPast;
-
-        if (!_character.IsInPast)
+        if (GameManager.Instance.CurrentTemporality == EnumTemporality.Present)
         {
             Physics.IgnoreLayerCollision(_character.gameObject.layer, Mathf.Clamp(Mathf.RoundToInt(Mathf.Log(_character.PastLayer.value, 2)), 0, 31), true);
             Physics.IgnoreLayerCollision(_character.gameObject.layer, Mathf.Clamp(Mathf.RoundToInt(Mathf.Log(_character.PresentLayer.value, 2)), 0, 31), false);

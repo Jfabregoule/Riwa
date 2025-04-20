@@ -4,14 +4,15 @@ public class HUD : MonoBehaviour
 {
     private bool _isInteracting = true;
 
+    private void OnEnable()
+    {
+        GameManager.Instance.Character.OnInteractStarted += () => _isInteracting = true;
+        GameManager.Instance.Character.OnInteractEnded += () => _isInteracting = false;
+    }
+
     public void ChangeTime()
     {
         GameManager.Instance.Character.TriggerChangeTempo();
-    }
-
-    public void ChangeToSoul()
-    {
-        GameManager.Instance.Character.IsInSoul = !GameManager.Instance.Character.IsInSoul;
     }
 
     public void ToggleInteract()

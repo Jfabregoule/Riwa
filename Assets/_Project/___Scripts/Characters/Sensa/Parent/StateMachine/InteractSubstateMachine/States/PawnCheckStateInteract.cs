@@ -7,6 +7,7 @@ public class PawnCheckStateInteract<TStateEnum> : PawnInteractBaseSubstate<TStat
 {
 
     protected readonly List<GameObject> _colliderList = new();
+    protected bool _canInteract = false;
 
     public override void InitState(PawnInteractSubstateMachine<TStateEnum> stateMachine, EnumInteract enumValue, APawn<TStateEnum> character)
     {
@@ -17,24 +18,26 @@ public class PawnCheckStateInteract<TStateEnum> : PawnInteractBaseSubstate<TStat
     {
         base.EnterState();
 
-
         _colliderList.Clear();
 
         float security = 3f;
 
-        float heigth = _character.CapsuleCollider.height * _character.transform.localScale.x;
-
-        Vector3 point1 = _character.transform.position;
-        Vector3 point2 = _character.transform.position + Vector3.up * heigth;
+        float height = _character.CapsuleCollider.height * _character.transform.localScale.x;
         float radius = _character.CapsuleCollider.radius * _character.transform.localScale.x * security;
 
-        //Offset pour mettre la capsule devant le joueur
-        point1 += _character.transform.forward * radius * 0.8f;
-        point2 += _character.transform.forward * radius * 0.8f;
+        Vector3 point1 = _character.transform.position;
+        Vector3 point2 = _character.transform.position + Vector3.up * height;
 
-        LayerMask layerMask = _character.IsInPast ? _character.PastLayer : _character.PresentLayer;
+        // Offset the capsule forward to scan ahead of the player
+        Vector3 forwardOffset = _character.transform.forward * radius * 0.8f;
+        point1 += forwardOffset;
+        point2 += forwardOffset;
+
+        LayerMask layerMask = GameManager.Instance.CurrentTemporality == EnumTemporality.Past ? _character.PastLayer : _character.PresentLayer;
 
         Collider[] others = Physics.OverlapCapsule(point1, point2, radius, layerMask);
+
+        // Debug Draws to visualize the capsule and area
         Debug.DrawLine(point2, point2 + Vector3.right * radius, Color.white, 10f);
         Debug.DrawLine(point1, point1 + Vector3.right * radius, Color.magenta, 10f);
 
@@ -47,13 +50,18 @@ public class PawnCheckStateInteract<TStateEnum> : PawnInteractBaseSubstate<TStat
         Debug.DrawLine(point2, point2 + -Vector3.forward * radius, Color.white, 10f);
         Debug.DrawLine(point1, point1 + -Vector3.forward * radius, Color.magenta, 10f);
 
+        Vector3 sphereCastOrigin = _character.transform.position + Vector3.up * (height * 0.5f);
+        float sphereCastRadius = 0.2f; // Thickness of the spherecast
+
         foreach (Collider collider in others)
         {
             if (collider.gameObject.TryGetComponent<IInteractable>(out IInteractable obj))
             {
-                RaycastHit hit;
+                Vector3 targetPoint = collider.bounds.center;
+                Vector3 direction = (targetPoint - sphereCastOrigin).normalized;
+                float distance = Vector3.Distance(sphereCastOrigin, targetPoint) + 0.5f;
 
-                if (Physics.Raycast(_character.transform.position + Vector3.up * heigth / 2, (collider.gameObject.transform.position + Vector3.up * heigth / 2 - _character.transform.position).normalized, out hit, radius * 2, layerMask))
+                if (Physics.SphereCast(sphereCastOrigin, sphereCastRadius, direction, out RaycastHit hit, distance, layerMask))
                 {
                     if (hit.collider.gameObject == collider.gameObject)
                     {
@@ -65,18 +73,19 @@ public class PawnCheckStateInteract<TStateEnum> : PawnInteractBaseSubstate<TStat
 
         if (_colliderList.Count <= 0)
         {
-            //Si il n'y a aucun obj interactaible, rien ne se passes
-            ChangeStateToIdle();
+            // No interactable objects found
+            _canInteract = false;
             return;
         }
 
         _subStateMachine.CurrentObjectInteract = SortObjects(_character.transform.position, _colliderList);
-
+        _canInteract = true;
     }
 
     public override void ExitState()
     {
         base.ExitState();
+        _canInteract = false;
     }
 
     public override void UpdateState()
@@ -87,7 +96,14 @@ public class PawnCheckStateInteract<TStateEnum> : PawnInteractBaseSubstate<TStat
     public override void CheckChangeState()
     {
         base.CheckChangeState();
-        ChangeStateToMove();
+        
+        if (_canInteract)
+        {
+            ChangeStateToMove();
+            _character?.InteractBegin();
+        }
+        else
+            ChangeStateToIdle();
     }
 
     public virtual void ChangeStateToIdle() { }

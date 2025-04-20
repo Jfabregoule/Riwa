@@ -23,7 +23,7 @@ public class CheckStateTempo : ChangeTempoBaseState
         _point1 = _character.transform.position + Vector3.up * _character.CapsuleCollider.radius * scale + Vector3.up * (1 - security);
         _point2 = _character.transform.position + Vector3.up * _character.CapsuleCollider.height * scale - Vector3.up * _character.CapsuleCollider.radius * scale - Vector3.up * (1 - security);
 
-        LayerMask layerMask = _character.IsInPast ? _character.PresentLayer : _character.PastLayer;
+        LayerMask layerMask = GameManager.Instance.CurrentTemporality == EnumTemporality.Past ? _character.PresentLayer : _character.PastLayer;
 
         if (Physics.CheckCapsule(_point1, _point2, _radius, layerMask))
         {

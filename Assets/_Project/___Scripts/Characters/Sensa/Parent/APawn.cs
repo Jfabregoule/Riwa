@@ -20,10 +20,10 @@ public class APawn<TStateEnum> : MonoBehaviour
     [SerializeField] protected LayerMask _pastLayer;
     [SerializeField] protected LayerMask _presentLayer;
 
-    protected bool isInPast = false;
-
     public delegate void PawnDelegate();
     public event PawnDelegate OnMoveToFinished;
+    public event PawnDelegate OnInteractStarted;
+    public event PawnDelegate OnInteractEnded;
 
     public Rigidbody Rb { get => _rb; }
     public InputManager InputManager { get => _inputManager; }
@@ -32,7 +32,6 @@ public class APawn<TStateEnum> : MonoBehaviour
     public StateMachinePawn<TStateEnum, BaseStatePawn<TStateEnum>> StateMachine { get => _stateMachine; set => _stateMachine = value; }
     public LayerMask PastLayer { get => _pastLayer; }
     public LayerMask PresentLayer { get => _presentLayer; }
-    public bool IsInPast { get => isInPast; set => isInPast = value; }
     public Animator Animator { get => _animator; set => _animator = value; }
 
     public void MoveTo(Vector3 position, Vector3 objectPos, bool endRotate = true)
@@ -41,7 +40,7 @@ public class APawn<TStateEnum> : MonoBehaviour
     }
 
     private IEnumerator CoroutineMoveTo(Vector3 startPos, Vector3 targetPos, Vector3 objectPos, bool endRotate)
-    {   
+    {
         targetPos.y = startPos.y;
 
         Vector3 direction = (targetPos - startPos).normalized;
@@ -49,7 +48,7 @@ public class APawn<TStateEnum> : MonoBehaviour
         Quaternion targetRotation = Quaternion.LookRotation(direction);
 
         float distance = Vector3.Distance(startPos, targetPos);
-        float duration = distance / _walkSpeed; 
+        float duration = distance / _walkSpeed;
         float clock = 0f;
 
         while (clock < duration)
@@ -64,18 +63,18 @@ public class APawn<TStateEnum> : MonoBehaviour
             yield return null;
         }
 
-        clock = 0; 
+        clock = 0;
         startRotation = transform.rotation;
         Vector3 lookDir = objectPos - transform.position;
         lookDir.y = 0f;
         if (lookDir != Vector3.zero)
             targetRotation = Quaternion.LookRotation(lookDir);
 
-        if(!endRotate)
+        if (!endRotate)
         {
             clock = 1.1f;
         }
-        
+
         OnMoveToFinished?.Invoke();
 
         while (clock < 1)
@@ -90,4 +89,13 @@ public class APawn<TStateEnum> : MonoBehaviour
 
     }
 
+    public void InteractBegin()
+    {
+        OnInteractStarted?.Invoke();
+    }
+
+    public void InteractEnd()
+    {
+        OnInteractEnded?.Invoke();
+    }
 }

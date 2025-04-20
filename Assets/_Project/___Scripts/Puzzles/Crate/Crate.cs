@@ -48,8 +48,6 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
 
     public bool Move(Vector3 direction)
     {
-        //CHECK DE SI ON PEUT BOUGER
-
         if (_isMoving) return true;
 
         Vector3 multiplicator = Vector3.Scale(_boxSize / 2, direction);
@@ -58,7 +56,7 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
         Vector3 size = _boxSize * 0.5f;
         size.x = MoveDistance;
 
-        LayerMask layerMask = _character.IsInPast ? _character.PastLayer : _character.PresentLayer;
+        LayerMask layerMask = GameManager.Instance.CurrentTemporality == EnumTemporality.Past ? _character.PastLayer : _character.PresentLayer;
 
         Collider[] colliders = Physics.OverlapBox(transform.position + multiplicator, size, Quaternion.Euler(new Vector3(0,90 * direction.z, 0)), layerMask);
 

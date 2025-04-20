@@ -403,7 +403,7 @@ Light:
   serializedVersion: 10
   m_Type: 3
   m_Shape: 0
-  m_Color: {r: 1, g: 0.9841643, b: 0.8820755, a: 1}
+  m_Color: {r: 0, g: 1, b: 0.162251, a: 1}
   m_Intensity: 1.2
   m_Range: 10
   m_SpotAngle: 30
@@ -5967,7 +5967,7 @@ Light:
   serializedVersion: 10
   m_Type: 3
   m_Shape: 0
-  m_Color: {r: 0.90214604, g: 1, b: 0.8632076, a: 1}
+  m_Color: {r: 1, g: 0, b: 0.4768405, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -6098,8 +6098,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isPast: 0
-  _pastLightData: {fileID: 11400000, guid: 9784a02839cbf5e428572b62d2de518d, type: 2}
-  _presentLightData: {fileID: 11400000, guid: 9fd61b20e814ffd42ae5ab126819ebc6, type: 2}
+  _pastLightData: {fileID: 0}
+  _presentLightData: {fileID: 0}
 --- !u!1 &1133988303
 GameObject:
   m_ObjectHideFlags: 0
@@ -7057,6 +7057,11 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
+    - target: {fileID: 514503058540115826, guid: b9381486b4e936040babf583dc2b946a,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: b60168c56dc45244fabc0af83b4fe391, type: 2}
     - target: {fileID: 1067404852184227262, guid: b9381486b4e936040babf583dc2b946a,
         type: 3}
       propertyPath: m_LocalPosition.x

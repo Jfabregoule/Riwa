@@ -52,10 +52,17 @@ public enum DialogueOptions
 public enum DialogueEventType
 {
     None,
+    RiwaSensaDamierDiscussionRoom3,
+    RiwaShowDamierPath,
+    RiwaEndShowingPath,
+    ShowLianaPath,
+    RiwaSensaLianaDiscussionRoom3
 }
 
 public enum WaitDialogueEventType
 {
     None,
-    Test
+    Test,
+    RiwaHiddingIntoSensa,
+    WaitEndOfLianaPathTravel
 }

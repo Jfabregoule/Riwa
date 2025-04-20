@@ -40,7 +40,7 @@ public class DialogueSystem : Singleton<DialogueSystem>
 
         EventRegistery = new DialogueEventRegistry();
 
-        BeginDialogue(_test);
+        //BeginDialogue(_test);
 
         _beginSequencer.Init();
         _transiUISequencer.Init();

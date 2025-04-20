@@ -836,6 +836,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 8df170f00c7ea814f9db70c38132c9d7, type: 2}
+    - target: {fileID: 638794765526164201, guid: 3ed1d959786c9ce4d907b604a79adb2c,
+        type: 3}
+      propertyPath: m_TagString
+      value: Obstructable
+      objectReference: {fileID: 0}
     - target: {fileID: 945593686788443248, guid: 3ed1d959786c9ce4d907b604a79adb2c,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -861,6 +866,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 8df170f00c7ea814f9db70c38132c9d7, type: 2}
+    - target: {fileID: 1752503100999347803, guid: 3ed1d959786c9ce4d907b604a79adb2c,
+        type: 3}
+      propertyPath: m_TagString
+      value: Obstructable
+      objectReference: {fileID: 0}
     - target: {fileID: 1783323287685078645, guid: 3ed1d959786c9ce4d907b604a79adb2c,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1021,6 +1031,16 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: d54a1a229bc83b04d8fcc419869142d3, type: 2}
+    - target: {fileID: 3437696335843279023, guid: 3ed1d959786c9ce4d907b604a79adb2c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3437696335843279023, guid: 3ed1d959786c9ce4d907b604a79adb2c,
+        type: 3}
+      propertyPath: m_TagString
+      value: Obstructable
+      objectReference: {fileID: 0}
     - target: {fileID: 3548528075606088706, guid: 3ed1d959786c9ce4d907b604a79adb2c,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1051,6 +1071,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 8df170f00c7ea814f9db70c38132c9d7, type: 2}
+    - target: {fileID: 4479940852753217193, guid: 3ed1d959786c9ce4d907b604a79adb2c,
+        type: 3}
+      propertyPath: m_TagString
+      value: Obstructable
+      objectReference: {fileID: 0}
     - target: {fileID: 4523761056541435005, guid: 3ed1d959786c9ce4d907b604a79adb2c,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1230,7 +1255,23 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 1026516053026309746, guid: 3ed1d959786c9ce4d907b604a79adb2c, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 638794765526164201, guid: 3ed1d959786c9ce4d907b604a79adb2c,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2017895904}
+    - targetCorrespondingSourceObject: {fileID: 4479940852753217193, guid: 3ed1d959786c9ce4d907b604a79adb2c,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2125030748}
+    - targetCorrespondingSourceObject: {fileID: 3437696335843279023, guid: 3ed1d959786c9ce4d907b604a79adb2c,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1397763846}
+    - targetCorrespondingSourceObject: {fileID: 1752503100999347803, guid: 3ed1d959786c9ce4d907b604a79adb2c,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1841760298}
   m_SourcePrefab: {fileID: 100100000, guid: 3ed1d959786c9ce4d907b604a79adb2c, type: 3}
 --- !u!4 &536127452 stripped
 Transform:
@@ -2654,6 +2695,33 @@ MonoBehaviour:
   - {fileID: 1080390054}
   - {fileID: 1080390053}
   - {fileID: 1080390052}
+--- !u!1 &1397763842 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3437696335843279023, guid: 3ed1d959786c9ce4d907b604a79adb2c,
+    type: 3}
+  m_PrefabInstance: {fileID: 536127451}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1397763846
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1397763842}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 500, y: 500, z: 166.19922}
+  m_Center: {x: 250, y: 250, z: -83.09961}
 --- !u!1 &1555125736
 GameObject:
   m_ObjectHideFlags: 0
@@ -2940,6 +3008,33 @@ Transform:
   - {fileID: 72351741}
   m_Father: {fileID: 1251180083}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1841760294 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1752503100999347803, guid: 3ed1d959786c9ce4d907b604a79adb2c,
+    type: 3}
+  m_PrefabInstance: {fileID: 536127451}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1841760298
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1841760294}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 300.00208, y: 19.998566, z: 351.79382}
+  m_Center: {x: -149.99954, y: 9.999603, z: 175.89612}
 --- !u!1 &1892692505
 GameObject:
   m_ObjectHideFlags: 0
@@ -3387,6 +3482,33 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!1 &2017895900 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 638794765526164201, guid: 3ed1d959786c9ce4d907b604a79adb2c,
+    type: 3}
+  m_PrefabInstance: {fileID: 536127451}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &2017895904
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2017895900}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 117.58222, y: 500, z: 599.9749}
+  m_Center: {x: 58.790573, y: 250, z: -299.98743}
 --- !u!1 &2055168021
 GameObject:
   m_ObjectHideFlags: 0
@@ -3784,6 +3906,33 @@ Transform:
   - {fileID: 862504367}
   m_Father: {fileID: 505387577}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2125030744 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4479940852753217193, guid: 3ed1d959786c9ce4d907b604a79adb2c,
+    type: 3}
+  m_PrefabInstance: {fileID: 536127451}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &2125030748
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2125030744}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 600, y: 500, z: 103.91264}
+  m_Center: {x: -300, y: -250.00005, z: 51.956356}
 --- !u!1 &2136124311
 GameObject:
   m_ObjectHideFlags: 0
@@ -3797,6 +3946,7 @@ GameObject:
   - component: {fileID: 2136124312}
   - component: {fileID: 2136124315}
   - component: {fileID: 2136124316}
+  - component: {fileID: 2136124317}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3956,6 +4106,23 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2136124317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2136124311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fbc253d1998398429897f86879e4bf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 230566527}
+  fadeDuration: 1.5
+  obstructableTag: Obstructable
+  colorPropertyName: _Color
+  targetObstructedAlpha: 0
 --- !u!114 &1295893090413329464
 MonoBehaviour:
   m_ObjectHideFlags: 0

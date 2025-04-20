@@ -14,6 +14,7 @@ public class TutorialRoom3Manager : MonoBehaviour
     private Floor1Room3LevelManager _instance;
     private Vector3 _damierDiscussionPosition;
     private int currentIndex = 0;
+    private int previousIndex = -1;
 
     public Vector3 DamierDiscussionPosition { get => _damierDiscussionPosition; set => _damierDiscussionPosition = value; }
     public List<DialogueAsset> Room3Dialogue { get => _damierDialogue; }
@@ -61,10 +62,10 @@ public class TutorialRoom3Manager : MonoBehaviour
 
     private void SwitchToCamera(int index)
     {
-        for (int i = 0; i < _instance.VinesCameras.Count; i++)
-        {
-            _instance.VinesCameras[i].Priority = (i == index) ? 20 : 0;
-        }
+        if(previousIndex >= 0 && previousIndex < _instance.VinesCameras.Count)
+            _instance.VinesCameras[previousIndex].Priority = 0;
+
+        _instance.VinesCameras[index].Priority = 20;
     }
 
     #region Coroutine
@@ -109,8 +110,7 @@ public class TutorialRoom3Manager : MonoBehaviour
 
     public IEnumerator HideRiwaAgain(bool showDamierDialogue)
     {
-        if(showDamierDialogue)
-            DialogueSystem.Instance.BeginDialogue(_damierDialogue[1]);
+        if(showDamierDialogue) DialogueSystem.Instance.BeginDialogue(_damierDialogue[1]);
         Vector3 initialPos = _instance.Chawa.transform.position;
         Vector3 targetPos = GameManager.Instance.Character.transform.position;
         Vector3 finalScale = new Vector3(0f, 0f, 0f);
@@ -137,6 +137,7 @@ public class TutorialRoom3Manager : MonoBehaviour
 
         yield return new WaitForSeconds(1.5f);
         DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.RiwaHiddingIntoSensa);
+        if (!showDamierDialogue) _instance.RiwaSensaCamera[1].Priority = 0;
     }
 
     #endregion
@@ -150,12 +151,16 @@ public class TutorialRoom3Manager : MonoBehaviour
         while (currentIndex < _instance.VinesCameras.Count)
         {
             SwitchToCamera(currentIndex);
+            previousIndex = currentIndex;
             currentIndex++;
             yield return new WaitForSeconds(2.5f);
         }
 
+        _instance.VinesCameras[previousIndex].Priority = 0;
         DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.WaitEndOfLianaPathTravel);
         _instance.RiwaSensaCamera[1].Priority = 20;
+        yield return new WaitForSeconds(2f);
+        StartCoroutine(HideRiwaAgain(false));
     }
 
     #endregion

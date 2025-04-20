@@ -3,6 +3,7 @@ using UnityEngine;
 public class HUD : MonoBehaviour
 {
     private bool _isInteracting = true;
+    [SerializeField] private GameObject _videoPlayer;
 
     private void OnEnable()
     {

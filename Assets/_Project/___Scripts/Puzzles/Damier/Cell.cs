@@ -6,6 +6,7 @@ public class Cell : MonoBehaviour, IRespawnable
     private LayerMask whatIsPlayer;
     private Vector3 _respawnPosition;
     private Vector3 _respawnRotation;
+    private CellState _state;
 
     public delegate void CellTrigered(CellPos pos, Cell cell);
     public event CellTrigered OnCellTriggered;
@@ -14,8 +15,9 @@ public class Cell : MonoBehaviour, IRespawnable
     public CellPos Position { get; private set; }
     public Vector3 RespawnPosition { get => _respawnPosition; set => _respawnPosition = value; }
     public Vector3 RespawnRotation { get => _respawnRotation; set => _respawnRotation = value; }
+    public CellState State { get => _state; set => _state = value; }
 
-    public void Init(CellPos pos) {  Position = pos; }
+    public void Init(CellPos pos, CellState state) {  Position = pos; State = state; }
 
     private void Awake()
     {
@@ -29,8 +31,11 @@ public class Cell : MonoBehaviour, IRespawnable
         if (((1 << other.gameObject.layer) & whatIsPlayer) != 0)
         {
             OnCellTriggered?.Invoke(Position, this);
-            ACharacter chara = GameManager.Instance.Character;
-            chara.StateMachine.ChangeState(chara.StateMachine.States[EnumStateCharacter.Fall]);
+            if (State == CellState.Broken)
+            {
+                ACharacter chara = GameManager.Instance.Character;
+                chara.StateMachine.ChangeState(chara.StateMachine.States[EnumStateCharacter.Fall]);
+            }
         }
     }
 

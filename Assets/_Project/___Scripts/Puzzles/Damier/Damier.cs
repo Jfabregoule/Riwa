@@ -55,7 +55,7 @@ public class Damier : MonoBehaviour
         foreach (var data in serializedDamier)
         {
             Cell script = data.cell.GetComponent<Cell>();
-            script.Init(data.cellPos);
+            script.Init(data.cellPos, data.cellState);
             _damier.Add(data.cellPos, new DamierDatas(data.cellPos, data.cell, data.cellState));
             script.OnCellTriggered += OnCellTriggered;
         }
@@ -99,7 +99,7 @@ public class Damier : MonoBehaviour
                 collider.center = new Vector3(0f, 0.1f, 0f);
                 BoxCollider ground = cell.AddComponent<BoxCollider>();
                 Cell cellScript = cell.AddComponent<Cell>();
-                cellScript.Init(pos);
+                cellScript.Init(pos, CellState.Breakable);
                 Rigidbody rb = cell.AddComponent<Rigidbody>();
                 rb.isKinematic = true;
                 cell.layer = 6;
@@ -387,6 +387,7 @@ public class Damier : MonoBehaviour
         DamierDatas data = _damier[pos];
         data.SetCellState(state);
         _damier[pos] = data;
+        data.cell.GetComponent<Cell>().State = state;
     }
 
     public void RespawnBrokenTile()

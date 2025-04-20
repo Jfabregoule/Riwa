@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class VineRetraction : MonoBehaviour
 {
+    public UnityEvent OnGrow;
+    public UnityEvent OnUnGrow;
+
     [Header("GOs")]
     [SerializeField] private GameObject _vine;
     [SerializeField] private GameObject _box;
@@ -41,13 +45,18 @@ public class VineRetraction : MonoBehaviour
             float centerZ = Mathf.Lerp(_maxCenter, 0f, zRatio);
 
             ChangeVineDatas(growValue, height, new Vector3(0, 0, centerZ));
+
+            OnGrow.Invoke();
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject == _box)
+        {
             ChangeVineDatas(1, 13.5f, new Vector3(0, 0, -0.5f));
+            OnUnGrow.Invoke();
+        }
     }
 
     private void ChangeVineDatas(float growValue, float height, Vector3 center)

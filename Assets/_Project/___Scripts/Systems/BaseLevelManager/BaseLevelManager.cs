@@ -1,5 +1,20 @@
+using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
+
+public enum EnumCameraRoom
+{
+    Main,
+    LookAtTree,
+    LookAtDoor
+}
+
+[System.Serializable]
+public struct RoomCamera
+{
+    public CinemachineVirtualCamera _camera;
+    public EnumCameraRoom _id;
+}
 
 public class BaseLevelManager : Singleton<BaseLevelManager>
 {
@@ -15,14 +30,19 @@ public class BaseLevelManager : Singleton<BaseLevelManager>
     
     [Header("Les 3C")]
 
-    [SerializeField] private CameraHandler _cameraHandler;
-    [SerializeField] private ACharacter _character;
-    [SerializeField] private VariableJoystick _joystick;
+    [SerializeField] protected CameraHandler _cameraHandler;
+    [SerializeField] protected ACharacter _character;
+    [SerializeField] protected VariableJoystick _joystick;
 
     [Header("Player setup")]
 
-    [SerializeField] private Vector3 _playerSpawnPosition;
-    [SerializeField] private Vector3 _playerSpawnRotation;
+    [SerializeField] protected Vector3 _playerSpawnPosition;
+    [SerializeField] protected Vector3 _playerSpawnRotation;
+
+    [Header("Camera")]
+
+    [SerializeField] protected List<RoomCamera> _cameras;
+    public readonly Dictionary<EnumCameraRoom, CinemachineVirtualCamera> CameraDictionnary = new();
 
     public void OnEnable()
     {

@@ -26,6 +26,8 @@ public class GameManager : Singleton<GameManager>
     private VariableJoystick _joystick;
     private EnumTemporality _currentTemporality;
 
+    private BlackScreen _blackScreen;
+
     public delegate void ChangeTimeEvent(EnumTemporality temporality);
     public event ChangeTimeEvent OnTimeChangeStarted;
     public event ChangeTimeEvent OnTimeChangeEnded;
@@ -37,6 +39,7 @@ public class GameManager : Singleton<GameManager>
     public ACharacter Character { get => _character; }
     public Joystick Joystick { get => _joystick; }
     public EnumTemporality CurrentTemporality { get => _currentTemporality; set => _currentTemporality = value; }
+    public BlackScreen BlackScreen { get => _blackScreen; set => _blackScreen = value; }
 
     #endregion
 
@@ -44,6 +47,9 @@ public class GameManager : Singleton<GameManager>
     {
         TranslateSystem = GameObject.FindGameObjectWithTag(TRANSLATE_TAG).GetComponent<TranslateSystem>();
         CurrentTemporality = EnumTemporality.Present;
+
+        _blackScreen = GameObject.Find("BlackScreen").GetComponent<BlackScreen>();
+
     }
 
     public void Load3C(CameraHandler cameraHandler, ACharacter character, VariableJoystick joystick)

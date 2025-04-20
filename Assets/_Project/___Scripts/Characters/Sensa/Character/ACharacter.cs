@@ -55,7 +55,7 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
     //
 
     public delegate void NoArgVoid();
-    public NoArgVoid OnChangeTempo;
+    public event NoArgVoid OnChangeTempo;
 
     public event IRespawnable.RespawnEvent OnRespawn;
 

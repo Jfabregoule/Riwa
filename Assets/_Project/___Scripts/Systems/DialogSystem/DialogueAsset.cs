@@ -58,12 +58,18 @@ public enum DialogueEventType
     ShowLianaPath,
     RiwaSensaLianaDiscussionRoom3,
     RiwaSensaDiscussRoom4
+    CameraStartFloor1Room2,
+    RiwaOutFloor1Room2,
+    RiwaInFloor1Room2
 }
 
 public enum WaitDialogueEventType
 {
     None,
     Test,
+    SequenceCinematicFloor1Room2,
+    SocleFloor1Room2,
+    LianaFloor1Room2
     RiwaHiddingIntoSensa,
     WaitEndOfLianaPathTravel,
     WaitForSensaLandingAtFragment,

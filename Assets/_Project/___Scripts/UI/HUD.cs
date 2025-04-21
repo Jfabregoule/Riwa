@@ -2,12 +2,21 @@ using UnityEngine;
 
 public class HUD : MonoBehaviour
 {
+    private GameManager _gameManager;
     private bool _isInteracting = true;
 
     private void OnEnable()
     {
-        GameManager.Instance.Character.OnInteractStarted += () => _isInteracting = true;
-        GameManager.Instance.Character.OnInteractEnded += () => _isInteracting = false;
+        StartCoroutine(Helpers.WaitMonoBeheviour(() => GameManager.Instance, SubscribeToGameManager));
+    }
+
+    private void OnDisable()
+    {
+        if(_gameManager != null)
+        {
+            _gameManager.Character.OnInteractStarted += () => _isInteracting = true;
+            _gameManager.Character.OnInteractEnded += () => _isInteracting = false;
+        }
     }
 
     public void ChangeTime()
@@ -26,6 +35,16 @@ public class HUD : MonoBehaviour
             GameManager.Instance.Character.InputManager.InteractFalse();
         }
         _isInteracting = !_isInteracting;
+    }
+
+    private void SubscribeToGameManager(GameManager script)
+    {
+        if (script != null)
+        {
+            _gameManager = script;
+            _gameManager.Character.OnInteractStarted += () => _isInteracting = true;
+            _gameManager.Character.OnInteractEnded += () => _isInteracting = false;
+        }
     }
 
 }

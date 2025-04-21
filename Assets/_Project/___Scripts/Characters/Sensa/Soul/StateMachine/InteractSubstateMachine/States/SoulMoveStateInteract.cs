@@ -40,7 +40,8 @@ public class SoulMoveStateInteract : PawnMoveStateInteract<EnumStateSoul>
 
         if (_subStateMachine.CurrentObjectInteract.TryGetComponent(out IInteractableSoul bud))
         {
-            bud.InteractableSoul();
+            bud.InteractableSoul(); 
+            bud.Interact();
             ChangeStateToIdle();
             return;
         }

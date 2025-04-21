@@ -94,9 +94,12 @@ public class ActivableDoor : MonoBehaviour
 
         transform.position = targetPosition;
 
-        _doorCameras[1].Priority = 0;
-        yield return new WaitForSeconds(2f);
-        _doorCameras[0].Priority = 0;
-        yield return new WaitForSeconds(2f);
+        if (_doorCameras.Count > 0)
+        {
+            _doorCameras[1].Priority = 0;
+            yield return new WaitForSeconds(2f);
+            _doorCameras[0].Priority = 0;
+            yield return new WaitForSeconds(2f);
+        }
     }
 }

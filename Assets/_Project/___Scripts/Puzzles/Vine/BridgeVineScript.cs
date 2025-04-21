@@ -23,11 +23,16 @@ public class BridgeVineScript : MonoBehaviour, IInteractableSoul
     private BoxCollider _boxCollider;
     private float _minColliderHeight;
 
+    private DialogueSystem _dialogueSystem;
+    public Action OnInteract;
+
     void Start()
     {
         _boxCollider = GetComponent<BoxCollider>();
         _minColliderHeight = _boxCollider.size.x;
         _material = GetComponent<MeshRenderer>().material;
+
+        StartCoroutine(Helpers.WaitMonoBeheviour(() => DialogueSystem.Instance, SubscribeToDialogueSystem));
     }
 
     private IEnumerator RaiseVine()
@@ -51,10 +56,19 @@ public class BridgeVineScript : MonoBehaviour, IInteractableSoul
 
     public void Interact()
     {
-
+        _dialogueSystem.EventRegistery.Invoke(WaitDialogueEventType.LianaFloor1Room2);
     }
     public void InteractableSoul()
     {
         StartCoroutine(RaiseVine());
+    }
+
+    private void SubscribeToDialogueSystem(DialogueSystem script)
+    {
+        if (script != null)
+        {
+            _dialogueSystem = script;
+            _dialogueSystem.EventRegistery.Register(WaitDialogueEventType.LianaFloor1Room2, OnInteract);
+        }
     }
 }

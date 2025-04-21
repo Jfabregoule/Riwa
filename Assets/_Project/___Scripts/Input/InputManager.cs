@@ -89,6 +89,16 @@ public class InputManager : Singleton<InputManager>
         _controls.Dialogue.Disable();
     }
 
+    public void EnableGameplayWithoutInteractControls()
+    {
+        _toggleJoystick = true;
+    }
+
+    public void DisableGameplayWithoutInteractControls()
+    {
+        _toggleJoystick = false;
+    }
+
     #endregion
 
     #region Public Readers

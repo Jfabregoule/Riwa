@@ -56,7 +56,8 @@ public enum DialogueEventType
     RiwaShowDamierPath,
     RiwaEndShowingPath,
     ShowLianaPath,
-    RiwaSensaLianaDiscussionRoom3
+    RiwaSensaLianaDiscussionRoom3,
+    RiwaSensaDiscussRoom4
 }
 
 public enum WaitDialogueEventType
@@ -64,5 +65,8 @@ public enum WaitDialogueEventType
     None,
     Test,
     RiwaHiddingIntoSensa,
-    WaitEndOfLianaPathTravel
+    WaitEndOfLianaPathTravel,
+    WaitForSensaLandingAtFragment,
+    WaitPlayerToInteract,
+    WaitShowRoom4End
 }

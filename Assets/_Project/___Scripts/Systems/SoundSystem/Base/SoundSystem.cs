@@ -11,27 +11,6 @@ using UnityEngine.Windows;
 public class SoundSystem<T> : Singleton<T> where T : SoundSystem<T>
 {
 
-    #region Classes
-    /// <summary>
-    /// Représente un effet sonore avec une clé d'identification et une liste de clips audio associés.
-    /// </summary>
-    public class SoundFX
-    {
-        public string key; // Clé unique de l'effet sonore.
-        public List<AudioClip> clip; // Liste des clips audio associés à la clé.
-    }
-
-    /// <summary>
-    /// Représente une piste musicale ou d'ambiance avec une clé d'identification et un clip audio associé.
-    /// </summary>
-    public class Track
-    {
-        public string key; // Clé unique de la piste musicale ou ambiance.
-        public AudioClip clip; // Clip audio associé.
-    }
-
-    #endregion
-
     #region Fields
 
     [Header("Files Paths")]
@@ -70,9 +49,9 @@ public class SoundSystem<T> : Singleton<T> where T : SoundSystem<T>
     private AudioSource _currentMusicSource; // Source audio actuellement utilisée pour la musique.
     private List<AudioSource> _currentAmbianceSources; // Liste des sources audio d'ambiance.
 
-    protected List<Track> _musicList = new List<Track>(); // Liste des pistes musicales chargées.
-    protected List<Track> _ambianceList = new List<Track>(); // Liste des sons d'ambiance chargés.
-    protected List<SoundFX> _SFXList = new List<SoundFX>(); // Liste des effets sonores chargés.
+    protected Dictionary<string, AudioClip> _musicList = new Dictionary<string, AudioClip>(); // Liste des pistes musicales chargées.
+    protected Dictionary<string, AudioClip> _ambianceList = new Dictionary<string, AudioClip>(); // Liste des sons d'ambiance chargés.
+    protected Dictionary<string, List<AudioClip>> _SFXList = new Dictionary<string, List<AudioClip>>(); // Liste des effets sonores chargés.
 
     #endregion
 
@@ -131,20 +110,14 @@ public class SoundSystem<T> : Singleton<T> where T : SoundSystem<T>
 
             string key = $"{finalName}";
 
-            SoundFX existingSound = _SFXList.Find(sound => sound.key == key);
-
-            if (existingSound != null)
+            List<AudioClip> audioclips = null;
+            if(_SFXList.TryGetValue(key, out audioclips))
             {
-                existingSound.clip.Add(audioClip);
+                audioclips.Add(audioClip);
             }
             else
             {
-                SoundFX newSound = new SoundFX
-                {
-                    key = key,
-                    clip = new List<AudioClip> { audioClip }
-                };
-                _SFXList.Add(newSound);
+                _SFXList.Add(key, new List<AudioClip> { audioClip });
             }
         }
     }
@@ -171,13 +144,7 @@ public class SoundSystem<T> : Singleton<T> where T : SoundSystem<T>
 
             string key = $"{finalName}";
 
-            Track newTrack = new Track
-            {
-                key = key,
-                clip = audioClip
-            };
-
-            _musicList.Add(newTrack);
+            _musicList.Add(key, audioClip);
         }
     }
 
@@ -202,13 +169,7 @@ public class SoundSystem<T> : Singleton<T> where T : SoundSystem<T>
 
             string key = $"{finalName}";
 
-            Track newTrack = new Track
-            {
-                key = key,
-                clip = audioClip
-            };
-
-            _ambianceList.Add(newTrack);
+            _ambianceList.Add(key, audioClip);
         }
     }
 
@@ -247,23 +208,16 @@ public class SoundSystem<T> : Singleton<T> where T : SoundSystem<T>
     /// <returns>Audio clip trouvé retourné ou null si inéxistant.</returns>
     protected AudioClip GetSFXByKey(string key)
     {
-        foreach (var sound in _SFXList)
+        List<AudioClip> audioClips = null;
+
+        if (!_SFXList.TryGetValue(key, out audioClips))
         {
-            if (sound.key == key)
-            {
-                if (sound.clip.Count > 1)
-                {
-                    int randomIndex = UnityEngine.Random.Range(0, sound.clip.Count);
-                    return sound.clip[randomIndex];
-                }
-                else
-                {
-                    return sound.clip[0];
-                }    
-            }
+            Debug.LogWarning($"SFX not found for key: {key}");
+            return null;
         }
-        Debug.LogWarning($"SFX not found for key: {key}");
-        return null;
+
+        int randomIndex = UnityEngine.Random.Range(0, audioClips.Count);
+        return audioClips[randomIndex];
     }
 
     /// <summary>
@@ -273,15 +227,13 @@ public class SoundSystem<T> : Singleton<T> where T : SoundSystem<T>
     /// <returns>Audio clip trouvé retourné ou null si inéxistant.</returns>
     protected AudioClip GetMusicByKey(string key)
     {
-        foreach (var sound in _musicList)
+        AudioClip audioClip = null;
+        if (!_musicList.TryGetValue(key, out audioClip))
         {
-            if (sound.key == key)
-            {
-                return sound.clip;
-            }
+            Debug.LogWarning($"Music not found for key: {key}");
+            return null;
         }
-        Debug.LogWarning($"Music not found for key: {key}");
-        return null;
+        return audioClip;
     }
 
     /// <summary>
@@ -291,15 +243,13 @@ public class SoundSystem<T> : Singleton<T> where T : SoundSystem<T>
     /// <returns>Audio clip trouvé retourné ou null si inéxistant.</returns>
     protected AudioClip GetAmbianceByKey(string key)
     {
-        foreach (var sound in _ambianceList)
+        AudioClip audioClip = null;
+        if (!_ambianceList.TryGetValue(key, out audioClip))
         {
-            if (sound.key == key)
-            {
-                return sound.clip;
-            }
+            Debug.LogWarning($"Ambiance sound not found for key: {key}");
+            return null;
         }
-        Debug.LogWarning($"Ambiance not found for key: {key}");
-        return null;
+        return audioClip;
     }
 
     #endregion
@@ -409,14 +359,14 @@ public class SoundSystem<T> : Singleton<T> where T : SoundSystem<T>
     /// <param name="key">Clé du son d'ambiance à arrêter.</param>
     public void StopAmbianceSoundByKey(string key)
     {
-        foreach(AudioSource audioSource in _currentAmbianceSources)
+        List<AudioSource> sourcesToRemove = _currentAmbianceSources
+            .Where(source => source.clip.name.Split(" ")[1] == key)
+            .ToList();
+
+        foreach (AudioSource source in sourcesToRemove)
         {
-            string audioClipKey = audioSource.clip.name.Split(" ")[1];
-            if (audioClipKey == key)
-            {
-                StartCoroutine(FadeOutAudio(audioSource, _fadeOutDuration));
-                _currentAmbianceSources.Remove(audioSource);
-            }
+            StartCoroutine(FadeOutAudio(source, _fadeOutDuration));
+            _currentAmbianceSources.Remove(source);
         }
     }
 
@@ -466,6 +416,7 @@ public class SoundSystem<T> : Singleton<T> where T : SoundSystem<T>
         if (audioClip != null)
         {
             AudioSource audioSource = GetAvailableAudioSource();
+            audioSource.clip = audioClip;
             audioSource.volume = volume;
             audioSource.loop = false;
             audioSource.outputAudioMixerGroup = _sfxMixerGroup;
@@ -588,11 +539,11 @@ public class SoundSystem<T> : Singleton<T> where T : SoundSystem<T>
 
         while (currentTime < duration) {
             currentTime += Time.deltaTime;
-            audioSource.volume = Mathf.Lerp(0.0f, 1.0f, currentTime / duration);
+            audioSource.volume = Mathf.Lerp(0.0f, maxVolume, currentTime / duration);
             yield return null;
         }
 
-        audioSource.volume = 1.0f;
+        audioSource.volume = maxVolume;
     }
 
     #endregion

@@ -4,6 +4,7 @@ public class HUD : MonoBehaviour
 {
     private GameManager _gameManager;
     private bool _isInteracting = true;
+    [SerializeField] private GameObject _videoPlayer;
 
     private void OnEnable()
     {

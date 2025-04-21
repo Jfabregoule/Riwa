@@ -16,8 +16,8 @@ public class VariableDynamicJoystick : MonoBehaviour
     {
         if(_inputManager != null)
         {
-            _inputManager.OnInteract -= OnTouchStarted;
-            _inputManager.OnInteractEnd -= OnTouchEnded;
+            _inputManager.OnMove -= OnTouchStarted;
+            _inputManager.OnMoveEnd -= OnTouchEnded;
         }
     }
 
@@ -29,10 +29,10 @@ public class VariableDynamicJoystick : MonoBehaviour
         _handle = rects[1];
     }
 
-    private void OnTouchStarted()
+    private void OnTouchStarted(Vector2 position)
     {
         Helpers.EnabledCanvasGroup(_canvasGroup);
-        _background.position = _inputManager.GetPressPosition();
+        _background.position = position;
         _handle.anchoredPosition = Vector2.zero;
     }
 

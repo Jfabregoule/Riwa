@@ -25,7 +25,7 @@ public class CheckStateTempo : ChangeTempoBaseState
 
         LayerMask layerMask = GameManager.Instance.CurrentTemporality == EnumTemporality.Past ? _character.PresentLayer : _character.PastLayer;
 
-        if (Physics.CheckCapsule(_point1, _point2, _radius, layerMask))
+        if (Physics.CheckCapsule(_point1, _point2, _radius, layerMask, QueryTriggerInteraction.Ignore))
         {
             _nextState = EnumChangeTempo.Cancel;
         }

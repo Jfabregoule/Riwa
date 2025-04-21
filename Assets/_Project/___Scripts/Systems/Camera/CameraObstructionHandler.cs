@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class CameraObstructionHandler : MonoBehaviour
 {
     public Transform player;
-    public float fadeDuration = 0.5f;
+    public float fadeDuration = 1.5f;
     public string obstructableTag = "Obstructable";
     public string colorPropertyName = "_Color";
     [Range(0f, 1f)]

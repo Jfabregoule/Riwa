@@ -72,11 +72,8 @@ public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
     {
         GameObject targetDoor = GameObject.Find(_nextDoorID == 0 ? $"Door{_nextDoorDirection}" : $"Door{_nextDoorDirection}{_nextDoorID}");
 
-        if (targetDoor == null) return;
-
-        Quaternion rotation = GetRotationFromDirection(_nextDoorDirection);
-
-        GameObject.FindGameObjectWithTag("Player").transform.SetPositionAndRotation(targetDoor.transform.position + targetDoor.transform.forward * _spawnOffset, rotation);
+        if (targetDoor.TryGetComponent(out Door door))
+            door?.ExitDoor();
     }
 
     private Quaternion GetRotationFromDirection(DoorDirection direction)

@@ -2,12 +2,14 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 public class InputManager : Singleton<InputManager>
 {
     private Controls _controls;
 
-    private bool[] _touchMove;
+    private int? _joystickFingerId = null;
+    private int? _interactFingerId = null;
 
     private bool _gameplayEnabled;
     private bool _dialogueEnabled;
@@ -15,9 +17,10 @@ public class InputManager : Singleton<InputManager>
     #region Events
 
     public delegate void PressEvent();
+    public delegate void MoveEvent(Vector2 position);
     public event PressEvent OnInteract;
     public event PressEvent OnInteractEnd;
-    public event PressEvent OnMove;
+    public event MoveEvent OnMove;
     public event PressEvent OnMoveEnd;
     public event PressEvent OnOpenOptions;
     public event PressEvent OnAdvanceDialogue;
@@ -29,7 +32,7 @@ public class InputManager : Singleton<InputManager>
         base.Awake();
         _controls = new Controls();
 
-        _touchMove = new bool[2] { false, false };
+        EnhancedTouchSupport.Enable();
 
         _gameplayEnabled = true;
         _dialogueEnabled = false;
@@ -95,12 +98,12 @@ public class InputManager : Singleton<InputManager>
 
     public void EnableGameplayWithoutInteractControls()
     {
-        _toggleJoystick = true;
+        _controls.Gameplay.Move.Enable();
     }
 
     public void DisableGameplayWithoutInteractControls()
     {
-        _toggleJoystick = false;
+        _controls.Gameplay.Move.Disable();
     }
 
     #endregion
@@ -122,8 +125,12 @@ public class InputManager : Singleton<InputManager>
     #region Bind / Unbind Methods
     private void BindGameplayEvents()
     {
-        _controls.Gameplay.Touch.performed += ctx => ReadTouches("TOUCH START");
-        _controls.Gameplay.Touch.canceled += ctx => ReadTouches("TOUCH END");
+        //_controls.Gameplay.Touch.performed += ctx => ReadTouches("TOUCH START");
+        //_controls.Gameplay.Touch.canceled += ctx => ReadTouches("TOUCH END");
+
+        Touch.onFingerDown += OnFingerDown;
+        Touch.onFingerMove += OnFingerMove;
+        Touch.onFingerUp += OnFingerUp;
 
         //_controls.Gameplay.SecondTouch.performed += ctx => TouchPerfomed(1);
         //_controls.Gameplay.SecondTouch.canceled += ctx => TouchCanceled(1);
@@ -137,8 +144,12 @@ public class InputManager : Singleton<InputManager>
 
     private void UnbindGameplayEvents()
     {
-        _controls.Gameplay.Touch.performed -= ctx => ReadTouches("TOUCH START");
-        _controls.Gameplay.Touch.canceled -= ctx => ReadTouches("TOUCH END");
+        //_controls.Gameplay.Touch.performed -= ctx => ReadTouches("TOUCH START");
+        //_controls.Gameplay.Touch.canceled -= ctx => ReadTouches("TOUCH END");
+
+        Touch.onFingerDown -= OnFingerDown;
+        Touch.onFingerMove -= OnFingerMove;
+        Touch.onFingerUp -= OnFingerUp;
 
         //_controls.Gameplay.SecondTouch.performed -= ctx => TouchPerfomed();
         //_controls.Gameplay.SecondTouch.canceled -= ctx => TouchCanceled();
@@ -163,30 +174,76 @@ public class InputManager : Singleton<InputManager>
 
     #region Events Methods
 
-    private void ReadTouches(string context)
+    //private void ReadTouches(string context)
+    //{
+    //    foreach (var touch in Touchscreen.current.touches)
+    //    {
+    //        if (!touch.press.isPressed && context == "TOUCH END") // cas du doigt levé
+    //        {
+    //            Vector2 pos = touch.position.ReadValue();
+    //            int id = touch.touchId.ReadValue();
+
+    //            if (pos.x < Screen.width / 2)
+    //                OnMoveEnd?.Invoke();
+    //            else
+    //                OnInteractEnd?.Invoke();
+    //        }
+    //        else if (touch.press.isPressed && context == "TOUCH START") // cas du doigt posé
+    //        {
+    //            Vector2 pos = touch.position.ReadValue();
+    //            int id = touch.touchId.ReadValue();
+
+    //            if (pos.x < Screen.width / 2)
+    //                OnMove?.Invoke();
+    //            else
+    //                OnInteract?.Invoke();
+    //        }
+    //    }
+    //}
+
+    private void OnFingerDown(Finger finger)
     {
-        foreach (var touch in Touchscreen.current.touches)
+        Vector2 pos = finger.currentTouch.screenPosition;
+
+        if (pos.x < Screen.width / 2 && _joystickFingerId == null)
         {
-            if (!touch.press.isPressed && context == "TOUCH END") // cas du doigt levé
+            if (_interactFingerId != finger.index)
             {
-                Vector2 pos = touch.position.ReadValue();
-                int id = touch.touchId.ReadValue();
-
-                if (pos.x < Screen.width / 2)
-                    OnMoveEnd?.Invoke();
-                else
-                    OnInteractEnd?.Invoke();
+                _joystickFingerId = finger.index;
+                OnMove?.Invoke(pos);
             }
-            else if (touch.press.isPressed && context == "TOUCH START") // cas du doigt posé
+        }
+        else if (pos.x >= Screen.width / 2 && _interactFingerId == null)
+        {
+            if (_joystickFingerId != finger.index)
             {
-                Vector2 pos = touch.position.ReadValue();
-                int id = touch.touchId.ReadValue();
-
-                if (pos.x < Screen.width / 2)
-                    OnMove?.Invoke();
-                else
-                    OnInteract?.Invoke();
+                _interactFingerId = finger.index;
+                OnInteract?.Invoke();
             }
+        }
+    }
+
+    private void OnFingerMove(Finger finger)
+    {
+        if (_joystickFingerId == finger.index)
+        {
+            // Tu peux ajouter ici des données au joystick si besoin
+            // var pos = finger.currentTouch.screenPosition;
+        }
+    }
+
+    private void OnFingerUp(Finger finger)
+    {
+        if (_joystickFingerId == finger.index)
+        {
+            _joystickFingerId = null;
+            OnMoveEnd?.Invoke();
+        }
+
+        if (_interactFingerId == finger.index)
+        {
+            _interactFingerId = null;
+            OnInteractEnd?.Invoke();
         }
     }
 

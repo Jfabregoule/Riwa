@@ -1,5 +1,6 @@
 using Cinemachine;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BaseLevelManager : Singleton<BaseLevelManager>
 {
@@ -12,7 +13,7 @@ public class BaseLevelManager : Singleton<BaseLevelManager>
     /// </summary>
 
     public CinemachineBrain CinemachineBrainCamera;
-    
+
     [Header("Les 3C")]
 
     [SerializeField] private CameraHandler _cameraHandler;
@@ -30,5 +31,10 @@ public class BaseLevelManager : Singleton<BaseLevelManager>
 
         _character.RespawnPosition = _playerSpawnPosition;
         _character.RespawnRotation = _playerSpawnRotation;
+    }
+
+    public void Start()
+    {
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName(gameObject.scene.name));
     }
 }

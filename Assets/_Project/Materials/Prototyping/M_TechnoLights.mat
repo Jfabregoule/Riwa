@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: M_TechnoLights
-  m_Shader: {fileID: -6465566751694194690, guid: 28774c4e0eb7c8b44b0bbc7dead15376,
+  m_Shader: {fileID: -6465566751694194690, guid: 2b1f8132d73aa9e4b990d6a054576d58,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -39,6 +39,10 @@ Material:
     m_TexEnvs:
     - _AmbianteOcclusion:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BalayageTexture:
+        m_Texture: {fileID: 2800000, guid: 10a1bbfeb8663514c8cb9e4c02014dce, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseColorText:
@@ -77,6 +81,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _LineTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -103,6 +111,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _PastSubShader_6c35de89d048464a95843b935b27e1c9_NoiseTexture_901368309_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 56ce5ddcb6a16f84283a7fb5f68bef89, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Roughness:
@@ -138,6 +150,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
+    - _DitherSize: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EdgeWidth: 0.09
@@ -147,6 +160,7 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _HeightPower: 0
+    - _Intesity: 1
     - _Metallic: 0
     - _MetallicStrength: 0
     - _MoveSpeed: 1
@@ -169,11 +183,16 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
+    - _BalayageColor: {r: 0.29263493, g: 1.958409, b: 2.4815445, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 0.0141509175, g: 1, b: 0.9045953, a: 1}
     - _EdgeColor: {r: 1, g: 1, b: 1, a: 0}
-    - _EmissionColor: {r: 0.30345982, g: 1.0361505, b: 1.4296327, a: 1}
-    - _OutLineColor: {r: 0.26343894, g: 1.1167701, b: 1.5094342, a: 0}
+    - _EmissionColor: {r: 0.15172991, g: 0.5180752, b: 0.71481633, a: 1}
+    - _EmissiveColor: {r: 0.11792451, g: 0.3419382, b: 1, a: 0.92156863}
+    - _OutLineColor: {r: 0.13072509, g: 0.5541697, b: 0.74901956, a: 0}
+    - _OutlineColor: {r: 1, g: 1, b: 1, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _Tiling: {r: 1, g: 1, b: 0, a: 0}
+    - _TillingDir: {r: 0, g: 0.5, b: 0, a: 0}
+    - _TillingTest: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []

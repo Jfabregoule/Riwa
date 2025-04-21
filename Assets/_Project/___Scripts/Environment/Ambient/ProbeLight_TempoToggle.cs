@@ -36,6 +36,7 @@ public class ProbeLight_TempoToggle : MonoBehaviour
             return;
         }
 
-        LightmapSettings.lightProbes.bakedProbes = data.bakedProbes;
+        if (LightmapSettings.lightProbes)
+            LightmapSettings.lightProbes.bakedProbes = data.bakedProbes;
     }
 }

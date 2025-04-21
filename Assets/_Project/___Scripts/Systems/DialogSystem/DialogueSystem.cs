@@ -9,8 +9,6 @@ public class DialogueSystem : Singleton<DialogueSystem>
     [SerializeField] private Sequencer _beginSequencer;
     [SerializeField] private Sequencer _transiUISequencer;
     [SerializeField] private Sequencer _endSequencer;
-
-    [SerializeField] private DialogueAsset _test;
     public DialogueEventRegistry EventRegistery { get; private set; }
 
     public delegate void DialogueText(DialogueUIType uIType, string text);
@@ -39,8 +37,6 @@ public class DialogueSystem : Singleton<DialogueSystem>
         ProcessingDialogue = null;
 
         EventRegistery = new DialogueEventRegistry();
-
-        //BeginDialogue(_test);
 
         _beginSequencer.Init();
         _transiUISequencer.Init();

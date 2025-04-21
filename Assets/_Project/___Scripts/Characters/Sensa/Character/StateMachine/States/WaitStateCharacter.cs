@@ -23,8 +23,8 @@ public class WaitStateCharacter : BaseStateCharacter<EnumStateCharacter>
         base.EnterState();
 
         GameManager.Instance.CameraHandler.OnZoomCamera(_startZoom, _endZoom);
-
-
+        ACharacter chara = (ACharacter)_character;
+        chara.OnChangeTempo += ChangeStateToTempo;
         _character.InputManager.OnInteract += OnInteract;
     }
 
@@ -33,7 +33,8 @@ public class WaitStateCharacter : BaseStateCharacter<EnumStateCharacter>
         base.ExitState();
 
         GameManager.Instance.CameraHandler.OnZoomCamera(_endZoom, _startZoom);
-
+        ACharacter chara = (ACharacter)_character;
+        chara.OnChangeTempo -= ChangeStateToTempo;
         _character.InputManager.OnInteract -= OnInteract;
     }
 
@@ -64,6 +65,11 @@ public class WaitStateCharacter : BaseStateCharacter<EnumStateCharacter>
         _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Interact]);
     }
 
-  
+    public void ChangeStateToTempo()
+    {
+        _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.ChangeTempo]);
+    }
+
+
 
 }

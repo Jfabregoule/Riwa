@@ -7,11 +7,28 @@ public class Door : MonoBehaviour
     [SerializeField] private DoorDirection _nextDoorDirection;
     [SerializeField] private int _nextDoorID = 0;
 
+    [SerializeField] bool _animationExit = false;
+    Sequencer _sequencer;
+
+    public void Start()
+    {
+        _sequencer = GetComponent<Sequencer>();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
+        _sequencer.Init();
+
         if (other.CompareTag("Player"))
         {
-            RiwaLoadSceneSystem.Instance.GoToNewScene(_floorNumber, _roomNumber, _nextDoorID, _nextDoorDirection);
+            if (_animationExit)
+            {
+                _sequencer.InitializeSequence();
+            }
+            else
+            {
+                RiwaLoadSceneSystem.Instance.GoToNewScene(_floorNumber, _roomNumber, _nextDoorID, _nextDoorDirection);
+            }
         }
     }
 }

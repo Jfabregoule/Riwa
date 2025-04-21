@@ -21,6 +21,10 @@ public class Floor1Room4LevelManager : BaseLevelManager
     [Header("Managers")]
     [SerializeField] private TutorialDialogRoom4Manager _dialogManager;
 
+    [Header("Puzzle")]
+    [SerializeField] private VineRetraction _rootCollider;
+    [SerializeField] TreeStumpTest _treeStumpTest;
+
     private bool _isTutorialDone = false;
 
     public CinemachineVirtualCamera StairCamera { get => _stairCamera; }
@@ -32,4 +36,27 @@ public class Floor1Room4LevelManager : BaseLevelManager
     public MuralPiece MuralPiece { get => _muralPiece; }
     public Transform SensaLandingTransform { get => _sensaLandingTransform; }
     public Transform RiwaLandingTransform { get => _riwaLandingTransform; }
+
+    private void OnEnable()
+    {
+        base.OnEnable();
+        _rootCollider.OnGrowthPercentageReached += PlayerCanInteractWithSocle;
+        _rootCollider.OnGrowthPercentageUnreached += PlayerCannotInteractWithSocle;
+    }
+
+    private void OnDisable()
+    {
+        _rootCollider.OnGrowthPercentageReached -= PlayerCanInteractWithSocle;
+        _rootCollider.OnGrowthPercentageUnreached -= PlayerCannotInteractWithSocle;
+    }
+
+    private void PlayerCanInteractWithSocle()
+    {
+        _treeStumpTest.enabled = true;
+    }    
+    
+    private void PlayerCannotInteractWithSocle()
+    {
+        _treeStumpTest.enabled = false;
+    }
 }

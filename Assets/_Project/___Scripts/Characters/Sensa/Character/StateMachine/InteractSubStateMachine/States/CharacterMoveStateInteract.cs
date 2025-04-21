@@ -44,14 +44,22 @@ public class CharacterMoveStateInteract : PawnMoveStateInteract<EnumStateCharact
             return;
         }
 
-        if (_subStateMachine.CurrentObjectInteract.TryGetComponent(out ITreeStump stump))
+        foreach (var comp in _subStateMachine.CurrentObjectInteract.GetComponents<MonoBehaviour>())
         {
-            if (_subStateMachine.CurrentObjectInteract.TryGetComponent(out IInteractable interactable))
+            if (comp is ITreeStump stump && comp.enabled)
             {
-                interactable.Interact();
+                foreach (var comp2 in _subStateMachine.CurrentObjectInteract.GetComponents<MonoBehaviour>())
+                {
+                    if (comp2 is IInteractable interactable && comp2.enabled)
+                    {
+                        interactable.Interact();
+                        break;
+                    }
+                }
+
+                ChangeStateToSoul();
+                return;
             }
-            ChangeStateToSoul();
-            return;
         }
 
         //Default

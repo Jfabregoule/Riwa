@@ -24,8 +24,22 @@ public class SequenceActionOrientSensaRiwa : SequencerAction
 
         float elapsedTime = 0f;
 
-        Vector3 sensaTargetPosition = SensaTowardRiwa ? _instance.Chawa.transform.position : SensaTowardSensaLandingPos ? _instance.SensaLandingTransform.position : Vector3.zero;
-        Vector3 riwaTargetPosition = RiwaTowardSensa ? GameManager.Instance.Character.transform.position : RiwaTowardRiwaLandingPos ? _instance.RiwaLandingTransform.position : Vector3.zero;
+        Vector3 sensaTargetPosition;
+        Vector3 riwaTargetPosition;
+
+        if (SensaTowardRiwa)
+            sensaTargetPosition = _instance.Chawa.transform.position;
+        else if (SensaTowardSensaLandingPos)
+            sensaTargetPosition = _instance.SensaLandingTransform.position;
+        else
+            sensaTargetPosition = Vector3.zero;
+
+        if (RiwaTowardSensa)
+            riwaTargetPosition = GameManager.Instance.Character.transform.position;
+        else if (RiwaTowardRiwaLandingPos)
+            riwaTargetPosition = _instance.RiwaLandingTransform.position;
+        else
+            riwaTargetPosition = Vector3.zero;
 
         Quaternion sensaLookRotation = Quaternion.identity;
         Quaternion riwaLookRotation = Quaternion.identity;

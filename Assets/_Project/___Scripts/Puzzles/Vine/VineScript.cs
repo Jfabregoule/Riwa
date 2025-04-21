@@ -9,6 +9,7 @@ public class VineScript : MonoBehaviour, IInteractableSoul
     [SerializeField] private float _waitBeforeFall;
     [SerializeField] private float _growingSpeed = 1;
     [SerializeField] private float _retractedSpeed = 2;
+    [SerializeField] private Animator _bourgeonAnimator;
 
     public Transform SocketPoint { get; private set; }
 
@@ -152,6 +153,8 @@ public class VineScript : MonoBehaviour, IInteractableSoul
     public void InteractableSoul()
     {
         IsActive = true;
+        if(_bourgeonAnimator)
+            _bourgeonAnimator.SetBool("Activate", true);
         StartCoroutine(RaiseVine());
     }
 
@@ -159,6 +162,8 @@ public class VineScript : MonoBehaviour, IInteractableSoul
     {
         if (IsActive)
         {
+            if (_bourgeonAnimator)
+                _bourgeonAnimator.SetBool("Activate", false);
             StopAllCoroutines();
             StartCoroutine(RetractedVine());
         }

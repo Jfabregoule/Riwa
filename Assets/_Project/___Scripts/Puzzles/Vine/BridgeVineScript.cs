@@ -7,6 +7,7 @@ public class BridgeVineScript : MonoBehaviour, IInteractableSoul
 {
     [SerializeField] private float _growingSpeed = 1;
     [SerializeField] private float _frictionSpeed;
+    [SerializeField] private Animator _bourgeonAnimator;
     public float FrictionSpeed { get { return _frictionSpeed; } set { _frictionSpeed = value; } }
 
     public float OffsetRadius { get => -1; set => throw new NotImplementedException(); }
@@ -60,6 +61,8 @@ public class BridgeVineScript : MonoBehaviour, IInteractableSoul
     }
     public void InteractableSoul()
     {
+        if(_bourgeonAnimator)
+            _bourgeonAnimator.SetBool("Activate", true);
         StartCoroutine(RaiseVine());
     }
 

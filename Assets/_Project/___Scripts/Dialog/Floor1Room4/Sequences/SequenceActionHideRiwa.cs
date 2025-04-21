@@ -17,6 +17,7 @@ public class SequenceActionHideRiwa : SequencerAction
 
     public override IEnumerator StartSequence(Sequencer context)
     {
+        GameManager.Instance.Character.TriggerChangeTempo();
         _instance.Chawa.transform.SetParent(GameManager.Instance.Character.transform);
         Vector3 initialPos = _instance.Chawa.transform.position;
         Vector3 targetPos = GameManager.Instance.Character.transform.position;
@@ -37,6 +38,5 @@ public class SequenceActionHideRiwa : SequencerAction
         _instance.Chawa.transform.localScale = finalScale;
         _instance.Chawa.SetActive(false);
         _dialogueSystem.EventRegistery.Invoke(WaitDialogueEventType.RiwaHiddingIntoSensa);
-        GameManager.Instance.Character.TriggerChangeTempo();
     }
 }

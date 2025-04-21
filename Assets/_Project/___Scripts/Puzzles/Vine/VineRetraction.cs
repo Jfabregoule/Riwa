@@ -16,6 +16,16 @@ public class VineRetraction : MonoBehaviour
     [SerializeField] private float _maxHeight;
     [SerializeField] private float _maxCenter;
     [SerializeField] private BoxCollider _collider;
+    [SerializeField] private float _thresholdToTrigger = 0.7f;
+
+    private bool _thresholdReached = false;
+    private float _growPercentage = 1f;
+
+    public delegate void GrowthPercentageReached();
+    public event GrowthPercentageReached OnGrowthPercentageReached;
+
+    public delegate void GrowthPercentageUnreached();
+    public event GrowthPercentageUnreached OnGrowthPercentageUnreached;
 
     private Material _mat;
 
@@ -24,6 +34,7 @@ public class VineRetraction : MonoBehaviour
 
     private void Start()
     {
+        GameManager.Instance.OnTimeChangeStarted += SendGrowthPercentage;
         Renderer renderer = _vine.GetComponent<Renderer>();
         _mat = renderer.material;
         _originalHeight = _collider.size.z;
@@ -32,21 +43,33 @@ public class VineRetraction : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if(other.gameObject == _box)
+        Debug.Log("Percentage " + _growPercentage);
+        if (other.gameObject == _box)
         {
             Vector3 localEntryPos = _vine.transform.InverseTransformPoint(_box.transform.position);
             float zLocal = localEntryPos.z;
             float zMin = _originalCenter.z - _originalHeight * 0.5f;
             float zMax = _originalCenter.z + _originalHeight * 0.5f;
-            float zRatio = Mathf.Clamp01(Mathf.InverseLerp(zMin, zMax, zLocal));
+            _growPercentage = Mathf.Clamp01(Mathf.InverseLerp(zMin, zMax, zLocal));
 
-            float growValue = Mathf.Lerp(0f, 1f, zRatio);
-            float height = Mathf.Lerp(1f, _maxHeight, zRatio);
-            float centerZ = Mathf.Lerp(_maxCenter, 0f, zRatio);
+            float growValue = Mathf.Lerp(0f, 1f, _growPercentage);
+            float height = Mathf.Lerp(1f, _maxHeight, _growPercentage);
+            float centerZ = Mathf.Lerp(_maxCenter, 0f, _growPercentage);
 
             ChangeVineDatas(growValue, height, new Vector3(0, 0, centerZ));
-
+            
             OnGrow.Invoke();
+        }
+    }
+
+    private void SendGrowthPercentage(EnumTemporality temporality)
+    {
+        if(temporality == EnumTemporality.Present)
+        {
+            if (_growPercentage <= _thresholdToTrigger)
+                OnGrowthPercentageReached?.Invoke();
+            else
+                OnGrowthPercentageUnreached?.Invoke();
         }
     }
 
@@ -54,6 +77,7 @@ public class VineRetraction : MonoBehaviour
     {
         if (other.gameObject == _box)
         {
+            _growPercentage = 1f;
             ChangeVineDatas(1, 13.5f, new Vector3(0, 0, -0.5f));
             OnUnGrow.Invoke();
         }

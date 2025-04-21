@@ -1,5 +1,7 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.EnhancedTouch;
 
 public class InputManager : Singleton<InputManager>
 {
@@ -120,8 +122,8 @@ public class InputManager : Singleton<InputManager>
     #region Bind / Unbind Methods
     private void BindGameplayEvents()
     {
-        _controls.Gameplay.Touch.performed += ctx => TouchPerfomed();
-        _controls.Gameplay.Touch.canceled += ctx => TouchCanceled();
+        _controls.Gameplay.Touch.performed += ctx => ReadTouches("TOUCH START");
+        _controls.Gameplay.Touch.canceled += ctx => ReadTouches("TOUCH END");
 
         //_controls.Gameplay.SecondTouch.performed += ctx => TouchPerfomed(1);
         //_controls.Gameplay.SecondTouch.canceled += ctx => TouchCanceled(1);
@@ -135,8 +137,8 @@ public class InputManager : Singleton<InputManager>
 
     private void UnbindGameplayEvents()
     {
-        _controls.Gameplay.Touch.performed -= ctx => TouchPerfomed();
-        _controls.Gameplay.Touch.canceled -= ctx => TouchCanceled();
+        _controls.Gameplay.Touch.performed -= ctx => ReadTouches("TOUCH START");
+        _controls.Gameplay.Touch.canceled -= ctx => ReadTouches("TOUCH END");
 
         //_controls.Gameplay.SecondTouch.performed -= ctx => TouchPerfomed();
         //_controls.Gameplay.SecondTouch.canceled -= ctx => TouchCanceled();
@@ -161,50 +163,29 @@ public class InputManager : Singleton<InputManager>
 
     #region Events Methods
 
-    private void TouchPerfomed() 
+    private void ReadTouches(string context)
     {
-        var touches = Touchscreen.current.touches;
-
-        for (int i = 0; i < touches.Count; i++)
+        foreach (var touch in Touchscreen.current.touches)
         {
-            if (i > 2) return;
-            var touch = touches[i];
-            if (touch.press.isPressed)
+            if (!touch.press.isPressed && context == "TOUCH END") // cas du doigt levé
             {
                 Vector2 pos = touch.position.ReadValue();
-                if (pos.x > Screen.width / 2)
-                {
-                    _touchMove[i] = false;
-                    OnInteract?.Invoke();
-                }
-                else
-                {
-                    _touchMove[i] = true;
-                    OnMove?.Invoke();
-                }
-            }
-        }
-        
-    }
+                int id = touch.touchId.ReadValue();
 
-    private void TouchCanceled()
-    {
-        var touches = Touchscreen.current.touches;
-
-        for (int i = 0; i < touches.Count; i++)
-        {
-            if (i > 2) return;
-            var touch = touches[i];
-            if (!touch.press.isPressed)
-            {
-                if (!_touchMove[i])
-                {
-                    OnInteractEnd?.Invoke();
-                }
-                else
-                {
+                if (pos.x < Screen.width / 2)
                     OnMoveEnd?.Invoke();
-                }
+                else
+                    OnInteractEnd?.Invoke();
+            }
+            else if (touch.press.isPressed && context == "TOUCH START") // cas du doigt posé
+            {
+                Vector2 pos = touch.position.ReadValue();
+                int id = touch.touchId.ReadValue();
+
+                if (pos.x < Screen.width / 2)
+                    OnMove?.Invoke();
+                else
+                    OnInteract?.Invoke();
             }
         }
     }

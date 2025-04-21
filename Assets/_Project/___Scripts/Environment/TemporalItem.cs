@@ -17,7 +17,8 @@ public class TemporalItem : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameManager.Instance.OnTimeChangeStarted -= ChangeCheck;
+        if(GameManager.Instance != null)
+            GameManager.Instance.OnTimeChangeStarted -= ChangeCheck;
     }
 
     private void OnEnable()

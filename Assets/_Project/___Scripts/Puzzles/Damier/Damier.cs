@@ -38,10 +38,10 @@ public class Damier : MonoBehaviour
     [SerializeField] private Vector3 _rotation = Vector3.zero;
 
     [Header("Damier GOs")]
-    [SerializeField] private GameObject _riwa;
     [SerializeField] private GameObject _tile;
 
     private Floor1Room3LevelManager _instance;
+    private GameObject _riwa;
 
     [HideInInspector][SerializeField] List<DamierDatas> serializedDamier = new List<DamierDatas>(); // Delete when Save is done
 
@@ -66,12 +66,8 @@ public class Damier : MonoBehaviour
     private void Start()
     {
         _instance = (Floor1Room3LevelManager)Floor1Room3LevelManager.Instance;
-        StartCoroutine(WaitToGeneratePath());
-    }
-
-    private IEnumerator WaitToGeneratePath()
-    {
-        yield return new WaitForSeconds(2.5f);
+        _riwa = _instance.Chawa;
+        _instance.OnRiwaShowingPath += RiwaFollowPath;
         GeneratePath();
     }
 
@@ -268,13 +264,93 @@ public class Damier : MonoBehaviour
 
         path.Add(end);
 
-        RiwaFollowPath();
-
     }
 
     private void RiwaFollowPath()
     {
         StartCoroutine(FollowPathCoroutine(true));
+    }
+
+    private IEnumerator MoveRiwaToStart(Vector3 targetPosition)
+    {
+        Vector3 startPosition = _riwa.transform.position;
+        targetPosition.y = startPosition.y;
+
+        Quaternion startRot = _riwa.transform.rotation;
+        Quaternion targetRot = Quaternion.LookRotation(new Vector3(targetPosition.x - startPosition.x, 0f, targetPosition.z - startPosition.z));
+
+        float elapsedTime = 0f;
+
+        while(elapsedTime < 1f)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsedTime / 1f);
+            _riwa.transform.rotation = Quaternion.Slerp(startRot, targetRot, t);
+            yield return null;
+        }
+
+        _riwa.transform.rotation = targetRot;
+        elapsedTime = 0f;
+
+        while(elapsedTime < _lerpTime)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsedTime / _lerpTime);
+            _riwa.transform.position = Vector3.Lerp(startPosition, targetPosition, t);
+            yield return null;
+        }
+
+        _riwa.transform.position = targetPosition;
+    }
+
+    private IEnumerator MoveRiwaToDiscussionPointHermite(Vector3 targetPosition)
+    {
+        Vector3 startPosition = _riwa.transform.position;
+
+        Vector3 midPoint = (startPosition + targetPosition) + Vector3.up * 10f;
+
+        Vector3 p0 = startPosition - (midPoint - startPosition);
+        Vector3 p1 = startPosition;
+        Vector3 p2 = targetPosition;
+        Vector3 p3 = targetPosition + (targetPosition - midPoint);
+
+        float elapsedTime = 0f;
+        float duration = 3f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsedTime / duration);
+
+            Vector3 pos = InterpolationHermite(p0, p1, p2, p3, t);
+            _riwa.transform.position = pos;
+
+            Vector3 dir = (InterpolationHermite(p0, p1, p2, p3, t + 0.05f) - pos).normalized;
+            if (dir.sqrMagnitude > 0.001f)
+            {
+                _riwa.transform.rotation = Quaternion.Slerp(_riwa.transform.rotation, Quaternion.LookRotation(new Vector3(dir.x, 0f, dir.z)), 0.2f);
+            }
+
+            yield return null;
+        }
+
+        _riwa.transform.position = targetPosition;
+
+        Quaternion startRot = _riwa.transform.rotation;
+        Quaternion targetRot = Quaternion.Euler(0f, 90f, 0f);
+        float rotDuration = 1.5f;
+
+        elapsedTime = 0f;
+
+        while (elapsedTime < rotDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsedTime / rotDuration);
+            _riwa.transform.rotation = Quaternion.Slerp(startRot, targetRot, t);
+            yield return null;
+        }
+
+        _riwa.transform.rotation = targetRot;
     }
 
     private IEnumerator FollowPathCoroutine(bool dragCamera)
@@ -289,15 +365,12 @@ public class Damier : MonoBehaviour
         if (path.Count < 2)
             yield break;
 
-        Vector3 startPosRiwa = Vector3.zero;
+        Vector3 targetDebutPosition = Vector3.zero;
         if(_damier.TryGetValue(path[0], out DamierDatas startData))
         {
-            startPosRiwa = startData.cell.transform.position;
-            startPosRiwa.y = _riwa.transform.position.y + 0.5f;
+            targetDebutPosition = startData.cell.transform.position;
+            yield return StartCoroutine(MoveRiwaToStart(targetDebutPosition));
         }
-
-        GameObject riwa = Instantiate(_riwa, startPosRiwa, Quaternion.identity);
-        riwa.transform.localScale = new Vector3(2f, 2f, 2f);
 
         List<Vector3> worldPoints = new List<Vector3>();
         foreach (var cell in path)
@@ -305,14 +378,14 @@ public class Damier : MonoBehaviour
             if (_damier.TryGetValue(cell, out DamierDatas data))
             {
                 Vector3 pos = data.cell.transform.position;
-                pos.y = riwa.transform.position.y;
+                pos.y = _riwa.transform.position.y;
                 worldPoints.Add(pos);
             }
         }
 
-        riwa.transform.position = worldPoints[0];
+        _riwa.transform.position = worldPoints[0];
         Vector3 initialDir = (worldPoints[1] - worldPoints[0]).normalized;
-        riwa.transform.rotation = Quaternion.LookRotation(new Vector3(initialDir.x, 0, initialDir.z));
+        _riwa.transform.rotation = Quaternion.LookRotation(new Vector3(initialDir.x, 0, initialDir.z));
 
         for (int i = 0; i < worldPoints.Count - 1; i++)
         {
@@ -329,20 +402,21 @@ public class Damier : MonoBehaviour
                 float t = Mathf.Clamp01(elapsedTime / _lerpTime);
 
                 Vector3 pos = InterpolationHermite(p0, p1, p2, p3, t);
-                riwa.transform.position = pos;
+                _riwa.transform.position = pos;
 
                 Vector3 dir = (InterpolationHermite(p0, p1, p2, p3, t + 0.05f) - pos).normalized;
                 if (dir.sqrMagnitude > 0.001f)
-                    riwa.transform.rotation = Quaternion.LookRotation(new Vector3(dir.x, 0, dir.z));
+                    _riwa.transform.rotation = Quaternion.LookRotation(new Vector3(dir.x, 0, dir.z));
 
                 yield return null;
             }
         }
 
-        riwa.transform.position = worldPoints[worldPoints.Count - 1];
-        Destroy(riwa);
+        _riwa.transform.position = worldPoints[worldPoints.Count - 1];
+        yield return StartCoroutine(MoveRiwaToDiscussionPointHermite(_instance.TutorialRoom3Manager.DamierDiscussionPosition));
         _instance.DamierCamera.Priority = 0;
-        GameManager.Instance.Character.InputManager.EnableGameplayControls();
+        _instance.RiwaSensaCamera[0].Priority = 20;
+        StartCoroutine(_instance.TutorialRoom3Manager.HideRiwaAgain(true));
     }
 
     private Vector3 InterpolationHermite(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
@@ -392,7 +466,6 @@ public class Damier : MonoBehaviour
 
     public void RespawnBrokenTile()
     {
-        StartCoroutine(FollowPathCoroutine(false));
         foreach (var cell in _instance.BrokenCells)
         {
             if (_damier[cell.Position].cellState == CellState.Broken)

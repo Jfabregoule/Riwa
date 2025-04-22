@@ -27,11 +27,13 @@ public class Room3DialogTriggerZoneParent : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        _isPlayerInArea = true;
+        if(other.TryGetComponent(out ACharacter chara))
+            _isPlayerInArea = true;
     }
 
     private void OnTriggerExit(Collider other)
     {
-        _isPlayerInArea = false;
+        if (other.TryGetComponent(out ACharacter chara))
+            _isPlayerInArea = false;
     }
 }

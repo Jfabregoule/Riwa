@@ -24,7 +24,7 @@ public class WaitStateCharacter : BaseStateCharacter<EnumStateCharacter>
 
         GameManager.Instance.CameraHandler.OnZoomCamera(_startZoom, _endZoom);
         ACharacter chara = (ACharacter)_character;
-        chara.OnChangeTempo += ChangeStateToTempo;
+        chara.InputManager.OnChangeTime += ChangeStateToTempo;
         _character.InputManager.OnInteract += OnInteract;
     }
 
@@ -34,7 +34,7 @@ public class WaitStateCharacter : BaseStateCharacter<EnumStateCharacter>
 
         GameManager.Instance.CameraHandler.OnZoomCamera(_endZoom, _startZoom);
         ACharacter chara = (ACharacter)_character;
-        chara.OnChangeTempo -= ChangeStateToTempo;
+        chara.InputManager.OnChangeTime -= ChangeStateToTempo;
         _character.InputManager.OnInteract -= OnInteract;
     }
 

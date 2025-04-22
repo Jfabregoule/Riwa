@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class HUD : MonoBehaviour
@@ -18,24 +19,6 @@ public class HUD : MonoBehaviour
             _gameManager.Character.OnInteractStarted += () => _isInteracting = true;
             _gameManager.Character.OnInteractEnded += () => _isInteracting = false;
         }
-    }
-
-    public void ChangeTime()
-    {
-        GameManager.Instance.Character.TriggerChangeTempo();
-    }
-
-    public void ToggleInteract()
-    {
-        if (_isInteracting)
-        {
-            GameManager.Instance.Character.InputManager.InteractTrue();
-        }
-        else
-        {
-            GameManager.Instance.Character.InputManager.InteractFalse();
-        }
-        _isInteracting = !_isInteracting;
     }
 
     private void SubscribeToGameManager(GameManager script)

@@ -6,7 +6,7 @@
             "id": "91780517-5c09-40dc-bbdc-ad7419d51666",
             "actions": [
                 {
-                    "name": "Interact",
+                    "name": "Touch",
                     "type": "Button",
                     "id": "26621da2-3b71-4ea0-b5e7-e44cbd207a03",
                     "expectedControlType": "Button",
@@ -16,18 +16,78 @@
                 },
                 {
                     "name": "PressPosition",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "8085f5fe-73d0-4ad8-8a4d-3d11904e9911",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Move",
+                    "type": "Value",
+                    "id": "1c41e57f-f7d7-4ad4-91c7-5be293a28b90",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "1104b7f8-c24c-4b00-814f-9593886451ce",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ChangeTime",
+                    "type": "Button",
+                    "id": "010ded00-14f3-4f52-b2c4-b99cb92d278e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
                 {
                     "name": "",
-                    "id": "7f52666e-a7b0-48ad-94ac-b76f4636a919",
+                    "id": "fb9d22d9-191c-4b3f-a589-e558fcfe8aa2",
+                    "path": "<Touchscreen>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PressPosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0432fadc-7b15-403b-a91b-1b4fdc4963cc",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "aa8c34e6-f642-48d1-9010-7a8fd06533ee",
+                    "path": "<Touchscreen>/touch0/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Touch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "47aba340-d6df-4e29-8ee0-ad660725a126",
                     "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
@@ -38,12 +98,12 @@
                 },
                 {
                     "name": "",
-                    "id": "fb9d22d9-191c-4b3f-a589-e558fcfe8aa2",
-                    "path": "<Touchscreen>/primaryTouch/position",
+                    "id": "611ffc8b-985e-4e4c-b9cd-77ef81354838",
+                    "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "PressPosition",
+                    "action": "ChangeTime",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -72,6 +132,34 @@
                     "processors": "",
                     "groups": "",
                     "action": "Advance",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Options",
+            "id": "62db2429-6462-4628-ad53-6e2da08de151",
+            "actions": [
+                {
+                    "name": "Open",
+                    "type": "Button",
+                    "id": "4adef64b-1f4c-40e8-abb3-9d02d31847b7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "13bf5817-1eca-4ac4-b738-bb08d2c69b88",
+                    "path": "<Gamepad>/select",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Open",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

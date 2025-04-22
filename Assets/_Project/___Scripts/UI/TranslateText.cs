@@ -19,4 +19,9 @@ public class TranslateText : MonoBehaviour
     {
         _translateText.text = _sentence.GetText(GameManager.Instance.TranslateSystem.GetCurrentLanguage());
     }
+
+    public void SetSentenceTranslate(SentenceTranslate sentence) { 
+        _sentence = sentence;
+        SetText();
+    }
 }

@@ -7,7 +7,9 @@ public class Control : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI _textLeft;
     [SerializeField] private TextMeshProUGUI _textRight;
-    [SerializeField] private TextMeshProUGUI _textMode;
+    [SerializeField] private TranslateText _translateTextMode;
+    [SerializeField] private SentenceTranslate _rightModeSentence;
+    [SerializeField] private SentenceTranslate _leftModeSentence;
 
     private string _interactText;
     private string _joystickText;
@@ -19,7 +21,7 @@ public class Control : MonoBehaviour
         _isRightHanded = true;
         _interactText = _textLeft.text;
         _joystickText = _textRight.text;
-        //UpdateControl();
+        UpdateControl();
     }
     private void OnEnable()
     {
@@ -47,14 +49,15 @@ public class Control : MonoBehaviour
     {
         _textRight.text = _joystickText;
         _textLeft.text = _interactText;
-        _textMode.text = "mode droitier";
+        _translateTextMode.SetSentenceTranslate(_rightModeSentence);
     }
 
     private void LeftHanded()
     {
         _textRight.text = _interactText;
         _textLeft.text = _joystickText;
-        _textMode.text = "mode gaucher";
+        _translateTextMode.SetSentenceTranslate(_leftModeSentence);
+
     }
 
     private void SetHanded(bool isRightHanded) 

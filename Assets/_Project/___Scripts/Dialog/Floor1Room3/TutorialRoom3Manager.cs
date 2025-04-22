@@ -137,7 +137,11 @@ public class TutorialRoom3Manager : MonoBehaviour
 
         yield return new WaitForSeconds(1.5f);
         DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.RiwaHiddingIntoSensa);
-        if (!showDamierDialogue) _instance.RiwaSensaCamera[1].Priority = 0;
+        if (!showDamierDialogue)
+        {
+            _instance.RiwaSensaCamera[1].Priority = 0;
+            //GameManager.Instance.Character.InputManager.EnableGameplayControls();
+        }
     }
 
     #endregion
@@ -159,7 +163,7 @@ public class TutorialRoom3Manager : MonoBehaviour
         _instance.VinesCameras[previousIndex].Priority = 0;
         DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.WaitEndOfLianaPathTravel);
         _instance.RiwaSensaCamera[1].Priority = 20;
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
         StartCoroutine(HideRiwaAgain(false));
     }
 

@@ -10,6 +10,7 @@ public class VineScript : MonoBehaviour, IInteractableSoul
     [SerializeField] private float _growingSpeed = 1;
     [SerializeField] private float _retractedSpeed = 2;
     [SerializeField] private Animator _bourgeonAnimator;
+    [SerializeField] private List<ParticleSystem> _onActivateParticles;
 
     public Transform SocketPoint { get; private set; }
 
@@ -43,7 +44,8 @@ public class VineScript : MonoBehaviour, IInteractableSoul
 
     private void OnEnable()
     {
-        GameManager.Instance.Character.OnRespawn += RetractedAllVines;
+        if(GameManager.Instance.Character)
+            GameManager.Instance.Character.OnRespawn += RetractedAllVines;
     }
 
     private void OnDisable()
@@ -156,6 +158,13 @@ public class VineScript : MonoBehaviour, IInteractableSoul
         IsActive = true;
         if(_bourgeonAnimator)
             _bourgeonAnimator.SetBool("Activate", true);
+        if(_onActivateParticles.Count > 0)
+        {
+            for(int i = 0;  i < _onActivateParticles.Count; i++)
+            {
+                _onActivateParticles[i].Play();
+            }
+        }
         StartCoroutine(RaiseVine());
     }
 

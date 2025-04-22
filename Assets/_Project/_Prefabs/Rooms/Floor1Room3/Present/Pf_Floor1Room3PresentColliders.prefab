@@ -1,60 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &102568867125027098
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7433715283993007227}
-  - component: {fileID: 3308741136330964638}
-  m_Layer: 7
-  m_Name: V10
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7433715283993007227
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 102568867125027098}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0.6992302, y: -0.6322345, z: 0.2381913, w: 0.2337125}
-  m_LocalPosition: {x: -6.179, y: 0.323, z: 1.4449997}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5579596183278404318}
-  m_LocalEulerAnglesHint: {x: -1.47, y: -141.036, z: 95.241}
---- !u!136 &3308741136330964638
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 102568867125027098}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.16
-  m_Height: 1.23
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &161295401372183950
 GameObject:
   m_ObjectHideFlags: 0
@@ -233,6 +178,9 @@ MonoBehaviour:
   _roomNumber: 4
   _nextDoorDirection: 0
   _nextDoorID: 0
+  _animationExit: 0
+  _enterDoorSequencer: {fileID: 0}
+  _exitDoorSequencer: {fileID: 0}
 --- !u!1 &635571099943040132
 GameObject:
   m_ObjectHideFlags: 0
@@ -715,61 +663,6 @@ CapsuleCollider:
   m_Height: 1.66
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!1 &1744945547800171657
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6638506302926300511}
-  - component: {fileID: 5466763386447298235}
-  m_Layer: 7
-  m_Name: V12
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6638506302926300511
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1744945547800171657}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0.47743276, y: -0.8431676, z: 0.04162991, w: 0.24370737}
-  m_LocalPosition: {x: -6.672, y: 0.275, z: 1.7960005}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5579596183278404318}
-  m_LocalEulerAnglesHint: {x: -9.352, y: -152.82, z: 56.775}
---- !u!136 &5466763386447298235
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1744945547800171657}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.16
-  m_Height: 0.62
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1960258354077314850
 GameObject:
   m_ObjectHideFlags: 0
@@ -981,6 +874,9 @@ MonoBehaviour:
   _roomNumber: 2
   _nextDoorDirection: 3
   _nextDoorID: 0
+  _animationExit: 0
+  _enterDoorSequencer: {fileID: 0}
+  _exitDoorSequencer: {fileID: 0}
 --- !u!1 &2253456648537046497
 GameObject:
   m_ObjectHideFlags: 0
@@ -1522,6 +1418,9 @@ MonoBehaviour:
   _roomNumber: 4
   _nextDoorDirection: 0
   _nextDoorID: 0
+  _animationExit: 0
+  _enterDoorSequencer: {fileID: 0}
+  _exitDoorSequencer: {fileID: 0}
 --- !u!1 &3221525887747801735
 GameObject:
   m_ObjectHideFlags: 0
@@ -2288,9 +2187,6 @@ Transform:
   - {fileID: 1485780025457980315}
   - {fileID: 8242351913617932637}
   - {fileID: 4461336303445322707}
-  - {fileID: 7433715283993007227}
-  - {fileID: 4264464357108317192}
-  - {fileID: 6638506302926300511}
   m_Father: {fileID: 1262974732356237410}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5342299136216644532
@@ -3345,61 +3241,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4.73, y: 0.91574323, z: 3.68}
   m_Center: {x: 0, y: -0.04212837, z: 0}
---- !u!1 &6764389253454811043
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4264464357108317192}
-  - component: {fileID: 4088610918543171732}
-  m_Layer: 7
-  m_Name: V11
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4264464357108317192
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6764389253454811043}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0.64015466, y: -0.69198656, z: 0.21643396, w: 0.25399414}
-  m_LocalPosition: {x: -5.359, y: 0.268, z: 0.80700016}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5579596183278404318}
-  m_LocalEulerAnglesHint: {x: -1.47, y: -141.036, z: 85.024}
---- !u!136 &4088610918543171732
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6764389253454811043}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.16
-  m_Height: 1.23
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6803795422019814796
 GameObject:
   m_ObjectHideFlags: 0

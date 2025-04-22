@@ -65,10 +65,9 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
         foreach (var col in colliders)
         {
             if (col.gameObject != gameObject
-             && col.gameObject.TryGetComponent<ACharacter>(out ACharacter chara)
-             && col.isTrigger == false)
+                && !col.gameObject.TryGetComponent<ACharacter>(out ACharacter chara)
+                && col.isTrigger == false)
             {
-                Debug.Log("Hit: " + col.name);
                 return false;
             }
         }
@@ -78,6 +77,7 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
         return true;
     }
 
+    
     public void Rotate(int sens)
     {
         StartCoroutine(CoroutineRotate(sens));

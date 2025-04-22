@@ -105,7 +105,8 @@ public class VineScript : MonoBehaviour, IInteractableSoul
     private void VineFall()
     {
         //SocketPoint.GetChild(0).GetComponent<Rigidbody>()
-
+        if (_bourgeonAnimator)
+            _bourgeonAnimator.SetBool("Activate", false);
         StartCoroutine(RetractedVine());
         IsActive = false;
 

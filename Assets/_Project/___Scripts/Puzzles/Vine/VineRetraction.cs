@@ -10,7 +10,7 @@ public class VineRetraction : MonoBehaviour
 
     [Header("GOs")]
     [SerializeField] private GameObject _vine;
-    [SerializeField] private GameObject _box;
+    [SerializeField] private List<GameObject> _box;
 
     [Header("Retraction data")]
     [SerializeField] private float _maxHeight;
@@ -44,9 +44,9 @@ public class VineRetraction : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         Debug.Log("Percentage " + _growPercentage);
-        if (other.gameObject == _box)
+        if (_box.Contains(other.gameObject))
         {
-            Vector3 localEntryPos = _vine.transform.InverseTransformPoint(_box.transform.position);
+            Vector3 localEntryPos = _vine.transform.InverseTransformPoint(other.transform.position);
             float zLocal = localEntryPos.z;
             float zMin = _originalCenter.z - _originalHeight * 0.5f;
             float zMax = _originalCenter.z + _originalHeight * 0.5f;
@@ -75,7 +75,7 @@ public class VineRetraction : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject == _box)
+        if (_box.Contains(other.gameObject))
         {
             _growPercentage = 1f;
             ChangeVineDatas(1, 13.5f, new Vector3(0, 0, -0.5f));

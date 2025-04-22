@@ -46,7 +46,10 @@ public class Platform : MonoBehaviour, IRespawnable
         }
 
         if (other.TryGetComponent(out ACharacter character))
-            other.transform.SetParent(transform);
+        {
+            Debug.Log("TriggerEnter with: " + other.name + ", and transform parent name: " + transform.name);
+            character.transform.SetParent(transform);
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -76,7 +79,10 @@ public class Platform : MonoBehaviour, IRespawnable
 
 
         if (other.TryGetComponent(out ACharacter character))
-            other.transform.SetParent(null);
+        {
+            Debug.Log("TriggerExit detected with: " + other.name);
+            character.transform.SetParent(null);
+        }
         
     }
 
@@ -118,6 +124,7 @@ public class Platform : MonoBehaviour, IRespawnable
     public void Respawn()
     {
         //transform.GetChild(0).SetParent(null);
+
         transform.position = RespawnPosition;
         transform.localEulerAngles = RespawnRotation;
         _rb.constraints |= RigidbodyConstraints.FreezePositionY;

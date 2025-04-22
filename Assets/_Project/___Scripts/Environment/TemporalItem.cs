@@ -33,17 +33,17 @@ public class TemporalItem : MonoBehaviour
     private void ChangeCheck(EnumTemporality temporality)
     {
         if (temporality == EnumTemporality.Present)
-        {
-            lastPosition = pastItem.transform.position;
-            lastRotation = pastItem.transform.rotation;
-        }
-        else
-        {
+        {   
             if (HasSignificantChange())
             {
                 transform.position = pastItem.transform.position;
                 transform.rotation = pastItem.transform.rotation;
             }
+        }
+        else
+        {
+            lastPosition = pastItem.transform.position;
+            lastRotation = pastItem.transform.rotation;
         }
     }
 

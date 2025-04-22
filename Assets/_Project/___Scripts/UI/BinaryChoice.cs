@@ -21,13 +21,17 @@ public class BinaryChoice : MonoBehaviour
 
     public bool Value {  get; private set; }
 
+    private void Awake()
+    {
+        _yesText = _yesButton.GetComponent<TextMeshProUGUI>();
+        _noText = _noButton.GetComponent<TextMeshProUGUI>();
+    }
+
     void Start()
     {
         Value = true;
         _yesButton.onClick.AddListener(() => SetValue(true));
         _noButton.onClick.AddListener(() => SetValue(false));
-        _yesText = _yesButton.GetComponent<TextMeshProUGUI>();
-        _noText = _noButton.GetComponent<TextMeshProUGUI>();
 
         UpdateVisuals();
     }

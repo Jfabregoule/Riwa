@@ -8,7 +8,7 @@ public class TranslateSystem : MonoBehaviour
     public delegate void LanguageEvent();
     public event LanguageEvent OnLanguageChanged;
 
-    private EnumLanguage CurrentLanguage;
+    private EnumLanguage CurrentLanguage = EnumLanguage.French;
     public enum EnumLanguage
     {
         French,
@@ -19,9 +19,6 @@ public class TranslateSystem : MonoBehaviour
         Portuguese
     }
 
-    private void Start()
-    {
-    }
     public void ChangeLanguage(EnumLanguage language)
     {
         CurrentLanguage = language;

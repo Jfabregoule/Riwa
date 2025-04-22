@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class VineScript : MonoBehaviour, IInteractableSoul
 {
-    //[SerializeField] private List<MeshRenderer> _renderers;
     [SerializeField] private float _waitBeforeFall;
     [SerializeField] private float _growingSpeed = 1;
     [SerializeField] private float _retractedSpeed = 2;
@@ -94,19 +93,11 @@ public class VineScript : MonoBehaviour, IInteractableSoul
             _capsuleCollider.height = _minColliderHeight + growValue * (_maxColliderHeight - _minColliderHeight);
             _capsuleCollider.center = new Vector3(_capsuleCollider.center.x - ((_capsuleCollider.height - lastHeight) / 2),_capsuleCollider.center.y,_capsuleCollider.center.z);
 
-
-            //if (SocketPoint != null)
-            //{
-            //    Vector3 vector = -transform.right * (_capsuleCollider.height - _minColliderHeight) * transform.localScale.y * _offset;
-            //    SocketPoint.position = new Vector3(_startSocketPos.x + vector.x, SocketPoint.position.y, _startSocketPos.z + vector.z);
-            //}
-
             yield return null;
         }
     }
     private void VineFall()
     {
-        //SocketPoint.GetChild(0).GetComponent<Rigidbody>()
         if (_bourgeonAnimator)
             _bourgeonAnimator.SetBool("Activate", false);
         StartCoroutine(RetractedVine());
@@ -119,13 +110,6 @@ public class VineScript : MonoBehaviour, IInteractableSoul
 
         VineFall();
     }
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (!other.transform.TryGetComponent(out ACharacter character)) return;
-    //    _capsuleCollider.isTrigger = false;
-    //    StartCoroutine(RaiseVine());
-    //}
 
 
     public void SetSocketTransform(Transform transformObject)

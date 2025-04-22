@@ -23,7 +23,6 @@ public class Platform : MonoBehaviour, IRespawnable
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
-        Debug.Log(_respawnPositon);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -65,7 +64,6 @@ public class Platform : MonoBehaviour, IRespawnable
                 _rb.constraints &= ~RigidbodyConstraints.FreezePositionY;
                 _rb.useGravity = true;
                 _rb.isKinematic = false;
-                Debug.Log(other.name);
                 if (_triggerVines.Count > 0)
                 {
                     _currentVine = _triggerVines[_triggerVines.Count - 1];
@@ -100,8 +98,6 @@ public class Platform : MonoBehaviour, IRespawnable
         position.x = CollisionPoint.x;
         position.y += WorldRadius;
         position.z = CollisionPoint.z;
-        //transform.position = position;
-        //vine.SetSocketTransform(transform);
 
         StartCoroutine(MovePlatform(position, vine));
     }
@@ -123,8 +119,6 @@ public class Platform : MonoBehaviour, IRespawnable
 
     public void Respawn()
     {
-        //transform.GetChild(0).SetParent(null);
-
         transform.position = RespawnPosition;
         transform.localEulerAngles = RespawnRotation;
         _rb.constraints |= RigidbodyConstraints.FreezePositionY;

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class RecepterLaser : MonoBehaviour, IActivable
@@ -5,10 +6,12 @@ public class RecepterLaser : MonoBehaviour, IActivable
     private bool _isActive;
     private bool _isHitThisFrame;
 
+    private Coroutine _activationCoroutine;
+
     public event IActivable.ActivateEvent OnActivated;
     public event IActivable.ActivateEvent OnDesactivated;
 
-    void Update()
+    void LateUpdate()
     {
         if (!_isHitThisFrame && _isActive)
         {
@@ -20,12 +23,12 @@ public class RecepterLaser : MonoBehaviour, IActivable
 
     public void OnLaserHit()
     {
-        if (!_isActive)
-        {
-            Activate();
-        }
-
         _isHitThisFrame = true;
+
+        if (!_isActive && _activationCoroutine == null)
+        {
+            _activationCoroutine = StartCoroutine(DelayedActivation());
+        }
     }
 
     public void Activate()
@@ -40,5 +43,17 @@ public class RecepterLaser : MonoBehaviour, IActivable
         _isActive = false;
         OnDesactivated?.Invoke();
         Debug.Log("Recepteur désactivé !");
+    }
+
+    private IEnumerator DelayedActivation()
+    {
+        float duration = 0.1f;
+        yield return Helpers.GetWait(duration);
+
+        if (_isHitThisFrame)
+        {
+            Activate();
+        }
+        _activationCoroutine = null;
     }
 }

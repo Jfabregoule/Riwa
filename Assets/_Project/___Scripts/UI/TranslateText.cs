@@ -8,13 +8,9 @@ public class TranslateText : MonoBehaviour
     [SerializeField] private SentenceTranslate _sentence;
 
     private TextMeshProUGUI _translateText;
-
-    private void OnEnable()
-    {
-        GameManager.Instance.TranslateSystem.OnLanguageChanged += SetText;
-    }
     void Start()
     {
+        GameManager.Instance.TranslateSystem.OnLanguageChanged += SetText;
         _translateText = GetComponent<TextMeshProUGUI>();
         SetText();
     }
@@ -22,5 +18,15 @@ public class TranslateText : MonoBehaviour
     private void SetText()
     {
         _translateText.text = _sentence.GetText(GameManager.Instance.TranslateSystem.GetCurrentLanguage());
+    }
+
+    public void SetSentenceTranslate(SentenceTranslate sentence) { 
+        _sentence = sentence;
+        SetText();
+    }
+
+    public SentenceTranslate GetSentenceTranslate()
+    {
+        return _sentence;
     }
 }

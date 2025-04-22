@@ -6,20 +6,24 @@ public class Control : MonoBehaviour
     [SerializeField] private BinaryChoice _binaryChoice;
 
     [SerializeField] private TextMeshProUGUI _textLeft;
+    [SerializeField] private TranslateText _translateTextLeft;
+    [SerializeField] private TranslateText _translateTextRight;
     [SerializeField] private TextMeshProUGUI _textRight;
-    [SerializeField] private TextMeshProUGUI _textMode;
+    [SerializeField] private TranslateText _translateTextMode;
+    [SerializeField] private SentenceTranslate _rightModeSentence;
+    [SerializeField] private SentenceTranslate _leftModeSentence;
 
-    private string _interactText;
-    private string _joystickText;
+    private SentenceTranslate _interactText;
+    private SentenceTranslate _joystickText;
 
     private bool _isRightHanded;
 
     void Start()
     {
         _isRightHanded = true;
-        _interactText = _textLeft.text;
-        _joystickText = _textRight.text;
-        //UpdateControl();
+        _interactText = _translateTextLeft.GetSentenceTranslate();
+        _joystickText = _translateTextRight.GetSentenceTranslate();
+        UpdateControl();
     }
     private void OnEnable()
     {
@@ -45,16 +49,17 @@ public class Control : MonoBehaviour
 
     private void RightHanded()
     {
-        _textRight.text = _joystickText;
-        _textLeft.text = _interactText;
-        _textMode.text = "mode droitier";
+        _translateTextLeft.SetSentenceTranslate(_interactText);
+        _translateTextRight.SetSentenceTranslate(_joystickText);
+        _translateTextMode.SetSentenceTranslate(_rightModeSentence);
     }
 
     private void LeftHanded()
     {
-        _textRight.text = _interactText;
-        _textLeft.text = _joystickText;
-        _textMode.text = "mode gaucher";
+        _translateTextLeft.SetSentenceTranslate(_joystickText);
+        _translateTextRight.SetSentenceTranslate(_interactText);
+        _translateTextMode.SetSentenceTranslate(_leftModeSentence);
+
     }
 
     private void SetHanded(bool isRightHanded) 

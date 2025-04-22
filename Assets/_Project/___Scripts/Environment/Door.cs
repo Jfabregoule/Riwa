@@ -47,6 +47,7 @@ public class Door : MonoBehaviour
     public void ResetDoor()
     {
         _isExitingDoor = false;
+        GameManager.Instance.CurrentLevelManager.LevelEnter();
     }
 
     public void ChangeScene()

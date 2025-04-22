@@ -15,6 +15,7 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
     Vector3 _boxSize;
 
     bool _isMoving;
+    private CrateFeet _feet;
 
     public event IRotatable.RotatableEvent OnRotateFinished;
     public event IMovable.NoArgVoid OnMoveFinished;
@@ -27,6 +28,7 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
     public void Start()
     {
         _character = GameManager.Instance.Character;
+        _feet = GetComponentInChildren<CrateFeet>();
 
         float security = 0.01f;
         float securityRadius = 0.1f;
@@ -55,12 +57,17 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
 
         Vector3 size = _boxSize * 0.5f;
         size.x = MoveDistance;
+        size = Vector3.Scale(transform.localScale, size);
 
         LayerMask layerMask = GameManager.Instance.CurrentTemporality == EnumTemporality.Past ? _character.PastLayer : _character.PresentLayer;
 
         Collider[] colliders = Physics.OverlapBox(transform.position + multiplicator, size, Quaternion.Euler(new Vector3(0,90 * direction.z, 0)), layerMask);
 
-        Debug.Log(multiplicator);
+        Vector3 center = transform.position + multiplicator;
+        Vector3 halfExtents = size;
+        Quaternion orientation = Quaternion.Euler(new Vector3(0, 90 * direction.z, 0));
+
+        DebugDrawBox(center, halfExtents, orientation, UnityEngine.Color.red, 1f);
 
         foreach (var col in colliders)
         {
@@ -77,7 +84,37 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
         return true;
     }
 
-    
+    void DebugDrawBox(Vector3 center, Vector3 halfExtents, Quaternion orientation, UnityEngine.Color color, float duration)
+    {
+        Vector3[] points = new Vector3[8];
+
+        Vector3 right = orientation * Vector3.right;
+        Vector3 up = orientation * Vector3.up;
+        Vector3 forward = orientation * Vector3.forward;
+
+        points[0] = center + right * halfExtents.x + up * halfExtents.y + forward * halfExtents.z;
+        points[1] = center + right * halfExtents.x + up * halfExtents.y - forward * halfExtents.z;
+        points[2] = center + right * halfExtents.x - up * halfExtents.y + forward * halfExtents.z;
+        points[3] = center + right * halfExtents.x - up * halfExtents.y - forward * halfExtents.z;
+        points[4] = center - right * halfExtents.x + up * halfExtents.y + forward * halfExtents.z;
+        points[5] = center - right * halfExtents.x + up * halfExtents.y - forward * halfExtents.z;
+        points[6] = center - right * halfExtents.x - up * halfExtents.y + forward * halfExtents.z;
+        points[7] = center - right * halfExtents.x - up * halfExtents.y - forward * halfExtents.z;
+
+        Debug.DrawLine(points[0], points[1], color, duration);
+        Debug.DrawLine(points[0], points[2], color, duration);
+        Debug.DrawLine(points[0], points[4], color, duration);
+        Debug.DrawLine(points[1], points[3], color, duration);
+        Debug.DrawLine(points[1], points[5], color, duration);
+        Debug.DrawLine(points[2], points[3], color, duration);
+        Debug.DrawLine(points[2], points[6], color, duration);
+        Debug.DrawLine(points[3], points[7], color, duration);
+        Debug.DrawLine(points[4], points[5], color, duration);
+        Debug.DrawLine(points[4], points[6], color, duration);
+        Debug.DrawLine(points[5], points[7], color, duration);
+        Debug.DrawLine(points[6], points[7], color, duration);
+    }
+
     public void Rotate(int sens)
     {
         StartCoroutine(CoroutineRotate(sens));
@@ -113,6 +150,11 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
 
         while (Vector3.Distance(transform.position, destination) > 0.001f)
         {
+            if (!_feet.IsGround) { 
+                _isMoving = false;
+                OnMoveFinished?.Invoke();
+                yield break;
+            }
             transform.position = Vector3.MoveTowards(transform.position, destination, MoveSpeed * Time.deltaTime);
             yield return null;
         }

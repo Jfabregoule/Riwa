@@ -10,11 +10,15 @@ public class MoveStateCharacter : ParentMoveState<EnumStateCharacter>
     public override void EnterState()
     {
         base.EnterState();
+        ACharacter chara = (ACharacter)_character;
+        chara.Feet.OnFall += GoToFall;
     }
 
     public override void ExitState()
     {
         base.ExitState();
+        ACharacter chara = (ACharacter)_character;
+        chara.Feet.OnFall -= GoToFall;
         
     }
 
@@ -55,4 +59,10 @@ public class MoveStateCharacter : ParentMoveState<EnumStateCharacter>
     {
         _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Interact]);
     }
+
+    protected void GoToFall()
+    {
+        _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Fall]);
+    }
+
 }

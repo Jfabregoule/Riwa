@@ -46,6 +46,7 @@ public class GameManager : Singleton<GameManager>
     private void Start()
     {
         TranslateSystem = GameObject.FindGameObjectWithTag(TRANSLATE_TAG).GetComponent<TranslateSystem>();
+
         CurrentTemporality = EnumTemporality.Present;
 
         _blackScreen = GameObject.Find("BlackScreen").GetComponent<BlackScreen>();

@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Platform : MonoBehaviour, IRespawnable
 {
-
-
     private readonly List<VineScript> _triggerVines = new List<VineScript>();
     private VineScript _currentVine;
     private VineScript _previousVine;
 
     private Rigidbody _rb;
+    private TreeStumpTest _tree;
+    private bool _isFalling;
 
     [SerializeField] private Vector3 _respawnPositon;
     [SerializeField] private Vector3 _respawnRotation;
@@ -23,6 +23,7 @@ public class Platform : MonoBehaviour, IRespawnable
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
+        _tree = GetComponent<TreeStumpTest>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -38,6 +39,7 @@ public class Platform : MonoBehaviour, IRespawnable
                 if (_currentVine != null)
                     _currentVine.SetSocketNull();
 
+                if (_isFalling) return;
                 _previousVine = _currentVine;
                 _currentVine = vineScript;
                 SetPosition(vineScript);
@@ -48,6 +50,7 @@ public class Platform : MonoBehaviour, IRespawnable
         {
             Debug.Log("TriggerEnter with: " + other.name + ", and transform parent name: " + transform.name);
             character.transform.SetParent(transform);
+            //_tree.CanInteract = false;
         }
     }
 
@@ -64,14 +67,15 @@ public class Platform : MonoBehaviour, IRespawnable
                 _rb.constraints &= ~RigidbodyConstraints.FreezePositionY;
                 _rb.useGravity = true;
                 _rb.isKinematic = false;
-                if (_triggerVines.Count > 0)
-                {
-                    _currentVine = _triggerVines[_triggerVines.Count - 1];
-                    SetPosition(_currentVine);
-                    _rb.constraints |= RigidbodyConstraints.FreezePositionY;
-                    _rb.useGravity = false;
-                    _rb.isKinematic = true;
-                }
+                _isFalling = true;
+                //if (_triggerVines.Count > 0)
+                //{
+                //    //_currentVine = _triggerVines[_triggerVines.Count - 1];
+                //    //SetPosition(_currentVine);
+                //    _rb.constraints |= RigidbodyConstraints.FreezePositionY;
+                //    _rb.useGravity = false;
+                //    _rb.isKinematic = true;
+                //}
             }
         }
 
@@ -80,6 +84,7 @@ public class Platform : MonoBehaviour, IRespawnable
         {
             Debug.Log("TriggerExit detected with: " + other.name);
             character.transform.SetParent(null);
+            //_tree.CanInteract = true;
         }
         
     }
@@ -124,5 +129,12 @@ public class Platform : MonoBehaviour, IRespawnable
         _rb.constraints |= RigidbodyConstraints.FreezePositionY;
         _rb.useGravity = false;
         _rb.isKinematic = true;
+        _triggerVines.Clear();
+        if (_currentVine != null)
+            _currentVine.SetSocketNull();
+        _currentVine = null;
+        _previousVine = null;
+        //_tree.CanInteract = true;
+        _isFalling = false;
     }
 }

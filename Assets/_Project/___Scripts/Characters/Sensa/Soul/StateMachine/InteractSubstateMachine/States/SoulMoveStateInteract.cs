@@ -31,10 +31,12 @@ public class SoulMoveStateInteract : PawnMoveStateInteract<EnumStateSoul>
     {
         if (_subStateMachine.CurrentObjectInteract.TryGetComponent(out ITreeStump stump))
         {
+            if(_subStateMachine.CurrentObjectInteract.TryGetComponent(out TreeStumpTest tree) && tree.CanInteract)
+            {
+                SoulInteractSubstateMachine stateMachine = (SoulInteractSubstateMachine)_subStateMachine;
+                stateMachine.Player.StateMachine.ChangeState(stateMachine.Player.StateMachine.States[EnumStateCharacter.Idle]);
+            }
             ChangeStateToIdle();
-
-            SoulInteractSubstateMachine stateMachine = (SoulInteractSubstateMachine)_subStateMachine;
-            stateMachine.Player.StateMachine.ChangeState(stateMachine.Player.StateMachine.States[EnumStateCharacter.Idle]);
             return;
         }
 

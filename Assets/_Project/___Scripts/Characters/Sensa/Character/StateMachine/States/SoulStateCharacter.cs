@@ -43,7 +43,7 @@ public class SoulStateCharacter : BaseStateCharacter<EnumStateCharacter>
         ASoul soul = _character.Soul.GetComponent<ASoul>();
         soul.StateMachine.ChangeState(soul.StateMachine.States[EnumStateSoul.Disable]);
 
-        GameManager.Instance.CameraHandler.VirtualCamera.LookAt = null;
+        GameManager.Instance.CameraHandler.ResetLookAt();
 
     }
 

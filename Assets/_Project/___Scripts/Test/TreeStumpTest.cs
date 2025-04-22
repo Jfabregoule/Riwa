@@ -4,6 +4,7 @@ using UnityEngine;
 public class TreeStumpTest : MonoBehaviour, ITreeStump, IInteractable
 {
     public float OffsetRadius { get ; set; }
+    public bool CanInteract { get; set; }
 
     private DialogueSystem _dialogueSystem;
 
@@ -12,13 +13,16 @@ public class TreeStumpTest : MonoBehaviour, ITreeStump, IInteractable
     private void Start()
     {
         OffsetRadius = 0;
+        CanInteract = true;
         StartCoroutine(Helpers.WaitMonoBeheviour(() => DialogueSystem.Instance, SubscribeToDialogueSystem));
     }
 
     public void Interact()
     {
-        Debug.Log("Je passe en ame, TreeSumpTest.cs");
-        _dialogueSystem.EventRegistery.Invoke(WaitDialogueEventType.SocleFloor1Room2);
+        if (CanInteract)
+        {
+            _dialogueSystem.EventRegistery.Invoke(WaitDialogueEventType.SocleFloor1Room2);
+        }
     }
 
     private void SubscribeToDialogueSystem(DialogueSystem script)

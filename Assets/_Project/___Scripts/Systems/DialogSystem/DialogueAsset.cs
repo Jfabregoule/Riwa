@@ -60,7 +60,8 @@ public enum DialogueEventType
     RiwaSensaDiscussRoom4,
     CameraStartFloor1Room2,
     RiwaOutFloor1Room2,
-    RiwaInFloor1Room2
+    RiwaInFloor1Room2,
+    TriggerSequencerEvent,
 }
 
 public enum WaitDialogueEventType
@@ -74,5 +75,6 @@ public enum WaitDialogueEventType
     WaitEndOfLianaPathTravel,
     WaitForSensaLandingAtFragment,
     WaitPlayerToInteract,
-    WaitShowRoom4End
+    WaitShowRoom4End,
+    ChangeTime
 }

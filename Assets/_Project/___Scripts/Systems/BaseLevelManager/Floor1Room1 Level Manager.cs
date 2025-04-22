@@ -27,18 +27,27 @@ public class Floor1Room1LevelManager : BaseLevelManager
     [SerializeField] private Sequencer _event2;
     [SerializeField] private Sequencer _event3;
 
+    private Floor1Room1Dialogue _dialogue;
+    private System.Action OnChangeTime;
+
     //Enigmes
 
     private bool _isCrateWellPlaced;
 
-    public void Start()
+    public override void Start()
     {
-        foreach(var cam in _cameras)
+        base.Start();
+
+        _dialogue = GetComponent<Floor1Room1Dialogue>();
+        DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.ChangeTime, OnChangeTime);
+
+        foreach (var cam in _cameras)
         {
             CameraDictionnary[cam._id] = cam._camera;
         }
 
         _character.OnChangeTempo += CheckCrateEnigma;
+        _character.OnChangeTempo += InvokeChangeTime;
 
         if (CurrentAdvancement < EnumAdvancementRoom1.LookAtTree)
         {
@@ -51,6 +60,8 @@ public class Floor1Room1LevelManager : BaseLevelManager
                 _event3.Init();
 
                 _event1.InitializeSequence();
+
+                _dialogue.LaunchDialogue(0);
             }
         }
     }
@@ -89,6 +100,11 @@ public class Floor1Room1LevelManager : BaseLevelManager
 
         _character.OnChangeTempo -= CheckCrateEnigma;
 
+    }
+
+    public void InvokeChangeTime() {
+        DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.ChangeTime);
+        _character.OnChangeTempo -= InvokeChangeTime;
     }
 
 }

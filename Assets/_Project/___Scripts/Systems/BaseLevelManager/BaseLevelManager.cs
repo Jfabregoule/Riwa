@@ -53,7 +53,7 @@ public class BaseLevelManager : Singleton<BaseLevelManager>
         _character.RespawnRotation = _playerSpawnRotation;
     }
 
-    public void Start()
+    public virtual void Start()
     {
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(gameObject.scene.name));
     }

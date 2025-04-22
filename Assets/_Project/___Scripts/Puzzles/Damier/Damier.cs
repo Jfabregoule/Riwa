@@ -40,6 +40,9 @@ public class Damier : MonoBehaviour
     [Header("Damier GOs")]
     [SerializeField] private GameObject _tile;
 
+    [Header("Damier Present")]
+    [SerializeField]
+
     private Floor1Room3LevelManager _instance;
     private GameObject _riwa;
 
@@ -382,7 +385,7 @@ public class Damier : MonoBehaviour
                 worldPoints.Add(pos);
             }
         }
-
+        List<GameObject> modifiedCells = new List<GameObject>();
         _riwa.transform.position = worldPoints[0];
         Vector3 initialDir = (worldPoints[1] - worldPoints[0]).normalized;
         _riwa.transform.rotation = Quaternion.LookRotation(new Vector3(initialDir.x, 0, initialDir.z));
@@ -410,6 +413,12 @@ public class Damier : MonoBehaviour
 
                 yield return null;
             }
+            if (_damier.TryGetValue(path[i + 1], out DamierDatas currentData))
+            {
+                StartCoroutine(FadeCellAlpha(currentData.cell, 0f, 1f, 1.2f));
+                modifiedCells.Add(currentData.cell);
+
+            }
         }
 
         _riwa.transform.position = worldPoints[worldPoints.Count - 1];
@@ -418,6 +427,41 @@ public class Damier : MonoBehaviour
         _instance.RiwaSensaCamera[0].Priority = 20;
         StartCoroutine(_instance.TutorialRoom3Manager.HideRiwaAgain(true));
     }
+
+    private IEnumerator FadeCellAlpha(GameObject cell, float startAlpha, float endAlpha, float duration)
+    {
+        var renderer = cell.GetComponent<Renderer>();
+        if (renderer != null && renderer.material.HasProperty("_Alpha"))
+        {
+            float elapsed = 0f;
+
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / duration);
+                float currentAlpha = Mathf.Lerp(startAlpha, endAlpha, t);
+                renderer.material.SetFloat("_Alpha", currentAlpha);
+                yield return null;
+            }
+
+            renderer.material.SetFloat("_Alpha", endAlpha);
+
+            yield return new WaitForSeconds(3);
+            elapsed = 0f;
+
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / duration);
+                float currentAlpha = Mathf.Lerp(endAlpha, startAlpha, t);
+                renderer.material.SetFloat("_Alpha", currentAlpha);
+                yield return null;
+            }
+
+            renderer.material.SetFloat("_Alpha", startAlpha);
+        }
+    }
+
 
     private Vector3 InterpolationHermite(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
     {

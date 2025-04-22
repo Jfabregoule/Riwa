@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -48,8 +49,7 @@ public class EmitterLaser : MonoBehaviour
             if (!_isReflecting) continue;
 
             if (Physics.Raycast(_laser.GetPosition(i), _directions[i], out RaycastHit hit, 100f, _layerMask))
-            {
-                    
+            {    
                 Vector3 reflect = Vector3.Reflect(_directions[i], hit.normal);
 
                 AddLaserPoint(hit.point);
@@ -60,7 +60,7 @@ public class EmitterLaser : MonoBehaviour
                     SpawnImpact(hit.point, hit.normal);
                     _isReflecting = false;
 
-                    if (hit.collider.TryGetComponent<RecepterLaser>(out var recepter))
+                    if (hit.collider.TryGetComponent(out RecepterLaser recepter))
                     {
                         recepter.OnLaserHit();
                     }

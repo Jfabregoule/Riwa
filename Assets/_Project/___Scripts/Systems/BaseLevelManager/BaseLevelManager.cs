@@ -45,16 +45,26 @@ public class BaseLevelManager : Singleton<BaseLevelManager>
     [SerializeField] protected List<RoomCamera> _cameras;
     public readonly Dictionary<EnumCameraRoom, CinemachineVirtualCamera> CameraDictionnary = new();
 
+    public delegate void LevelEvent();
+    public event LevelEvent OnLevelEnter;
+
     public void OnEnable()
     {
         GameManager.Instance.Load3C(_cameraHandler, _character, _joystick);
 
         _character.RespawnPosition = _playerSpawnPosition;
         _character.RespawnRotation = _playerSpawnRotation;
+
+        GameManager.Instance.CurrentLevelManager = this;
     }
 
     public virtual void Start()
     {
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(gameObject.scene.name));
+    }
+
+    public virtual void LevelEnter()
+    {
+        OnLevelEnter?.Invoke();
     }
 }

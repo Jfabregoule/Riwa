@@ -12,11 +12,13 @@ public class DialogueStartFloor1Room2 : MonoBehaviour
     {
         if (_dialogueSystem != null)
             _dialogueSystem.OnDialogueEvent -= DispatchDialogueEvent;
+
+        if(GameManager.Instance)
+            GameManager.Instance.CurrentLevelManager.OnLevelEnter -= StartDialogueAndCinematic;
     }
     private void Start()
     {
-        _sequencerCinematic.Init();
-        StartCoroutine(Helpers.WaitMonoBeheviour(() => DialogueSystem.Instance, SubscribeToDialogueSystem));
+        GameManager.Instance.CurrentLevelManager.OnLevelEnter += StartDialogueAndCinematic;
     }
     private void DispatchDialogueEvent(DialogueEventType dialogueEventType)
     {
@@ -36,5 +38,11 @@ public class DialogueStartFloor1Room2 : MonoBehaviour
             _dialogueSystem.OnDialogueEvent += DispatchDialogueEvent;
             _dialogueSystem.BeginDialogue(_asset);
         }
+    }
+
+    private void StartDialogueAndCinematic()
+    {
+        _sequencerCinematic.Init();
+        StartCoroutine(Helpers.WaitMonoBeheviour(() => DialogueSystem.Instance, SubscribeToDialogueSystem));
     }
 }

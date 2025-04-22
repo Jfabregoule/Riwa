@@ -25,6 +25,7 @@ public class GameManager : Singleton<GameManager>
     private ACharacter _character;
     private VariableJoystick _joystick;
     private EnumTemporality _currentTemporality;
+    private BaseLevelManager _currentLevelManager;
 
     private BlackScreen _blackScreen;
 
@@ -40,6 +41,7 @@ public class GameManager : Singleton<GameManager>
     public Joystick Joystick { get => _joystick; }
     public EnumTemporality CurrentTemporality { get => _currentTemporality; set => _currentTemporality = value; }
     public BlackScreen BlackScreen { get => _blackScreen; set => _blackScreen = value; }
+    public BaseLevelManager CurrentLevelManager { get => _currentLevelManager; set => _currentLevelManager = value; }
 
     #endregion
 

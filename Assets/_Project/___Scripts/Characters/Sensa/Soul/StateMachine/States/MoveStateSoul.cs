@@ -30,7 +30,7 @@ public class MoveStateSoul : ParentMoveState<EnumStateSoul>
         ASoul soul = (ASoul)_character;
 
         Vector3 targetPosition = _character.Rb.position + _moveDirection * _character.Speed * Time.fixedDeltaTime;
-        Vector3 toPlayer = soul.Character.transform.position - targetPosition;
+        Vector3 toPlayer = GameManager.Instance.Character.transform.position - targetPosition;  
         float distanceToPlayer = toPlayer.magnitude;
 
         _character.Rb.velocity = Vector3.Scale(_character.Rb.velocity, new Vector3(1, 0, 1));
@@ -45,9 +45,6 @@ public class MoveStateSoul : ParentMoveState<EnumStateSoul>
     public override void CheckChangeState()
     {
         base.CheckChangeState();
-
-        //Vector2 direction = _character.InputManager.GetMoveDirection();
-        //float magnitude = direction.magnitude;
 
         if (_character.InputManager.GetMoveDirection() == Vector2.zero)
         {

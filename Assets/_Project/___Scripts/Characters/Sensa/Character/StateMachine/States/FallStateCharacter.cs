@@ -26,7 +26,6 @@ public class FallStateCharacter : BaseStateCharacter<EnumStateCharacter>
     public override void UpdateState()
     {
         base.UpdateState();
-        Debug.Log("FALL");
     }
 
     public override void CheckChangeState()

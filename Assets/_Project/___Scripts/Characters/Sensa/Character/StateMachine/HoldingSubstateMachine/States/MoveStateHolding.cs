@@ -31,6 +31,8 @@ public class MoveStateHolding : HoldingBaseState
         }
 
         _character.Animator.ResetTrigger(_stateMachine.AnimationMap[EnumHolding.IdleHolding]);
+
+        _character.Feet.OnFall += GoToFall;
     }
 
     public override void ExitState()
@@ -39,6 +41,7 @@ public class MoveStateHolding : HoldingBaseState
 
         _movable.OnMoveFinished -= CanGoToIdle;
         _movable.OnReplacePlayer -= ReplacePlayer;
+        _character.Feet.OnFall -= GoToFall;
     }
 
     public override void UpdateState()
@@ -124,6 +127,16 @@ public class MoveStateHolding : HoldingBaseState
         Vector3 destination = ((MonoBehaviour)_movable).gameObject.transform.position; 
         Vector3 playerPosition = destination + targetPosition * -Sens;
         _character.transform.position = new Vector3(playerPosition.x, _character.transform.position.y, playerPosition.z);
+    }
+
+    public void GoToIdle()
+    {
+        _character.StateMachine.ChangeState(_character.StateMachine.States[EnumStateCharacter.Idle]);
+    }
+
+    public void GoToFall()
+    {
+        _character.StateMachine.ChangeState(_character.StateMachine.States[EnumStateCharacter.Fall]);
     }
 
 }

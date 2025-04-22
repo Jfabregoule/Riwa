@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class HoldingStateCharacter : BaseStateCharacter<EnumStateCharacter>
 {
     /// <summary>
@@ -33,6 +35,7 @@ public class HoldingStateCharacter : BaseStateCharacter<EnumStateCharacter>
 
         chara.SetHoldingObject(null);
         chara.InputManager.OnInteract -= OnInteractEnd;
+        _subStateMachine.ChangeState(_subStateMachine.States[EnumHolding.IdleHolding]);
     }
 
     public override void UpdateState()
@@ -40,6 +43,8 @@ public class HoldingStateCharacter : BaseStateCharacter<EnumStateCharacter>
         base.UpdateState();
 
         _subStateMachine.StateMachineUpdate();
+
+        
     }
 
     public override void CheckChangeState()

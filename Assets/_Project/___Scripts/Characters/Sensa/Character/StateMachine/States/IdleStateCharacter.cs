@@ -18,6 +18,9 @@ public class IdleStateCharacter : ParentIdleState<EnumStateCharacter>
         chara.InputManager.OnChangeTime += ChangeStateToTempo;
 
         _clock = 0;
+
+        chara.Feet.OnFall += GoToFall;
+
     }
 
     public override void ExitState()
@@ -28,6 +31,8 @@ public class IdleStateCharacter : ParentIdleState<EnumStateCharacter>
 
         chara.InputManager.OnInteract -= OnInteract;
         chara.InputManager.OnChangeTime -= ChangeStateToTempo;
+
+        chara.Feet.OnFall -= GoToFall;
     }
 
     public override void UpdateState()
@@ -65,6 +70,12 @@ public class IdleStateCharacter : ParentIdleState<EnumStateCharacter>
     public void ChangeStateToTempo()
     {
         _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.ChangeTempo]);
+    }
+
+    private void GoToFall() 
+    { 
+        _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Fall]);
+    
     }
 
 }

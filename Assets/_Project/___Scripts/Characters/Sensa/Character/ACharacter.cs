@@ -28,6 +28,7 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
     private bool _canChangeTime = true;
 
     private ChangeTime _changeTime;
+    private CharacterFeet _feet;
 
     private CameraHandler _cameraHandler;
 
@@ -81,6 +82,7 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
     public Vector3 RespawnPosition { get => _respawnPosition; set => _respawnPosition = value; }
     public Vector3 RespawnRotation { get => _respawnRotation; set => _respawnRotation = value; }
     public float MagnitudeVelocity { get => magnitudeVelocity; set => magnitudeVelocity = value; }
+    public CharacterFeet Feet { get => _feet; set => _feet = value; }
 
     #endregion
 
@@ -95,6 +97,7 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
         _changeTime = GetComponent<ChangeTime>();
         _inputManager = InputManager.Instance;
         _animator = GetComponent<Animator>();
+        _feet = GetComponentInChildren<CharacterFeet>();
 
         _soul = GameObject.Find(SOUL_OBJECT);
         _capsuleCollider = GetComponent<CapsuleCollider>();
@@ -115,6 +118,7 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
     private void Update()
     {
         _stateMachine.StateMachineUpdate();
+
     }
 
     private void FixedUpdate()

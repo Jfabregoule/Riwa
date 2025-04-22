@@ -24,4 +24,9 @@ public class TranslateText : MonoBehaviour
         _sentence = sentence;
         SetText();
     }
+
+    public SentenceTranslate GetSentenceTranslate()
+    {
+        return _sentence;
+    }
 }

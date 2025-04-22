@@ -16,7 +16,7 @@ public class TranslateSystem : MonoBehaviour
         Italian,
         English,
         German,
-        Japanese
+        Portuguese
     }
 
     private void Start()

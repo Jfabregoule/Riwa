@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
-public class CharacterFeet : MonoBehaviour
+public class CharacterFeet : MonoBehaviour, IRespawnable
 {
     [HideInInspector] public bool IsGround;
     private ACharacter _character;
@@ -14,10 +14,21 @@ public class CharacterFeet : MonoBehaviour
 
     private readonly HashSet<Collider> _colliders = new();
 
+    public Vector3 RespawnPosition { get ; set; }
+    public Vector3 RespawnRotation { get ; set; }
+
+    public event IRespawnable.RespawnEvent OnRespawn;
+
     public void Start()
     {
         _character = GameManager.Instance.Character;
         GameManager.Instance.OnTimeChangeStarted += ClearListOnChangeTempo;
+    }
+
+    public void OnDestroy()
+    {
+        GameManager.Instance.OnTimeChangeStarted -= ClearListOnChangeTempo;
+        
     }
 
     public void OnTriggerEnter(Collider other)
@@ -74,5 +85,10 @@ public class CharacterFeet : MonoBehaviour
                 _colliders.Remove(collider);
             }
         }
+    }
+
+    public void Respawn()
+    {
+        
     }
 }

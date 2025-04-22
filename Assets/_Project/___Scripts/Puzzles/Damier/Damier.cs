@@ -40,9 +40,6 @@ public class Damier : MonoBehaviour
     [Header("Damier GOs")]
     [SerializeField] private GameObject _tile;
 
-    [Header("Damier Present")]
-    [SerializeField]
-
     private Floor1Room3LevelManager _instance;
     private GameObject _riwa;
 

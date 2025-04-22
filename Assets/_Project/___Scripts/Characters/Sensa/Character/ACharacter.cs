@@ -54,9 +54,6 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
 
     //
 
-    public delegate void NoArgVoid();
-    public event NoArgVoid OnChangeTempo;
-
     public event IRespawnable.RespawnEvent OnRespawn;
 
     #endregion
@@ -132,8 +129,8 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
 
     public void TriggerChangeTempo()
     {
-        if(!_canChangeTime) { return; }
-        OnChangeTempo?.Invoke();
+        if (!_canChangeTime) { return; }
+        _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.ChangeTempo]);
     }
 
     public void Respawn()

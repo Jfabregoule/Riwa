@@ -33,18 +33,18 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Options",
+                    "name": "Interact",
                     "type": "Button",
-                    "id": "4f55ed45-4a41-4fb9-8acb-42f0fd1b0b1c",
+                    "id": "1104b7f8-c24c-4b00-814f-9593886451ce",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Interact",
+                    "name": "ChangeTime",
                     "type": "Button",
-                    "id": "1104b7f8-c24c-4b00-814f-9593886451ce",
+                    "id": "010ded00-14f3-4f52-b2c4-b99cb92d278e",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -76,17 +76,6 @@
                 },
                 {
                     "name": "",
-                    "id": "2f5bea51-ed0d-4594-883d-9822307ef5ed",
-                    "path": "<Gamepad>/select",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Options",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "aa8c34e6-f642-48d1-9010-7a8fd06533ee",
                     "path": "<Touchscreen>/touch0/press",
                     "interactions": "",
@@ -104,6 +93,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "611ffc8b-985e-4e4c-b9cd-77ef81354838",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeTime",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -132,6 +132,34 @@
                     "processors": "",
                     "groups": "",
                     "action": "Advance",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Options",
+            "id": "62db2429-6462-4628-ad53-6e2da08de151",
+            "actions": [
+                {
+                    "name": "Open",
+                    "type": "Button",
+                    "id": "4adef64b-1f4c-40e8-abb3-9d02d31847b7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "13bf5817-1eca-4ac4-b738-bb08d2c69b88",
+                    "path": "<Gamepad>/select",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Open",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

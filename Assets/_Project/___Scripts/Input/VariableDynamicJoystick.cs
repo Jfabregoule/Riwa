@@ -49,11 +49,6 @@ public class VariableDynamicJoystick : MonoBehaviour
             _inputManager = script;
             script.OnMove += OnTouchStarted;
             script.OnMoveEnd += OnTouchEnded;
-            Debug.Log("Script is ready!");
-        }
-        else
-        {
-            Debug.LogWarning("Script was still null after timeout.");
         }
     }
 }

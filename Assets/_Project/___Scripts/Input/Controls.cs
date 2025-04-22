@@ -55,18 +55,18 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Options"",
+                    ""name"": ""Interact"",
                     ""type"": ""Button"",
-                    ""id"": ""4f55ed45-4a41-4fb9-8acb-42f0fd1b0b1c"",
+                    ""id"": ""1104b7f8-c24c-4b00-814f-9593886451ce"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Interact"",
+                    ""name"": ""ChangeTime"",
                     ""type"": ""Button"",
-                    ""id"": ""1104b7f8-c24c-4b00-814f-9593886451ce"",
+                    ""id"": ""010ded00-14f3-4f52-b2c4-b99cb92d278e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -98,17 +98,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""2f5bea51-ed0d-4594-883d-9822307ef5ed"",
-                    ""path"": ""<Gamepad>/select"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Options"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""aa8c34e6-f642-48d1-9010-7a8fd06533ee"",
                     ""path"": ""<Touchscreen>/touch0/press"",
                     ""interactions"": """",
@@ -126,6 +115,17 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""611ffc8b-985e-4e4c-b9cd-77ef81354838"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeTime"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -158,6 +158,34 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Options"",
+            ""id"": ""62db2429-6462-4628-ad53-6e2da08de151"",
+            ""actions"": [
+                {
+                    ""name"": ""Open"",
+                    ""type"": ""Button"",
+                    ""id"": ""4adef64b-1f4c-40e8-abb3-9d02d31847b7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""13bf5817-1eca-4ac4-b738-bb08d2c69b88"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Open"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -167,11 +195,14 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Gameplay_Touch = m_Gameplay.FindAction("Touch", throwIfNotFound: true);
         m_Gameplay_PressPosition = m_Gameplay.FindAction("PressPosition", throwIfNotFound: true);
         m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
-        m_Gameplay_Options = m_Gameplay.FindAction("Options", throwIfNotFound: true);
         m_Gameplay_Interact = m_Gameplay.FindAction("Interact", throwIfNotFound: true);
+        m_Gameplay_ChangeTime = m_Gameplay.FindAction("ChangeTime", throwIfNotFound: true);
         // Dialogue
         m_Dialogue = asset.FindActionMap("Dialogue", throwIfNotFound: true);
         m_Dialogue_Advance = m_Dialogue.FindAction("Advance", throwIfNotFound: true);
+        // Options
+        m_Options = asset.FindActionMap("Options", throwIfNotFound: true);
+        m_Options_Open = m_Options.FindAction("Open", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -236,8 +267,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Touch;
     private readonly InputAction m_Gameplay_PressPosition;
     private readonly InputAction m_Gameplay_Move;
-    private readonly InputAction m_Gameplay_Options;
     private readonly InputAction m_Gameplay_Interact;
+    private readonly InputAction m_Gameplay_ChangeTime;
     public struct GameplayActions
     {
         private @Controls m_Wrapper;
@@ -245,8 +276,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @Touch => m_Wrapper.m_Gameplay_Touch;
         public InputAction @PressPosition => m_Wrapper.m_Gameplay_PressPosition;
         public InputAction @Move => m_Wrapper.m_Gameplay_Move;
-        public InputAction @Options => m_Wrapper.m_Gameplay_Options;
         public InputAction @Interact => m_Wrapper.m_Gameplay_Interact;
+        public InputAction @ChangeTime => m_Wrapper.m_Gameplay_ChangeTime;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -265,12 +296,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
-            @Options.started += instance.OnOptions;
-            @Options.performed += instance.OnOptions;
-            @Options.canceled += instance.OnOptions;
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @ChangeTime.started += instance.OnChangeTime;
+            @ChangeTime.performed += instance.OnChangeTime;
+            @ChangeTime.canceled += instance.OnChangeTime;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -284,12 +315,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
-            @Options.started -= instance.OnOptions;
-            @Options.performed -= instance.OnOptions;
-            @Options.canceled -= instance.OnOptions;
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @ChangeTime.started -= instance.OnChangeTime;
+            @ChangeTime.performed -= instance.OnChangeTime;
+            @ChangeTime.canceled -= instance.OnChangeTime;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -353,16 +384,66 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         }
     }
     public DialogueActions @Dialogue => new DialogueActions(this);
+
+    // Options
+    private readonly InputActionMap m_Options;
+    private List<IOptionsActions> m_OptionsActionsCallbackInterfaces = new List<IOptionsActions>();
+    private readonly InputAction m_Options_Open;
+    public struct OptionsActions
+    {
+        private @Controls m_Wrapper;
+        public OptionsActions(@Controls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Open => m_Wrapper.m_Options_Open;
+        public InputActionMap Get() { return m_Wrapper.m_Options; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(OptionsActions set) { return set.Get(); }
+        public void AddCallbacks(IOptionsActions instance)
+        {
+            if (instance == null || m_Wrapper.m_OptionsActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_OptionsActionsCallbackInterfaces.Add(instance);
+            @Open.started += instance.OnOpen;
+            @Open.performed += instance.OnOpen;
+            @Open.canceled += instance.OnOpen;
+        }
+
+        private void UnregisterCallbacks(IOptionsActions instance)
+        {
+            @Open.started -= instance.OnOpen;
+            @Open.performed -= instance.OnOpen;
+            @Open.canceled -= instance.OnOpen;
+        }
+
+        public void RemoveCallbacks(IOptionsActions instance)
+        {
+            if (m_Wrapper.m_OptionsActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IOptionsActions instance)
+        {
+            foreach (var item in m_Wrapper.m_OptionsActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_OptionsActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public OptionsActions @Options => new OptionsActions(this);
     public interface IGameplayActions
     {
         void OnTouch(InputAction.CallbackContext context);
         void OnPressPosition(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
-        void OnOptions(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnChangeTime(InputAction.CallbackContext context);
     }
     public interface IDialogueActions
     {
         void OnAdvance(InputAction.CallbackContext context);
+    }
+    public interface IOptionsActions
+    {
+        void OnOpen(InputAction.CallbackContext context);
     }
 }

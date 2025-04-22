@@ -24,7 +24,7 @@ public class PawnMoveStateInteract<TStateEnum> : PawnInteractBaseSubstate<TState
         }
 
         _character.OnMoveToFinished += InteractEndOfPath;
-        _character.InputManager.OnInteractEnd += EndInteract;
+        _character.InputManager.OnInteract += EndInteract;
 
         _endInteract = false;
 
@@ -67,7 +67,7 @@ public class PawnMoveStateInteract<TStateEnum> : PawnInteractBaseSubstate<TState
         base.ExitState();
 
         _character.OnMoveToFinished -= InteractEndOfPath;
-        _character.InputManager.OnInteractEnd -= EndInteract;
+        _character.InputManager.OnInteract -= EndInteract;
     }
 
     public override void UpdateState()

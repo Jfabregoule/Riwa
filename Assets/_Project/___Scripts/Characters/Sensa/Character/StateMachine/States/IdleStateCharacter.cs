@@ -15,7 +15,7 @@ public class IdleStateCharacter : ParentIdleState<EnumStateCharacter>
         ACharacter chara = (ACharacter)_character;
 
         chara.InputManager.OnInteract += OnInteract;
-        chara.OnChangeTempo += ChangeStateToTempo;
+        chara.InputManager.OnChangeTime += ChangeStateToTempo;
 
         _clock = 0;
     }
@@ -27,7 +27,7 @@ public class IdleStateCharacter : ParentIdleState<EnumStateCharacter>
         ACharacter chara = (ACharacter)_character;
 
         chara.InputManager.OnInteract -= OnInteract;
-        chara.OnChangeTempo -= ChangeStateToTempo;
+        chara.InputManager.OnChangeTime -= ChangeStateToTempo;
     }
 
     public override void UpdateState()

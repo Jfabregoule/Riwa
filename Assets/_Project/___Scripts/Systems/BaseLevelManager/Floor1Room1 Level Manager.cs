@@ -46,8 +46,8 @@ public class Floor1Room1LevelManager : BaseLevelManager
             CameraDictionnary[cam._id] = cam._camera;
         }
 
-        _character.OnChangeTempo += CheckCrateEnigma;
-        _character.OnChangeTempo += InvokeChangeTime;
+        _character.InputManager.OnChangeTime += CheckCrateEnigma;
+        _character.InputManager.OnChangeTime += InvokeChangeTime;
 
         if (CurrentAdvancement < EnumAdvancementRoom1.LookAtTree)
         {
@@ -98,13 +98,13 @@ public class Floor1Room1LevelManager : BaseLevelManager
             }
         }
 
-        _character.OnChangeTempo -= CheckCrateEnigma;
+        _character.InputManager.OnChangeTime -= CheckCrateEnigma;
 
     }
 
     public void InvokeChangeTime() {
         DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.ChangeTime);
-        _character.OnChangeTempo -= InvokeChangeTime;
+        _character.InputManager.OnChangeTime -= InvokeChangeTime;
     }
 
 }

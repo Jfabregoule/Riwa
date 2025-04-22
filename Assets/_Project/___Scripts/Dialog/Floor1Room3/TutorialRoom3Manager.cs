@@ -80,7 +80,7 @@ public class TutorialRoom3Manager : MonoBehaviour
         Vector3 initialChawaPos = _instance.Chawa.transform.position;
         Vector3 sensaPosition = GameManager.Instance.Character.transform.position;
         Vector3 targetPosition = new Vector3(sensaPosition.x - 1f, 0.5f, initialChawaPos.z);
-        //Vector3 finalScale = new Vector3(1f, 1f, 1f);
+        Vector3 finalScale = new Vector3(0.5f, 0.5f, 0.5f);
 
         Quaternion initialChawaRot = _instance.Chawa.transform.rotation;
         Quaternion chawaTargetRotation = Quaternion.Euler(0f, 90f, 0f);
@@ -98,14 +98,14 @@ public class TutorialRoom3Manager : MonoBehaviour
             GameManager.Instance.Character.transform.rotation = Quaternion.Slerp(GameManager.Instance.Character.transform.rotation, sensaRotateTowardRiwa, t);
             _instance.Chawa.transform.position = Vector3.Lerp(initialChawaPos, targetPosition, t);
             _instance.Chawa.transform.rotation = Quaternion.Slerp(initialChawaRot, chawaTargetRotation, t);
-            //_instance.Chawa.transform.localScale = Vector3.Lerp(_instance.Chawa.transform.localScale, finalScale, t);
+            _instance.Chawa.transform.localScale = Vector3.Lerp(_instance.Chawa.transform.localScale, finalScale, t);
             yield return null;
         }
 
         GameManager.Instance.Character.transform.rotation = sensaRotateTowardRiwa;
         _instance.Chawa.transform.position = targetPosition;
         _instance.Chawa.transform.rotation = chawaTargetRotation;
-        //_instance.Chawa.transform.localScale = finalScale;
+        _instance.Chawa.transform.localScale = finalScale;
     }
 
     public IEnumerator HideRiwaAgain(bool showDamierDialogue)

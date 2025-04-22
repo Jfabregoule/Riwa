@@ -19,6 +19,16 @@ public class RotateStateHolding : HoldingBaseState
             rotatable.Rotate(Sens);
             rotatable.OnRotateFinished += Finish;
         }
+
+        if(Sens == 1)
+        {
+            _character.Animator.SetBool("Sens", false);
+        }
+        else
+        {
+            _character.Animator.SetBool("Sens", true);
+        }
+
     }
 
     public override void ExitState()

@@ -6,17 +6,11 @@ public class MoveStateHolding : HoldingBaseState
     private int _sens;
     private IMovable _movable;
 
-    private Joystick _joystick;
-
-    private float _lerpTime = 0;
-
     public int Sens { get => _sens; set => _sens = value; }
 
     public override void InitState(HoldingStateMachine stateMachine, EnumHolding enumValue, ACharacter character)
     {
         base.InitState(stateMachine, enumValue, character);
-
-        _joystick = GameManager.Instance.Joystick;
 
     }
 

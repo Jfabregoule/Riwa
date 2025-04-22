@@ -14,9 +14,11 @@ public class SequenceActionWaitForDialogue : SequencerAction
 
     public override IEnumerator StartSequence(Sequencer context)
     {
-        while (_canContinue) { 
+        while (!_canContinue) { 
             yield return null;
         }
+
+        _canContinue = false;
 
     }
 
@@ -26,7 +28,7 @@ public class SequenceActionWaitForDialogue : SequencerAction
         {
             case DialogueEventType.TriggerSequencerEvent:
                 _canContinue = true;
-                DialogueSystem.Instance.OnDialogueEvent -= EventDispatcher;
+                //DialogueSystem.Instance.OnDialogueEvent -= EventDispatcher;
                 break;
         }
     }

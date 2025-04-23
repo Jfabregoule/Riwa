@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PressurePlate : MonoBehaviour, IActivable
@@ -8,17 +9,58 @@ public class PressurePlate : MonoBehaviour, IActivable
 
     [SerializeField] private float _lerpTime = 0.3f;
     [SerializeField] private Vector3 _offset;
+    [SerializeField] private EnumTemporality _triggerInTemporality = EnumTemporality.Past;
+    [SerializeField] private bool _canBeTriggeredWithPlayer = true;
+    [SerializeField] private bool _canBeTriggeredWithCrate = true;
+    [SerializeField] private LayerMask _whatIsPast;
+    [SerializeField] private LayerMask _whatIsPlayer;
+
     private Vector3 _initialPosition;
     private Vector3 _destination;
 
+    private bool _isTrigger = false;
+
+    private HashSet<Collider> _validColliders = new HashSet<Collider>();
+
     private void OnTriggerEnter(Collider other)
     {
-        Activate();
+        if (GameManager.Instance.CurrentTemporality != _triggerInTemporality) return;
+
+        bool updated = false;
+
+        if (_canBeTriggeredWithPlayer && other.TryGetComponent(out ACharacter chara))
+        {
+            if (((1 << other.gameObject.layer) & _whatIsPlayer) != 0)
+            {
+                if (_validColliders.Add(other))
+                    updated = true;
+            }
+        }
+
+        if (_canBeTriggeredWithCrate && other.TryGetComponent(out Crate crate))
+        {
+            if (((1 << other.gameObject.layer) & _whatIsPast) != 0)
+            {
+                if (_validColliders.Add(other))
+                    updated = true;
+            }
+        }
+
+        if (updated && !_isTrigger)
+        {
+            _isTrigger = true;
+            Activate();
+        }
+
     }
 
     private void OnTriggerExit(Collider other)
     {
-        Deactivate();
+        if (_validColliders.Remove(other) && _isTrigger && _validColliders.Count == 0)
+        {
+            _isTrigger = false;
+            Deactivate();
+        }
     }
 
     public void Activate()

@@ -6,6 +6,8 @@ using UnityEngine.TextCore.Text;
 
 public class CharacterFeet : MonoBehaviour, IRespawnable
 {
+    [SerializeField] private float _fallTreshold = 2;
+    private float _currentTreshold;
     [HideInInspector] public bool IsGround;
     private ACharacter _character;
 
@@ -22,7 +24,11 @@ public class CharacterFeet : MonoBehaviour, IRespawnable
     public void Start()
     {
         _character = GameManager.Instance.Character;
+        _fallTreshold *= _character.transform.localScale.y;
         GameManager.Instance.OnTimeChangeStarted += ClearListOnChangeTempo;
+
+        _currentTreshold = _fallTreshold;
+
     }
 
     public void OnDestroy()
@@ -31,31 +37,58 @@ public class CharacterFeet : MonoBehaviour, IRespawnable
             GameManager.Instance.OnTimeChangeStarted -= ClearListOnChangeTempo;
     }
 
-    public void OnTriggerEnter(Collider other)
+    public void Update()
     {
-        if (IsValidObject(other, GameManager.Instance.CurrentTemporality))
+        LayerMask mask = GameManager.Instance.CurrentTemporality == EnumTemporality.Past ? _character.PastLayer : _character.PresentLayer;
+
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, -Vector3.up, out hit, _currentTreshold, mask))
         {
-            _colliders.Add(other);
-            if (_colliders.Count == 1)
+            if(!IsGround)
             {
-                IsGround = true;
                 OnGround?.Invoke();
+                _currentTreshold = _fallTreshold;
             }
+
+            IsGround = true;
+        }
+        else
+        {
+            if (IsGround)
+            {
+                OnFall?.Invoke();
+                _currentTreshold = 0.2f;
+            }
+
+            IsGround = false;
         }
     }
 
-    public void OnTriggerExit(Collider other)
-    {
-        if (IsValidObject(other, GameManager.Instance.CurrentTemporality))
-        {
-            _colliders.Remove(other);
-            if (_colliders.Count == 0)
-            {
-                IsGround = false;
-                OnFall?.Invoke();
-            }
-        }
-    }
+    //public void OnTriggerEnter(Collider other)
+    //{
+    //    if (IsValidObject(other, GameManager.Instance.CurrentTemporality))
+    //    {
+    //        _colliders.Add(other);
+    //        if (_colliders.Count == 1)
+    //        {
+    //            IsGround = true;
+    //            OnGround?.Invoke();
+    //        }
+    //    }
+    //}
+
+    //public void OnTriggerExit(Collider other)
+    //{
+    //    if (IsValidObject(other, GameManager.Instance.CurrentTemporality))
+    //    {
+    //        _colliders.Remove(other);
+    //        if (_colliders.Count == 0)
+    //        {
+    //            IsGround = false;
+    //            OnFall?.Invoke();
+    //        }
+    //    }
+    //}
 
     private bool IsValidObject(Collider collider, EnumTemporality currentTempo)
     {

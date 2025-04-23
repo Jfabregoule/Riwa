@@ -12,69 +12,54 @@ public class ActivableDoor : MonoBehaviour
 
     [SerializeField] private List<CinemachineVirtualCamera> _doorCameras; // NEED REF CURRENT LEVEL MANAGER
 
-    private List<IActivable> _activables = new List<IActivable>();
-    private List<IActivable> _activatedItem = new List<IActivable>();
+    private int _currentActivated = 0;
     private Vector3 _closedPosition;
-    private Vector3 _openedPosition;
     private Coroutine _currentLerp;
 
-    private void Awake()
+    private void Start()
     {
-        _closedPosition = transform.position;
-        _openedPosition = _closedPosition + _openingOffset;
-
-        foreach (MonoBehaviour monoBehaviour in _activableComponents)
+        foreach(var activable in _activableComponents)
         {
-            if (monoBehaviour is IActivable activable)
-                _activables.Add(activable);
-        }
-
-        Debug.Log("Activable list count: " + _activables.Count);
-    }
-
-    private void OnEnable()
-    {
-        foreach (IActivable activable in _activables)
-        {
-            Debug.Log("Activated gameobject list: " +  activable);
-            activable.OnActivated += () => HandleActivatedActivable(activable, true);
-            activable.OnDesactivated += () => HandleActivatedActivable(activable, false);
+            if(activable.TryGetComponent(out IActivable act))
+            {
+                act.OnActivated += OnActivableActivated;
+                act.OnDesactivated += OnActivableDeactivated;
+            }
         }
     }
 
     private void OnDisable()
     {
-        foreach (IActivable activable in _activables)
+        foreach (IActivable activable in _activableComponents)
         {
-            activable.OnActivated -= () => HandleActivatedActivable(activable, true);
-            activable.OnDesactivated -= () => HandleActivatedActivable(activable, false);
+            activable.OnActivated -= OnActivableActivated;
+            activable.OnDesactivated -= OnActivableDeactivated;
         }
     }
 
-    private void HandleActivatedActivable(IActivable activatedOne, bool save)
+    private void CheckDoorState()
     {
-        if(save)
-            _activatedItem.Add(activatedOne);
-        else
-            _activatedItem.Remove(activatedOne);
-
-        if (_activatedItem.Count == _activables.Count) 
+        if(_currentActivated == _activableComponents.Length)
             OpenDoor();
+        //else
+        //    CloseDoor();
     }
 
-    private void Update()
+    private void OnActivableActivated()
     {
-        Debug.Log("activatedItemCount: " + _activatedItem.Count);
-        for(int i = 0; i < _activatedItem.Count; i++)
-        {
-            Debug.Log(_activatedItem[i]);
-        }
+        _currentActivated += 1;
+        CheckDoorState();
+    }
+
+    private void OnActivableDeactivated()
+    {
+        _currentActivated -= 1;
     }
 
     private void OpenDoor()
     {
         if (_currentLerp != null) StopCoroutine(_currentLerp);
-        _currentLerp = StartCoroutine(LerpDoorPosition(_openedPosition));
+        _currentLerp = StartCoroutine(LerpDoorPosition(_openingOffset));
     }
 
     private void CloseDoor()
@@ -86,12 +71,13 @@ public class ActivableDoor : MonoBehaviour
     private IEnumerator LerpDoorPosition(Vector3 targetPosition)
     {
 
+        GameManager.Instance.Character.InputManager.DisableGameplayControls();
         if (_doorCameras.Count > 0)
         {
             _doorCameras[0].Priority = 20;
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1.5f);
             _doorCameras[1].Priority = 25;
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1.5f);
         }
 
         Vector3 start = transform.position;
@@ -99,8 +85,8 @@ public class ActivableDoor : MonoBehaviour
 
         while (elapsed < _lerpTime)
         {
-            transform.position = Vector3.Lerp(start, targetPosition, elapsed / _lerpTime);
             elapsed += Time.deltaTime;
+            transform.position = Vector3.Lerp(start, targetPosition, elapsed / _lerpTime);
             yield return null;
         }
 
@@ -109,9 +95,10 @@ public class ActivableDoor : MonoBehaviour
         if (_doorCameras.Count > 0)
         {
             _doorCameras[1].Priority = 0;
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1.5f);
             _doorCameras[0].Priority = 0;
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1.5f);
         }
+        GameManager.Instance.Character.InputManager.EnableGameplayControls();
     }
 }

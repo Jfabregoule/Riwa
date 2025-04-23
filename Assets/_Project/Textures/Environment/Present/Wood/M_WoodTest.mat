@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-2306874281630140722
+--- !u!114 &-1896460911739756009
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,14 +20,14 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_TechnoLights
-  m_Shader: {fileID: -6465566751694194690, guid: 2b1f8132d73aa9e4b990d6a054576d58,
+  m_Name: M_WoodTest
+  m_Shader: {fileID: -6465566751694194690, guid: 7713f55c50dc0a24d8649ffb41214a10,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 2
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -37,16 +37,12 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _AmbianteOcclusion:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _BalayageTexture:
-        m_Texture: {fileID: 2800000, guid: 10a1bbfeb8663514c8cb9e4c02014dce, type: 3}
+    - _AmbiantOcclusion:
+        m_Texture: {fileID: 2800000, guid: 63a8e1be48971c342839b72ade22c428, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseColorText:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 2d9dc87899940f041b50b885944ac68d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
@@ -69,31 +65,27 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _EdgeMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _EmissionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _HeightMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 2aeb18de11fa4d2428a6921663eb0435, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _LineTexture:
-        m_Texture: {fileID: 0}
+    - _HighLight:
+        m_Texture: {fileID: 2800000, guid: 0fd73979e49b7894e9fe0ab3ef1076cc, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _MetallicGlossMap:
+    - _Metallic:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _MetallicMap:
+    - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -102,7 +94,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalText:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 0ca62525879dd2245a933e9ec4218206, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -113,12 +105,8 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _PastSubShader_6c35de89d048464a95843b935b27e1c9_NoiseTexture_901368309_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 56ce5ddcb6a16f84283a7fb5f68bef89, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _Roughness:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: e574e9a809d3ab047a32a6f19f181caf, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
@@ -154,21 +142,18 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EdgeWidth: 0.09
-    - _EdgetStrength: 1
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _HeightPower: 0
-    - _Intesity: 1
     - _Metallic: 0
     - _MetallicStrength: 0
     - _MoveSpeed: 1
-    - _NoiseScale: 1
+    - _NoiseScale: 0
     - _NoiseStrength: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.005
-    - _PastEnum: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _RadiusNoiseCutOff: 0.07
@@ -183,16 +168,11 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BalayageColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0.0141509175, g: 1, b: 0.9045953, a: 1}
-    - _EdgeColor: {r: 1, g: 1, b: 1, a: 0}
-    - _EmissionColor: {r: 0.15172991, g: 0.5180752, b: 0.71481633, a: 1}
-    - _EmissiveColor: {r: 0, g: 0.43591636, b: 0.509434, a: 0.92156863}
-    - _OutLineColor: {r: 0.13072509, g: 0.5541697, b: 0.74901956, a: 0}
-    - _OutlineColor: {r: 0.509434, g: 0.0504628, b: 0.0504628, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _HighLightColor: {r: 0.20754719, g: 0.07577506, b: 0, a: 0}
+    - _OutLineColor: {r: 0.2634389, g: 1.11677, b: 1.509434, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _Tiling: {r: 1, g: 1, b: 0, a: 0}
-    - _TillingDir: {r: 0, g: 0.5, b: 0, a: 0}
-    - _TillingTest: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []

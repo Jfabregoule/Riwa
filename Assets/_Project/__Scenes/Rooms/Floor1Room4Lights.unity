@@ -5393,24 +5393,6 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!1 &132821693 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4218197022810484435, guid: 2c383e1a525708f45abfda117398d31d,
-    type: 3}
-  m_PrefabInstance: {fileID: 1371614879}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &132821698
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 132821693}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f302ec8278a7a764b9458e04e232ac0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &149539612
 GameObject:
   m_ObjectHideFlags: 0
@@ -10470,24 +10452,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1280261620}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &222438397 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1140172656949452846, guid: 821b5199966905b4dbd10e69451a7c7e,
-    type: 3}
-  m_PrefabInstance: {fileID: 870688258}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &222438402
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 222438397}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f302ec8278a7a764b9458e04e232ac0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &225192265
 GameObject:
   m_ObjectHideFlags: 0
@@ -15814,6 +15778,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lerpTime: 0.3
   _offset: {x: 0, y: -0.1, z: 0}
+  _triggerInTemporality: 0
+  _canBeTriggeredWithPlayer: 1
+  _canBeTriggeredWithCrate: 1
+  _whatIsPast:
+    serializedVersion: 2
+    m_Bits: 0
+  _whatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!65 &297708432
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -16312,24 +16285,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 347604740}
   m_Mesh: {fileID: -4684820047464168032, guid: ff49c85e2c1d5494a80eb07c2d916b36, type: 3}
---- !u!1 &362556730 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4217097904337422389, guid: 821b5199966905b4dbd10e69451a7c7e,
-    type: 3}
-  m_PrefabInstance: {fileID: 870688258}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &362556735
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 362556730}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f302ec8278a7a764b9458e04e232ac0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &373876719
 GameObject:
   m_ObjectHideFlags: 0
@@ -16780,6 +16735,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lerpTime: 0.3
   _offset: {x: 0, y: -0.1, z: 0}
+  _triggerInTemporality: 0
+  _canBeTriggeredWithPlayer: 1
+  _canBeTriggeredWithCrate: 1
+  _whatIsPast:
+    serializedVersion: 2
+    m_Bits: 0
+  _whatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &436150701
 GameObject:
   m_ObjectHideFlags: 0
@@ -17657,7 +17621,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: a63493ddae2b4d544a8f6167e2515208,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a63493ddae2b4d544a8f6167e2515208,
         type: 3}
@@ -26133,14 +26097,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1710243591}
-    - targetCorrespondingSourceObject: {fileID: 1140172656949452846, guid: 821b5199966905b4dbd10e69451a7c7e,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 222438402}
-    - targetCorrespondingSourceObject: {fileID: 4217097904337422389, guid: 821b5199966905b4dbd10e69451a7c7e,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 362556735}
   m_SourcePrefab: {fileID: 100100000, guid: 821b5199966905b4dbd10e69451a7c7e, type: 3}
 --- !u!1 &874594532 stripped
 GameObject:
@@ -26183,6 +26139,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lerpTime: 0.3
   _offset: {x: 0, y: -0.1, z: 0}
+  _triggerInTemporality: 0
+  _canBeTriggeredWithPlayer: 1
+  _canBeTriggeredWithCrate: 1
+  _whatIsPast:
+    serializedVersion: 2
+    m_Bits: 0
+  _whatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &878899364
 GameObject:
   m_ObjectHideFlags: 0
@@ -32481,7 +32446,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1186638952
 Transform:
   m_ObjectHideFlags: 0
@@ -32794,6 +32759,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lerpTime: 0.3
   _offset: {x: 0, y: -0.1, z: 0}
+  _triggerInTemporality: 0
+  _canBeTriggeredWithPlayer: 1
+  _canBeTriggeredWithCrate: 1
+  _whatIsPast:
+    serializedVersion: 2
+    m_Bits: 0
+  _whatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!65 &1315246872
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -32830,7 +32804,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1326008950
 Transform:
   m_ObjectHideFlags: 0
@@ -34592,10 +34566,6 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4218197022810484435, guid: 2c383e1a525708f45abfda117398d31d,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 132821698}
     - targetCorrespondingSourceObject: {fileID: 9089615314064503469, guid: 2c383e1a525708f45abfda117398d31d,
         type: 3}
       insertIndex: -1
@@ -41009,6 +40979,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lerpTime: 0.3
   _offset: {x: 0, y: -0.1, z: 0}
+  _triggerInTemporality: 0
+  _canBeTriggeredWithPlayer: 1
+  _canBeTriggeredWithCrate: 1
+  _whatIsPast:
+    serializedVersion: 2
+    m_Bits: 0
+  _whatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!65 &1667443041
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -41268,6 +41247,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lerpTime: 0.3
   _offset: {x: 0, y: -0.1, z: 0}
+  _triggerInTemporality: 0
+  _canBeTriggeredWithPlayer: 1
+  _canBeTriggeredWithCrate: 1
+  _whatIsPast:
+    serializedVersion: 2
+    m_Bits: 0
+  _whatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &1712609460
 GameObject:
   m_ObjectHideFlags: 0

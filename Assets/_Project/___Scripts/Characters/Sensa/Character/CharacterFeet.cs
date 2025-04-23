@@ -50,18 +50,24 @@ public class CharacterFeet : MonoBehaviour, IRespawnable
     {
         LayerMask mask = GameManager.Instance.CurrentTemporality == EnumTemporality.Past ? _character.PastLayer : _character.PresentLayer;
 
-        int maskFinal = mask.value & _playerMask;
+        //LayerMask finalMask = mask & _playerMask;
 
-        if (Physics.SphereCast(transform.position, _radius, -Vector3.up, out RaycastHit hit, 2f, maskFinal))
-        {
-            IsGround = true;
-            Debug.DrawRay(transform.position, -Vector3.up * hit.distance, Color.red); // touché
-        }
-        else
-        {
-            IsGround = false;
-            Debug.DrawRay(transform.position, -Vector3.up * _currentTreshold, Color.green); // rien touché
-        }
+        //if (Physics.SphereCast(transform.position + Vector3.up * 0.5f, _radius, -Vector3.up, out RaycastHit hit, mask))
+        //{
+        //    Debug.Log(hit.collider.gameObject.name);
+        //    IsGround = true;
+        //    Debug.DrawRay(transform.position + Vector3.up * 0.5f, -Vector3.up * hit.distance, Color.red); // touché
+        //}
+        //else
+        //{
+        //    IsGround = false;
+        //    Debug.DrawRay(transform.position + Vector3.up * 0.5f, -Vector3.up * _currentTreshold, Color.green); // rien touché
+        //}
+
+        IsGround = Physics.CheckSphere(transform.position, _radius, mask);
+
+        Color color = IsGround ? Color.green : Color.red;
+        Debug.DrawRay(transform.position, Vector3.up * 0.1f, color);
     }
 
     //public void OnTriggerEnter(Collider other)

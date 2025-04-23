@@ -27,6 +27,7 @@ public class DialogueSystem : Singleton<DialogueSystem>
     private int _characterIndex;
 
     private bool _isWriting = false;
+    private bool _eventWaitwasTrigger = false;
     private DialogueUIType _currentDialogueUI;
 
     public delegate void DialogueEvent(DialogueEventType eventType);
@@ -55,7 +56,7 @@ public class DialogueSystem : Singleton<DialogueSystem>
             InputManager.Instance.OnAdvanceDialogue -= AdvanceDialogue;
 
         if (GameManager.Instance != null)
-            GameManager.Instance.TranslateSystem.OnLanguageChanged -= UpdateSentenceTranslate;
+            GameManager.Instance.TranslateSystem.OnLanguageChanged -= UpdateSentenceAll;
     }
 
     public void BeginDialogue(DialogueAsset asset)
@@ -111,7 +112,6 @@ public class DialogueSystem : Singleton<DialogueSystem>
         {
             UpdateSentence();
         }
-            
     }
 
     public void FirstSection()
@@ -162,6 +162,11 @@ public class DialogueSystem : Singleton<DialogueSystem>
             InputManager.Instance?.EnableDialogueControls();
         }
 
+        if ((sentence.Options & DialogueOptions.WaitEvent) != 0)
+        {
+            EventRegistery.Register(sentence.WaitEventType, WaitEventTrigger);
+        }
+
         if ((sentence.Options & DialogueOptions.UseWriting) != 0)
         {
             StartCoroutine(UpdateSentenceWriting());
@@ -178,6 +183,12 @@ public class DialogueSystem : Singleton<DialogueSystem>
         OnSentenceChanged?.Invoke(_currentDialogueUI, GetTranslateText());
         StopAllCoroutines();
         CheckToPassSentence(sentence);
+    }
+
+    private void WaitEventTrigger()
+    {
+        _eventWaitwasTrigger = true;
+        EventRegistery.Unregister(GetSentence().WaitEventType, WaitEventTrigger);
     }
 
     private void UpdateSentenceTranslate()
@@ -211,10 +222,22 @@ public class DialogueSystem : Singleton<DialogueSystem>
             StartCoroutine(WaitTimeAndAdvanceDialogue(sentence.TimeToPass));
         }
 
-        if ((sentence.Options & DialogueOptions.WaitEvent) != 0)
+        if (_eventWaitwasTrigger)
         {
+            _eventWaitwasTrigger = false;
+            AdvanceDialogue();
+        }
+        else if ((sentence.Options & DialogueOptions.WaitEvent) != 0)
+        {
+            _eventWaitwasTrigger = false;
+            EventRegistery.Unregister(GetSentence().WaitEventType, WaitEventTrigger);
             EventRegistery.Register(sentence.WaitEventType, AdvanceDialogue);
         }
+
+        //if ((sentence.Options & DialogueOptions.WaitEvent) != 0)
+        //{
+        //    EventRegistery.Register(sentence.WaitEventType, AdvanceDialogue);
+        //}
     }
 
     private IEnumerator WaitTimeAndAdvanceDialogue(float time)
@@ -241,12 +264,8 @@ public class DialogueSystem : Singleton<DialogueSystem>
     {
         if (script != null)
         {
-            script.OnLanguageChanged += UpdateSentenceTranslate;
-            Debug.Log("Script is ready!");
-        }
-        else
-        {
-            Debug.LogWarning("Script was still null after timeout.");
+            //script.OnLanguageChanged += UpdateSentenceTranslate;
+            script.OnLanguageChanged += UpdateSentenceAll;
         }
     }
 

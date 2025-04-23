@@ -15,9 +15,9 @@ public class PulseEffect : MonoBehaviour
     private Coroutine _pulseCoroutine;
     void Start()
     {
-        _isPulsing = true;
         _initialScale = transform.localScale;
-        //StartPulsing();
+        if (!_isPulsing) return;
+        StartPulsing();
     }
 
     IEnumerator Pulse()

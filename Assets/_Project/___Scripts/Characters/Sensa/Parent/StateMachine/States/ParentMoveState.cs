@@ -31,9 +31,11 @@ public class ParentMoveState<TStateEnum> : BaseStatePawn<TStateEnum>
 
         _cam = GameManager.Instance.CameraHandler;
 
-        _lastDirection = _character.transform.localEulerAngles;
-        _targetDirection = _character.transform.localEulerAngles;
-        _startDirection = _character.transform.localEulerAngles;
+        _lastDirection = _character.transform.forward;
+        _targetDirection = _character.transform.forward;
+        _startDirection = _character.transform.forward;
+
+        Debug.Log("UWU            " + _targetDirection);
 
         _clock = 0;
     }
@@ -57,21 +59,27 @@ public class ParentMoveState<TStateEnum> : BaseStatePawn<TStateEnum>
         camForward.y = 0;
         camRight.y = 0;
 
+        Debug.Log("First" + _targetDirection);
+
         camForward.Normalize();
         camRight.Normalize();
         _moveDirection = (camForward * direction.y + camRight * direction.x);
+        _moveDirection.y = 0;
 
         if (_lastDirection != _moveDirection && _moveDirection != Vector3.zero)
         {
             _startDirection = _lastDirection;
             _lastDirection = _moveDirection;
             _targetDirection = _moveDirection;
+            _targetDirection.y = 0;
             _animClock = 0;
 
         }
 
         _animClock += Time.deltaTime * 20;
         //_character.transform.forward = Vector3.Lerp(_startDirection, _targetDirection, _animClock);
+
+        Debug.Log("Second" + _targetDirection);
 
         Quaternion targetRotation = Quaternion.LookRotation(_targetDirection);
         _character.transform.rotation = Quaternion.Slerp(
@@ -80,9 +88,12 @@ public class ParentMoveState<TStateEnum> : BaseStatePawn<TStateEnum>
             _animClock
         );
 
+
         _character.Animator.SetFloat("MagnitudeVel", Vector3.Magnitude(_moveDirection));
 
         //Lerp Speed
+
+        //_currentSpeed = _character.Speed;
 
         _clock += Time.deltaTime;
         _clock = Mathf.Clamp(_clock, 0, _acceleration);

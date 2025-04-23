@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
+using static UnityEngine.UI.Image;
 
 public class CharacterFeet : MonoBehaviour, IRespawnable
 {
     [SerializeField] private float _fallTreshold = 2;
     private float _currentTreshold;
-    [HideInInspector] public bool IsGround;
+
+    public bool IsGround;
     private ACharacter _character;
+    private float _radius;
+
+    int _playerMask;
 
     public System.Action OnFall;
     public System.Action OnGround;
@@ -28,6 +33,10 @@ public class CharacterFeet : MonoBehaviour, IRespawnable
         GameManager.Instance.OnTimeChangeStarted += ClearListOnChangeTempo;
 
         _currentTreshold = _fallTreshold;
+        _radius = _character.GetComponent<CapsuleCollider>().radius * _character.transform.localScale.x;
+
+        int playerLayer = LayerMask.NameToLayer("whatIsPlayer");
+        _playerMask = ~(1 << playerLayer);
 
     }
 
@@ -41,26 +50,17 @@ public class CharacterFeet : MonoBehaviour, IRespawnable
     {
         LayerMask mask = GameManager.Instance.CurrentTemporality == EnumTemporality.Past ? _character.PastLayer : _character.PresentLayer;
 
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, -Vector3.up, out hit, _currentTreshold, mask))
-        {
-            if(!IsGround)
-            {
-                OnGround?.Invoke();
-                _currentTreshold = _fallTreshold;
-            }
+        int maskFinal = mask.value & _playerMask;
 
+        if (Physics.SphereCast(transform.position, _radius, -Vector3.up, out RaycastHit hit, 2f, maskFinal))
+        {
             IsGround = true;
+            Debug.DrawRay(transform.position, -Vector3.up * hit.distance, Color.red); // touché
         }
         else
         {
-            if (IsGround)
-            {
-                OnFall?.Invoke();
-                _currentTreshold = 0.2f;
-            }
-
             IsGround = false;
+            Debug.DrawRay(transform.position, -Vector3.up * _currentTreshold, Color.green); // rien touché
         }
     }
 
@@ -72,7 +72,7 @@ public class CharacterFeet : MonoBehaviour, IRespawnable
     //        if (_colliders.Count == 1)
     //        {
     //            IsGround = true;
-    //            OnGround?.Invoke();
+    //            //OnGround?.Invoke();
     //        }
     //    }
     //}
@@ -85,7 +85,7 @@ public class CharacterFeet : MonoBehaviour, IRespawnable
     //        if (_colliders.Count == 0)
     //        {
     //            IsGround = false;
-    //            OnFall?.Invoke();
+    //            //OnFall?.Invoke();
     //        }
     //    }
     //}
@@ -99,7 +99,7 @@ public class CharacterFeet : MonoBehaviour, IRespawnable
 
     private void ClearListOnChangeTempo(EnumTemporality temporality)
     {
-        SphereCollider sphere = GetComponent<SphereCollider>();
+        CapsuleCollider sphere = GetComponent<CapsuleCollider>();
 
         Collider[] colliders = Physics.OverlapSphere(transform.position, sphere.radius * transform.localScale.x);
 

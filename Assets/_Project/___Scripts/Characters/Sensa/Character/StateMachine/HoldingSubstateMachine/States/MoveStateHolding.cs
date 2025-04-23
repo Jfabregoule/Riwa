@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -26,7 +27,7 @@ public class MoveStateHolding : HoldingBaseState
 
         _character.Animator.ResetTrigger(_stateMachine.AnimationMap[EnumHolding.IdleHolding]);
 
-        _character.Feet.OnFall += GoToFall;
+        //_character.Feet.OnFall += GoToFall;
     }
 
     public override void ExitState()
@@ -35,7 +36,7 @@ public class MoveStateHolding : HoldingBaseState
 
         _movable.OnMoveFinished -= CanGoToIdle;
         _movable.OnReplacePlayer -= ReplacePlayer;
-        _character.Feet.OnFall -= GoToFall;
+        //_character.Feet.OnFall -= GoToFall;
     }
 
     public override void UpdateState()
@@ -55,6 +56,11 @@ public class MoveStateHolding : HoldingBaseState
     public override void CheckChangeState()
     {
         base.CheckChangeState();
+
+        if (!_character.Feet.IsGround)
+        {
+            GoToFall();
+        }
     }
 
     public void CanGoToIdle()

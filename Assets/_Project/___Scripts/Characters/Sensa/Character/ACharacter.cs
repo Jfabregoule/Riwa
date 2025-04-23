@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
 {
@@ -124,6 +125,8 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
     private void FixedUpdate()
     {
         _stateMachine.StateMachineFixedUpdate();
+
+        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
     }
 
     public void SetHoldingObject(GameObject holdingObject)

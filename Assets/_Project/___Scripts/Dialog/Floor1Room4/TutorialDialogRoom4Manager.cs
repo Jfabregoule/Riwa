@@ -16,6 +16,11 @@ public class TutorialDialogRoom4Manager : MonoBehaviour
     private void Start()
     {
         _instance = (Floor1Room4LevelManager)Floor1Room4LevelManager.Instance;
+        _instance.OnLevelEnter += Init;
+    }
+
+    private void Init()
+    {
         _instance.MuralPiece.OnPickUp += OnTutorialMuralPiecePickup;
         if (_instance.IsTutorialDone == true) return;
         _sequencerCinematics[0].Init();

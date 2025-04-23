@@ -30,6 +30,12 @@ public class TutorialRoom3Manager : MonoBehaviour
     private void Start()
     {
         _instance = (Floor1Room3LevelManager)Floor1Room3LevelManager.Instance;
+        _instance.OnLevelEnter += Init;
+
+    }
+
+    private void Init()
+    {
         DialogueSystem.Instance.OnDialogueEvent += DispatchEventOnDialogueEvent;
         DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.RiwaHiddingIntoSensa, RiwaHiddingIntoSensa);
         DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.WaitEndOfLianaPathTravel, WaitEndOfLianaPathTravel);

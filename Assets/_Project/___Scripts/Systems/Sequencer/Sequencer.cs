@@ -16,7 +16,7 @@ public class Sequencer : MonoBehaviour
 
     public void InitializeSequence()
     {
-        StartCoroutine(ExecuteSequence());
+        StartCoroutine(ExecuteSequence()); 
     }
 
     private IEnumerator ExecuteSequence()

@@ -44,7 +44,7 @@ public class VineRetraction : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         Debug.Log("Percentage " + _growPercentage);
-        if (_box.Contains(other.gameObject))
+        if (other.TryGetComponent<Crate>(out Crate crate))
         {
             Vector3 localEntryPos = _vine.transform.InverseTransformPoint(other.transform.position);
             float zLocal = localEntryPos.z;

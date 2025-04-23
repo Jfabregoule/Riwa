@@ -27,8 +27,8 @@ public class CharacterFeet : MonoBehaviour, IRespawnable
 
     public void OnDestroy()
     {
-        GameManager.Instance.OnTimeChangeStarted -= ClearListOnChangeTempo;
-        
+        if (GameManager.Instance)
+            GameManager.Instance.OnTimeChangeStarted -= ClearListOnChangeTempo;
     }
 
     public void OnTriggerEnter(Collider other)

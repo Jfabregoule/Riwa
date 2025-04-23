@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.EnhancedTouch;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
@@ -42,6 +44,20 @@ public class InputManager : Singleton<InputManager>
         _interactEnabled = true;
         _moveEnabled = true;
     }
+
+    private bool IsTouchOverUI(Vector2 touchPosition, int threshold = 0)
+    {
+        PointerEventData eventData = new PointerEventData(EventSystem.current)
+        {
+            position = touchPosition
+        };
+
+        var raycastResults = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, raycastResults);
+
+        return raycastResults.Count > threshold;
+    }
+
 
     #region Enabled Methods
 
@@ -193,7 +209,7 @@ public class InputManager : Singleton<InputManager>
         Touch.onFingerDown += OnFingerDown;
         Touch.onFingerUp += OnFingerUp;
 
-        _controls.Gameplay.ChangeTime.canceled += ctx => ChangeTimePerfomed();
+        _controls.Gameplay.ChangeTime.performed += ctx => ChangeTimePerfomed();
 
         //Pour PC
         _controls.Gameplay.Interact.performed += ctx => InteractPerfomed();
@@ -204,7 +220,7 @@ public class InputManager : Singleton<InputManager>
         Touch.onFingerDown -= OnFingerDown;
         Touch.onFingerUp -= OnFingerUp;
 
-        _controls.Gameplay.ChangeTime.canceled -= ctx => ChangeTimePerfomed();
+        _controls.Gameplay.ChangeTime.performed -= ctx => ChangeTimePerfomed();
 
         //Pour PC
         _controls.Gameplay.Interact.performed -= ctx => InteractPerfomed();
@@ -237,14 +253,19 @@ public class InputManager : Singleton<InputManager>
     {
         Vector2 pos = finger.currentTouch.screenPosition;
 
+        
+
         if (pos.x < Screen.width / 2 && _joystickFingerId == null && _moveEnabled)
         {
+            if (IsTouchOverUI(pos, 1)) return;
+
             _joystickFingerId = finger.index;
             OnMove?.Invoke(pos);
         }
 
         else if (pos.x >= Screen.width / 2 && _interactEnabled)
         {
+            if (IsTouchOverUI(pos, 0)) return;
             OnInteract?.Invoke();
         }
     }
@@ -259,7 +280,10 @@ public class InputManager : Singleton<InputManager>
     }
 
     private void InteractPerfomed() => OnInteract?.Invoke();
-    private void AdvanceDialoguePerfomed() => OnAdvanceDialogue?.Invoke();
+    private void AdvanceDialoguePerfomed() 
+    {
+        OnAdvanceDialogue?.Invoke();
+    }
     private void ChangeTimePerfomed() => OnChangeTime?.Invoke();
     private void OptionsPerfomed() => OnOpenOptions?.Invoke();
 

@@ -1520,7 +1520,7 @@ GameObject:
   m_Component:
   - component: {fileID: 158593838}
   - component: {fileID: 158593837}
-  - component: {fileID: 158593836}
+  - component: {fileID: 158593839}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -1528,26 +1528,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &158593836
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 158593835}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SendPointerHoverToParent: 1
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
 --- !u!114 &158593837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1578,6 +1558,47 @@ Transform:
   m_Children: []
   m_Father: {fileID: 499214562}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &158593839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 158593835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
+  m_MoveRepeatDelay: 0.5
+  m_MoveRepeatRate: 0.1
+  m_XRTrackingOrigin: {fileID: 0}
+  m_ActionsAsset: {fileID: -944628639613478452, guid: fce1be50de4e62f489137d8a7856f7d0,
+    type: 3}
+  m_PointAction: {fileID: 3412681957048418422, guid: fce1be50de4e62f489137d8a7856f7d0,
+    type: 3}
+  m_MoveAction: {fileID: -4967940143120032170, guid: fce1be50de4e62f489137d8a7856f7d0,
+    type: 3}
+  m_SubmitAction: {fileID: -5886973829203460747, guid: fce1be50de4e62f489137d8a7856f7d0,
+    type: 3}
+  m_CancelAction: {fileID: 2764532295912434043, guid: fce1be50de4e62f489137d8a7856f7d0,
+    type: 3}
+  m_LeftClickAction: {fileID: 2316467756806436940, guid: fce1be50de4e62f489137d8a7856f7d0,
+    type: 3}
+  m_MiddleClickAction: {fileID: 3142077534463179343, guid: fce1be50de4e62f489137d8a7856f7d0,
+    type: 3}
+  m_RightClickAction: {fileID: -1954130316986105884, guid: fce1be50de4e62f489137d8a7856f7d0,
+    type: 3}
+  m_ScrollWheelAction: {fileID: 2283287996084853332, guid: fce1be50de4e62f489137d8a7856f7d0,
+    type: 3}
+  m_TrackedDevicePositionAction: {fileID: -630890775982060216, guid: fce1be50de4e62f489137d8a7856f7d0,
+    type: 3}
+  m_TrackedDeviceOrientationAction: {fileID: 7594870486541862135, guid: fce1be50de4e62f489137d8a7856f7d0,
+    type: 3}
+  m_DeselectOnBackgroundClick: 1
+  m_PointerBehavior: 2
+  m_CursorLockBehavior: 0
 --- !u!1 &182381729
 GameObject:
   m_ObjectHideFlags: 0
@@ -9611,6 +9632,18 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 771800565}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.CanvasGroup, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 259204910}
+        m_TargetAssemblyTypeName: Navbar, Assembly-CSharp
+        m_MethodName: CloseOptions
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

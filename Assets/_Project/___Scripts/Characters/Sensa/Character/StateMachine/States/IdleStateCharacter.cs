@@ -75,7 +75,10 @@ public class IdleStateCharacter : ParentIdleState<EnumStateCharacter>
 
     public void ChangeStateToTempo()
     {
-        _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.ChangeTempo]);
+        if (((ACharacter)_character).CanChangeTime)
+        {
+            _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.ChangeTempo]);
+        }
     }
 
     private void GoToFall() 

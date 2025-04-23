@@ -34,6 +34,9 @@ public class GameManager : Singleton<GameManager>
     public event ChangeTimeEvent OnTimeChangeEnded;
     public event Action OnTimeChangeAborted;
 
+    public delegate void IndiceEvent();
+    public event IndiceEvent OnIndicePulse;
+
     #region Properties
 
     public CameraHandler CameraHandler { get => _cameraHandler; }
@@ -85,5 +88,10 @@ public class GameManager : Singleton<GameManager>
     public void TimeChangeAborted()
     {
         OnTimeChangeEnded?.Invoke(_currentTemporality);
+    }
+
+    public void PulseIndice()
+    {
+        OnIndicePulse?.Invoke();
     }
 }

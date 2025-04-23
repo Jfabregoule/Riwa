@@ -23,7 +23,8 @@ public class SequencerActionMoveDoor : SequencerAction
 
     public override IEnumerator StartSequence(Sequencer context)
     {
-        if (!_isEntering) 
+        _door = context.gameObject;
+        if (!_isEntering)
             _chara.transform.position = _door.transform.position; 
 
         _isMoving = true;

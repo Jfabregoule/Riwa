@@ -13,6 +13,7 @@ public class Door : MonoBehaviour
     [SerializeField] Sequencer _exitDoorSequencer;
 
     private bool _isExitingDoor = false;
+    private bool _isEnteringDoor = false;
 
     private void Start()
     {
@@ -25,10 +26,11 @@ public class Door : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && !_isExitingDoor)
+        if (other.CompareTag("Player") && !_isExitingDoor && !_isEnteringDoor)
         {
             if (_animationExit)
             {
+                _isEnteringDoor = true;
                 _enterDoorSequencer.InitializeSequence();
             }
             //else
@@ -47,6 +49,7 @@ public class Door : MonoBehaviour
     public void ResetDoor()
     {
         _isExitingDoor = false;
+        _isEnteringDoor = false;
         GameManager.Instance.CurrentLevelManager.LevelEnter();
     }
 

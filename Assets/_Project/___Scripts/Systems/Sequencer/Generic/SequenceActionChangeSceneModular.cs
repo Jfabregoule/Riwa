@@ -16,6 +16,7 @@ public class SequenceActionChangeSceneModular : SequencerAction
 
     public override IEnumerator StartSequence(Sequencer context)
     {
+        _attachedDoor = context.gameObject.GetComponent<Door>();
         _attachedDoor.ChangeScene();
 
         yield return null;

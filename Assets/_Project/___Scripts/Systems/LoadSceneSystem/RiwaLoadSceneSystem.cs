@@ -2,10 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Diagnostics;
 
+[Serializable]
 public enum DoorDirection
 {
+    Null,
     North,
     South,
     East,
@@ -14,20 +18,38 @@ public enum DoorDirection
 
 public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
 {
-    private int _currentFloorNum = 1;
-    private int _currentRoomNum = 1;
+    private int _currentFloorNum = 0;
+    private int _currentRoomNum = 0;
 
     [SerializeField] private float _spawnOffset;
     private int _nextDoorID;
-    private DoorDirection _nextDoorDirection;
+    private DoorDirection _nextDoorDirection = DoorDirection.Null;
+
+    private void OnEnable()
+    {
+        SaveSystem.Instance.OnLoadProgress += LoadSceneData;
+    }
 
     private void Start()
     {
-        EnqueueScenes(new[] { new SceneData("HUD"), new SceneData("Floor1Room1") }, false);
+
+    }
+
+    private void LoadSceneData()
+    {
+        int currentFloorNum = SaveSystem.Instance.LoadElement<int>("CurrentFloor");
+        int currentRoomNum = SaveSystem.Instance.LoadElement<int>("CurrentRoom");
+        int nextDoorID = SaveSystem.Instance.LoadElement<int>("LastDoorID");
+        DoorDirection nextDoorDirection = SaveSystem.Instance.LoadElement<DoorDirection>("LastDoorDirection");
+        GoToNewScene(currentFloorNum, currentRoomNum, nextDoorID, nextDoorDirection);
     }
 
     public void GoToNewScene(int floor, int room, int nextDoorID, DoorDirection nextDoorDirection)
     {
+        SaveSystem.Instance.SaveElement<int>("CurrentFloor", floor);
+        SaveSystem.Instance.SaveElement<int>("CurrentRoom", room);
+        SaveSystem.Instance.SaveElement<int>("LastDoorID", nextDoorID);
+        SaveSystem.Instance.SaveElement<DoorDirection>("LastDoorDirection", nextDoorDirection);
         SetNextSpawnInfo(nextDoorID, nextDoorDirection);
         StartCoroutine(LoadRoomScene(floor, room));
     }
@@ -46,10 +68,19 @@ public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
         _currentFloorNum = floor;
         _currentRoomNum = room;
 
-        if (!string.IsNullOrEmpty(currentRoomName) && currentRoomName != newRoomName)
+        if (!string.IsNullOrEmpty(currentRoomName))
         {
-            yield return StartCoroutine(ChangeScene(new[] { new SceneData(currentRoomName) }, new[] { new SceneData(newRoomName) }));
-            SpawnPlayerToDoor();
+            if (currentRoomName == "Floor0Room0")
+            {
+                EnqueueScenes(new[] { new SceneData("HUD", 0), new SceneData(newRoomName, 1) }, false);
+                if (_nextDoorDirection != DoorDirection.Null)
+                    SpawnPlayerToDoor();
+                yield break;
+            }
+            else
+                yield return StartCoroutine(ChangeScene(new[] { new SceneData(currentRoomName) }, new[] { new SceneData(newRoomName) }));
+            if (_nextDoorDirection != DoorDirection.Null)
+                SpawnPlayerToDoor();
         }
     }
 

@@ -48,7 +48,7 @@ public class BaseLevelManager : Singleton<BaseLevelManager>
     public delegate void LevelEvent();
     public event LevelEvent OnLevelEnter;
 
-    public void OnEnable()
+    public virtual void OnEnable()
     {
         GameManager.Instance.Load3C(_cameraHandler, _character, _joystick);
 

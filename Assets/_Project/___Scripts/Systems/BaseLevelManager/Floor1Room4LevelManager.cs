@@ -37,7 +37,7 @@ public class Floor1Room4LevelManager : BaseLevelManager
     public Transform SensaLandingTransform { get => _sensaLandingTransform; }
     public Transform RiwaLandingTransform { get => _riwaLandingTransform; }
 
-    private void OnEnable()
+    public override void OnEnable()
     {
         base.OnEnable();
         _rootCollider.OnGrowthPercentageReached += PlayerCanInteractWithSocle;

@@ -11,8 +11,6 @@ public enum EnumAdvancementRoom1
     HasOpenDoor
 }
 
-
-
 public class Floor1Room1LevelManager : BaseLevelManager
 {
 

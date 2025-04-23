@@ -40,6 +40,10 @@ public class SaveSystem : Singleton<SaveSystem>
 
     private Dictionary<string, object> _defaultProgress = new Dictionary<string, object> // Dictionnaire contenant la progression par defaut.
     {
+        {"CurrentFloor", 1},
+        {"CurrentRoom", 1},
+        {"LastDoorID", 0},
+        {"LastDoorDirection", DoorDirection.Null},
     };
 
     /// <summary>

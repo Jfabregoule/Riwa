@@ -21,10 +21,10 @@ public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
     private int _nextDoorID;
     private DoorDirection _nextDoorDirection;
 
-    private void Start()
-    {
-        EnqueueScenes(new[] { new SceneData("HUD"), new SceneData("Floor1Room1") }, false);
-    }
+    //private void Start()
+    //{
+    //    EnqueueScenes(new[] { new SceneData("HUD"), new SceneData("Floor1Room1") }, false);
+    //}
 
     public void GoToNewScene(int floor, int room, int nextDoorID, DoorDirection nextDoorDirection)
     {

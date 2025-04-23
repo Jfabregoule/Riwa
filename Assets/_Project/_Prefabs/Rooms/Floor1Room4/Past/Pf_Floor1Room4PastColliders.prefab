@@ -1089,11 +1089,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7d34569e9b3b164eb8d570d4340ebc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnGrow:
+    m_PersistentCalls:
+      m_Calls: []
+  OnUnGrow:
+    m_PersistentCalls:
+      m_Calls: []
   _vine: {fileID: 0}
-  _box: {fileID: 0}
+  _box:
+  - {fileID: 0}
   _maxHeight: 5.5
   _maxCenter: -2.5
   _collider: {fileID: 0}
+  _thresholdToTrigger: 0.7
 --- !u!1 &3025723630092820028
 GameObject:
   m_ObjectHideFlags: 0

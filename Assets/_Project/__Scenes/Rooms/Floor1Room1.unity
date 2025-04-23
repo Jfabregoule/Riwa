@@ -96,7 +96,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: b91ee26c088145745b76d894ff82278c,
+  m_LightingDataAsset: {fileID: 112000004, guid: 8cb801d90ce14af45a2593dbed82f7c1,
     type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: cf960d6ff8c3f3540a7474ea8620edf2,
     type: 2}
@@ -889,7 +889,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 956058972}
   - {fileID: 2136124314}
   - {fileID: 940513450}
   - {fileID: 450934979}
@@ -903,6 +902,7 @@ Transform:
   - {fileID: 230566527}
   - {fileID: 1396048877}
   - {fileID: 6505907221625256597}
+  - {fileID: 956058972}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &450189379 stripped
@@ -1911,7 +1911,7 @@ MonoBehaviour:
   m_CustomShadowLayers: 0
   m_ShadowLayerMask: 1
   m_ShadowRenderingLayers: 1
-  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieSize: {x: 30, y: 30}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
 --- !u!108 &956058974
@@ -1925,8 +1925,8 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 0.63879496, g: 0.8158953, b: 0.9339623, a: 1}
-  m_Intensity: 1
+  m_Color: {r: 0.93333334, g: 0.8849908, b: 0.6392157, a: 1}
+  m_Intensity: 2
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -1957,7 +1957,7 @@ Light:
       e32: 0
       e33: 1
     m_UseCullingMatrixOverride: 0
-  m_Cookie: {fileID: 0}
+  m_Cookie: {fileID: 2800000, guid: 5db79c47136e02b4ab628c30c5959574, type: 3}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
   m_RenderMode: 0
@@ -1965,7 +1965,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 2
+  m_Lightmapping: 1
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1

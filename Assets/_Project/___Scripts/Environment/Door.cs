@@ -31,10 +31,10 @@ public class Door : MonoBehaviour
             {
                 _enterDoorSequencer.InitializeSequence();
             }
-            else
-            {
-                RiwaLoadSceneSystem.Instance.GoToNewScene(_floorNumber, _roomNumber, _nextDoorID, _nextDoorDirection);
-            }
+            //else
+            //{
+            //    RiwaLoadSceneSystem.Instance.GoToNewScene(_floorNumber, _roomNumber, _nextDoorID, _nextDoorDirection);
+            //}
         }
     }
 

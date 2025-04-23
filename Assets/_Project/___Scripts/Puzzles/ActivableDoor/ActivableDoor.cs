@@ -28,12 +28,15 @@ public class ActivableDoor : MonoBehaviour
             if (monoBehaviour is IActivable activable)
                 _activables.Add(activable);
         }
+
+        Debug.Log("Activable list count: " + _activables.Count);
     }
 
     private void OnEnable()
     {
         foreach (IActivable activable in _activables)
         {
+            Debug.Log("Activated gameobject list: " +  activable);
             activable.OnActivated += () => HandleActivatedActivable(activable, true);
             activable.OnDesactivated += () => HandleActivatedActivable(activable, false);
         }
@@ -57,6 +60,15 @@ public class ActivableDoor : MonoBehaviour
 
         if (_activatedItem.Count == _activables.Count) 
             OpenDoor();
+    }
+
+    private void Update()
+    {
+        Debug.Log("activatedItemCount: " + _activatedItem.Count);
+        for(int i = 0; i < _activatedItem.Count; i++)
+        {
+            Debug.Log(_activatedItem[i]);
+        }
     }
 
     private void OpenDoor()

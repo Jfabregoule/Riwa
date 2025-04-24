@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class IdleStateSoul : ParentIdleState<EnumStateSoul>
+public class IdleStateSoul : PawnIdleState<EnumStateSoul>
 {
     private ACharacter _sensa;
 

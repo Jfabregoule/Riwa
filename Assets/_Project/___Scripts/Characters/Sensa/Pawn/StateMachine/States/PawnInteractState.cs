@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ParentInteractState<TStateEnum> : BaseStatePawn<TStateEnum>
+public class PawnInteractState<TStateEnum> : BaseStatePawn<TStateEnum>
     where TStateEnum : Enum
 {
 

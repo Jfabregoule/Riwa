@@ -24,11 +24,15 @@ public class CrateFeet : MonoBehaviour
         IsGround = true;
     }
 
-    public void OnTriggerEnter(Collider other)
+    public void OnCollisionStay(Collision collision)
     {
-        if (IsValidObject(other))
+        if (IsValidObject(collision.collider))
         {
-            _colliders.Add(other);
+            if (!_colliders.Contains(collision.collider))
+            {
+                _colliders.Add(collision.collider);
+            }
+
             if (_colliders.Count == 1)
             {
                 ToucheGround();
@@ -36,12 +40,12 @@ public class CrateFeet : MonoBehaviour
         }
     }
 
-    public void OnTriggerExit(Collider other)
+    public void OnCollisionExit(Collision collision)
     {
-        if (IsValidObject(other))
+        if (IsValidObject(collision.collider))
         {
-            _colliders.Remove(other);
-            if( _colliders.Count == 0)
+            _colliders.Remove(collision.collider);
+            if (_colliders.Count == 0)
             {
                 LeaveGround();
             }
@@ -53,16 +57,12 @@ public class CrateFeet : MonoBehaviour
         IsGround = true;
     }
 
-    bool oue = true;
     private void LeaveGround()
     {
         IsGround = false;
         _character.StateMachine.ChangeState(_character.StateMachine.States[EnumStateCharacter.Idle]);
-        if (oue)
-        {
-            oue = false;
-            StartCoroutine(Fall());
-        }
+        StartCoroutine(Fall());
+        
 
     }
 

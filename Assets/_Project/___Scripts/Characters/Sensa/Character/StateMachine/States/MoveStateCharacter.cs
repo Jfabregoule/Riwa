@@ -1,24 +1,23 @@
 using UnityEngine;
 
-public class MoveStateCharacter : ParentMoveState<EnumStateCharacter>
+public class MoveStateCharacter : PawnMoveState<EnumStateCharacter>
 {
+    ACharacter _chara;
+
     public override void InitState(StateMachinePawn<EnumStateCharacter, BaseStatePawn<EnumStateCharacter>> stateMachine, EnumStateCharacter enumValue, APawn<EnumStateCharacter> character)
     {
         base.InitState(stateMachine, enumValue, character);
+        _chara = (ACharacter)character;
     }
 
     public override void EnterState()
     {
         base.EnterState();
-        ACharacter chara = (ACharacter)_character;
-        chara.Feet.OnFall += GoToFall;
     }
 
     public override void ExitState()
     {
         base.ExitState();
-        ACharacter chara = (ACharacter)_character;
-        chara.Feet.OnFall -= GoToFall;
         
     }
 
@@ -41,16 +40,19 @@ public class MoveStateCharacter : ParentMoveState<EnumStateCharacter>
     {
         base.CheckChangeState();
 
-        ACharacter chara = (ACharacter)_character;
-
-        if (chara.IsChangingTime)
+        if (_chara.IsChangingTime)
         {
             _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.ChangeTempo]);
         }
 
-        else if (chara.InputManager.GetMoveDirection() == Vector2.zero)
+        else if (_chara.InputManager.GetMoveDirection() == Vector2.zero)
         {
             _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Idle]);
+        }
+
+        if (!_chara.Feet.IsGround)
+        {
+            GoToFall();
         }
 
     }

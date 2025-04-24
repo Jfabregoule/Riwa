@@ -1,8 +1,9 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
-public class ParentMoveState<TStateEnum> : BaseStatePawn<TStateEnum>
+public class PawnMoveState<TStateEnum> : BaseStatePawn<TStateEnum>
     where TStateEnum : Enum
 {
     protected CameraHandler _cam;
@@ -12,6 +13,10 @@ public class ParentMoveState<TStateEnum> : BaseStatePawn<TStateEnum>
     protected Vector3 _startDirection;
     protected Vector3 _targetDirection;
     protected float _animClock = 0;
+
+    protected float _currentSpeed;
+    protected float _clock;
+    protected float _acceleration = 0.5f;
 
     public override void InitState(StateMachinePawn<TStateEnum, BaseStatePawn<TStateEnum>> stateMachine, TStateEnum enumValue, APawn<TStateEnum> character)
     {
@@ -26,15 +31,22 @@ public class ParentMoveState<TStateEnum> : BaseStatePawn<TStateEnum>
 
         _cam = GameManager.Instance.CameraHandler;
 
-        _lastDirection = _character.transform.localEulerAngles;
-        _targetDirection = _character.transform.localEulerAngles;
-        _startDirection = _character.transform.localEulerAngles;
+        _lastDirection = _character.transform.forward;
+        _targetDirection = _character.transform.forward;
+        _startDirection = _character.transform.forward;
+
+        _clock = 0;
     }
 
     public override void ExitState()
     {
         base.ExitState();
 
+        _character.InputManager.OnInteract -= OnInteract;
+    }
+
+    public override void DestroyState()
+    {
         _character.InputManager.OnInteract -= OnInteract;
     }
 
@@ -53,12 +65,14 @@ public class ParentMoveState<TStateEnum> : BaseStatePawn<TStateEnum>
         camForward.Normalize();
         camRight.Normalize();
         _moveDirection = (camForward * direction.y + camRight * direction.x);
+        _moveDirection.y = 0;
 
         if (_lastDirection != _moveDirection && _moveDirection != Vector3.zero)
         {
             _startDirection = _lastDirection;
             _lastDirection = _moveDirection;
             _targetDirection = _moveDirection;
+            _targetDirection.y = 0;
             _animClock = 0;
 
         }
@@ -73,12 +87,17 @@ public class ParentMoveState<TStateEnum> : BaseStatePawn<TStateEnum>
             _animClock
         );
 
-        //if (_moveDirection != Vector3.zero)
-        //    _character.transform.forward = _moveDirection;
 
         _character.Animator.SetFloat("MagnitudeVel", Vector3.Magnitude(_moveDirection));
-        _character.Animator.SetFloat("Xvel", _moveDirection.x);
-        _character.Animator.SetFloat("Yvel", _moveDirection.y);
+
+        //Lerp Speed
+
+        //_currentSpeed = _character.Speed;
+
+        _clock += Time.deltaTime;
+        _clock = Mathf.Clamp(_clock, 0, _acceleration);
+        if (_acceleration == 0) { throw new Exception("Accel doit etre different de 0"); }
+        _currentSpeed = Mathf.Lerp(0, _character.Speed, _clock / _acceleration);
 
     }
 
@@ -86,7 +105,7 @@ public class ParentMoveState<TStateEnum> : BaseStatePawn<TStateEnum>
     {
         base.FixedUpdateState();
 
-        _character.Rb.velocity = _moveDirection * _character.Speed + Vector3.Scale(_character.Rb.velocity, Vector3.up);
+        _character.Rb.velocity = _moveDirection * _currentSpeed + Vector3.Scale(_character.Rb.velocity, Vector3.up);
 
     }
 

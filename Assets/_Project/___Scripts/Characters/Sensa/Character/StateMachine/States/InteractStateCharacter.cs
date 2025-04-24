@@ -1,6 +1,8 @@
-public class InteractStateCharacter : ParentInteractState<EnumStateCharacter>
+public class InteractStateCharacter : PawnInteractState<EnumStateCharacter>
 {
     private float _currentOffset;
+
+    public ACharacter KARA { get => (ACharacter)_character; }
 
     public override void InitState(StateMachinePawn<EnumStateCharacter, BaseStatePawn<EnumStateCharacter>> stateMachine, EnumStateCharacter enumValue, APawn<EnumStateCharacter> character)
     {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class APawn<TStateEnum> : MonoBehaviour
@@ -87,6 +88,14 @@ public class APawn<TStateEnum> : MonoBehaviour
         }
 
 
+    }
+
+    public virtual void OnDisable()
+    {
+        foreach (KeyValuePair<TStateEnum, BaseStatePawn<TStateEnum>> pair in _stateMachine.States)
+        {
+            pair.Value.DestroyState();
+        }
     }
 
     public void InteractBegin()

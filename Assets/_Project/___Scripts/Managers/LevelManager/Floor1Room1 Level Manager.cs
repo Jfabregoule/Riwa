@@ -64,6 +64,12 @@ public class Floor1Room1LevelManager : BaseLevelManager
         }
     }
 
+    public void OnDestroy()
+    {
+        _character.InputManager.OnChangeTime -= CheckCrateEnigma;
+        _character.InputManager.OnChangeTime -= InvokeChangeTime;
+    }
+
 
     public void TriggerEvent2()
     {
@@ -84,7 +90,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
 
     public void CheckCrateEnigma()
     {
-        if (!_isCrateWellPlaced) { return; }
+        if (!_isCrateWellPlaced || !_character.CanChangeTime) { return; }
 
         if (CurrentAdvancement < EnumAdvancementRoom1.HasEnterTree)
         {
@@ -101,6 +107,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
     }
 
     public void InvokeChangeTime() {
+        if (!_character.CanChangeTime) return;
         DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.ChangeTime);
         _character.InputManager.OnChangeTime -= InvokeChangeTime;
     }

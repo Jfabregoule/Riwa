@@ -2,25 +2,27 @@ using UnityEngine;
 
 public class FallStateCharacter : BaseStateCharacter<EnumStateCharacter>
 {
+
+    ACharacter _chara;
+
     public override void InitState(StateMachinePawn<EnumStateCharacter, BaseStatePawn<EnumStateCharacter>> stateMachine, EnumStateCharacter enumValue, APawn<EnumStateCharacter> character)
     {
         base.InitState(stateMachine, enumValue, character);
+        _chara = (ACharacter)_character;
     }
 
     public override void EnterState()
     {
         base.EnterState();
 
-        ACharacter chara = (ACharacter)_character;
-        chara.Feet.OnGround += GoToIdle;
+        //_chara.Feet.OnGround += GoToIdle;
 
     }
 
     public override void ExitState()
     {
         base.ExitState();
-        ACharacter chara = (ACharacter)_character;
-        chara.Feet.OnGround -= GoToIdle;
+        //_chara.Feet.OnGround -= GoToIdle;
     }
 
     public override void UpdateState()
@@ -31,11 +33,13 @@ public class FallStateCharacter : BaseStateCharacter<EnumStateCharacter>
     public override void CheckChangeState()
     {
         base.CheckChangeState();
-    }
 
-    public void GoToIdle()
-    {
-        _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Idle]);
+        if (_chara.Feet.IsGround)
+        {
+            _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Idle]);
+        }
+
+
     }
 
 }

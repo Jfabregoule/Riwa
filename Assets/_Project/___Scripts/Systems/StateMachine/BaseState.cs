@@ -60,6 +60,8 @@ public abstract class BaseState<TStateEnum>
         //Ici on mettra les conditions et tout ce qui concerne les changements de state
     }
 
+    public virtual void DestroyState() { }
+
     #endregion
 
 }

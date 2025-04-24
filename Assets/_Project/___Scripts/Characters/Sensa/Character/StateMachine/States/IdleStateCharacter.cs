@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class IdleStateCharacter : ParentIdleState<EnumStateCharacter>
+public class IdleStateCharacter : PawnIdleState<EnumStateCharacter>
 {
     public override void InitState(StateMachinePawn<EnumStateCharacter, BaseStatePawn<EnumStateCharacter>> stateMachine, EnumStateCharacter enumValue, APawn<EnumStateCharacter> character)
     {
@@ -19,7 +19,7 @@ public class IdleStateCharacter : ParentIdleState<EnumStateCharacter>
 
         _clock = 0;
 
-        chara.Feet.OnFall += GoToFall;
+        //chara.Feet.OnFall += GoToFall;
 
     }
 
@@ -32,7 +32,7 @@ public class IdleStateCharacter : ParentIdleState<EnumStateCharacter>
         chara.InputManager.OnInteract -= OnInteract;
         chara.InputManager.OnChangeTime -= ChangeStateToTempo;
 
-        chara.Feet.OnFall -= GoToFall;
+        //chara.Feet.OnFall -= GoToFall;
     }
 
     public override void UpdateState()
@@ -60,6 +60,12 @@ public class IdleStateCharacter : ParentIdleState<EnumStateCharacter>
             _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Wait]);
             return;
         }
+
+        if (!chara.Feet.IsGround)
+        {
+            GoToFall();
+        }
+
     }
 
     private void OnInteract()
@@ -69,13 +75,27 @@ public class IdleStateCharacter : ParentIdleState<EnumStateCharacter>
 
     public void ChangeStateToTempo()
     {
-        _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.ChangeTempo]);
+        if (((ACharacter)_character).CanChangeTime)
+        {
+            _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.ChangeTempo]);
+        }
     }
 
     private void GoToFall() 
     { 
         _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Fall]);
     
+    }
+
+    public override void DestroyState()
+    {
+        base.DestroyState();
+
+        ACharacter chara = (ACharacter)_character;
+
+        chara.InputManager.OnInteract -= OnInteract;
+        chara.InputManager.OnChangeTime -= ChangeStateToTempo;
+
     }
 
 }

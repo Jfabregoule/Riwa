@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
 {
@@ -19,7 +20,7 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
     //Field
 
     private GameObject _pawn;
-    new private StateMachineCharacter _stateMachine;
+    //new private StateMachineCharacter _stateMachine;
     private GameObject _soul;
     private GameObject _holdingObject;
 
@@ -77,7 +78,7 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
     public GameObject Soul { get => _soul; set => _soul = value; }
     public ParticleSystem SoulLinkVFX { get => _soulLinkVFX; set => _soulLinkVFX = value; }
     public CameraHandler CameraHandler { get => _cameraHandler;}
-    new public StateMachineCharacter StateMachine { get => _stateMachine; set => _stateMachine = value; }
+    new public StateMachineCharacter StateMachine { get => (StateMachineCharacter)_stateMachine; set => _stateMachine = value; }
     public bool CanChangeTime { get => _canChangeTime; set => _canChangeTime = value; }
     public Vector3 RespawnPosition { get => _respawnPosition; set => _respawnPosition = value; }
     public Vector3 RespawnRotation { get => _respawnRotation; set => _respawnRotation = value; }
@@ -103,7 +104,7 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
         _capsuleCollider = GetComponent<CapsuleCollider>();
         _soul.SetActive(false);
 
-        _stateMachine = new StateMachineCharacter();
+        StateMachine = new StateMachineCharacter();
     }
 
     public void Start()
@@ -111,19 +112,21 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
         _cameraHandler = GameManager.Instance.CameraHandler; //Il faut appeler ça après le load des 3C dans gameManager
         Application.targetFrameRate = 300;
 
-        _stateMachine.InitStateMachine(this);
-        _stateMachine.InitState(_stateMachine.States[EnumStateCharacter.Idle]);
+        StateMachine.InitStateMachine(this);
+        StateMachine.InitState(_stateMachine.States[EnumStateCharacter.Idle]);
     }
 
     private void Update()
     {
-        _stateMachine.StateMachineUpdate();
+        StateMachine.StateMachineUpdate();
 
     }
 
     private void FixedUpdate()
     {
-        _stateMachine.StateMachineFixedUpdate();
+        StateMachine.StateMachineFixedUpdate();
+
+        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
     }
 
     public void SetHoldingObject(GameObject holdingObject)
@@ -134,13 +137,13 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
     public void TriggerChangeTempo()
     {
         if (!_canChangeTime) { return; }
-        _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.ChangeTempo]);
+        StateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.ChangeTempo]);
     }
 
     public void Respawn()
     {
         OnRespawn?.Invoke();
-        _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Respawn]);
+        StateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Respawn]);
     }
 
     #endregion

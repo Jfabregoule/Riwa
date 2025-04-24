@@ -3,11 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
+using static UnityEngine.UI.Image;
 
 public class CharacterFeet : MonoBehaviour, IRespawnable
 {
-    [HideInInspector] public bool IsGround;
+    [SerializeField] private float _fallTreshold = 2;
+    private float _currentTreshold;
+
+    public bool IsGround;
     private ACharacter _character;
+    private float _radius;
+
+    int _playerMask;
 
     public System.Action OnFall;
     public System.Action OnGround;
@@ -22,40 +29,72 @@ public class CharacterFeet : MonoBehaviour, IRespawnable
     public void Start()
     {
         _character = GameManager.Instance.Character;
-        GameManager.Instance.OnTimeChangeStarted += ClearListOnChangeTempo;
+        _fallTreshold *= _character.transform.localScale.y;
+        //GameManager.Instance.OnTimeChangeStarted += ClearListOnChangeTempo;
+
+        _currentTreshold = _fallTreshold;
+        _radius = _character.GetComponent<CapsuleCollider>().radius * _character.transform.localScale.x;
+
+        int playerLayer = LayerMask.NameToLayer("whatIsPlayer");
+        _playerMask = ~(1 << playerLayer);
+
     }
 
     public void OnDestroy()
     {
-        if (GameManager.Instance)
-            GameManager.Instance.OnTimeChangeStarted -= ClearListOnChangeTempo;
+        //if (GameManager.Instance)
+            //GameManager.Instance.OnTimeChangeStarted -= ClearListOnChangeTempo;
     }
 
-    public void OnTriggerEnter(Collider other)
+    public void Update()
     {
-        if (IsValidObject(other, GameManager.Instance.CurrentTemporality))
-        {
-            _colliders.Add(other);
-            if (_colliders.Count == 1)
-            {
-                IsGround = true;
-                OnGround?.Invoke();
-            }
-        }
+        LayerMask mask = GameManager.Instance.CurrentTemporality == EnumTemporality.Past ? _character.PastLayer : _character.PresentLayer;
+
+        //LayerMask finalMask = mask & _playerMask;
+
+        //if (Physics.SphereCast(transform.position + Vector3.up * 0.5f, _radius, -Vector3.up, out RaycastHit hit, mask))
+        //{
+        //    Debug.Log(hit.collider.gameObject.name);
+        //    IsGround = true;
+        //    Debug.DrawRay(transform.position + Vector3.up * 0.5f, -Vector3.up * hit.distance, Color.red); // touché
+        //}
+        //else
+        //{
+        //    IsGround = false;
+        //    Debug.DrawRay(transform.position + Vector3.up * 0.5f, -Vector3.up * _currentTreshold, Color.green); // rien touché
+        //}
+
+        IsGround = Physics.CheckCapsule(transform.position, transform.position - Vector3.up * _currentTreshold * _character.transform.localScale.y, _radius, mask);
+        
+        Color color = IsGround ? Color.green : Color.red;
+        Debug.DrawRay(transform.position, Vector3.up * 0.1f, color);
     }
 
-    public void OnTriggerExit(Collider other)
-    {
-        if (IsValidObject(other, GameManager.Instance.CurrentTemporality))
-        {
-            _colliders.Remove(other);
-            if (_colliders.Count == 0)
-            {
-                IsGround = false;
-                OnFall?.Invoke();
-            }
-        }
-    }
+    //public void OnTriggerEnter(Collider other)
+    //{
+    //    if (IsValidObject(other, GameManager.Instance.CurrentTemporality))
+    //    {
+    //        _colliders.Add(other);
+    //        if (_colliders.Count == 1)
+    //        {
+    //            IsGround = true;
+    //            //OnGround?.Invoke();
+    //        }
+    //    }
+    //}
+
+    //public void OnTriggerExit(Collider other)
+    //{
+    //    if (IsValidObject(other, GameManager.Instance.CurrentTemporality))
+    //    {
+    //        _colliders.Remove(other);
+    //        if (_colliders.Count == 0)
+    //        {
+    //            IsGround = false;
+    //            //OnFall?.Invoke();
+    //        }
+    //    }
+    //}
 
     private bool IsValidObject(Collider collider, EnumTemporality currentTempo)
     {
@@ -66,7 +105,7 @@ public class CharacterFeet : MonoBehaviour, IRespawnable
 
     private void ClearListOnChangeTempo(EnumTemporality temporality)
     {
-        SphereCollider sphere = GetComponent<SphereCollider>();
+        CapsuleCollider sphere = GetComponent<CapsuleCollider>();
 
         Collider[] colliders = Physics.OverlapSphere(transform.position, sphere.radius * transform.localScale.x);
 

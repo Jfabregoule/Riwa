@@ -60,7 +60,6 @@ public class Damier : MonoBehaviour
             script.OnCellTriggered += OnCellTriggered;
         }
 
-        GameManager.Instance.Character.OnRespawn += RespawnBrokenTile;
     }
 
     private void Start()
@@ -69,6 +68,8 @@ public class Damier : MonoBehaviour
         _riwa = _instance.Chawa;
         _instance.OnRiwaShowingPath += RiwaFollowPath;
         GeneratePath();
+
+        GameManager.Instance.Character.OnRespawn += RespawnBrokenTile;
     }
 
     [ContextMenu("Generate Damier")]

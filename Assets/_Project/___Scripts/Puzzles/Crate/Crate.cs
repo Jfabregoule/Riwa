@@ -15,7 +15,7 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
     Vector3 _boxSize;
 
     bool _isMoving;
-    //private CrateFeet _feet;
+    private CrateFeet _feet;
 
     public event IRotatable.RotatableEvent OnRotateFinished;
     public event IMovable.NoArgVoid OnMoveFinished;
@@ -29,7 +29,7 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
     public void Start()
     {
         _character = GameManager.Instance.Character;
-        //_feet = GetComponentInChildren<CrateFeet>();
+        _feet = GetComponentInChildren<CrateFeet>();
         CanInteract = true;
 
         float security = 0.01f;
@@ -77,7 +77,6 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
                 && !col.gameObject.TryGetComponent<ACharacter>(out ACharacter chara)
                 && col.isTrigger == false)
             {
-                Debug.Log("Collide with: " + col.gameObject.name);
                 return false;
             }
         }
@@ -120,7 +119,9 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
 
     public void Rotate(int sens)
     {
+        
         StartCoroutine(CoroutineRotate(sens));
+        
     }
 
     private IEnumerator CoroutineRotate(int sens)
@@ -140,7 +141,7 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
         }
 
         OnRotateFinished?.Invoke();
-        
+
     }
 
     public IEnumerator MoveLerp(Vector3 direction)
@@ -153,11 +154,12 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
 
         while (Vector3.Distance(transform.position, destination) > 0.001f)
         {
-            //if (!_feet.IsGround) { 
-            //    _isMoving = false;
-            //    OnMoveFinished?.Invoke();
-            //    yield break;
-            //}
+            if (!_feet.IsGround)
+            {
+                _isMoving = false;
+                OnMoveFinished?.Invoke();
+                yield break;
+            }
             transform.position = Vector3.MoveTowards(transform.position, destination, MoveSpeed * Time.deltaTime);
             yield return null;
         }

@@ -7,14 +7,19 @@ public class MuralPiece : MonoBehaviour, IInteractable
     [SerializeField] private float _lerpTime = 3f;
 
     public float OffsetRadius { get => 0f; set => OffsetRadius = value; }
+    public bool CanInteract { get; set; }
 
     public delegate void MuralPieceEvent();
     public MuralPieceEvent OnPickUp;
-
+    private void Start()
+    {
+        CanInteract = true;
+    }
     public void Interact()
     {
         OnPickUp?.Invoke();
         StartCoroutine(PlacePieceOnFresque());
+        CanInteract = false;
     }
 
     private IEnumerator PlacePieceOnFresque()

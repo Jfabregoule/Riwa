@@ -55,8 +55,10 @@ public class PawnCheckStateInteract<TStateEnum> : PawnInteractBaseSubstate<TStat
 
         foreach (Collider collider in others)
         {
-            if (collider.gameObject.TryGetComponent<IInteractable>(out IInteractable obj))
+            if (collider.gameObject.TryGetComponent(out IInteractable obj))
             {
+                if (!obj.CanInteract) continue;
+
                 Vector3 targetPoint = collider.bounds.center;
                 Vector3 direction = (targetPoint - sphereCastOrigin).normalized;
                 float distance = Vector3.Distance(sphereCastOrigin, targetPoint) + 0.5f;

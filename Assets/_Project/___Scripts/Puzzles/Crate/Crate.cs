@@ -24,11 +24,13 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
     public float MoveSpeed { get => _speed; set => _speed = value; }
     public float OffsetRadius { get; set; }
     public float MoveDistance { get => _distance; set => _distance = value; }
+    public bool CanInteract { get; set; }
 
     public void Start()
     {
         _character = GameManager.Instance.Character;
         //_feet = GetComponentInChildren<CrateFeet>();
+        CanInteract = true;
 
         float security = 0.01f;
         float securityRadius = 0.1f;

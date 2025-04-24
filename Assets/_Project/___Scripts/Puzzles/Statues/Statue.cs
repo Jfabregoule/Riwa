@@ -22,7 +22,8 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
     public float OffsetRadius { get; set; }
     public float MoveSpeed { get; set; }
     public float MoveDistance { get; set; }
-    
+    public bool CanInteract { get => !_validate; set => throw new System.NotImplementedException(); }
+
     public delegate bool StatueMoveEvent(CellPos oldPos, Vector2Int nextPos, CellContent statueData);
     public delegate void StatueRotateEvent(CellPos pos, CellContent content);
     public delegate void StatueEndMoving();

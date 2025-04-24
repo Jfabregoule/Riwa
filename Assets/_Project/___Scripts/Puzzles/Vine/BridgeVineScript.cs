@@ -11,6 +11,7 @@ public class BridgeVineScript : MonoBehaviour, IInteractableSoul
     public float FrictionSpeed { get { return _frictionSpeed; } set { _frictionSpeed = value; } }
 
     public float OffsetRadius { get => -1; set => throw new NotImplementedException(); }
+    public bool CanInteract { get; set; }
 
     [SerializeField, Range(0, 1)]
     private float _minGrow = 0.2f;
@@ -32,6 +33,7 @@ public class BridgeVineScript : MonoBehaviour, IInteractableSoul
         _boxCollider = GetComponent<BoxCollider>();
         _minColliderHeight = _boxCollider.size.x;
         _material = GetComponent<MeshRenderer>().material;
+        CanInteract = true;
 
         StartCoroutine(Helpers.WaitMonoBeheviour(() => DialogueSystem.Instance, SubscribeToDialogueSystem));
     }
@@ -57,11 +59,12 @@ public class BridgeVineScript : MonoBehaviour, IInteractableSoul
 
     public void Interact()
     {
-        _dialogueSystem.EventRegistery.Invoke(WaitDialogueEventType.LianaFloor1Room2);
+        if (CanInteract)
+            _dialogueSystem.EventRegistery.Invoke(WaitDialogueEventType.LianaFloor1Room2);
     }
     public void InteractableSoul()
     {
-        if(_bourgeonAnimator)
+        if (_bourgeonAnimator)
             _bourgeonAnimator.SetBool("Activate", true);
         StartCoroutine(RaiseVine());
     }

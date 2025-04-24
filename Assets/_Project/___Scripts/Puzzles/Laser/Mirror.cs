@@ -4,11 +4,22 @@ using UnityEngine;
 public class Mirror : MonoBehaviour, IRotatable
 {
     [SerializeField] private float _angle;
+    [SerializeField] private MonoBehaviour _activable;
     public float OffsetRadius { get; set; }
+    public bool CanInteract { get; set; }
 
     private void Start()
     {
         OffsetRadius = 1;
+        CanInteract = true;
+
+        _activable.GetComponent<IActivable>().OnActivated += Desactivate;
+    }
+
+    private void Desactivate()
+    {
+        _activable.GetComponent<IActivable>().OnActivated -= Desactivate;
+        CanInteract = false;
     }
 
     public event IRotatable.RotatableEvent OnRotateFinished;

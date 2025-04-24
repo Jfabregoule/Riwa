@@ -21,9 +21,8 @@ public class SoundMixerManager<T> : Singleton<T> where T : SoundMixerManager<T>
         _audioMixer.SetFloat("SoundFXVolume", level == 0f ? -80f : Mathf.Log10(level) * 20f);
     }
 
-    public void SetAmbianceVolume(float level)
+    public void SetCinematicVolume(float level)
     {
-        _audioMixer.SetFloat("AmbianceVolume", level == 0f ? -80f : Mathf.Log10(level) * 20f);
-
+        _audioMixer.SetFloat("CinematicVolume", level == 0f ? -80f : Mathf.Log10(level) * 20f);
     }
 }

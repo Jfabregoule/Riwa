@@ -9,6 +9,12 @@ public class VibrationSystem : PersistentSingleton<VibrationSystem>
         VibrationEnabled = SaveSystem.Instance.LoadElement<bool>("_vibrationIsOn", true);
     }
 
+    public void SetVibrationEnabled(bool enabled)
+    {
+        VibrationEnabled = enabled;
+        SaveSystem.Instance.SaveElement("_vibrationIsOn", VibrationEnabled);
+    }
+
     /// <summary>
     /// Déclenche des vibrations.
     /// </summary>

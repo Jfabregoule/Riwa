@@ -47,7 +47,6 @@ public class MovingPlatform : MonoBehaviour
     {
         while (true)
         {
-            if (_activableComponents.Length > 0) Debug.Log("JE BOUUUUUGE ?");
             Vector3 target = _targetPositions[_currentIndex];
             while (Vector3.Distance(transform.position, target) > 0.01f)
             {

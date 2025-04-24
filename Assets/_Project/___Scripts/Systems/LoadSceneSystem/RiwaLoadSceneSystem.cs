@@ -57,7 +57,7 @@ public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
     /// Récupère le nom de la scène de la salle actuellement chargée.
     /// </summary>
     /// <returns>Le nom de la scène de la salle actuellement chargée.</returns>
-    private string GetCurrentRoomSceneName()
+    public string GetCurrentRoomSceneName()
     {
         return $"Floor{_currentFloorNum}Room{_currentRoomNum}";
     }

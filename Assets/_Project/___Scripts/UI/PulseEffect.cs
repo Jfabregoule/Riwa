@@ -15,9 +15,9 @@ public class PulseEffect : MonoBehaviour
     private Coroutine _pulseCoroutine;
     void Start()
     {
-        _isPulsing = true;
         _initialScale = transform.localScale;
-        SetPulsing(true);
+        if (!_isPulsing) return;
+        StartPulsing();
     }
 
     IEnumerator Pulse()
@@ -45,21 +45,21 @@ public class PulseEffect : MonoBehaviour
         transform.localScale = targetScale;
     }
 
-    public void SetPulsing(bool isPulsing)
+    public void StopPulsing(EnumTemporality temporality)
     {
-        _isPulsing = isPulsing;
+        _isPulsing = false;
 
-        if (_isPulsing)
+        if(_pulseCoroutine != null)
         {
-            _pulseCoroutine = StartCoroutine(Pulse());
+            StopCoroutine(_pulseCoroutine);
+            _pulseCoroutine = null;
+            transform.localScale = new Vector3(1f,1f, 1f);
         }
-        else
-        {
-            if(_pulseCoroutine != null)
-            {
-                StopCoroutine(_pulseCoroutine);
-                _pulseCoroutine = null;
-            }
-        }
+    }
+
+    public void StartPulsing()
+    {
+        _isPulsing = true;
+        _pulseCoroutine = StartCoroutine(Pulse());
     }
 }

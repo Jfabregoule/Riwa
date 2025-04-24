@@ -65,6 +65,11 @@ public class CharacterFeet : MonoBehaviour, IRespawnable
         //}
 
         IsGround = Physics.CheckSphere(transform.position, _radius, mask);
+        
+        if (!IsGround)
+        {
+            Debug.Log(IsGround);
+        }
 
         Color color = IsGround ? Color.green : Color.red;
         Debug.DrawRay(transform.position, Vector3.up * 0.1f, color);

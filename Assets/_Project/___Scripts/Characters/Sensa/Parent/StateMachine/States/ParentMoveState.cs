@@ -35,8 +35,6 @@ public class ParentMoveState<TStateEnum> : BaseStatePawn<TStateEnum>
         _targetDirection = _character.transform.forward;
         _startDirection = _character.transform.forward;
 
-        Debug.Log("UWU            " + _targetDirection);
-
         _clock = 0;
     }
 
@@ -59,8 +57,6 @@ public class ParentMoveState<TStateEnum> : BaseStatePawn<TStateEnum>
         camForward.y = 0;
         camRight.y = 0;
 
-        Debug.Log("First" + _targetDirection);
-
         camForward.Normalize();
         camRight.Normalize();
         _moveDirection = (camForward * direction.y + camRight * direction.x);
@@ -78,8 +74,6 @@ public class ParentMoveState<TStateEnum> : BaseStatePawn<TStateEnum>
 
         _animClock += Time.deltaTime * 20;
         //_character.transform.forward = Vector3.Lerp(_startDirection, _targetDirection, _animClock);
-
-        Debug.Log("Second" + _targetDirection);
 
         Quaternion targetRotation = Quaternion.LookRotation(_targetDirection);
         _character.transform.rotation = Quaternion.Slerp(

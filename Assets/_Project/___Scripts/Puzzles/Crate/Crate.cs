@@ -75,7 +75,6 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
                 && !col.gameObject.TryGetComponent<ACharacter>(out ACharacter chara)
                 && col.isTrigger == false)
             {
-                Debug.Log("Collide with: " + col.gameObject.name);
                 return false;
             }
         }

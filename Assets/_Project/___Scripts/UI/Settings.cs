@@ -1,4 +1,5 @@
 using UnityEngine;
+using static Cinemachine.DocumentationSortingAttribute;
 
 public class Settings : MonoBehaviour
 {
@@ -44,34 +45,24 @@ public class Settings : MonoBehaviour
         _saveData.IsRightHanded = true;
     }
 
-    private void SetAudioBinary(bool value)
+    private void SetAudioBinary(bool value) => _saveData.IsAudioEnable = value;
+    private void SetVibrationBinary(bool value) => _saveData.IsVibrationEnable = value;
+    private void SetControlPos(bool value) => _saveData.IsRightHanded = value;
+    private void SetLanguage(int language) => _saveData.CurrentLanguage = language;
+    public void SetMusicVolume(float level) => RiwaSoundMixerManager.Instance.SetMusicVolume(level);
+    public void SetSoundFXVolume(float level) => RiwaSoundMixerManager.Instance.SetSoundFXVolume(level);
+    public void SetMasterVolume(float level) => RiwaSoundMixerManager.Instance.SetMasterVolume(level);
+    public void SetCinematicVolume(float level) => RiwaSoundMixerManager.Instance.SetCinematicVolume(level);
+    public void SetVibration(bool enabled) => VibrationSystem.Instance.SetVibrationEnabled(enabled);
+    public void SetAllVolume()
     {
-        _saveData.IsAudioEnable = value;
+        //RiwaSoundMixerManager.Instance.SetMasterVolume(level);
+        //RiwaSoundMixerManager.Instance.SetMusicVolume(level);
+        //RiwaSoundMixerManager.Instance.SetSoundFXVolume(level);
+        //RiwaSoundMixerManager.Instance.SetCinematicVolume(level);
     }
-
-    private void SetVibrationBinary(bool value)
+    public void InvertControl()
     {
-        _saveData.IsVibrationEnable = value;
-    }
-
-    private void SetControlPos(bool value)
-    {
-        _saveData.IsRightHanded = value;
-        Debug.Log(value);
-    }
-
-    private void SetLanguage(int language)
-    {
-        _saveData.CurrentLanguage = language;
-    }
-
-    public void SetMusicVolume(float level)
-    {
-        RiwaSoundMixerManager.Instance.SetMusicVolume(level);
-    }
-
-    public void SetSoundFXVolume(float level)
-    {
-        RiwaSoundMixerManager.Instance.SetSoundFXVolume(level);
+            
     }
 }

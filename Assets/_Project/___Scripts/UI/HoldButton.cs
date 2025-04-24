@@ -9,6 +9,8 @@ public class HoldButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField] private float _holdTime = 2.0f;
 
+    public delegate void HoldCompleteEvent();
+    public HoldCompleteEvent OnHoldComplete;
 
     private Coroutine _currentCoroutine;
     private Image _fillImage;
@@ -32,7 +34,7 @@ public class HoldButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         }
 
         _fillImage.fillAmount = 1f;
-        OnHoldComplete();
+        HoldComplete();
     }
 
     IEnumerator ReleaseButton()
@@ -61,8 +63,8 @@ public class HoldButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         _currentCoroutine = StartCoroutine(PressedButton());
     }
 
-    private void OnHoldComplete()
+    private void HoldComplete()
     {
-        Debug.Log("complete !");
+        OnHoldComplete?.Invoke();
     }
 }

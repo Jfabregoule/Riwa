@@ -7,22 +7,29 @@ public class SoundMixerManager<T> : Singleton<T> where T : SoundMixerManager<T>
 
     public void SetMasterVolume(float level)
     {
-        _audioMixer.SetFloat("MasterVolume", level == 0f ? -80f : Mathf.Log10(level) * 20f);
-
+        float normalized = Mathf.Clamp01(level / 10f);
+        float dB = normalized == 0f ? -80f : Mathf.Log10(normalized) * 20f;
+        _audioMixer.SetFloat("MasterVolume", dB);
     }
 
     public void SetMusicVolume(float level)
     {
-        _audioMixer.SetFloat("MusicVolume", level == 0f ? -80f : Mathf.Log10(level) * 20f);
+        float normalized = Mathf.Clamp01(level / 10f);
+        float dB = normalized == 0f ? -80f : Mathf.Log10(normalized) * 20f;
+        _audioMixer.SetFloat("MusicVolume", dB);
     }
 
     public void SetSoundFXVolume(float level)
     {
-        _audioMixer.SetFloat("SoundFXVolume", level == 0f ? -80f : Mathf.Log10(level) * 20f);
+        float normalized = Mathf.Clamp01(level / 10f);
+        float dB = normalized == 0f ? -80f : Mathf.Log10(normalized) * 20f;
+        _audioMixer.SetFloat("SoundFXVolume", dB);
     }
 
     public void SetCinematicVolume(float level)
     {
-        _audioMixer.SetFloat("CinematicVolume", level == 0f ? -80f : Mathf.Log10(level) * 20f);
+        float normalized = Mathf.Clamp01(level / 10f);
+        float dB = normalized == 0f ? -80f : Mathf.Log10(normalized) * 20f;
+        _audioMixer.SetFloat("CinematicVolume", dB);
     }
 }

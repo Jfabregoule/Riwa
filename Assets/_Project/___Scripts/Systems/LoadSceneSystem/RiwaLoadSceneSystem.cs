@@ -25,24 +25,34 @@ public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
     private int _nextDoorID;
     private DoorDirection _nextDoorDirection = DoorDirection.Null;
 
-    private void OnEnable()
-    {
-        SaveSystem.Instance.OnLoadProgress += LoadSceneData;
-    }
-
     private void Start()
     {
         EnqueueScenes(new[] { new SceneData("MainMenu"), new SceneData("HUD", 0, GameManager.Instance.SetBlackScreen) }, false);
+    }
 
+    public void LoadFirstScene()
+    {
+        StartCoroutine(LoadFirstSceneCoroutine());
+    }
+
+    public IEnumerator LoadFirstSceneCoroutine()
+    {
+        LoadSceneData();
+        if (GetCurrentRoomSceneName() == "Floor0Room0")
+        {
+            _currentFloorNum++;
+            _currentRoomNum++;
+        }
+        yield return StartCoroutine(ChangeScene(new[] { new SceneData("MainMenu")}, new[] { new SceneData(GetCurrentRoomSceneName())}));
+        SpawnPlayerToDoor();
     }
 
     private void LoadSceneData()
     {
-        int currentFloorNum = SaveSystem.Instance.LoadElement<int>("CurrentFloor");
-        int currentRoomNum = SaveSystem.Instance.LoadElement<int>("CurrentRoom");
-        int nextDoorID = SaveSystem.Instance.LoadElement<int>("LastDoorID");
-        DoorDirection nextDoorDirection = SaveSystem.Instance.LoadElement<DoorDirection>("LastDoorDirection");
-        GoToNewScene(currentFloorNum, currentRoomNum, nextDoorID, nextDoorDirection);
+        _currentFloorNum = SaveSystem.Instance.LoadElement<int>("CurrentFloor");
+        _currentRoomNum = SaveSystem.Instance.LoadElement<int>("CurrentRoom");
+        _nextDoorID = SaveSystem.Instance.LoadElement<int>("LastDoorID");
+        _nextDoorDirection = SaveSystem.Instance.LoadElement<DoorDirection>("LastDoorDirection");
     }
 
     public void GoToNewScene(int floor, int room, int nextDoorID, DoorDirection nextDoorDirection)
@@ -71,16 +81,9 @@ public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
 
         if (!string.IsNullOrEmpty(currentRoomName))
         {
-            if (currentRoomName == "Floor0Room0")
-            {
-                if (_nextDoorDirection != DoorDirection.Null)
-                    SpawnPlayerToDoor();
-                yield break;
-            }
-            else
+            if (currentRoomName != "Floor0Room0")
                 yield return StartCoroutine(ChangeScene(new[] { new SceneData(currentRoomName) }, new[] { new SceneData(newRoomName) }));
-            if (_nextDoorDirection != DoorDirection.Null)
-                SpawnPlayerToDoor();
+            SpawnPlayerToDoor();
         }
     }
 
@@ -102,6 +105,8 @@ public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
     private void SpawnPlayerToDoor()
     {
         GameObject targetDoor = GameObject.Find(_nextDoorID == 0 ? $"Door{_nextDoorDirection}" : $"Door{_nextDoorDirection}{_nextDoorID}");
+
+        if (!targetDoor) return;
 
         if (targetDoor.TryGetComponent(out Door door))
             door?.ExitDoor();

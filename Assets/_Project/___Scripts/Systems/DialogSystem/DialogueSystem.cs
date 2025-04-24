@@ -46,7 +46,6 @@ public class DialogueSystem : Singleton<DialogueSystem>
     private void OnEnable()
     {
         StartCoroutine(Helpers.WaitMonoBeheviour(() => InputManager.Instance, SubscribeToDialogueInputManager));
-        StartCoroutine(Helpers.WaitMonoBeheviour(() => GameManager.Instance.TranslateSystem, SubscribeToTranslateSystem));
     }
 
     private void OnDisable() 
@@ -71,6 +70,7 @@ public class DialogueSystem : Singleton<DialogueSystem>
         _characterIndex = 0;
 
         _currentDialogueUI = GetSection().UIType;
+        GameManager.Instance.TranslateSystem.OnLanguageChanged += UpdateSentenceTranslate;
 
 
         if (ProcessingDialogue.OpeningTriggerEvent)
@@ -87,6 +87,7 @@ public class DialogueSystem : Singleton<DialogueSystem>
 
     public void EndDialogue()
     {
+        GameManager.Instance.TranslateSystem.OnLanguageChanged -= UpdateSentenceTranslate;
         if (ProcessingDialogue.ClosureTriggerEvent)
             OnDialogueEvent?.Invoke(ProcessingDialogue.ClosureEventType);
     }
@@ -229,19 +230,6 @@ public class DialogueSystem : Singleton<DialogueSystem>
         if (script != null)
         {
             script.OnAdvanceDialogue += AdvanceDialogue;
-            Debug.Log("Script is ready!");
-        }
-        else
-        {
-            Debug.LogWarning("Script was still null after timeout.");
-        }
-    }
-
-    private void SubscribeToTranslateSystem(TranslateSystem script)
-    {
-        if (script != null)
-        {
-            script.OnLanguageChanged += UpdateSentenceTranslate;
             Debug.Log("Script is ready!");
         }
         else

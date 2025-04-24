@@ -32,6 +32,7 @@ public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
 
     private void Start()
     {
+        EnqueueScenes(new[] { new SceneData("MainMenu"), new SceneData("HUD", 0, GameManager.Instance.SetBlackScreen) }, false);
 
     }
 
@@ -72,7 +73,6 @@ public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
         {
             if (currentRoomName == "Floor0Room0")
             {
-                EnqueueScenes(new[] { new SceneData("HUD", 0), new SceneData(newRoomName, 1) }, false);
                 if (_nextDoorDirection != DoorDirection.Null)
                     SpawnPlayerToDoor();
                 yield break;

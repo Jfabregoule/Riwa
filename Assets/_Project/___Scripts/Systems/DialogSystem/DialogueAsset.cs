@@ -62,6 +62,9 @@ public enum DialogueEventType
     RiwaOutFloor1Room2,
     RiwaInFloor1Room2,
     TriggerSequencerEvent,
+    LookAtTreeRoom1,
+    ResetCamRoom1,
+    EnableChangeTime,
 }
 
 public enum WaitDialogueEventType

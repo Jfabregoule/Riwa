@@ -20,7 +20,7 @@ public class PawnCheckStateInteract<TStateEnum> : PawnInteractBaseSubstate<TStat
 
         _colliderList.Clear();
 
-        float security = 3f;
+        float security = _character.InteractRadius;
 
         CapsuleCollider collider2 = GameManager.Instance.Character.CapsuleCollider;
 
@@ -31,7 +31,7 @@ public class PawnCheckStateInteract<TStateEnum> : PawnInteractBaseSubstate<TStat
         Vector3 point2 = _character.transform.position + Vector3.up * height;
 
         // Offset the capsule forward to scan ahead of the player
-        Vector3 forwardOffset = _character.transform.forward * radius * 0.8f;
+        Vector3 forwardOffset = _character.transform.forward * radius * 0.2f;
         point1 += forwardOffset;
         point2 += forwardOffset;
 

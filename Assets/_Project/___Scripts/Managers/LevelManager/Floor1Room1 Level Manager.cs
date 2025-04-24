@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 
 public enum EnumAdvancementRoom1
 {
@@ -19,6 +20,10 @@ public class Floor1Room1LevelManager : BaseLevelManager
     public EnumAdvancementRoom1 CurrentAdvancement = EnumAdvancementRoom1.None; //A sauvegarder
     [SerializeField] private bool _areEventEnabled = true;
 
+    [SerializeField] private float _durationCameraBlending = 1f;
+    private CinemachineBrain _brain;
+    private CinemachineBlendDefinition _defaultBlend;
+
     [Header("Event Sequencer")]
 
     [SerializeField] private Sequencer _event1;
@@ -31,6 +36,8 @@ public class Floor1Room1LevelManager : BaseLevelManager
     //Enigmes
 
     private bool _isCrateWellPlaced;
+
+    public Floor1Room1Dialogue Dialogue { get => _dialogue; set => _dialogue = value; }
 
     public override void Start()
     {
@@ -59,15 +66,21 @@ public class Floor1Room1LevelManager : BaseLevelManager
 
                 _event1.InitializeSequence();
 
-                _dialogue.LaunchDialogue(0);
+                //_dialogue.LaunchDialogue(0);
             }
         }
+
+        _brain = Helpers.Camera.GetComponent<CinemachineBrain>();
+        _defaultBlend = _brain.m_DefaultBlend;
+
+        DialogueSystem.Instance.OnDialogueEvent += EventDispatcher;
     }
 
     public void OnDestroy()
     {
         _character.InputManager.OnChangeTime -= CheckCrateEnigma;
         _character.InputManager.OnChangeTime -= InvokeChangeTime;
+        DialogueSystem.Instance.OnDialogueEvent -= EventDispatcher;
     }
 
 
@@ -112,4 +125,45 @@ public class Floor1Room1LevelManager : BaseLevelManager
         _character.InputManager.OnChangeTime -= InvokeChangeTime;
     }
 
+    public void EventDispatcher(DialogueEventType eventType)
+    {
+        switch (eventType)
+        {
+            case DialogueEventType.LookAtTreeRoom1:
+                StartCoroutine(BlendingCamera(CameraDictionnary[EnumCameraRoom.LookAtTree]));
+                break;
+            case DialogueEventType.ResetCamRoom1:
+                StartCoroutine(BlendingCamera(CameraDictionnary[EnumCameraRoom.Main]));
+                StartCoroutine(WaitForPulse());
+                break;
+            case DialogueEventType.EnableChangeTime:
+                break;
+        }
+    }
+
+    public IEnumerator BlendingCamera(CinemachineVirtualCamera cam)
+    {
+        _brain.m_DefaultBlend = new CinemachineBlendDefinition(
+            CinemachineBlendDefinition.Style.EaseInOut,
+            _durationCameraBlending
+        );
+        (_brain.ActiveVirtualCamera as CinemachineVirtualCamera).Priority = 10;
+        cam.Priority = 20;
+
+        //On dirait que isBlending marche aps
+        while (_brain.IsBlending)
+        {
+            yield return null;
+        }
+
+        _brain.m_DefaultBlend = _defaultBlend;
+    }
+
+    public IEnumerator WaitForPulse()
+    {
+        yield return new WaitForSeconds(1.5f);
+        GameManager.Instance.PulseIndice();
+        InputManager.Instance.EnableGameplayChangeTimeControls();
+
+    }
 }

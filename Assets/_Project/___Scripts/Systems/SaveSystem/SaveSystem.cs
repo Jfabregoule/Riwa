@@ -3,6 +3,22 @@ using System.IO;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using static UnityEngine.Rendering.DebugUI;
+
+[System.Serializable]
+public class SerializableVector3
+{
+    public float x, y, z;
+
+    public SerializableVector3(Vector3 v)
+    {
+        x = v.x;
+        y = v.y;
+        z = v.z;
+    }
+
+    public Vector3 ToVector3() => new Vector3(x, y, z);
+}
 
 /// <summary>
 /// Entrée de sauvegarde avec une clé et une value.
@@ -242,6 +258,12 @@ public class SaveSystem : Singleton<SaveSystem>
         {
             _progressData[key] = JToken.FromObject(value);
         }
+    }
+
+    public bool ContainsElements(string key, bool isSetting = false)
+    {
+        var data = isSetting ? _settingsData : _progressData;
+        return data.TryGetValue(key, out object value);
     }
 
     #endregion

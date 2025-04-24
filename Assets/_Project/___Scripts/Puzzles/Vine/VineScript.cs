@@ -161,6 +161,7 @@ public class VineScript : MonoBehaviour, IInteractableSoul
                 _bourgeonAnimator.SetBool("Activate", false);
             StopAllCoroutines();
             StartCoroutine(RetractedVine());
+            IsActive = false;
         }
     }
 }

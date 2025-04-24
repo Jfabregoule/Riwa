@@ -25,7 +25,7 @@ public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
     {
         EnqueueScenes(new[] { new SceneData("MainMenu"), new SceneData("HUD", 0, new Action[] { GameManager.Instance.SetBlackScreen, RiwaCinematicSystem.Instance.SetCanvasGroup }) }, false);
     }
-
+        
     public void LoadFirstScene()
     {
         StartCoroutine(LoadFirstSceneCoroutine());

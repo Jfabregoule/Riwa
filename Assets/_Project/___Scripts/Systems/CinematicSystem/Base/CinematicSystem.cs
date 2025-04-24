@@ -14,7 +14,6 @@ public class CinematicSystem<T> : Singleton<T> where T : CinematicSystem<T>
     [Header("Video Settings")]
     [SerializeField] private string _videoFolderPath = "Cinematics";
     [SerializeField] private RenderTexture _targetTexture;
-    private AudioSource _audioSource;
 
     [Header("Events")]
     public UnityEvent OnVideoStarted;
@@ -45,13 +44,6 @@ public class CinematicSystem<T> : Singleton<T> where T : CinematicSystem<T>
             _videoPlayer = gameObject.AddComponent<VideoPlayer>();
         }
 
-        _audioSource = GetComponent<AudioSource>();
-
-        if (_audioSource == null)
-        {
-            _audioSource = gameObject.AddComponent<AudioSource>();
-        }
-
         InitializePlayer();
     }
 
@@ -60,7 +52,6 @@ public class CinematicSystem<T> : Singleton<T> where T : CinematicSystem<T>
         _videoPlayer.renderMode = VideoRenderMode.RenderTexture;
         _videoPlayer.targetTexture = _targetTexture;
         _videoPlayer.audioOutputMode = VideoAudioOutputMode.AudioSource;
-        _videoPlayer.SetTargetAudioSource(0, _audioSource);
         _videoPlayer.loopPointReached += OnVideoFinished;
     }
 

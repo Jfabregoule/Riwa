@@ -20,12 +20,12 @@ public class SceneData
     /// <summary>
     /// Callback exécuté lorsque la scène a été entièrement chargée.
     /// </summary>
-    public Action OnLoaded;
+    public Action[] OnLoaded;
 
     /// <summary>
     /// Callback exécuté lorsque la scène a été entièrement déchargée.
     /// </summary>
-    public Action OnUnloaded;
+    public Action[] OnUnloaded;
 
     /// <summary>
     /// Constructeur complet de la scène.
@@ -34,7 +34,7 @@ public class SceneData
     /// <param name="priority">Priorité dans la file de chargement</param>
     /// <param name="onLoaded">Action à exécuter après chargement</param>
     /// <param name="onUnloaded">Action à exécuter après déchargement</param>
-    public SceneData(string name, int priority = 0, Action onLoaded = null, Action onUnloaded = null)
+    public SceneData(string name, int priority = 0, Action[] onLoaded = null, Action[] onUnloaded = null)
     {
         Name = name;
         Priority = priority;

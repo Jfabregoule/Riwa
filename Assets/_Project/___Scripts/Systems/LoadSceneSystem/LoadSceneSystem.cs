@@ -77,7 +77,11 @@ public class LoadSceneSystem<T> : Singleton<T> where T : LoadSceneSystem<T>
             AsyncOperation op = SceneManager.UnloadSceneAsync(scene.Name);
             yield return new WaitUntil(() => op.isDone);
 
-            scene.OnUnloaded?.Invoke();
+            if (scene.OnLoaded != null)
+            {
+                foreach (Action action in scene.OnUnloaded)
+                    action?.Invoke();
+            }
             OnSceneUnloaded?.Invoke(scene.Name);
         }
 
@@ -95,7 +99,8 @@ public class LoadSceneSystem<T> : Singleton<T> where T : LoadSceneSystem<T>
         AsyncOperation op = SceneManager.UnloadSceneAsync(scene.Name);
         yield return new WaitUntil(() => op.isDone);
 
-        scene.OnUnloaded?.Invoke();
+        foreach (Action action in scene.OnUnloaded)
+            action?.Invoke();
         OnSceneUnloaded?.Invoke(scene.Name);
 
         Resources.UnloadUnusedAssets();
@@ -192,7 +197,12 @@ public class LoadSceneSystem<T> : Singleton<T> where T : LoadSceneSystem<T>
             yield return new WaitUntil(() => operations[i].isDone);
 
             var scene = currentBatch[i];
-            scene.OnLoaded?.Invoke();
+            if (scene.OnLoaded != null)
+            {
+                foreach(Action action in scene.OnLoaded)
+                    action?.Invoke();
+
+            }
             OnSceneLoaded?.Invoke(scene.Name);
         }
 

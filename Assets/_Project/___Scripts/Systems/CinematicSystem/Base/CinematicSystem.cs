@@ -3,10 +3,14 @@ using UnityEngine.Video;
 using UnityEngine.Events;
 using System.Collections.Generic;
 using System;
+using System.Collections;
+using Unity.VisualScripting;
 
 [DefaultExecutionOrder(-1)]
 public class CinematicSystem<T> : Singleton<T> where T : CinematicSystem<T>
 {
+    private const string CINEMATIC_TAG = "Cinematic";
+
     [Header("Video Settings")]
     [SerializeField] private string _videoFolderPath = "Cinematics";
     [SerializeField] private RenderTexture _targetTexture;
@@ -16,9 +20,15 @@ public class CinematicSystem<T> : Singleton<T> where T : CinematicSystem<T>
     public UnityEvent OnVideoStarted;
     public UnityEvent OnVideoEnded;
 
+    private CanvasGroup _cinematicCanvasGroup;
     private VideoPlayer _videoPlayer;
     private Dictionary<string, VideoClip> _videoClips = new Dictionary<string, VideoClip>();
     private Action _onEndCallback;
+
+    private CanvasGroup _skipCanvasGroup;
+    private HoldButton _holdButton;
+
+    private float _appearTimer = 2.0f;
 
     protected override void Awake()
     {
@@ -65,6 +75,8 @@ public class CinematicSystem<T> : Singleton<T> where T : CinematicSystem<T>
 
     public void PlayVideoByKey(string key, bool loop = false, Action onEnd = null)
     {
+        if (!_cinematicCanvasGroup) return;
+        Helpers.EnabledCanvasGroup(_cinematicCanvasGroup);
         if (_videoClips.TryGetValue(key, out VideoClip clip))
         {
             _videoPlayer.clip = clip;
@@ -73,6 +85,7 @@ public class CinematicSystem<T> : Singleton<T> where T : CinematicSystem<T>
 
             _videoPlayer.Play();
             OnVideoStarted?.Invoke();
+            StartCoroutine(WaitBeforeAppear());
         }
         else
         {
@@ -80,8 +93,10 @@ public class CinematicSystem<T> : Singleton<T> where T : CinematicSystem<T>
         }
     }
 
+
     private void OnVideoFinished(VideoPlayer vp)
     {
+        Helpers.DisabledCanvasGroup(_cinematicCanvasGroup);
         OnVideoEnded?.Invoke();
         _onEndCallback?.Invoke();
         _onEndCallback = null;
@@ -98,5 +113,37 @@ public class CinematicSystem<T> : Singleton<T> where T : CinematicSystem<T>
         }
     }
 
+    public void SetCanvasGroup()
+    {
+        _cinematicCanvasGroup = GameObject.FindGameObjectWithTag(CINEMATIC_TAG).GetComponent<CanvasGroup>();
+        _holdButton = _cinematicCanvasGroup.gameObject.transform.GetChild(3).GetComponent<HoldButton>();
+        _skipCanvasGroup = _cinematicCanvasGroup.gameObject.transform.transform.GetChild(3).GetComponent<CanvasGroup>();
+        _holdButton.OnHoldComplete += SkipCinematic;
+    }
     public bool IsPlaying() => _videoPlayer.isPlaying;
+
+    private void SkipCinematic()
+    {
+        _videoPlayer.Stop();
+        OnVideoFinished(_videoPlayer);
+    }
+
+    private IEnumerator WaitBeforeAppear()
+    {
+        yield return new WaitForSeconds(3.0f);
+        StartCoroutine(AppearButton());
+
+    }
+
+    private IEnumerator AppearButton()
+    {
+        float timer = 0;
+        while (timer < _appearTimer)
+        {
+            timer += Time.deltaTime;
+            _skipCanvasGroup.alpha = Mathf.Clamp01(timer / _appearTimer);
+            yield return null;
+        }
+        Helpers.EnabledCanvasGroup(_skipCanvasGroup);
+    }
 }

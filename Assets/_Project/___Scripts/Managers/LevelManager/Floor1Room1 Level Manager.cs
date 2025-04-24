@@ -35,7 +35,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
     public override void Start()
     {
         base.Start();
-
+        //RiwaCinematicSystem.Instance.PlayVideoByKey("Starting Cinematic");
         _dialogue = GetComponent<Floor1Room1Dialogue>();
         DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.ChangeTime, OnChangeTime);
 

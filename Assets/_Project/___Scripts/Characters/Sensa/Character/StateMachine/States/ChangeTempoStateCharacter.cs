@@ -41,7 +41,7 @@ public class ChangeTempoStateCharacter : BaseStateCharacter<EnumStateCharacter>
     {
         base.UpdateState();
 
-        _subStateMachine.StateMachineUpdate();
+        //_subStateMachine.StateMachineUpdate();
     }
 
     public override void CheckChangeState()

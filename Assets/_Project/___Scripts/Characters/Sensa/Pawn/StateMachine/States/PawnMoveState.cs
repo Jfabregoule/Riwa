@@ -45,6 +45,11 @@ public class PawnMoveState<TStateEnum> : BaseStatePawn<TStateEnum>
         _character.InputManager.OnInteract -= OnInteract;
     }
 
+    public override void DestroyState()
+    {
+        _character.InputManager.OnInteract -= OnInteract;
+    }
+
     public override void UpdateState()
     {
         base.UpdateState();

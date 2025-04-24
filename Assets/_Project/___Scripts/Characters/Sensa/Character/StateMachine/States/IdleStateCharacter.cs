@@ -87,4 +87,15 @@ public class IdleStateCharacter : PawnIdleState<EnumStateCharacter>
     
     }
 
+    public override void DestroyState()
+    {
+        base.DestroyState();
+
+        ACharacter chara = (ACharacter)_character;
+
+        chara.InputManager.OnInteract -= OnInteract;
+        chara.InputManager.OnChangeTime -= ChangeStateToTempo;
+
+    }
+
 }

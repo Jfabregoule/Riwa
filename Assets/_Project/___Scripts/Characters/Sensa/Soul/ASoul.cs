@@ -23,7 +23,7 @@ public class ASoul : APawn<EnumStateSoul>
 
     private CameraHandler _cameraHandler;
 
-    new private StateMachineSoul _stateMachine;
+    //new private StateMachineSoul _stateMachine;
 
     [Header("Gameplay Statistics")]
 
@@ -50,7 +50,7 @@ public class ASoul : APawn<EnumStateSoul>
     public GameObject Character { get => _character; set => _character = value; }
     public float LinkMaxDistance { get => _linkMaxDistance; set => _linkMaxDistance = value; }
     public float LinkElasticity { get => _linkElasticity; set => _linkElasticity = value; }
-    new public StateMachineSoul StateMachine { get => _stateMachine; set => _stateMachine = value; }
+    new public StateMachineSoul StateMachine { get => (StateMachineSoul)_stateMachine; set => _stateMachine = value; }
 
     #endregion
 
@@ -71,9 +71,9 @@ public class ASoul : APawn<EnumStateSoul>
 
         _cameraHandler = GameManager.Instance.CameraHandler; //Il faut appeler ça après le load des 3C dans gameManager
 
-        _stateMachine = new StateMachineSoul();
-        _stateMachine.InitStateMachine(this);
-        _stateMachine.InitState(_stateMachine.States[EnumStateSoul.Disable]);
+        StateMachine = new StateMachineSoul();
+        StateMachine.InitStateMachine(this);
+        StateMachine.InitState(_stateMachine.States[EnumStateSoul.Disable]);
 
 
     }
@@ -85,12 +85,12 @@ public class ASoul : APawn<EnumStateSoul>
 
     private void Update()
     {
-        _stateMachine.StateMachineUpdate();
+        StateMachine.StateMachineUpdate();
     }
 
     private void FixedUpdate()
     {
-        _stateMachine.StateMachineFixedUpdate();
+        StateMachine.StateMachineFixedUpdate();
     }
 
     #endregion

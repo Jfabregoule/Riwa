@@ -66,6 +66,12 @@ public class Floor1Room1LevelManager : BaseLevelManager
         }
     }
 
+    public void OnDestroy()
+    {
+        _character.InputManager.OnChangeTime -= CheckCrateEnigma;
+        _character.InputManager.OnChangeTime -= InvokeChangeTime;
+    }
+
 
     public void TriggerEvent2()
     {

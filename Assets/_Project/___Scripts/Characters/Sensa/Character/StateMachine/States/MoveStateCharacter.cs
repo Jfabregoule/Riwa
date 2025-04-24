@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MoveStateCharacter : ParentMoveState<EnumStateCharacter>
+public class MoveStateCharacter : PawnMoveState<EnumStateCharacter>
 {
     ACharacter _chara;
 

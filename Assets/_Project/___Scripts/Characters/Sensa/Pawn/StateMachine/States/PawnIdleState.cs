@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class ParentIdleState<TStateEnum> : BaseStatePawn<TStateEnum>
+public class PawnIdleState<TStateEnum> : BaseStatePawn<TStateEnum>
     where TStateEnum : Enum
 {
     protected float _clock;

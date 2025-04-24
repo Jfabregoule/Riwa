@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class IdleStateCharacter : ParentIdleState<EnumStateCharacter>
+public class IdleStateCharacter : PawnIdleState<EnumStateCharacter>
 {
     public override void InitState(StateMachinePawn<EnumStateCharacter, BaseStatePawn<EnumStateCharacter>> stateMachine, EnumStateCharacter enumValue, APawn<EnumStateCharacter> character)
     {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MoveStateSoul : ParentMoveState<EnumStateSoul>
+public class MoveStateSoul : PawnMoveState<EnumStateSoul>
 {
     public override void InitState(StateMachinePawn<EnumStateSoul, BaseStatePawn<EnumStateSoul>> stateMachine, EnumStateSoul enumValue, APawn<EnumStateSoul> Soul)
     {

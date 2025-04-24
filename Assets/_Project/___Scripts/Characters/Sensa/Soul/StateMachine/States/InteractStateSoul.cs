@@ -1,5 +1,5 @@
 
-public class InteractStateSoul : ParentInteractState<EnumStateSoul>
+public class InteractStateSoul : PawnInteractState<EnumStateSoul>
 {
     public override void InitState(StateMachinePawn<EnumStateSoul,BaseStatePawn<EnumStateSoul>> stateMachine, EnumStateSoul enumValue, APawn<EnumStateSoul> Soul)
     {

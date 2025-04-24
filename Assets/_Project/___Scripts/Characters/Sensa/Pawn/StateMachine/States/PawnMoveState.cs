@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
-public class ParentMoveState<TStateEnum> : BaseStatePawn<TStateEnum>
+public class PawnMoveState<TStateEnum> : BaseStatePawn<TStateEnum>
     where TStateEnum : Enum
 {
     protected CameraHandler _cam;

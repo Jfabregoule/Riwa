@@ -22,6 +22,8 @@ public class PawnCheckStateInteract<TStateEnum> : PawnInteractBaseSubstate<TStat
 
         float security = 3f;
 
+        CapsuleCollider collider2 = GameManager.Instance.Character.CapsuleCollider;
+
         float height = _character.CapsuleCollider.height * _character.transform.localScale.x;
         float radius = _character.CapsuleCollider.radius * _character.transform.localScale.x * security;
 

@@ -30,7 +30,7 @@ public class CharacterFeet : MonoBehaviour, IRespawnable
     {
         _character = GameManager.Instance.Character;
         _fallTreshold *= _character.transform.localScale.y;
-        GameManager.Instance.OnTimeChangeStarted += ClearListOnChangeTempo;
+        //GameManager.Instance.OnTimeChangeStarted += ClearListOnChangeTempo;
 
         _currentTreshold = _fallTreshold;
         _radius = _character.GetComponent<CapsuleCollider>().radius * _character.transform.localScale.x;
@@ -42,8 +42,8 @@ public class CharacterFeet : MonoBehaviour, IRespawnable
 
     public void OnDestroy()
     {
-        if (GameManager.Instance)
-            GameManager.Instance.OnTimeChangeStarted -= ClearListOnChangeTempo;
+        //if (GameManager.Instance)
+            //GameManager.Instance.OnTimeChangeStarted -= ClearListOnChangeTempo;
     }
 
     public void Update()
@@ -64,13 +64,8 @@ public class CharacterFeet : MonoBehaviour, IRespawnable
         //    Debug.DrawRay(transform.position + Vector3.up * 0.5f, -Vector3.up * _currentTreshold, Color.green); // rien touché
         //}
 
-        IsGround = Physics.CheckSphere(transform.position, _radius, mask);
+        IsGround = Physics.CheckCapsule(transform.position, transform.position - Vector3.up * _currentTreshold * _character.transform.localScale.y, _radius, mask);
         
-        if (!IsGround)
-        {
-            Debug.Log(IsGround);
-        }
-
         Color color = IsGround ? Color.green : Color.red;
         Debug.DrawRay(transform.position, Vector3.up * 0.1f, color);
     }

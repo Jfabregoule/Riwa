@@ -117,7 +117,9 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
 
     public void Rotate(int sens)
     {
+        
         StartCoroutine(CoroutineRotate(sens));
+        
     }
 
     private IEnumerator CoroutineRotate(int sens)
@@ -137,7 +139,7 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
         }
 
         OnRotateFinished?.Invoke();
-        
+
     }
 
     public IEnumerator MoveLerp(Vector3 direction)

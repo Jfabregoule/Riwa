@@ -12,6 +12,8 @@ public class Platform : MonoBehaviour, IRespawnable
     private TreeStumpTest _tree;
     private bool _isFalling;
 
+    [SerializeField] private float _speed = 2f;
+
     [SerializeField] private Vector3 _respawnPositon;
     [SerializeField] private Vector3 _respawnRotation;
 
@@ -50,7 +52,7 @@ public class Platform : MonoBehaviour, IRespawnable
         {
             Debug.Log("TriggerEnter with: " + other.name + ", and transform parent name: " + transform.name);
             character.transform.SetParent(transform);
-            //_tree.CanInteract = false;
+            _tree.CanInteract = false;
         }
     }
 
@@ -84,7 +86,7 @@ public class Platform : MonoBehaviour, IRespawnable
         {
             Debug.Log("TriggerExit detected with: " + other.name);
             character.transform.SetParent(null);
-            //_tree.CanInteract = true;
+            _tree.CanInteract = true;
         }
         
     }
@@ -109,11 +111,9 @@ public class Platform : MonoBehaviour, IRespawnable
 
     private IEnumerator MovePlatform(Vector3 position, VineScript vine)
     {
-        float speed = 2f; 
-
         while (Vector3.Distance(transform.position, position) > 0.01f)
         {
-            transform.position = Vector3.MoveTowards(transform.position, position, speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, position, _speed * Time.deltaTime);
             yield return null;
         }
 
@@ -134,7 +134,7 @@ public class Platform : MonoBehaviour, IRespawnable
             _currentVine.SetSocketNull();
         _currentVine = null;
         _previousVine = null;
-        //_tree.CanInteract = true;
+        _tree.CanInteract = true;
         _isFalling = false;
     }
 }

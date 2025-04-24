@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MovingPlatform : MonoBehaviour
 {
+    [SerializeField] MonoBehaviour[] _activableComponents;
     [SerializeField] List<Transform> _points;
     [SerializeField] float _moveSpeed = 2f;
 
@@ -21,6 +22,23 @@ public class MovingPlatform : MonoBehaviour
                 _targetPositions.Add(point.position);
         }
 
+        if(_activableComponents.Length > 0)
+        {
+            foreach(var activable in  _activableComponents)
+            {
+                if(activable.TryGetComponent(out IActivable act))
+                {
+                    act.OnActivated += StartMoving;
+                }
+            }
+        }
+
+        if (_targetPositions.Count > 1 && _activableComponents.Length == 0)
+            StartCoroutine(MovePlatform());
+    }
+
+    private void StartMoving()
+    {
         if (_targetPositions.Count > 1)
             StartCoroutine(MovePlatform());
     }

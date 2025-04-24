@@ -120,7 +120,7 @@ public struct Datas
     public StatueData data;
 }
 
-public class Grid : MonoBehaviour
+public class Grid : MonoBehaviour, IActivable
 {
     [Header("Grid")]
     [SerializeField] private Vector2Int _gridSize = new Vector2Int(5, 5);
@@ -152,6 +152,9 @@ public class Grid : MonoBehaviour
     Dictionary<Statue, StatueData> statueData = new Dictionary<Statue, StatueData>();
 
     private Floor1Room4LevelManager _room4LevelManager;
+
+    public event IActivable.ActivateEvent OnActivated;
+    public event IActivable.ActivateEvent OnDesactivated;
 
     public float UnitGridSize => _unitGridSize;
     public Vector3 Origin { get; private set; }
@@ -302,41 +305,26 @@ public class Grid : MonoBehaviour
             foreach(Statue statues in _statues)
             {
                 statues.Validate = true;
-                StartCoroutine(StairAppear());
             }
+            StartCoroutine(ActiveElevator());
             if (_showDebug == true) Debug.Log("Grille complétée avec succès !");
         }
         else
             if (_showDebug == true) Debug.Log("La grille n'est pas encore correctement remplie.");
     }
 
-    private IEnumerator StairAppear()
+    private IEnumerator ActiveElevator()
     {
 
         yield return new WaitForSeconds(2.5f);
 
-        _room4LevelManager.StairCamera.Priority = 20;
+        _room4LevelManager.ElevatorCamera.Priority = 20;
         GameManager.Instance.Character.InputManager.DisableGameplayControls();
+        Activate();
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(2f);
 
-        float elapsedTime = 0f;
-        float lerpTime = 2f;
-
-        Vector3 initialPos = _stair.transform.position;
-        Vector3 finalPos = new Vector3(initialPos.x, -initialPos.y, initialPos.z);
-        
-        while(elapsedTime < lerpTime)
-        {
-            elapsedTime += Time.deltaTime;
-            float t = elapsedTime / lerpTime;
-            t = Mathf.Clamp01(t);
-            _stair.transform.position = Vector3.Lerp(initialPos, finalPos, t);
-            yield return null;
-        }
-
-        _stair.transform.position = finalPos;
-        _room4LevelManager.StairCamera.Priority = 0;
+        _room4LevelManager.ElevatorCamera.Priority = 0;
         GameManager.Instance.Character.InputManager.EnableGameplayControls();
     }
 
@@ -373,5 +361,15 @@ public class Grid : MonoBehaviour
         bool isEmpty = !grid.ContainsKey(pos) || !grid[pos].HasValue;
         if (_showDebug == true) Debug.Log($"Vérification case ({pos.x}, {pos.y}) -> Est vide ? {isEmpty} | Contenu : {grid[pos]}");
         return isEmpty;
+    }
+
+    public void Activate()
+    {
+        OnActivated?.Invoke();
+    }
+
+    public void Deactivate()
+    {
+        OnDesactivated?.Invoke();
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 public class Floor1Room4LevelManager : BaseLevelManager
 {
     [Header("Cameras")]
-    [SerializeField] private CinemachineVirtualCamera _stairCamera;
+    [SerializeField] private CinemachineVirtualCamera _elevatorCamera;
     [SerializeField] private CinemachineVirtualCamera _sensaRiwaDiscussing;
     [SerializeField] private List<CinemachineVirtualCamera> _fresqueCameras;
 
@@ -27,7 +27,7 @@ public class Floor1Room4LevelManager : BaseLevelManager
 
     private bool _isTutorialDone = false;
 
-    public CinemachineVirtualCamera StairCamera { get => _stairCamera; }
+    public CinemachineVirtualCamera ElevatorCamera { get => _elevatorCamera; }
     public CinemachineVirtualCamera SensaRiwaDiscussing { get => _sensaRiwaDiscussing; }
     public List<CinemachineVirtualCamera> FresqueCameras { get => _fresqueCameras; }
     public GameObject Chawa { get => _chawa; }

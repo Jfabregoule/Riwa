@@ -10,7 +10,7 @@ public class ActivableDoor : MonoBehaviour
     [SerializeField] Vector3 _openingOffset;
     [SerializeField] float _lerpTime = 1.0f;
 
-    [SerializeField] private List<CinemachineVirtualCamera> _doorCameras; // NEED REF CURRENT LEVEL MANAGER
+    [SerializeField] private List<CinemachineVirtualCamera> _doorCameras;
 
     private int _currentActivated = 0;
     private Vector3 _closedPosition;
@@ -81,6 +81,11 @@ public class ActivableDoor : MonoBehaviour
         }
 
         Vector3 start = transform.position;
+
+        if (targetPosition.x == 0f) targetPosition.x = start.x;
+        if (targetPosition.y == 0f) targetPosition.y = start.y;
+        if (targetPosition.z == 0f) targetPosition.z = start.z;
+
         float elapsed = 0f;
 
         while (elapsed < _lerpTime)

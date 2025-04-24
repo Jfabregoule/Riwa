@@ -54,9 +54,7 @@ public class GameManager : Singleton<GameManager>
         TranslateSystem = GameObject.FindGameObjectWithTag(TRANSLATE_TAG).GetComponent<TranslateSystem>();
 
         CurrentTemporality = EnumTemporality.Present;
-
-        _blackScreen = GameObject.Find("BlackScreen").GetComponent<BlackScreen>();
-
+        InputManager.Instance.DisableGameplayControls();
     }
 
     public void Load3C(CameraHandler cameraHandler, ACharacter character, VariableJoystick joystick)
@@ -93,5 +91,10 @@ public class GameManager : Singleton<GameManager>
     public void PulseIndice()
     {
         OnIndicePulse?.Invoke();
+    }
+
+    public void SetBlackScreen()
+    {
+        _blackScreen = GameObject.Find("BlackScreen").GetComponent<BlackScreen>();
     }
 }

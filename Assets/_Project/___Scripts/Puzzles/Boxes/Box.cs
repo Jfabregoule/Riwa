@@ -6,7 +6,8 @@ public class Box : MonoBehaviour, IMovable
     public float MoveSpeed { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
     public float OffsetRadius { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
     float IMovable.MoveDistance { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-    
+    public bool CanInteract { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
     public event IMovable.NoArgVoid OnMoveFinished;
     public event IMovable.NoArgVector3 OnReplacePlayer;
 

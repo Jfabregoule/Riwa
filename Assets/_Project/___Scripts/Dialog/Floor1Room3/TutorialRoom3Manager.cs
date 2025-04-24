@@ -31,14 +31,13 @@ public class TutorialRoom3Manager : MonoBehaviour
     {
         _instance = (Floor1Room3LevelManager)Floor1Room3LevelManager.Instance;
         _instance.OnLevelEnter += Init;
-
+        DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.WaitEndOfLianaPathTravel, WaitEndOfLianaPathTravel);
+        DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.RiwaHiddingIntoSensa, RiwaHiddingIntoSensa);
+        DialogueSystem.Instance.OnDialogueEvent += DispatchEventOnDialogueEvent;
     }
 
     private void Init()
     {
-        DialogueSystem.Instance.OnDialogueEvent += DispatchEventOnDialogueEvent;
-        DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.RiwaHiddingIntoSensa, RiwaHiddingIntoSensa);
-        DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.WaitEndOfLianaPathTravel, WaitEndOfLianaPathTravel);
         DialogueSystem.Instance.BeginDialogue(_damierDialogue[0]);
     }
 

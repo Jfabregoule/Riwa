@@ -19,10 +19,7 @@ public class TreeStumpTest : MonoBehaviour, ITreeStump, IInteractable
 
     public void Interact()
     {
-        if (CanInteract)
-        {
-            _dialogueSystem.EventRegistery.Invoke(WaitDialogueEventType.SocleFloor1Room2);
-        }
+        _dialogueSystem.EventRegistery.Invoke(WaitDialogueEventType.SocleFloor1Room2);
     }
 
     private void SubscribeToDialogueSystem(DialogueSystem script)

@@ -26,6 +26,12 @@ public class IdleStateSoul : PawnIdleState<EnumStateSoul>
 
     }
 
+    public override void DestroyState()
+    {
+        base.DestroyState();
+        _character.InputManager.OnInteract -= OnInteract;
+    }
+
     public override void UpdateState()
     {
         base.UpdateState();

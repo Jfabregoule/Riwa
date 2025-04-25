@@ -32,7 +32,7 @@ public class GameManager : Singleton<GameManager>
     public delegate void ChangeTimeEvent(EnumTemporality temporality);
     public event ChangeTimeEvent OnTimeChangeStarted;
     public event ChangeTimeEvent OnTimeChangeEnded;
-    public event Action OnTimeChangeAborted;
+    public event ChangeTimeEvent OnTimeChangeAborted;
 
     public delegate void IndiceEvent();
     public event IndiceEvent OnIndicePulse;
@@ -85,7 +85,7 @@ public class GameManager : Singleton<GameManager>
 
     public void TimeChangeAborted()
     {
-        OnTimeChangeEnded?.Invoke(_currentTemporality);
+        OnTimeChangeAborted?.Invoke(_currentTemporality);
     }
 
     public void PulseIndice()

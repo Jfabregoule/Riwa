@@ -6,7 +6,7 @@ public class ProcessStateTempo : ChangeTempoBaseState
 
     public override void InitState(ChangeTempoStateMachine stateMachine, EnumChangeTempo enumValue, ACharacter character)
     {
-        base.InitState(stateMachine, enumValue,character);
+        base.InitState(stateMachine, enumValue, character);
     }
 
     public override void EnterState()
@@ -21,11 +21,13 @@ public class ProcessStateTempo : ChangeTempoBaseState
 
         if (GameManager.Instance.CurrentTemporality == EnumTemporality.Present)
         {
+            Helpers.Camera.cullingMask |= 1 << 7;
             Physics.IgnoreLayerCollision(_character.gameObject.layer, Mathf.Clamp(Mathf.RoundToInt(Mathf.Log(_character.PastLayer.value, 2)), 0, 31), true);
             Physics.IgnoreLayerCollision(_character.gameObject.layer, Mathf.Clamp(Mathf.RoundToInt(Mathf.Log(_character.PresentLayer.value, 2)), 0, 31), false);
         }
         else
         {
+            Helpers.Camera.cullingMask |= 1 << 6;
             Physics.IgnoreLayerCollision(_character.gameObject.layer, Mathf.Clamp(Mathf.RoundToInt(Mathf.Log(_character.PresentLayer.value, 2)), 0, 31), true);
             Physics.IgnoreLayerCollision(_character.gameObject.layer, Mathf.Clamp(Mathf.RoundToInt(Mathf.Log(_character.PastLayer.value, 2)), 0, 31), false);
         }
@@ -58,6 +60,8 @@ public class ProcessStateTempo : ChangeTempoBaseState
 
     private void TimeChangeEnded(EnumTemporality temporality)
     {
+        int layermaskToHide = temporality == EnumTemporality.Present ? 6 : 7;
+        Helpers.Camera.cullingMask &= ~(1 << layermaskToHide);
         _changedTime = true;
         _character.CanChangeTime = true;
     }

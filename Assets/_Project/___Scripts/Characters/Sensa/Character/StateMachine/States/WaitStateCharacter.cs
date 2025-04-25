@@ -38,6 +38,15 @@ public class WaitStateCharacter : BaseStateCharacter<EnumStateCharacter>
         _character.InputManager.OnInteract -= OnInteract;
     }
 
+    public override void DestroyState()
+    {
+        base.DestroyState();
+
+        ACharacter chara = (ACharacter)_character;
+        chara.InputManager.OnChangeTime -= ChangeStateToTempo;
+        _character.InputManager.OnInteract -= OnInteract;
+    }
+
     public override void UpdateState()
     {
         base.UpdateState();

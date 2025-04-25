@@ -13,6 +13,11 @@ public class CancelStateTempo : ChangeTempoBaseState
 
         GameManager.Instance.OnTimeChangeAborted += TimeChangeAborted;
         _character.ChangeTime.AbortChangeTime();
+
+        if (GameManager.Instance.CurrentTemporality == EnumTemporality.Present)
+            Helpers.Camera.cullingMask |= 1 << 6;
+        else
+            Helpers.Camera.cullingMask |= 1 << 7;
     }
 
     public override void ExitState()
@@ -40,8 +45,10 @@ public class CancelStateTempo : ChangeTempoBaseState
         base.CheckChangeState();
     }
 
-    private void TimeChangeAborted()
+    private void TimeChangeAborted(EnumTemporality temporality)
     {
+        int layermaskToHide = temporality == EnumTemporality.Present ? 6 : 7;
+        Helpers.Camera.cullingMask &= ~(1 << layermaskToHide);
         _changedTime = true;
     }
 }

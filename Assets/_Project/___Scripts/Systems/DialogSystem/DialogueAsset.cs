@@ -62,6 +62,8 @@ public enum DialogueEventType
     RiwaOutFloor1Room2,
     RiwaInFloor1Room2,
     TriggerSequencerEvent,
+    AntreRiwaEntry,
+    AntreRiwaChangeTempo
 }
 
 public enum WaitDialogueEventType

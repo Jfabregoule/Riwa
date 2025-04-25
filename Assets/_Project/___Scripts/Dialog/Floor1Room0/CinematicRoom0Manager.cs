@@ -4,15 +4,41 @@ using UnityEngine;
 
 public class CinematicRoom0Manager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private DialogueAsset _dialogueAsset;
+    [SerializeField] private Sequencer _sequencerEntry;
+
+    private Floor1Room0LevelManager _instance;
+
+    private void Start()
     {
-        
+        _instance = (Floor1Room0LevelManager)Floor1Room0LevelManager.Instance;
+        //_instance.OnLevelEnter += Init;
+        _sequencerEntry.Init();
+        DialogueSystem.Instance.OnDialogueEvent += DispatchEventOnDialogueEvent;
+        DialogueSystem.Instance.BeginDialogue(_dialogueAsset);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Init()
     {
-        
+        Debug.Log("Player entry");
+        _sequencerEntry.Init();
+        //DialogueSystem.Instance.OnDialogueEvent += DispatchEventOnDialogueEvent;
+        DialogueSystem.Instance.BeginDialogue(_dialogueAsset);
     }
+
+    private void DispatchEventOnDialogueEvent(DialogueEventType dialogueEvent)
+    {
+        switch(dialogueEvent)
+        {
+            case DialogueEventType.AntreRiwaEntry:
+                Debug.Log("Entry");
+                _sequencerEntry.InitializeSequence();
+                break;
+            case DialogueEventType.AntreRiwaChangeTempo:
+                Debug.Log("Change Tempo");
+                GameManager.Instance.Character.TriggerChangeTempo();
+                break;
+        }
+    }
+
 }

@@ -33,9 +33,10 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
         CanInteract = true;
 
         float security = 0.01f;
-        float securityRadius = 0.1f;
+        float securityRadius = 0.2f;
 
         _boxSize = GetComponent<BoxCollider>().size;
+        _boxSize = Vector3.Scale(transform.localScale, _boxSize);
         _floorOffset = -Vector3.up * (_boxSize.y * 0.5f) - (-Vector3.up * security);
 
         OffsetRadius = _boxSize.x / 2 + _character.GetComponent<CapsuleCollider>().radius * _character.transform.localScale.x * 1.8f + securityRadius; //J'agrandit loffset pour que l'anime de coup de boule rentre pas dans la crate

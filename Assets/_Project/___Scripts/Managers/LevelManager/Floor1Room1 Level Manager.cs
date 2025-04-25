@@ -80,7 +80,8 @@ public class Floor1Room1LevelManager : BaseLevelManager
     {
         _character.InputManager.OnChangeTime -= CheckCrateEnigma;
         _character.InputManager.OnChangeTime -= InvokeChangeTime;
-        DialogueSystem.Instance.OnDialogueEvent -= EventDispatcher;
+        if (DialogueSystem.Instance)
+            DialogueSystem.Instance.OnDialogueEvent -= EventDispatcher;
     }
 
 

@@ -54,7 +54,7 @@ public class Damier : MonoBehaviour
         _damier.Clear();
         foreach (var data in serializedDamier)
         {
-            Cell script = data.cell.GetComponent<Cell>();
+            Cell script = data.cell.transform.GetComponent<Cell>();
             script.Init(data.cellPos, data.cellState);
             _damier.Add(data.cellPos, new DamierDatas(data.cellPos, data.cell, data.cellState));
             script.OnCellTriggered += OnCellTriggered;
@@ -91,16 +91,14 @@ public class Damier : MonoBehaviour
                 cell.transform.localScale = new Vector3(_cellSize, 1f, _cellSize);
                 cell.transform.parent = transform;
                 cell.name = $"Cell {x} {y}";
-                BoxCollider collider = cell.AddComponent<BoxCollider>();
-                collider.isTrigger = true;
-                collider.center = new Vector3(0f, 0.1f, 0f);
-                BoxCollider ground = cell.AddComponent<BoxCollider>();
-                Cell cellScript = cell.AddComponent<Cell>();
+                Transform child = cell.transform.GetChild(0);
+                GameObject childrenCollider = child.gameObject;
+                Cell cellScript = childrenCollider.AddComponent<Cell>();
                 cellScript.Init(pos, CellState.Breakable);
                 Rigidbody rb = cell.AddComponent<Rigidbody>();
                 rb.isKinematic = true;
-                cell.layer = 6;
-                _damier[pos] = new DamierDatas(pos, cell, CellState.Breakable);
+                rb.mass = 20f;
+                _damier[pos] = new DamierDatas(pos, childrenCollider, CellState.Breakable);
             }
         }
 
@@ -369,7 +367,7 @@ public class Damier : MonoBehaviour
         Vector3 targetDebutPosition = Vector3.zero;
         if(_damier.TryGetValue(path[0], out DamierDatas startData))
         {
-            targetDebutPosition = startData.cell.transform.position;
+            targetDebutPosition = startData.cell.transform.parent.gameObject.transform.position;
             yield return StartCoroutine(MoveRiwaToStart(targetDebutPosition));
         }
 
@@ -378,12 +376,12 @@ public class Damier : MonoBehaviour
         {
             if (_damier.TryGetValue(cell, out DamierDatas data))
             {
-                Vector3 pos = data.cell.transform.position;
+                Vector3 pos = data.cell.transform.parent.gameObject.transform.position;
                 pos.y = _riwa.transform.position.y;
                 worldPoints.Add(pos);
             }
         }
-        List<GameObject> modifiedCells = new List<GameObject>();
+
         _riwa.transform.position = worldPoints[0];
         Vector3 initialDir = (worldPoints[1] - worldPoints[0]).normalized;
         _riwa.transform.rotation = Quaternion.LookRotation(new Vector3(initialDir.x, 0, initialDir.z));
@@ -411,12 +409,9 @@ public class Damier : MonoBehaviour
 
                 yield return null;
             }
-            if (_damier.TryGetValue(path[i + 1], out DamierDatas currentData))
-            {
-                StartCoroutine(FadeCellAlpha(currentData.cell, 0f, 1f, 1.2f));
-                modifiedCells.Add(currentData.cell);
 
-            }
+            if (_damier.TryGetValue(path[i + 1], out DamierDatas currentData))
+                StartCoroutine(FadeCellAlpha(currentData.cell.transform.parent.gameObject, 0f, 1f, 1.2f));
         }
 
         _riwa.transform.position = worldPoints[worldPoints.Count - 1];
@@ -493,7 +488,7 @@ public class Damier : MonoBehaviour
     {
         if(_damier.ContainsKey(pos) && _damier[pos].cellState == CellState.Breakable)
         {
-            _damier[pos].cell.GetComponent<Rigidbody>().isKinematic = false;
+            _damier[pos].cell.transform.parent.gameObject.GetComponent<Rigidbody>().isKinematic = false;
             ChangeCellState(pos, CellState.Broken);
         }
     }
@@ -515,9 +510,9 @@ public class Damier : MonoBehaviour
                 Vector3 respawnPosition = _damier[cell.Position].cell.GetComponent<Cell>().RespawnPosition;
                 Vector3 respawnRotation = _damier[cell.Position].cell.GetComponent<Cell>().RespawnRotation;
                 ChangeCellState(cell.Position, CellState.Breakable);
-                _damier[cell.Position].cell.GetComponent<Rigidbody>().isKinematic = true;
-                _damier[cell.Position].cell.transform.position = respawnPosition;
-                _damier[cell.Position].cell.transform.localEulerAngles = respawnRotation;
+                _damier[cell.Position].cell.transform.parent.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+                _damier[cell.Position].cell.transform.parent.gameObject.transform.position = respawnPosition;
+                _damier[cell.Position].cell.transform.parent.gameObject.transform.localEulerAngles = respawnRotation;
 
             }
         }

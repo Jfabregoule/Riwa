@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 [Serializable]
 public enum DoorDirection
@@ -85,6 +86,9 @@ public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
 
     public void ReloadCurrentScene()
     {
+        Physics.IgnoreLayerCollision(GameManager.Instance.Character.gameObject.layer, Mathf.Clamp(Mathf.RoundToInt(Mathf.Log(GameManager.Instance.Character.PastLayer.value, 2)), 0, 31), true);
+        Physics.IgnoreLayerCollision(GameManager.Instance.Character.gameObject.layer, Mathf.Clamp(Mathf.RoundToInt(Mathf.Log(GameManager.Instance.Character.PresentLayer.value, 2)), 0, 31), false);
+        GameManager.Instance.CurrentTemporality = EnumTemporality.Present;
         StartCoroutine(ReloadCurrentSceneCoroutine());
     }
 

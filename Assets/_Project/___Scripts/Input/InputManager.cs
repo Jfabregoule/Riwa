@@ -17,6 +17,8 @@ public class InputManager : Singleton<InputManager>
     private bool _interactEnabled;
     private bool _moveEnabled;
 
+    private bool _controlsInverted = false;
+
     #region Events
 
     public delegate void PressEvent();
@@ -56,6 +58,11 @@ public class InputManager : Singleton<InputManager>
         EventSystem.current.RaycastAll(eventData, raycastResults);
 
         return raycastResults.Count > threshold;
+    }
+
+    public void ToggleControlInversion(bool value)
+    {
+        _controlsInverted = value;
     }
 
 
@@ -253,9 +260,10 @@ public class InputManager : Singleton<InputManager>
     {
         Vector2 pos = finger.currentTouch.screenPosition;
 
-        
+        bool isLeftSide = pos.x < Screen.width / 2;
+        if (_controlsInverted) isLeftSide = !isLeftSide;
 
-        if (pos.x < Screen.width / 2 && _joystickFingerId == null && _moveEnabled)
+        if (isLeftSide && _joystickFingerId == null && _moveEnabled)
         {
             if (IsTouchOverUI(pos, 1)) return;
 
@@ -263,7 +271,7 @@ public class InputManager : Singleton<InputManager>
             OnMove?.Invoke(pos);
         }
 
-        else if (pos.x >= Screen.width / 2 && _interactEnabled)
+        else if (!isLeftSide && _interactEnabled)
         {
             if (IsTouchOverUI(pos, 0)) return;
             OnInteract?.Invoke();

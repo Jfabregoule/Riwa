@@ -61,8 +61,5 @@ public class Settings : MonoBehaviour
         //RiwaSoundMixerManager.Instance.SetSoundFXVolume(level);
         //RiwaSoundMixerManager.Instance.SetCinematicVolume(level);
     }
-    public void InvertControl()
-    {
-            
-    }
+
 }

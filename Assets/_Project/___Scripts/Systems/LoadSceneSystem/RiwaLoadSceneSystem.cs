@@ -83,6 +83,26 @@ public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
         }
     }
 
+    public void ReloadCurrentScene()
+    {
+        StartCoroutine(ReloadCurrentSceneCoroutine());
+    }
+
+    /// <summary>
+    /// Recharge la scene actuelle.
+    /// Les autres scènes nécessaires ne seront pas affectées.
+    /// </summary>
+    private IEnumerator ReloadCurrentSceneCoroutine()
+    {
+        string currentRoomName = GetCurrentRoomSceneName();
+
+        DialogueSystem.Instance.FinishDialogue();
+
+        yield return StartCoroutine(ChangeScene(new[] { new SceneData(currentRoomName) }, new[] {  new SceneData(currentRoomName) }));
+
+        SpawnPlayerToDoor();
+    }
+
     /// <summary>
     /// Récupère le nom de la scène de la salle actuellement chargée.
     /// </summary>

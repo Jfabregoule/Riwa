@@ -23,7 +23,7 @@ public class Control : MonoBehaviour
         _isRightHanded = true;
         _interactText = _translateTextLeft.GetSentenceTranslate();
         _joystickText = _translateTextRight.GetSentenceTranslate();
-        UpdateControl();
+        //UpdateControl();
     }
     private void OnEnable()
     {
@@ -38,6 +38,7 @@ public class Control : MonoBehaviour
     public void UpdateControl()
     {
         _binaryChoice.InvokeEvent(!_isRightHanded);
+        
     }
     private void UpdateBinaryChoice()
     {

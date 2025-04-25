@@ -7,5 +7,6 @@ public class ReloadScene : MonoBehaviour
     public void ReloadCurrentScene()
     {
         RiwaLoadSceneSystem.Instance.ReloadCurrentScene();
+        InputManager.Instance.EnableAllControls();
     }
 }

@@ -18,6 +18,8 @@ public class SequencerActionResetDoor : SequencerAction
     {
         _door?.ResetDoor();
 
+        InputManager.Instance.EnableGameplayControls();
+
         yield return null;
     }
 }

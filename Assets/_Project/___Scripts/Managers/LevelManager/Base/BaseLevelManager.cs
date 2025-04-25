@@ -52,8 +52,8 @@ public class BaseLevelManager : Singleton<BaseLevelManager>
     {
         GameManager.Instance.Load3C(_cameraHandler, _character, _joystick);
 
-        _character.RespawnPosition = _playerSpawnPosition;
-        _character.RespawnRotation = _playerSpawnRotation;
+        //_character.RespawnPosition = _playerSpawnPosition;
+        //_character.RespawnRotation = _playerSpawnRotation;
 
         GameManager.Instance.CurrentLevelManager = this;
     }

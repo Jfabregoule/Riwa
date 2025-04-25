@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
+    [SerializeField] private bool _canBeEntered = true;
     [SerializeField] private int _floorNumber = 1;
     [SerializeField] private int _roomNumber = 1;
     [SerializeField] private DoorDirection _nextDoorDirection;
@@ -26,13 +27,12 @@ public class Door : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (_canBeEntered == false) return;
+
         if (other.CompareTag("Player") && !_isExitingDoor && !_isEnteringDoor)
         {
-            if (_animationExit)
-            {
-                _isEnteringDoor = true;
-                _enterDoorSequencer.InitializeSequence();
-            }
+            _isEnteringDoor = true;
+            _enterDoorSequencer.InitializeSequence();
         }
     }
 

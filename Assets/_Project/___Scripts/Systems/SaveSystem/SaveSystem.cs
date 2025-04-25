@@ -59,7 +59,7 @@ public class SaveSystem : Singleton<SaveSystem>
         {"CurrentFloor", 1},
         {"CurrentRoom", 1},
         {"LastDoorID", 0},
-        {"LastDoorDirection", DoorDirection.Null},
+        {"LastDoorDirection", DoorDirection.North},
     };
 
     /// <summary>

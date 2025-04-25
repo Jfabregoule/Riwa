@@ -26,7 +26,6 @@ public class Floor1Room1LevelManager : BaseLevelManager
 
     [Header("Event Sequencer")]
 
-    [SerializeField] private Sequencer _event1;
     [SerializeField] private Sequencer _event2;
     [SerializeField] private Sequencer _event3;
 
@@ -60,11 +59,8 @@ public class Floor1Room1LevelManager : BaseLevelManager
 
             if(_areEventEnabled)
             {
-                _event1.Init();
                 _event2.Init();
                 _event3.Init();
-
-                _event1.InitializeSequence();
 
                 //_dialogue.LaunchDialogue(0);
             }

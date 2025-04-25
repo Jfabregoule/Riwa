@@ -110,7 +110,6 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
     public void Start()
     {
         _cameraHandler = GameManager.Instance.CameraHandler; //Il faut appeler ça après le load des 3C dans gameManager
-        Application.targetFrameRate = 300;
 
         StateMachine.InitStateMachine(this);
         StateMachine.InitState(_stateMachine.States[EnumStateCharacter.Idle]);

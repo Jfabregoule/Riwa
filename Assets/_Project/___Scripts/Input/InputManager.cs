@@ -92,6 +92,14 @@ public class InputManager : Singleton<InputManager>
             UnbindOptionsEvents();
     }
 
+    public void EnableAllControls()
+    {
+        EnableGameplayMoveControls();
+        EnableGameplayChangeTimeControls();
+        EnableDialogueControls();
+        EnableOptionsControls();
+    }
+
     public void EnableGameplayControls()
     {
         if (_gameplayEnabled) return;

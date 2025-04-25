@@ -89,6 +89,9 @@ public class DialogueSystem : Singleton<DialogueSystem>
     public void EndDialogue()
     {
         GameManager.Instance.TranslateSystem.OnLanguageChanged -= UpdateSentenceAll;
+
+        if (!ProcessingDialogue) return;
+
         if (ProcessingDialogue.ClosureTriggerEvent)
             OnDialogueEvent?.Invoke(ProcessingDialogue.ClosureEventType);
     }
@@ -265,9 +268,14 @@ public class DialogueSystem : Singleton<DialogueSystem>
     {
         if (ProcessingDialogue.IsAllSkipable)
         {
-            _endSequencer.InitializeSequence();
-            StopAllCoroutines();
+            FinishDialogue();
         }
+    }
+
+    public void FinishDialogue()
+    {
+        _endSequencer.InitializeSequence();
+        StopAllCoroutines();
     }
 
     public void Reset()

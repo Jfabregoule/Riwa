@@ -18,25 +18,27 @@ public class CinematicRoom0Manager : MonoBehaviour
         DialogueSystem.Instance.BeginDialogue(_dialogueAsset);
     }
 
-    private void Init()
-    {
-        Debug.Log("Player entry");
-        _sequencerEntry.Init();
-        //DialogueSystem.Instance.OnDialogueEvent += DispatchEventOnDialogueEvent;
-        DialogueSystem.Instance.BeginDialogue(_dialogueAsset);
-    }
+    //private void Init()
+    //{
+    //    Debug.Log("Player entry");
+    //    _sequencerEntry.Init();
+    //    //DialogueSystem.Instance.OnDialogueEvent += DispatchEventOnDialogueEvent;
+    //    //DialogueSystem.Instance.BeginDialogue(_dialogueAsset);
+    //}
 
     private void DispatchEventOnDialogueEvent(DialogueEventType dialogueEvent)
     {
         switch(dialogueEvent)
         {
             case DialogueEventType.AntreRiwaEntry:
-                Debug.Log("Entry");
                 _sequencerEntry.InitializeSequence();
                 break;
             case DialogueEventType.AntreRiwaChangeTempo:
-                Debug.Log("Change Tempo");
                 GameManager.Instance.Character.TriggerChangeTempo();
+                break;
+            case DialogueEventType.AntreRiwaCinematicEnd:
+                _instance.IsCinematicDone = true;
+                _instance.RiwaSensaCamera.Priority = 0;
                 break;
         }
     }

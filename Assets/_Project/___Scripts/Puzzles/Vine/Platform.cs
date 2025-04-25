@@ -46,13 +46,13 @@ public class Platform : MonoBehaviour, IRespawnable
                 _currentVine = vineScript;
                 SetPosition(vineScript);
             }
+            _tree.CanInteract = false;
         }
 
         if (other.TryGetComponent(out ACharacter character))
         {
             Debug.Log("TriggerEnter with: " + other.name + ", and transform parent name: " + transform.name);
             character.transform.SetParent(transform);
-            _tree.CanInteract = false;
         }
     }
 
@@ -79,6 +79,7 @@ public class Platform : MonoBehaviour, IRespawnable
                 //    _rb.isKinematic = true;
                 //}
             }
+            _tree.CanInteract = true;
         }
 
 
@@ -86,7 +87,6 @@ public class Platform : MonoBehaviour, IRespawnable
         {
             Debug.Log("TriggerExit detected with: " + other.name);
             character.transform.SetParent(null);
-            _tree.CanInteract = true;
         }
         
     }

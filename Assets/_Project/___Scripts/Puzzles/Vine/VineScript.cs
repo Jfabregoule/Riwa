@@ -17,6 +17,7 @@ public class VineScript : MonoBehaviour, IInteractableSoul
 
     public bool IsActive { get; private set; }
     public bool CanInteract { get => !IsActive; set => IsActive = !value; }
+    public int Priority { get; set; }
 
     [SerializeField, Range(0, 1)]
     private float _minGrow = 0.2f;
@@ -34,6 +35,7 @@ public class VineScript : MonoBehaviour, IInteractableSoul
 
     void Start()
     {
+        Priority = 1;
         SocketPoint = null;
         IsActive = false;
         _capsuleCollider = GetComponent<CapsuleCollider>();

@@ -6,7 +6,7 @@ public class PawnCheckStateInteract<TStateEnum> : PawnInteractBaseSubstate<TStat
     where TStateEnum : Enum
 {
 
-    protected readonly List<GameObject> _colliderList = new();
+    protected List<GameObject> _colliderList = new();
     protected bool _canInteract = false;
 
     public override void InitState(PawnInteractSubstateMachine<TStateEnum> stateMachine, EnumInteract enumValue, APawn<TStateEnum> character)
@@ -81,6 +81,9 @@ public class PawnCheckStateInteract<TStateEnum> : PawnInteractBaseSubstate<TStat
             _canInteract = false;
             return;
         }
+
+        //A FIX
+        //_colliderList = SortPriority(_colliderList);
 
         _subStateMachine.CurrentObjectInteract = SortObjects(_character.transform.position, _colliderList);
         _canInteract = true;

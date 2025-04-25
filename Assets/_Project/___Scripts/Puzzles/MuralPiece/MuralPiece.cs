@@ -8,12 +8,14 @@ public class MuralPiece : MonoBehaviour, IInteractable
 
     public float OffsetRadius { get => 0f; set => OffsetRadius = value; }
     public bool CanInteract { get; set; }
+    public int Priority { get ; set; }
 
     public delegate void MuralPieceEvent();
     public MuralPieceEvent OnPickUp;
     private void Start()
     {
         CanInteract = true;
+        Priority = 0;
     }
     public void Interact()
     {

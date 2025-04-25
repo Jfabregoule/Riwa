@@ -7,9 +7,11 @@ public class Mirror : MonoBehaviour, IRotatable
     [SerializeField] private MonoBehaviour _activable;
     public float OffsetRadius { get; set; }
     public bool CanInteract { get; set; }
+    public int Priority { get; set; }
 
     private void Start()
     {
+        Priority = 0;
         OffsetRadius = 1;
         CanInteract = true;
 

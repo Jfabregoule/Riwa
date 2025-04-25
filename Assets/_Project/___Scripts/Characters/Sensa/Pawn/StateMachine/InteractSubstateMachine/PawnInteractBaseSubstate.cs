@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum EnumInteract
@@ -75,6 +76,32 @@ public class PawnInteractBaseSubstate<TStateEnum> : BaseState<EnumInteract>
         }
 
         return closestObj;
+
+    }
+
+    public List<GameObject> SortPriority(List<GameObject> objs)
+    {
+        List<GameObject> result = new();
+        int highestPrio = 0;    
+
+        for (int i = 1; i < objs.Count; i++)
+        {
+            if (objs[i].GetComponent<IInteractable>().Priority > highestPrio)
+            {
+                highestPrio = objs[i].GetComponent<IInteractable>().Priority;
+            }
+        }
+
+        for (int i = 1; i < objs.Count; i++)
+        {
+            if (objs[i].GetComponent<IInteractable>().Priority == highestPrio)
+            {
+                GameObject go = objs[i].gameObject;
+                result.Add(go);
+            }
+        }
+
+        return result;
 
     }
 

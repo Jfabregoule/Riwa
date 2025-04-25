@@ -50,7 +50,7 @@ public class CharacterMoveStateInteract : PawnMoveStateInteract<EnumStateCharact
             {
                 foreach (var comp2 in _subStateMachine.CurrentObjectInteract.GetComponents<MonoBehaviour>())
                 {
-                    if (comp2 is IInteractable interactable && comp2.enabled)
+                    if (comp2 is IInteractableBase interactable && comp2.enabled)
                     {
                         interactable.Interact();
                         break;

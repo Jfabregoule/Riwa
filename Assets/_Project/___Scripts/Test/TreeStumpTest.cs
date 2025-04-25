@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class TreeStumpTest : MonoBehaviour, ITreeStump, IInteractable
+public class TreeStumpTest : MonoBehaviour, ITreeStump
 {
     public float OffsetRadius { get ; set; }
     public bool CanInteract { get; set; }

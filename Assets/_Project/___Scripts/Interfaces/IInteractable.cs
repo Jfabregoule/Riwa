@@ -1,10 +1,8 @@
-public interface IInteractable
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public interface IInteractable : IInteractableBase
 {
-    void Interact();
 
-    public float OffsetRadius { get; set; }
-
-    public int Priority { get; set; }
-
-    public bool CanInteract { get; set; }
 }

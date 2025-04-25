@@ -1,4 +1,4 @@
-public interface IHoldable : IInteractable
+public interface IHoldable : IInteractableBase
 {
     void Hold();
 }

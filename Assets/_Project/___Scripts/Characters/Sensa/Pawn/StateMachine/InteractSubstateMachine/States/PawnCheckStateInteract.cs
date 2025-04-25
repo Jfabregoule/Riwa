@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PawnCheckStateInteract<TStateEnum> : PawnInteractBaseSubstate<TStateEnum>
@@ -8,6 +9,8 @@ public class PawnCheckStateInteract<TStateEnum> : PawnInteractBaseSubstate<TStat
 
     protected List<GameObject> _colliderList = new();
     protected bool _canInteract = false;
+
+    protected List<Type> _possibleTypes;
 
     public override void InitState(PawnInteractSubstateMachine<TStateEnum> stateMachine, EnumInteract enumValue, APawn<TStateEnum> character)
     {
@@ -57,7 +60,7 @@ public class PawnCheckStateInteract<TStateEnum> : PawnInteractBaseSubstate<TStat
 
         foreach (Collider collider in others)
         {
-            if (collider.gameObject.TryGetComponent(out IInteractable obj))
+            if (collider.gameObject.TryGetComponent(out IInteractableBase obj))
             {
                 if (!obj.CanInteract) continue;
 
@@ -83,7 +86,7 @@ public class PawnCheckStateInteract<TStateEnum> : PawnInteractBaseSubstate<TStat
         }
 
         //A FIX
-        //_colliderList = SortPriority(_colliderList);
+        _colliderList = SortPriority(_colliderList);
 
         _subStateMachine.CurrentObjectInteract = SortObjects(_character.transform.position, _colliderList);
         _canInteract = true;
@@ -115,5 +118,84 @@ public class PawnCheckStateInteract<TStateEnum> : PawnInteractBaseSubstate<TStat
 
     public virtual void ChangeStateToIdle() { }
     public virtual void ChangeStateToMove() { }
+
+    public GameObject SortObjects(Vector3 playerPos, List<GameObject> objs)
+    {
+        ///<summary>
+        /// Renvoie l'object interactable le plus proche du player
+        /// </summary>
+
+        GameObject closestObj = objs[0];
+
+        float distance = Vector3.Distance(closestObj.transform.position, playerPos);
+
+        for (int i = 1; i < objs.Count; i++)
+        {
+            if (Vector3.Distance(objs[i].transform.position, playerPos) < distance)
+            {
+                closestObj = objs[i];
+                distance = Vector3.Distance(closestObj.transform.position, playerPos);
+            }
+        }
+
+        return closestObj;
+
+    }
+
+    public List<GameObject> SortPriority(List<GameObject> objs)
+    {
+        List<GameObject> result = new();
+        int highestPrio = 0;
+
+        for (int i = 0; i < objs.Count; i++)
+        {
+            if (IsValidType(objs[i].GetComponent<IInteractableBase>()))
+            {
+                if (objs[i].GetComponent<IInteractableBase>().Priority > highestPrio)
+                {
+                    highestPrio = objs[i].GetComponent<IInteractableBase>().Priority;
+                }
+            }
+        }
+
+        for (int i = 0; i < objs.Count; i++)
+        {
+            if (IsValidType(objs[i].GetComponent<IInteractableBase>()))
+            {
+                if (objs[i].GetComponent<IInteractableBase>().Priority == highestPrio)
+                {
+                    GameObject go = objs[i].gameObject;
+                    result.Add(go);
+                }
+            }
+        }
+
+        return result;
+
+    }
+
+    public virtual bool IsValidType(IInteractableBase interact)
+    {
+        Type objType = interact.GetType();
+
+        foreach (var interfaceType in _possibleTypes)
+        {
+            if(ImplementsExactly(objType, interfaceType))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool ImplementsExactly(Type concreteType, Type interfaceType)
+    {
+        var allInterfaces = concreteType.GetInterfaces();
+        var baseInterfaces = concreteType.BaseType != null ? concreteType.BaseType.GetInterfaces() : Array.Empty<Type>();
+
+        var directInterfaces = allInterfaces.Except(baseInterfaces);
+
+        return directInterfaces.Contains(interfaceType);
+    }
 
 }

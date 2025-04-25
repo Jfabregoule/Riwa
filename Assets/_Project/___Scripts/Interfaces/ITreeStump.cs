@@ -1,4 +1,4 @@
-public interface ITreeStump 
+public interface ITreeStump : IInteractableBase
 {
     
 }

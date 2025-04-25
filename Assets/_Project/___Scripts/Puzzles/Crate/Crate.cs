@@ -25,6 +25,7 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
     public float OffsetRadius { get; set; }
     public float MoveDistance { get => _distance; set => _distance = value; }
     public bool CanInteract { get; set; }
+    public int Priority { get ; set; }
 
     public void Start()
     {
@@ -40,6 +41,7 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
         _floorOffset = -Vector3.up * (_boxSize.y * 0.5f) - (-Vector3.up * security);
 
         OffsetRadius = _boxSize.x / 2 + _character.GetComponent<CapsuleCollider>().radius * _character.transform.localScale.x * 1.8f + securityRadius; //J'agrandit loffset pour que l'anime de coup de boule rentre pas dans la crate
+        Priority = 0;
     }
 
     public void Interact()

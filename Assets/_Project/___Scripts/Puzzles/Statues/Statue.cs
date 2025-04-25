@@ -23,6 +23,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
     public float MoveSpeed { get; set; }
     public float MoveDistance { get; set; }
     public bool CanInteract { get => !_validate; set => throw new System.NotImplementedException(); }
+    public int Priority { get; set; }
 
     public delegate bool StatueMoveEvent(CellPos oldPos, Vector2Int nextPos, CellContent statueData);
     public delegate void StatueRotateEvent(CellPos pos, CellContent content);
@@ -38,6 +39,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
 
     public void Start()
     {
+        Priority = 0;
         OffsetRadius = 0.8f;
         MoveSpeed = 2f;
         MoveDistance = _unitGridSize;

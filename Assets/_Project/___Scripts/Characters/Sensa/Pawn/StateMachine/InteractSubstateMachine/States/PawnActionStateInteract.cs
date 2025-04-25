@@ -20,7 +20,7 @@ public class PawnActionStateInteract<TStateEnum> : PawnInteractBaseSubstate<TSta
     public override void ExitState()
     {
         base.ExitState();
-        _subStateMachine.CurrentObjectInteract.GetComponent<IInteractable>().Interact();
+        _subStateMachine.CurrentObjectInteract.GetComponent<IInteractableBase>().Interact();
     }
 
     public override void UpdateState()

@@ -17,6 +17,7 @@ public class APawn<TStateEnum> : MonoBehaviour
 
     [SerializeField] protected float _speed = 7;
     [SerializeField] protected float _walkSpeed = 2;
+    [SerializeField] private float interactRadius = 5;
 
     [SerializeField] protected LayerMask _pastLayer;
     [SerializeField] protected LayerMask _presentLayer;
@@ -34,6 +35,7 @@ public class APawn<TStateEnum> : MonoBehaviour
     public LayerMask PastLayer { get => _pastLayer; }
     public LayerMask PresentLayer { get => _presentLayer; }
     public Animator Animator { get => _animator; set => _animator = value; }
+    public float InteractRadius { get => interactRadius; set => interactRadius = value; }
 
     public void MoveTo(Vector3 position, Vector3 objectPos, bool endRotate = true)
     {

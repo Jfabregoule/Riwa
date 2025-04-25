@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,11 +7,21 @@ public class CharacterCheckStateInteract : PawnCheckStateInteract<EnumStateChara
     public override void InitState(PawnInteractSubstateMachine<EnumStateCharacter> stateMachine, EnumInteract enumValue, APawn<EnumStateCharacter> character)
     {
         base.InitState(stateMachine, enumValue, character);
+
+        _possibleTypes = new List<Type>(){
+            typeof(IHoldable),
+            typeof(IMovable),
+            typeof(IRotatable),
+            typeof(ITreeStump),
+            typeof(IInteractable)
+        };
+
     }
 
     public override void EnterState()
     {
         base.EnterState();
+
     }
 
     public override void ExitState()

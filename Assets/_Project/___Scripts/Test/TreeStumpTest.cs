@@ -1,10 +1,11 @@
 using System;
 using UnityEngine;
 
-public class TreeStumpTest : MonoBehaviour, ITreeStump, IInteractable
+public class TreeStumpTest : MonoBehaviour, ITreeStump
 {
     public float OffsetRadius { get ; set; }
     public bool CanInteract { get; set; }
+    public int Priority { get; set; }
 
     private DialogueSystem _dialogueSystem;
 
@@ -12,6 +13,7 @@ public class TreeStumpTest : MonoBehaviour, ITreeStump, IInteractable
 
     private void Start()
     {
+        Priority = 0;
         OffsetRadius = 0;
         CanInteract = true;
         StartCoroutine(Helpers.WaitMonoBeheviour(() => DialogueSystem.Instance, SubscribeToDialogueSystem));

@@ -13,6 +13,7 @@ public class BridgeVineScript : MonoBehaviour, IInteractableSoul
 
     public float OffsetRadius { get => -1; set => throw new NotImplementedException(); }
     public bool CanInteract { get; set; }
+    public int Priority { get ; set; }
 
     [SerializeField, Range(0, 1)]
     private float _minGrow = 0.2f;
@@ -31,6 +32,7 @@ public class BridgeVineScript : MonoBehaviour, IInteractableSoul
 
     void Start()
     {
+        Priority = 1;
         _boxCollider = GetComponent<BoxCollider>();
         _minColliderHeight = _boxCollider.size.x;
         _material = GetComponent<MeshRenderer>().material;

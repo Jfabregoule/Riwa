@@ -65,6 +65,9 @@ public enum DialogueEventType
     LookAtTreeRoom1,
     ResetCamRoom1,
     EnableChangeTime,
+    AntreRiwaEntry,
+    AntreRiwaChangeTempo,
+    AntreRiwaCinematicEnd
 }
 
 public enum WaitDialogueEventType

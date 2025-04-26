@@ -10,15 +10,15 @@ GameObject:
   m_Component:
   - component: {fileID: 2506628023438357626}
   - component: {fileID: 5689890653968326851}
-  - component: {fileID: 2350477875147752865}
   - component: {fileID: 7710161878721139716}
   - component: {fileID: 3548128860708930093}
+  - component: {fileID: 615107048108360395}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &2506628023438357626
 Transform:
@@ -62,28 +62,12 @@ MonoBehaviour:
     _id: 2
   CurrentAdvancement: 0
   _areEventEnabled: 1
-  _event1: {fileID: 2350477875147752865}
-  _event2: {fileID: 2350477875147752865}
+  _durationCameraBlending: 1
+  _riwaHeart: {fileID: 0}
+  _endGameCamera: {fileID: 0}
+  _endGame: {fileID: 615107048108360395}
   _event3: {fileID: 7710161878721139716}
---- !u!114 &2350477875147752865
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8900667785115057270}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e5d8709be7c39548b08fbe3b0d835c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SequenceActions:
-  - {fileID: 11400000, guid: 0364614048219644ca0dfe26d8d85161, type: 2}
-  - {fileID: 11400000, guid: d41757afbdf78004ab0dd26180b69b45, type: 2}
-  - {fileID: 11400000, guid: c19c8cba842e0c74c816bc142db0b15b, type: 2}
-  - {fileID: 11400000, guid: c0c8773c8594c6643a6fec9840f5e694, type: 2}
-  - {fileID: 11400000, guid: c19c8cba842e0c74c816bc142db0b15b, type: 2}
-  - {fileID: 11400000, guid: 10aa6624df0591c4ebedb8ec23b41819, type: 2}
+  _dialogue: {fileID: 11400000, guid: f6150fd8a1e4c704abd7c96436e490c0, type: 2}
 --- !u!114 &7710161878721139716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,3 +98,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _listDialogue:
   - {fileID: 11400000, guid: f6150fd8a1e4c704abd7c96436e490c0, type: 2}
+--- !u!114 &615107048108360395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8900667785115057270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e5d8709be7c39548b08fbe3b0d835c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SequenceActions:
+  - {fileID: 11400000, guid: 94d53fcf40df4a14a8b399604d088137, type: 2}
+  - {fileID: 11400000, guid: 7b27f8f32f2de3647aa86029788d4e8b, type: 2}
+  - {fileID: 11400000, guid: c465a6e008f6b244baa68642d53dbcca, type: 2}
+  - {fileID: 11400000, guid: 417e1ddfe1018584baabd5f9b4a7be0f, type: 2}
+  - {fileID: 11400000, guid: 4fabd6c2ef38e654bbe7d1a3b4b027bc, type: 2}
+  - {fileID: 11400000, guid: 3166b9345cc98ac4a9a79bd36f098331, type: 2}

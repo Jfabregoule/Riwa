@@ -32,7 +32,7 @@ public class SequencerActionMoveDoor : SequencerAction
 
         if (_isEntering)
         {
-            target = _door.transform.position;
+            target = _door.transform.position - _door.transform.forward * _distanceToDoor;
         }
         else
         { 

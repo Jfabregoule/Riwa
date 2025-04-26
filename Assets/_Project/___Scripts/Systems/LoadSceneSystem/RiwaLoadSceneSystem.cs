@@ -24,7 +24,7 @@ public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
 
     private void Start()
     {
-        EnqueueScenes(new[] { new SceneData("MainMenu"), new SceneData("HUD", 0, new Action[] { GameManager.Instance.SetBlackScreen, RiwaCinematicSystem.Instance.SetCanvasGroup }) }, false);
+        EnqueueScenes(new[] { new SceneData("MainMenu"), new SceneData("HUD", 0, new Action[] { GameManager.Instance.SetBlackScreen, RiwaCinematicSystem.Instance.SetCanvasGroup, SaveSystem.Instance.LoadSettingsData }) }, false);
     }
         
     public void LoadFirstScene()

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System;
 using System.Collections;
 using Unity.VisualScripting;
+using UnityEngine.Audio;
 
 [DefaultExecutionOrder(-1)]
 public class CinematicSystem<T> : Singleton<T> where T : CinematicSystem<T>
@@ -18,6 +19,10 @@ public class CinematicSystem<T> : Singleton<T> where T : CinematicSystem<T>
     [Header("Events")]
     public UnityEvent OnVideoStarted;
     public UnityEvent OnVideoEnded;
+
+    [Header("Audio Settigs")]
+    [SerializeField] private AudioMixer _audioMixer;
+    [SerializeField] private List<string> _audioMixerGroupName;
 
     private CanvasGroup _cinematicCanvasGroup;
     private VideoPlayer _videoPlayer;
@@ -51,7 +56,6 @@ public class CinematicSystem<T> : Singleton<T> where T : CinematicSystem<T>
     {
         _videoPlayer.renderMode = VideoRenderMode.RenderTexture;
         _videoPlayer.targetTexture = _targetTexture;
-        _videoPlayer.audioOutputMode = VideoAudioOutputMode.AudioSource;
         _videoPlayer.loopPointReached += OnVideoFinished;
     }
 
@@ -73,7 +77,7 @@ public class CinematicSystem<T> : Singleton<T> where T : CinematicSystem<T>
             _videoPlayer.clip = clip;
             _videoPlayer.isLooping = loop;
             _onEndCallback = onEnd;
-
+            SetVolume(true);
             _videoPlayer.Play();
             OnVideoStarted?.Invoke();
             StartCoroutine(WaitBeforeAppear());
@@ -88,6 +92,7 @@ public class CinematicSystem<T> : Singleton<T> where T : CinematicSystem<T>
     private void OnVideoFinished(VideoPlayer vp)
     {
         Helpers.DisabledCanvasGroup(_cinematicCanvasGroup);
+        SetVolume(false);
         OnVideoEnded?.Invoke();
         _onEndCallback?.Invoke();
         _onEndCallback = null;
@@ -98,6 +103,8 @@ public class CinematicSystem<T> : Singleton<T> where T : CinematicSystem<T>
         if (_videoPlayer.isPlaying)
         {
             _videoPlayer.Stop();
+            SetVolume(false);
+            
             OnVideoEnded?.Invoke();
             _onEndCallback?.Invoke();
             _onEndCallback = null;
@@ -136,5 +143,23 @@ public class CinematicSystem<T> : Singleton<T> where T : CinematicSystem<T>
             yield return null;
         }
         Helpers.EnabledCanvasGroup(_skipCanvasGroup);
+    }
+
+    private void SetVolume(bool isVideoEnable)
+    {
+        if (isVideoEnable)
+        {
+            for (int i = 0; i < _audioMixerGroupName.Count; i++)
+            {
+                _audioMixer.SetFloat(_audioMixerGroupName[i], -80);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < _audioMixerGroupName.Count; i++)
+            {
+                _audioMixer.SetFloat(_audioMixerGroupName[i], SaveSystem.Instance.LoadElement<float>(_audioMixerGroupName[i], true));
+            }
+        }
     }
 }

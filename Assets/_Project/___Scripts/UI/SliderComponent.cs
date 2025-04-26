@@ -19,7 +19,8 @@ public class SliderComponent : MonoBehaviour
     void Start()
     {
         _slider = GetComponent<Slider>();
-        //_slider.value = SaveSystem.Instance.LoadElement<float>(_name, true);
+        _slider.value = SaveSystem.Instance.LoadElement<float>(_name, true);
+        UpdateText(_slider.value);
     }
 
     // Update is called once per frame
@@ -30,7 +31,7 @@ public class SliderComponent : MonoBehaviour
 
     public void LoadingSlider()
     {
-        //_slider.value = SaveSystem.Instance.LoadElement<float>(_name, true);
+        _slider.value = SaveSystem.Instance.LoadElement<float>(_name, true);
     }
 
     public void SaveSlider()

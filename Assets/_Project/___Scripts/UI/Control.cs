@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class Control : MonoBehaviour
 {
@@ -20,10 +21,11 @@ public class Control : MonoBehaviour
 
     void Start()
     {
-        _isRightHanded = true;
+        _isRightHanded = SaveSystem.Instance.LoadElement<bool>("_isRightHanded", true);
+        Debug.Log(_isRightHanded);
         _interactText = _translateTextLeft.GetSentenceTranslate();
         _joystickText = _translateTextRight.GetSentenceTranslate();
-        //UpdateControl();
+        UpdateBinaryChoice();
     }
     private void OnEnable()
     {
@@ -38,7 +40,7 @@ public class Control : MonoBehaviour
     public void UpdateControl()
     {
         _binaryChoice.InvokeEvent(!_isRightHanded);
-        
+        ToggleControlInvert(!_isRightHanded);
     }
     private void UpdateBinaryChoice()
     {
@@ -46,6 +48,9 @@ public class Control : MonoBehaviour
             RightHanded();
         else
             LeftHanded();
+
+        ToggleControlInvert(!_isRightHanded);
+
     }
 
     private void RightHanded()
@@ -67,5 +72,10 @@ public class Control : MonoBehaviour
     { 
         _isRightHanded = isRightHanded;
         UpdateBinaryChoice();
+    }
+
+    public void ToggleControlInvert(bool isInvert)
+    {
+        InputManager.Instance.ToggleControlInversion(isInvert);
     }
 }

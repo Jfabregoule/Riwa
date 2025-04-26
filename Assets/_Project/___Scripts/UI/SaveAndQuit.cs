@@ -6,6 +6,7 @@ public class SaveAndQuit : MonoBehaviour
 {
     public void QuitGame()
     {
+        SaveSystem.Instance.SaveAllData();
         Application.Quit();
     }
 }

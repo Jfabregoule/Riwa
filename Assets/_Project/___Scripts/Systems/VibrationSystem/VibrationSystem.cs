@@ -2,17 +2,16 @@ using UnityEngine;
 
 public class VibrationSystem : PersistentSingleton<VibrationSystem>
 {
-    public bool VibrationEnabled = true; // Vibrations actives ou non.
+    private bool _vibrationEnabled = true; // Vibrations actives ou non.
 
     private void OnEnable()
     {
-        VibrationEnabled = SaveSystem.Instance.LoadElement<bool>("_vibrationIsOn", true);
+        _vibrationEnabled = SaveSystem.Instance.LoadElement<bool>("_vibrationIsOn", true);
     }
 
     public void SetVibrationEnabled(bool enabled)
     {
-        VibrationEnabled = enabled;
-        SaveSystem.Instance.SaveElement("_vibrationIsOn", VibrationEnabled);
+        _vibrationEnabled = enabled;
     }
 
     /// <summary>
@@ -22,7 +21,7 @@ public class VibrationSystem : PersistentSingleton<VibrationSystem>
     /// <param name="duration">Durée de la vibration.</param>
     public void TriggerVibration(float strength, float duration)
     {
-        if (!VibrationEnabled) return;
+        if (!_vibrationEnabled) return;
 #if UNITY_ANDROID
         AndroidVibrate(strength, duration);
 #elif UNITY_IOS

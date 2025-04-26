@@ -26,23 +26,21 @@ public class Floor1Room1LevelManager : BaseLevelManager
 
     [Header("Event Sequencer")]
 
-    [SerializeField] private Sequencer _event2;
     [SerializeField] private Sequencer _event3;
 
-    private Floor1Room1Dialogue _dialogue;
+    [SerializeField] private DialogueAsset _dialogue;
+
     private System.Action OnChangeTime;
 
     //Enigmes
 
     private bool _isCrateWellPlaced;
 
-    public Floor1Room1Dialogue Dialogue { get => _dialogue; set => _dialogue = value; }
-
     public override void Start()
     {
         base.Start();
         //RiwaCinematicSystem.Instance.PlayVideoByKey("Starting Cinematic");
-        _dialogue = GetComponent<Floor1Room1Dialogue>();
+        OnLevelEnter += BeginDialogue;
         DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.ChangeTime, OnChangeTime);
 
         foreach (var cam in _cameras)
@@ -59,7 +57,6 @@ public class Floor1Room1LevelManager : BaseLevelManager
 
             if(_areEventEnabled)
             {
-                _event2.Init();
                 _event3.Init();
 
                 //_dialogue.LaunchDialogue(0);
@@ -86,10 +83,8 @@ public class Floor1Room1LevelManager : BaseLevelManager
         if (CurrentAdvancement < EnumAdvancementRoom1.HasEnterTree)
         { 
             CurrentAdvancement = EnumAdvancementRoom1.HasEnterTree;
-            if (_areEventEnabled)
-            {                 
-                _event2.InitializeSequence();
-            }
+            //if (_areEventEnabled)
+
         }
     }
 
@@ -161,6 +156,10 @@ public class Floor1Room1LevelManager : BaseLevelManager
         yield return new WaitForSeconds(1.5f);
         GameManager.Instance.PulseIndice();
         InputManager.Instance.EnableGameplayChangeTimeControls();
+    }
 
+    private void BeginDialogue()
+    {
+        DialogueSystem.Instance.BeginDialogue(_dialogue);
     }
 }

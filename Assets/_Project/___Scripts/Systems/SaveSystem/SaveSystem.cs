@@ -52,10 +52,19 @@ public class SaveSystem : Singleton<SaveSystem>
 
     private Dictionary<string, object> _defaultSettings = new Dictionary<string, object> // Dictionnaire contenant les settings par defaut.
     {
+        { "_masterValue", 5f },
+        { "_musicValue", 5f },
+        { "_sfxValue", 5f },
+        { "_cinematicValue", 5f },
+        { "_vibrationIsOn", true },
+        { "_audioIsOn", true },
+        { "_isRightHanded", true },
+
     };
 
     private Dictionary<string, object> _defaultProgress = new Dictionary<string, object> // Dictionnaire contenant la progression par defaut.
     {
+        {"FinishPrologue", false },
         {"CurrentFloor", 1},
         {"CurrentRoom", 1},
         {"LastDoorID", 0},

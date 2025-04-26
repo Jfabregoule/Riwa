@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2057573564618421013}
   - component: {fileID: 93381106150728611}
   - component: {fileID: 9215593582927511931}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4897,7 +4897,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1119745536232874606}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Pickupparticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4921,7 +4921,7 @@ Transform:
   - {fileID: 2057573564618421013}
   m_Father: {fileID: 5106862692904061745}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &5370733247324127385
+--- !u!1 &3189580700848566704
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4929,49 +4929,47 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5106862692904061745}
-  - component: {fileID: 6364130967983852222}
-  - component: {fileID: 3285871973615596007}
-  - component: {fileID: 1229516945222788155}
-  m_Layer: 0
+  - component: {fileID: 786401219338608806}
+  - component: {fileID: 2358732235496643438}
+  - component: {fileID: 6735792787189876035}
+  - component: {fileID: 6224236639870914230}
+  m_Layer: 7
   m_Name: Pf_Collectible
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5106862692904061745
+--- !u!4 &786401219338608806
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5370733247324127385}
+  m_GameObject: {fileID: 3189580700848566704}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.006, y: 0.032227207, z: 0.3783438}
-  m_LocalScale: {x: 1.2666832, y: 1.2666832, z: 1.2666832}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 6495379559967747862}
-  - {fileID: 1119745536232874606}
-  m_Father: {fileID: 0}
+  m_Children: []
+  m_Father: {fileID: 5106862692904061745}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &6364130967983852222
+--- !u!33 &2358732235496643438
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5370733247324127385}
+  m_GameObject: {fileID: 3189580700848566704}
   m_Mesh: {fileID: 6581689927015094544, guid: 9e739209ca8c45a41bbf14c138a43dcc, type: 3}
---- !u!23 &3285871973615596007
+--- !u!23 &6735792787189876035
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5370733247324127385}
+  m_GameObject: {fileID: 3189580700848566704}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -5008,14 +5006,14 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!95 &1229516945222788155
+--- !u!95 &6224236639870914230
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5370733247324127385}
+  m_GameObject: {fileID: 3189580700848566704}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 1220d129993dbfe4da804559ddaa9ae5, type: 2}
@@ -5029,6 +5027,40 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &5370733247324127385
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5106862692904061745}
+  m_Layer: 7
+  m_Name: Pf_Collectible
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5106862692904061745
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5370733247324127385}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 786401219338608806}
+  - {fileID: 6495379559967747862}
+  - {fileID: 1119745536232874606}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5784443153380166206
 GameObject:
   m_ObjectHideFlags: 0
@@ -5038,7 +5070,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6495379559967747862}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: VFX Ambiance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5073,7 +5105,7 @@ GameObject:
   - component: {fileID: 239893627233851705}
   - component: {fileID: 5393805875336065230}
   - component: {fileID: 1407587029352426795}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bubble
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9903,7 +9935,7 @@ GameObject:
   - component: {fileID: 4373192573712076705}
   - component: {fileID: 5435438182160185946}
   - component: {fileID: 5175451332298013644}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14733,7 +14765,7 @@ GameObject:
   - component: {fileID: 6280938293348177290}
   - component: {fileID: 4558217364170169940}
   - component: {fileID: 6111321925937172287}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BubblePop
   m_TagString: Untagged
   m_Icon: {fileID: 0}

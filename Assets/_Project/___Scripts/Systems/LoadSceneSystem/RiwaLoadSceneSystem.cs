@@ -20,7 +20,7 @@ public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
 
     [SerializeField] private float _spawnOffset;
     private int _nextDoorID;
-    private DoorDirection _nextDoorDirection = DoorDirection.Null;
+    private DoorDirection _nextDoorDirection = DoorDirection.North;
 
     private void Start()
     {
@@ -35,11 +35,6 @@ public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
     public IEnumerator LoadFirstSceneCoroutine()
     {
         LoadSceneData();
-        if (GetCurrentRoomSceneName() == "Floor0Room0")
-        {
-            _currentFloorNum++;
-            _currentRoomNum++;
-        }
         yield return StartCoroutine(ChangeScene(new[] { new SceneData("MainMenu")}, new[] { new SceneData(GetCurrentRoomSceneName())}));
         SpawnPlayerToDoor();
     }
@@ -78,8 +73,7 @@ public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
 
         if (!string.IsNullOrEmpty(currentRoomName))
         {
-            if (currentRoomName != "Floor0Room0")
-                yield return StartCoroutine(ChangeScene(new[] { new SceneData(currentRoomName) }, new[] { new SceneData(newRoomName) }));
+            yield return StartCoroutine(ChangeScene(new[] { new SceneData(currentRoomName) }, new[] { new SceneData(newRoomName) }));
             SpawnPlayerToDoor();
         }
     }
@@ -129,7 +123,17 @@ public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
         if (!targetDoor) return;
 
         if (targetDoor.TryGetComponent(out Door door))
+        {
+            GameObject player = GameManager.Instance.Character.gameObject;
+
+            if (player != null)
+            {
+                player.transform.position = targetDoor.transform.position;
+                player.transform.rotation = targetDoor.transform.rotation;
+            }
+  
             door?.ExitDoor();
+        }
     }
 
     private Quaternion GetRotationFromDirection(DoorDirection direction)

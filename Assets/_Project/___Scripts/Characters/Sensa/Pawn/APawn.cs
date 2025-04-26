@@ -44,6 +44,7 @@ public class APawn<TStateEnum> : MonoBehaviour
 
     private IEnumerator CoroutineMoveTo(Vector3 startPos, Vector3 targetPos, Vector3 objectPos, bool endRotate)
     {
+        Animator.SetTrigger("Move");
         targetPos.y = startPos.y;
 
         Vector3 direction = (targetPos - startPos).normalized;
@@ -66,6 +67,8 @@ public class APawn<TStateEnum> : MonoBehaviour
             yield return null;
         }
 
+
+        Animator.SetTrigger("Idle");
         clock = 0;
         startRotation = transform.rotation;
         Vector3 lookDir = objectPos - transform.position;
@@ -87,10 +90,8 @@ public class APawn<TStateEnum> : MonoBehaviour
             clock += Time.deltaTime;
 
             yield return null;
-        }
-
-
     }
+}
 
     public virtual void OnDisable()
     {

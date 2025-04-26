@@ -12,19 +12,19 @@ public class CinematicRoom0Manager : MonoBehaviour
     private void Start()
     {
         _instance = (Floor1Room0LevelManager)Floor1Room0LevelManager.Instance;
-        //_instance.OnLevelEnter += Init;
+        _instance.OnLevelEnter += Init;
+        //_sequencerEntry.Init();
+        //DialogueSystem.Instance.OnDialogueEvent += DispatchEventOnDialogueEvent;
+        //DialogueSystem.Instance.BeginDialogue(_dialogueAsset);
+    }
+
+    private void Init()
+    {
+        Debug.Log("Player entry");
         _sequencerEntry.Init();
         DialogueSystem.Instance.OnDialogueEvent += DispatchEventOnDialogueEvent;
         DialogueSystem.Instance.BeginDialogue(_dialogueAsset);
     }
-
-    //private void Init()
-    //{
-    //    Debug.Log("Player entry");
-    //    _sequencerEntry.Init();
-    //    //DialogueSystem.Instance.OnDialogueEvent += DispatchEventOnDialogueEvent;
-    //    //DialogueSystem.Instance.BeginDialogue(_dialogueAsset);
-    //}
 
     private void DispatchEventOnDialogueEvent(DialogueEventType dialogueEvent)
     {

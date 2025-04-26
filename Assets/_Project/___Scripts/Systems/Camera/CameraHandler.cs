@@ -149,9 +149,8 @@ public class CameraHandler : MonoBehaviour
 
     public void MoveCameraOffset()
     {
-        //Jsuis content jlai fait sans chat gpt (ptet pas opti de faire lerp dans update mais vu qu'il se fait quasi tout le temps à voir)
+        //(ptet pas opti de faire lerp dans update mais vu qu'il se fait quasi tout le temps à voir)
         //C'est pour avoir un leger offset smooth vers la ou on se dirige
-        //Update: j'ai utilisé le chat pour localCamVelocity
 
         Vector3 playerMovement = GameManager.Instance.Character.Rb.velocity;
 
@@ -159,28 +158,27 @@ public class CameraHandler : MonoBehaviour
         {
             _clockPosition = 0;
 
-            Vector3 movement = GameManager.Instance.Character.Rb.velocity;
-            Vector3 camForward = transform.forward;
+            Vector3 camUp = transform.up;
             Vector3 camRight = transform.right;
 
-            camForward.y = 0;
-            camRight.y = 0;
+            //camForward.y = 0;
+            //camRight.y = 0;
 
-            camForward.Normalize();
+            camUp.Normalize();
             camRight.Normalize();
 
             float x = Vector3.Dot(playerMovement, camRight);
-            float z = Vector3.Dot(playerMovement, camForward);
-            Vector3 localCamVelocity = new Vector3(x, 0, z);
+            float y = Vector3.Dot(playerMovement, camUp);
+            //Vector3 localCamVelocity = new Vector3(x, 0, z);
+            Vector3 localCamVelocity = camRight * x + camUp * y;
 
-            _lastJoystick = localCamVelocity;
+            _lastJoystick = localCamVelocity.normalized;
 
             _targetPosition = _lastJoystick * _offsetCameraMovement;
             _startPosition = _currentPosition;
 
         }
 
-        //Update clock
         _clockPosition += Time.deltaTime * _speedCameraOffset;
         _clockPosition = Mathf.Clamp(_clockPosition, 0, 1);
 

@@ -29,7 +29,7 @@ public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
         
     public void LoadFirstScene()
     {
-        //StartCoroutine(LoadFirstSceneCoroutine());
+        StartCoroutine(LoadFirstSceneCoroutine());
     }
 
     public IEnumerator LoadFirstSceneCoroutine()

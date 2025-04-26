@@ -25,10 +25,7 @@ public class MoveStateCharacter : PawnMoveState<EnumStateCharacter>
     {
         base.UpdateState();
 
-        ACharacter chara = (ACharacter)_character;
-
-        chara.Animator.SetFloat("MagnitudeVelocity", chara.MagnitudeVelocity);
-
+        
     }
 
     public override void FixedUpdateState()

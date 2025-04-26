@@ -89,6 +89,12 @@ public class PawnMoveStateInteract<TStateEnum> : PawnInteractBaseSubstate<TState
         _endInteract = true;
     }
 
+    public override void DestroyState()
+    {
+        base.DestroyState();
+        _character.InputManager.OnInteract -= EndInteract;
+    }
+
     protected virtual void ChangeStateToIdle() { }
     protected virtual void ChangeStateToSoul() { }
     protected virtual void SetHoldingObject() { }

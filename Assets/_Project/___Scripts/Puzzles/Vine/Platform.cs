@@ -79,6 +79,9 @@ public class Platform : MonoBehaviour, IRespawnable
                 //    _rb.isKinematic = true;
                 //}
             }
+
+            if (_triggerVines.Count > 0) return;
+
             _tree.CanInteract = true;
         }
 

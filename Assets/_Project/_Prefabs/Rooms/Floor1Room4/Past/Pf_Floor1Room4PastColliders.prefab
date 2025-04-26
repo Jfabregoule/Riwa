@@ -1206,10 +1206,11 @@ MonoBehaviour:
   _vine: {fileID: 0}
   _box:
   - {fileID: 0}
+  - {fileID: 0}
   _maxHeight: 5.5
   _maxCenter: -2.5
   _collider: {fileID: 0}
-  _thresholdToTrigger: 0.7
+  _thresholdToTrigger: 0.5
 --- !u!1 &3025723630092820028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1880,7 +1881,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cf4d09265af1dd4fa268a4f7f1ca36f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectsToFade: []
+  objectsToFade:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!65 &101737949179287219
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3623,6 +3633,84 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.5, y: 4.03, z: 1.51}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &8283996904868402500
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5673253417646453786}
+  - component: {fileID: 1224188896028881406}
+  - component: {fileID: 641278869402600473}
+  m_Layer: 6
+  m_Name: Obstructable02
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5673253417646453786
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8283996904868402500}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -12, y: 2.5, z: -6.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3991729112709158978}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1224188896028881406
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8283996904868402500}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 30, y: 5, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &641278869402600473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8283996904868402500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cf4d09265af1dd4fa268a4f7f1ca36f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectsToFade:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &8478394416231311060
 GameObject:
   m_ObjectHideFlags: 0
@@ -3865,5 +3953,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8462851787159659720}
+  - {fileID: 5673253417646453786}
   m_Father: {fileID: 1983940514991414926}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -19,7 +19,7 @@ public class Room3DialogTriggerZoneParent : MonoBehaviour
         if(other.TryGetComponent(out ACharacter chara))
         {
             _isPlayerInArea = true;
-            DialogueToCall(EnumTemporality.Present);
+            //DialogueToCall(EnumTemporality.Present);
         }   
     }
 

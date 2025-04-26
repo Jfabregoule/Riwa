@@ -4,27 +4,34 @@ using System.Collections.Generic;
 
 public class CameraObstructionHandler : MonoBehaviour
 {
-    public Transform player;
-    public float fadeDuration = 1.5f;
-    public string obstructableTag = "Obstructable";
-    public string colorPropertyName = "_Color";
-    [Range(0f, 1f)]
-    public float targetObstructedAlpha = 0.2f;
 
-    private Dictionary<Renderer, Coroutine> activeFades = new();
-    private Dictionary<Renderer, float> currentFadeTargets = new();
-    private Dictionary<Renderer, Color[]> originalColors = new();
-    private HashSet<Renderer> previousHits = new();
-    private MaterialPropertyBlock propBlock;
+    [SerializeField] private float _fadeDuration = 1.5f;
+    [SerializeField] private string _colorPropertyName = "_Color";
+
+    [Range(0f, 1f)]
+    [SerializeField] private float _targetObstructedAlpha = 0.0f;
+
+    private Transform _soul;
+
+    private Dictionary<Renderer, Coroutine> _activeFades = new();
+    private Dictionary<Renderer, float> _currentFadeTargets = new();
+    private Dictionary<Renderer, Color[]> _originalColors = new();
+    private HashSet<Renderer> _previousHits = new();
+    private MaterialPropertyBlock _propBlock;
 
     void Awake()
     {
-        propBlock = new MaterialPropertyBlock();
+        _propBlock = new MaterialPropertyBlock();
+    }
+
+    private void Start()
+    {
+        _soul = GameManager.Instance.Character.Soul.transform;
     }
 
     void LateUpdate()
     {
-        Vector3 direction = player.position - transform.position;
+        Vector3 direction = _soul.position - transform.position;
         float distance = direction.magnitude;
 
         Ray ray = new Ray(transform.position, direction.normalized);
@@ -46,85 +53,85 @@ public class CameraObstructionHandler : MonoBehaviour
                 {
                     currentHits.Add(rend);
 
-                    if (!originalColors.ContainsKey(rend))
+                    if (!_originalColors.ContainsKey(rend))
                     {
                         Color[] colors = new Color[rend.sharedMaterials.Length];
                         for (int i = 0; i < colors.Length; i++)
                         {
-                            rend.GetPropertyBlock(propBlock, i);
-                            Color col = propBlock.GetColor(colorPropertyName);
+                            rend.GetPropertyBlock(_propBlock, i);
+                            Color col = _propBlock.GetColor(_colorPropertyName);
                             if (col == default)
-                                col = rend.sharedMaterials[i].GetColor(colorPropertyName);
+                                col = rend.sharedMaterials[i].GetColor(_colorPropertyName);
                             colors[i] = col;
                         }
-                        originalColors[rend] = colors;
+                        _originalColors[rend] = colors;
                     }
 
-                    if (!currentFadeTargets.ContainsKey(rend) || Mathf.Abs(currentFadeTargets[rend] - targetObstructedAlpha) > 0.01f)
+                    if (!_currentFadeTargets.ContainsKey(rend) || Mathf.Abs(_currentFadeTargets[rend] - _targetObstructedAlpha) > 0.01f)
                     {
-                        if (activeFades.TryGetValue(rend, out var running))
+                        if (_activeFades.TryGetValue(rend, out var running))
                         {
                             StopCoroutine(running);
-                            activeFades.Remove(rend);
+                            _activeFades.Remove(rend);
                         }
 
-                        Coroutine c = StartCoroutine(FadeAlpha(rend, targetObstructedAlpha));
-                        activeFades[rend] = c;
-                        currentFadeTargets[rend] = targetObstructedAlpha;
+                        Coroutine c = StartCoroutine(FadeAlpha(rend, _targetObstructedAlpha));
+                        _activeFades[rend] = c;
+                        _currentFadeTargets[rend] = _targetObstructedAlpha;
                     }
                 }
             }
         }
 
-        foreach (Renderer rend in previousHits)
+        foreach (Renderer rend in _previousHits)
         {
             if (!currentHits.Contains(rend))
             {
-                float originalAlpha = originalColors.ContainsKey(rend) ? originalColors[rend][0].a : 1f;
+                float originalAlpha = _originalColors.ContainsKey(rend) ? _originalColors[rend][0].a : 1f;
 
-                if (!currentFadeTargets.ContainsKey(rend) || Mathf.Abs(currentFadeTargets[rend] - originalAlpha) > 0.01f)
+                if (!_currentFadeTargets.ContainsKey(rend) || Mathf.Abs(_currentFadeTargets[rend] - originalAlpha) > 0.01f)
                 {
-                    if (activeFades.TryGetValue(rend, out var running))
+                    if (_activeFades.TryGetValue(rend, out var running))
                     {
                         StopCoroutine(running);
-                        activeFades.Remove(rend);
+                        _activeFades.Remove(rend);
                     }
 
                     Coroutine c = StartCoroutine(FadeAlpha(rend, originalAlpha));
-                    activeFades[rend] = c;
-                    currentFadeTargets[rend] = originalAlpha;
+                    _activeFades[rend] = c;
+                    _currentFadeTargets[rend] = originalAlpha;
                 }
             }
         }
 
-        previousHits = currentHits;
+        _previousHits = currentHits;
     }
 
     IEnumerator FadeAlpha(Renderer rend, float targetAlpha)
     {
-        if (!originalColors.ContainsKey(rend)) yield break;
+        if (!_originalColors.ContainsKey(rend)) yield break;
 
         int materialCount = rend.sharedMaterials.Length;
         Color[] startColors = new Color[materialCount];
 
         for (int i = 0; i < materialCount; i++)
         {
-            rend.GetPropertyBlock(propBlock, i);
-            Color col = propBlock.GetColor(colorPropertyName);
-            if (col == default) col = rend.sharedMaterials[i].GetColor(colorPropertyName);
+            rend.GetPropertyBlock(_propBlock, i);
+            Color col = _propBlock.GetColor(_colorPropertyName);
+            if (col == default) col = rend.sharedMaterials[i].GetColor(_colorPropertyName);
             startColors[i] = col;
         }
 
         float timer = 0f;
-        while (timer < fadeDuration)
+        while (timer < _fadeDuration)
         {
-            float t = timer / fadeDuration;
+            float t = timer / _fadeDuration;
             for (int i = 0; i < materialCount; i++)
             {
                 Color c = startColors[i];
                 c.a = Mathf.Lerp(startColors[i].a, targetAlpha, t);
-                propBlock.SetColor(colorPropertyName, c);
-                rend.SetPropertyBlock(propBlock, i);
+                _propBlock.SetColor(_colorPropertyName, c);
+                rend.SetPropertyBlock(_propBlock, i);
             }
             timer += Time.deltaTime;
             yield return null;
@@ -134,10 +141,10 @@ public class CameraObstructionHandler : MonoBehaviour
         {
             Color finalColor = startColors[i];
             finalColor.a = targetAlpha;
-            propBlock.SetColor(colorPropertyName, finalColor);
-            rend.SetPropertyBlock(propBlock, i);
+            _propBlock.SetColor(_colorPropertyName, finalColor);
+            rend.SetPropertyBlock(_propBlock, i);
         }
 
-        activeFades.Remove(rend);
+        _activeFades.Remove(rend);
     }
 }

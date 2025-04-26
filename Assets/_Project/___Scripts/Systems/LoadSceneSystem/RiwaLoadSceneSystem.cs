@@ -16,7 +16,7 @@ public enum DoorDirection
 public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
 {
     private int _currentFloorNum = 0;
-    private int _currentRoomNum = 1;
+    private int _currentRoomNum = 0;
 
     [SerializeField] private float _spawnOffset;
     private int _nextDoorID;
@@ -42,7 +42,7 @@ public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
     private void LoadSceneData()
     {
         _currentFloorNum = SaveSystem.Instance.LoadElement<int>("CurrentFloor");
-        //_currentRoomNum = SaveSystem.Instance.LoadElement<int>("CurrentRoom");
+        _currentRoomNum = SaveSystem.Instance.LoadElement<int>("CurrentRoom");
         _nextDoorID = SaveSystem.Instance.LoadElement<int>("LastDoorID");
         _nextDoorDirection = SaveSystem.Instance.LoadElement<DoorDirection>("LastDoorDirection");
     }

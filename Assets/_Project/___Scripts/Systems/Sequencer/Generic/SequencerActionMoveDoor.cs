@@ -39,7 +39,10 @@ public class SequencerActionMoveDoor : SequencerAction
             target = _door.transform.position + _door.transform.forward * _distanceToDoor;
         }
 
-        _chara.MoveTo(target, target);
+        MoveToStateCharacter state = (MoveToStateCharacter)_chara.StateMachine.States[EnumStateCharacter.MoveTo];
+        state.LoadState(EnumStateCharacter.Idle,target, target);
+        _chara.StateMachine.ChangeState(state);
+        //_chara.MoveTo(target, target);
 
         while (_isMoving)
         {

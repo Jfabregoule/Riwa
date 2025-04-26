@@ -100,13 +100,17 @@ public class RotateStateHolding : HoldingBaseState
             if (dotRight > 0.5f)
             {
                 //Rotate Droite
-                Sens = 1;
+                //Sens = 1;
+                ((RotateStateHolding)_stateMachine.States[EnumHolding.Rotate]).Sens = 1;
+                _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Rotate]);
             }
             else
             {
                 //Rotate Gauche
-                Sens = -1;
-                
+                //Sens = -1;
+                ((RotateStateHolding)_stateMachine.States[EnumHolding.Rotate]).Sens = -1;
+                _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Rotate]);
+
             }
         }
     }

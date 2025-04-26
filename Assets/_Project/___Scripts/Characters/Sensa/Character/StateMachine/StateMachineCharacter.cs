@@ -15,6 +15,7 @@ public class StateMachineCharacter : StateMachinePawn<EnumStateCharacter, BaseSt
     private const string WAIT_NAME          = "Wait";
     private const string FALL_NAME          = "Fall";
     private const string RESPAWN_NAME       = "Respawn";
+    private const string MOVETO_NAME       = "MoveTo";
 
     #endregion
 
@@ -68,6 +69,10 @@ public class StateMachineCharacter : StateMachinePawn<EnumStateCharacter, BaseSt
         States[EnumStateCharacter.Respawn] = new RespawnStateCharacter();
         States[EnumStateCharacter.Respawn].InitState(this, EnumStateCharacter.Respawn, character);
         _animationMap[EnumStateCharacter.Respawn] = RESPAWN_NAME;
+
+        States[EnumStateCharacter.MoveTo] = new MoveToStateCharacter();
+        States[EnumStateCharacter.MoveTo].InitState(this, EnumStateCharacter.MoveTo, character);
+        _animationMap[EnumStateCharacter.MoveTo] = MOVETO_NAME;
 
         ChangeTempoStateCharacter temp = (ChangeTempoStateCharacter)States[EnumStateCharacter.ChangeTempo];
         _changeTempoSubstateMachine = temp.SubStateMachine;

@@ -27,7 +27,7 @@ public class BaseStatePawn<TStateEnum> : BaseState<TStateEnum>
     {
         base.EnterState();
         if (_character.Animator != null && Helpers.HasParameter(_stateMachine.AnimationMap[_enumState], _character.Animator)) { 
-            _character.Animator.SetTrigger(_stateMachine.AnimationMap[_enumState]); //Lorsque je rentre dans un state, je trigger l'animation à jouer, si l'animator est bien fait, tout est clean  
+            _character.Animator.SetBool(_stateMachine.AnimationMap[_enumState], true); //Lorsque je rentre dans un state, je trigger l'animation à jouer, si l'animator est bien fait, tout est clean  
         }
     }
 
@@ -37,7 +37,7 @@ public class BaseStatePawn<TStateEnum> : BaseState<TStateEnum>
         //code commun à tous les states
         if (_character.Animator != null && Helpers.HasParameter(_stateMachine.AnimationMap[_enumState], _character.Animator))
         {
-            _character.Animator.ResetTrigger(_stateMachine.AnimationMap[_enumState]); //Lorsque je rentre dans un state, je trigger l'animation   jouer, si l'animator est bien fait, tout est clean  
+            _character.Animator.SetBool(_stateMachine.AnimationMap[_enumState], false); //Lorsque je rentre dans un state, je trigger l'animation   jouer, si l'animator est bien fait, tout est clean  
         }
     }
 

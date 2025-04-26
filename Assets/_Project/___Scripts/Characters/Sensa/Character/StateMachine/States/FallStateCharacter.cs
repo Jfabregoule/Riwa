@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class FallStateCharacter : BaseStateCharacter<EnumStateCharacter>
@@ -36,9 +37,18 @@ public class FallStateCharacter : BaseStateCharacter<EnumStateCharacter>
 
         if (_chara.Feet.IsGround)
         {
-            _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Idle]);
+            ACharacter chara = (ACharacter)_chara;
+            chara.InvokeFallStun();
+            chara.Animator.SetBool("Fallin", true);
         }
+    }
 
+    public IEnumerator FallStun(float sec)
+    {
+        yield return new WaitForSeconds(sec);
+
+        _character.Animator.SetBool("Fallin", false);
+        _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Idle]);
 
     }
 

@@ -29,7 +29,11 @@ public class SequencerActionMoveForward : SequencerAction
 
         _isMoving = true;
         _chara.OnMoveToFinished += FinishMoveto;
-        _chara.MoveTo(_targetPosition, _targetPosition);
+
+        MoveToStateCharacter state = (MoveToStateCharacter)_chara.StateMachine.States[EnumStateCharacter.MoveTo];
+        state.LoadState(EnumStateCharacter.Idle, _targetPosition, _targetPosition);
+        _chara.StateMachine.ChangeState(state);
+        //_chara.MoveTo(_targetPosition, _targetPosition);
 
         if (_waitForEndOfPath)
         {

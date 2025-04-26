@@ -45,6 +45,7 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
     [SerializeField] private bool _isChangingTime = false;
     [SerializeField] private bool _isInSoul = false;
     [SerializeField] private float _pushingSpeed = 1;
+    [SerializeField] private float _fallingStun = 0.5f;
 
     [Header("VFX")]
 
@@ -143,6 +144,12 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
     {
         OnRespawn?.Invoke();
         StateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Respawn]);
+    }
+
+    public void InvokeFallStun()
+    {
+        FallStateCharacter state = (FallStateCharacter)StateMachine.States[EnumStateCharacter.Fall];
+        StartCoroutine(state.FallStun(_fallingStun));
     }
 
     #endregion

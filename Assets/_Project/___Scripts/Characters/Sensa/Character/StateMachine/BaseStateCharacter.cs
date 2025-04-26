@@ -15,7 +15,8 @@ public enum EnumStateCharacter
     Soul,
     Fall,
     Rotate,
-    Respawn
+    Respawn,
+    MoveTo
 }
 
 public abstract class BaseStateCharacter<TStateEnum> : BaseStatePawn<TStateEnum>

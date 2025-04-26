@@ -94,8 +94,7 @@ public class InputManager : Singleton<InputManager>
 
     public void EnableAllControls()
     {
-        EnableGameplayMoveControls();
-        EnableGameplayChangeTimeControls();
+        EnableGameplayControls();
         EnableDialogueControls();
         EnableOptionsControls();
     }

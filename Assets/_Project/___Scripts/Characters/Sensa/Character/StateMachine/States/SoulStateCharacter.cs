@@ -26,6 +26,8 @@ public class SoulStateCharacter : BaseStateCharacter<EnumStateCharacter>
         _character.IsInSoul = true;
         _character.Soul.transform.parent = null;
 
+        RiwaSoundSystem.Instance.PlaySoundFXClipByKey("Soul Exit", _character.transform.position);
+
         ASoul soul = _character.Soul.GetComponent<ASoul>();
         soul.StateMachine.ChangeState(soul.StateMachine.States[EnumStateSoul.Idle]);
 
@@ -39,6 +41,8 @@ public class SoulStateCharacter : BaseStateCharacter<EnumStateCharacter>
         _character.Soul.SetActive(false);
         _character.IsInSoul = false;
         _character.Soul.transform.parent = _character.transform;
+
+        RiwaSoundSystem.Instance.PlaySoundFXClipByKey("Soul Enter", _character.transform.position);
 
         ASoul soul = _character.Soul.GetComponent<ASoul>();
         soul.StateMachine.ChangeState(soul.StateMachine.States[EnumStateSoul.Disable]);

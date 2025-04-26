@@ -197,10 +197,10 @@ public class Grid : MonoBehaviour, IActivable
     public void GenerateGrid()
     {
         solution.Clear();
-        solution.Add(new CellPos(0, 0), new CellContent(1, 135));    // ID 1 --> Blue Statue
-        solution.Add(new CellPos(4, 1), new CellContent(2, 45));     // ID 2 --> Red Statue
+        solution.Add(new CellPos(0, 4), new CellContent(1, 135));    // ID 1 --> Blue Statue
+        solution.Add(new CellPos(1, 0), new CellContent(2, 45));     // ID 2 --> Red Statue
         solution.Add(new CellPos(2, 2), new CellContent(3, 270));    // ID 3 --> Yellow Statue
-        solution.Add(new CellPos(1, 4), new CellContent(4, 0));      // ID 4 --> Green Statue
+        solution.Add(new CellPos(4, 3), new CellContent(4, 0));      // ID 4 --> Green Statue
 
         Origin = transform.position;
 
@@ -218,6 +218,7 @@ public class Grid : MonoBehaviour, IActivable
                     if(solution.Key.Equals(new CellPos(x, y)))
                     {
                         GameObject st = Instantiate(_defaultTile, position, Quaternion.identity);
+                        st.name = "Tile Statue: " + solution.Value.id;
                         st.transform.SetParent(transform);
                         grid[new CellPos(solution.Key.x, solution.Key.y)] = solution.Value;
                         break;
@@ -226,6 +227,7 @@ public class Grid : MonoBehaviour, IActivable
 
                 if (grid.ContainsKey(new CellPos(x, y)) && grid[new CellPos(x, y)] != null) continue;
                 GameObject tile = Instantiate(_defaultTile, position, Quaternion.identity);
+                tile.name = "Tile " + x + ", " + y;
                 tile.transform.SetParent(transform);
                 grid[new CellPos(x, y)] = null;
             }
@@ -322,7 +324,7 @@ public class Grid : MonoBehaviour, IActivable
         GameManager.Instance.Character.InputManager.DisableGameplayControls();
         Activate();
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
 
         _room4LevelManager.ElevatorCamera.Priority = 0;
         GameManager.Instance.Character.InputManager.EnableGameplayControls();

@@ -31,7 +31,7 @@ public class EmitterLaser : MonoBehaviour
             if (activable.TryGetComponent(out IActivable act))
             {
                 act.OnActivated += AddActivate;
-                //act.OnDesactivated += RemoveActivate;
+                act.OnDesactivated += RemoveActivate;
             }
         }
 
@@ -143,13 +143,13 @@ public class EmitterLaser : MonoBehaviour
         }
     }
 
-//    private void RemoveActivate()
-//    {
-//        if (CurrentActive == _activables.Length)
-//        {
-//            _isActive = false;
-//            ResetLaser();
-//        }
-//        CurrentActive--;
-//    }
+    private void RemoveActivate()
+    {
+        if (CurrentActive == _activables.Length)
+        {
+            _isActive = false;
+            ResetLaser();
+        }
+        CurrentActive--;
+    }
 }

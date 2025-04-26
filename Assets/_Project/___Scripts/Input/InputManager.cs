@@ -117,6 +117,7 @@ public class InputManager : Singleton<InputManager>
         _gameplayEnabled = false;
         _interactEnabled = false;
         _moveEnabled = false;
+        OnMoveEnd?.Invoke();
         UnbindGameplayEvents();
 
         _controls.Gameplay.Disable();

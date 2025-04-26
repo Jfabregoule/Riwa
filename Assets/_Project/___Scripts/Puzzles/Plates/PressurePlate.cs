@@ -12,8 +12,8 @@ public class PressurePlate : MonoBehaviour, IActivable
     [SerializeField] private EnumTemporality _triggerInTemporality = EnumTemporality.Past;
     [SerializeField] private bool _canBeTriggeredWithPlayer = true;
     [SerializeField] private bool _canBeTriggeredWithCrate = true;
-    [SerializeField] private LayerMask _whatIsPast;
-    [SerializeField] private LayerMask _whatIsPlayer;
+    //[SerializeField] private LayerMask _whatIsPast;
+    //[SerializeField] private LayerMask _whatIsPlayer;
 
     private Vector3 _initialPosition;
     private Vector3 _destination;
@@ -26,37 +26,46 @@ public class PressurePlate : MonoBehaviour, IActivable
     {
         if (GameManager.Instance.CurrentTemporality != _triggerInTemporality) return;
 
-        bool updated = false;
+        //bool updated = false;
 
-        if (_canBeTriggeredWithPlayer && other.TryGetComponent(out ACharacter chara))
+        if ((_canBeTriggeredWithPlayer && other.TryGetComponent(out ACharacter chara) ||
+            _canBeTriggeredWithCrate && other.TryGetComponent(out Crate crate)) && !_isTrigger)
         {
-            if (((1 << other.gameObject.layer) & _whatIsPlayer) != 0)
-            {
-                if (_validColliders.Add(other))
-                    updated = true;
-            }
-        }
-
-        if (_canBeTriggeredWithCrate && other.TryGetComponent(out Crate crate))
-        {
-            if (((1 << other.gameObject.layer) & _whatIsPast) != 0)
-            {
-                if (_validColliders.Add(other))
-                    updated = true;
-            }
-        }
-
-        if (updated && !_isTrigger)
-        {
+            //if (((1 << other.gameObject.layer) & _whatIsPlayer) != 0)
+            //{
+            //    if (_validColliders.Add(other))
+            //        updated = true;
+            //}
             _isTrigger = true;
             Activate();
         }
+
+        //if (_canBeTriggeredWithCrate && other.TryGetComponent(out Crate crate))
+        //{
+        //    //if (((1 << other.gameObject.layer) & _whatIsPast) != 0)
+        //    //{
+        //    //    if (_validColliders.Add(other))
+        //    //        updated = true;
+        //    //}
+        //}
+
+        //if (updated && !_isTrigger)
+        //{
+        //    _isTrigger = true;
+        //    Activate();
+        //}
 
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (_validColliders.Remove(other) && _isTrigger && _validColliders.Count == 0)
+        //if (_validColliders.Remove(other) && _isTrigger && _validColliders.Count == 0)
+        //{
+        //    _isTrigger = false;
+        //    Deactivate();
+        //}
+
+        if (_isTrigger)
         {
             _isTrigger = false;
             Deactivate();

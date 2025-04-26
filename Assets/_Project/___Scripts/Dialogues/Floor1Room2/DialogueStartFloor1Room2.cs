@@ -1,12 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class DialogueStartFloor1Room2 : MonoBehaviour
 {
-    [SerializeField] private DialogueAsset _asset;
-    [SerializeField] private Sequencer _sequencerCinematic;
+    [SerializeField] private DialogueAsset _assetStartDialogue;
+    [SerializeField] private DialogueAsset _assetChangeTimeDialogue;
+    //[SerializeField] private Sequencer _sequencerCinematic;
     private DialogueSystem _dialogueSystem;
+
+    public Action ChangeTime;
 
     private void OnDisable()
     {
@@ -14,18 +18,19 @@ public class DialogueStartFloor1Room2 : MonoBehaviour
             _dialogueSystem.OnDialogueEvent -= DispatchDialogueEvent;
 
         if(GameManager.Instance)
-            GameManager.Instance.CurrentLevelManager.OnLevelEnter -= StartDialogueAndCinematic;
+            GameManager.Instance.CurrentLevelManager.OnLevelEnter -= StartDialogue;
     }
     private void Start()
     {
-        GameManager.Instance.CurrentLevelManager.OnLevelEnter += StartDialogueAndCinematic;
+        GameManager.Instance.CurrentLevelManager.OnLevelEnter += StartDialogue;
     }
     private void DispatchDialogueEvent(DialogueEventType dialogueEventType)
     {
         switch (dialogueEventType)
         {
-            case DialogueEventType.CameraStartFloor1Room2:
-                _sequencerCinematic.InitializeSequence();
+            case DialogueEventType.PusleChangeTime:
+                GameManager.Instance.PulseIndice();
+                GameManager.Instance.OnTimeChangeStarted += StartChangeTimeDialogue;
                 break;
         }
     }
@@ -36,13 +41,20 @@ public class DialogueStartFloor1Room2 : MonoBehaviour
         {
             _dialogueSystem = script;
             _dialogueSystem.OnDialogueEvent += DispatchDialogueEvent;
-            _dialogueSystem.BeginDialogue(_asset);
+            _dialogueSystem.BeginDialogue(_assetStartDialogue);
         }
     }
 
-    private void StartDialogueAndCinematic()
+    private void StartDialogue()
     {
-        _sequencerCinematic.Init();
+        //_sequencerCinematic.Init();
         StartCoroutine(Helpers.WaitMonoBeheviour(() => DialogueSystem.Instance, SubscribeToDialogueSystem));
+    }
+
+    private void StartChangeTimeDialogue(EnumTemporality temporality)
+    {
+        if (temporality != EnumTemporality.Past) return;
+        GameManager.Instance.OnTimeChangeStarted -= StartChangeTimeDialogue;
+        _dialogueSystem.BeginDialogue(_assetChangeTimeDialogue);
     }
 }

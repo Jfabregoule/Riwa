@@ -67,7 +67,8 @@ public enum DialogueEventType
     EnableChangeTime,
     AntreRiwaEntry,
     AntreRiwaChangeTempo,
-    AntreRiwaCinematicEnd
+    AntreRiwaCinematicEnd,
+    PusleChangeTime
 }
 
 public enum WaitDialogueEventType

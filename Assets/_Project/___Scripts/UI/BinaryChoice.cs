@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class BinaryChoice : MonoBehaviour
 {
     [Header("Button Yes / No")]
+    [SerializeField] private string _binaryName;
     [SerializeField] private Button _yesButton;
     [SerializeField] private Button _noButton;
 
@@ -19,28 +20,28 @@ public class BinaryChoice : MonoBehaviour
     public delegate void ValueChangeEvent(bool value);
     public ValueChangeEvent OnValueChange;
 
+    public string BinaryName { get { return _binaryName; } set {_binaryName = value; } }
     public bool Value {  get; private set; }
-
-    private void Awake()
-    {
-        _yesText = _yesButton.GetComponent<TextMeshProUGUI>();
-        _noText = _noButton.GetComponent<TextMeshProUGUI>();
-    }
-
-    void Start()
-    {
-        Value = true;
-        _yesButton.onClick.AddListener(() => SetValue(true));
-        _noButton.onClick.AddListener(() => SetValue(false));
-
-        UpdateVisuals();
-    }
 
     private void OnEnable()
     {
         OnValueChange += SetHanded;
     }
+    private void Awake()
+    {
+        _yesText = _yesButton.GetComponent<TextMeshProUGUI>();
+        _noText = _noButton.GetComponent<TextMeshProUGUI>();
+        SaveSystem.Instance.OnLoadSettings += LoadBinary;
+        SaveSystem.Instance.OnSaveSettings += SaveBinary;
 
+    }
+
+    void Start()
+    {
+        _yesButton.onClick.AddListener(() => SetValue(true));
+        _noButton.onClick.AddListener(() => SetValue(false));
+
+    }
     public void SetValue(bool isEnable)
     {
         InvokeEvent(isEnable);
@@ -61,5 +62,16 @@ public class BinaryChoice : MonoBehaviour
     public void InvokeEvent(bool IsEnable)
     {
         OnValueChange?.Invoke(IsEnable);
+    }
+
+    void LoadBinary()
+    {
+        Value = SaveSystem.Instance.LoadElement<bool>(_binaryName, true);
+        UpdateVisuals();
+    }
+
+    public void SaveBinary()
+    {
+        SaveSystem.Instance.SaveElement(_binaryName, Value, true);
     }
 }

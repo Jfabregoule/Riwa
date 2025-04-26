@@ -51,8 +51,9 @@ public class SoulStateCharacter : BaseStateCharacter<EnumStateCharacter>
     {
         base.UpdateState();
 
-        Vector3 VFXOrientation = _character.Soul.transform.position - _character.transform.position;
+        Vector3 VFXOrientation = _character.transform.position - _character.Soul.transform.position  ;
 
+        _character.SoulLinkVFX.transform.position = new Vector3(_character.Soul.transform.position.x, _character.SoulLinkVFX.transform.position.y, _character.Soul.transform.position.z);
         _character.SoulLinkVFX.transform.forward = VFXOrientation.normalized;
     }
 

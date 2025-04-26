@@ -30,6 +30,8 @@ public class ChangeTempoStateCharacter : BaseStateCharacter<EnumStateCharacter>
 
         _subStateMachine.ChangeState(_subStateMachine.States[EnumChangeTempo.Check]);
 
+        RiwaSoundSystem.Instance.PlaySoundFXClipByKey("Time Switch", _character.transform.position);
+
     }
 
     public override void ExitState()

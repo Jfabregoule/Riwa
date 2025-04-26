@@ -50,7 +50,6 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
-        Application.targetFrameRate = 60;
         TranslateSystem = GameObject.FindGameObjectWithTag(TRANSLATE_TAG).GetComponent<TranslateSystem>();
 
         CurrentTemporality = EnumTemporality.Present;

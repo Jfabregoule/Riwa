@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
@@ -14,6 +15,9 @@ public class Control : MonoBehaviour
     [SerializeField] private SentenceTranslate _rightModeSentence;
     [SerializeField] private SentenceTranslate _leftModeSentence;
 
+    [SerializeField] private List<CanvasGroup> _uiLeft;
+    [SerializeField] private List<CanvasGroup> _uiRight;
+
     private SentenceTranslate _interactText;
     private SentenceTranslate _joystickText;
 
@@ -22,10 +26,10 @@ public class Control : MonoBehaviour
     void Start()
     {
         _isRightHanded = SaveSystem.Instance.LoadElement<bool>("_isRightHanded", true);
-        Debug.Log(_isRightHanded);
         _interactText = _translateTextLeft.GetSentenceTranslate();
         _joystickText = _translateTextRight.GetSentenceTranslate();
         UpdateBinaryChoice();
+        InvertControlUI();
     }
     private void OnEnable()
     {
@@ -41,6 +45,7 @@ public class Control : MonoBehaviour
     {
         _binaryChoice.InvokeEvent(!_isRightHanded);
         ToggleControlInvert(!_isRightHanded);
+       
     }
     private void UpdateBinaryChoice()
     {
@@ -50,7 +55,7 @@ public class Control : MonoBehaviour
             LeftHanded();
 
         ToggleControlInvert(!_isRightHanded);
-
+        InvertControlUI();
     }
 
     private void RightHanded()
@@ -77,5 +82,36 @@ public class Control : MonoBehaviour
     public void ToggleControlInvert(bool isInvert)
     {
         InputManager.Instance.ToggleControlInversion(isInvert);
+    }
+
+    public void InvertControlUI()
+    {
+        if (_isRightHanded)
+            UIRight();
+        else
+            UILeft();
+    }
+
+    private void UILeft()
+    {
+        for(int i = 0; i < _uiRight.Count; i++)
+        {
+            Helpers.DisabledCanvasGroup(_uiRight[i]);
+        }
+        for(int i = 0; i<_uiLeft.Count;i++)
+        {
+            Helpers.EnabledCanvasGroup(_uiLeft[i]);
+        }
+    }
+    private void UIRight()
+    {
+        for (int i = 0; i < _uiLeft.Count; i++)
+        {
+            Helpers.DisabledCanvasGroup(_uiLeft[i]);
+        }
+        for (int i = 0; i < _uiRight.Count; i++)
+        {
+            Helpers.EnabledCanvasGroup(_uiRight[i]);
+        }
     }
 }

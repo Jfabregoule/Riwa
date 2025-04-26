@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using static Cinemachine.DocumentationSortingAttribute;
 
 public class Settings : MonoBehaviour
@@ -24,14 +25,21 @@ public class Settings : MonoBehaviour
     public void SetMasterVolume(float level) => RiwaSoundMixerManager.Instance.SetMasterVolume(level);
     public void SetCinematicVolume(float level) => RiwaSoundMixerManager.Instance.SetCinematicVolume(level);
     public void SetVibration(bool enabled) => VibrationSystem.Instance.SetVibrationEnabled(enabled);
-    public void SetAllVolume()
+    public void SetGlobalVolume(Slider slider)
     {
-        //RiwaSoundMixerManager.Instance.SetMasterVolume(level);
-        //RiwaSoundMixerManager.Instance.SetMusicVolume(level);
-        //RiwaSoundMixerManager.Instance.SetSoundFXVolume(level);
-        //RiwaSoundMixerManager.Instance.SetCinematicVolume(level);
+        float value = SaveSystem.Instance.LoadElement<float>("_masterTempValue", true);
+        RiwaSoundMixerManager.Instance.SetMasterVolume(value);
+        slider.value = value;
+        SliderComponent sliderText = slider.GetComponent<SliderComponent>();
+        sliderText.UpdateText(value);
     }
-
-
+    public void SaveTempMasterValue(Slider slider)
+    {
+        SaveSystem.Instance.SaveElement<float>("_masterTempValue", slider.value, true);
+    }
+    public void SaveSettings()
+    {
+        SaveSystem.Instance.SaveSettingsData();
+    }
 
 }

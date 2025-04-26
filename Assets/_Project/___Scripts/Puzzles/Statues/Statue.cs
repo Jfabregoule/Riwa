@@ -6,6 +6,9 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
     [Header("Debug")]
     [SerializeField] private bool _showDebugLog = false;
 
+    [Header("Material")]
+    [SerializeField] private Material _activeMaterial;
+
     private float _lerpTime = 1.5f;
     private float _unitGridSize;
     private float _angle = 45f;
@@ -49,7 +52,8 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
 
     private void FixedUpdate()
     {
-        if (_validate) _animator.SetBool("isValidate", true);
+        if (_validate)
+            _animator.SetBool("isValidate", true);
     }
 
     public bool Move(Vector3 direction)
@@ -139,5 +143,17 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
         _unitGridSize = data.unitGridSize;
         _pos.x = data.posX;
         _pos.y = data.posY;
+    }
+
+    public void OnStatueValidate()
+    {
+        foreach(Transform child in transform)
+        {
+            if(child.TryGetComponent(out Renderer renderer))
+            {
+                if(_activeMaterial != null)
+                    renderer.material = _activeMaterial;
+            }
+        }
     }
 }

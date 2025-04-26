@@ -23,9 +23,12 @@ public class Floor1Room1LevelManager : BaseLevelManager
     [SerializeField] private float _durationCameraBlending = 1f;
     private CinemachineBrain _brain;
     private CinemachineBlendDefinition _defaultBlend;
+    [SerializeField] private GameObject _riwaHeart;
+    [SerializeField] private CinemachineVirtualCamera _endGameCamera;
 
     [Header("Event Sequencer")]
 
+    [SerializeField] private Sequencer _endGame;
     [SerializeField] private Sequencer _event2;
     [SerializeField] private Sequencer _event3;
 
@@ -37,11 +40,15 @@ public class Floor1Room1LevelManager : BaseLevelManager
     private bool _isCrateWellPlaced;
 
     public Floor1Room1Dialogue Dialogue { get => _dialogue; set => _dialogue = value; }
+    public Sequencer EndGameSequencer { get => _endGame; }
+    public GameObject RiwaHeart { get => _riwaHeart; }
+    public CinemachineVirtualCamera EndGameCamera { get => _endGameCamera; }
 
     public override void Start()
     {
         base.Start();
         //RiwaCinematicSystem.Instance.PlayVideoByKey("Starting Cinematic");
+        _endGame.Init();
         _dialogue = GetComponent<Floor1Room1Dialogue>();
         DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.ChangeTime, OnChangeTime);
 

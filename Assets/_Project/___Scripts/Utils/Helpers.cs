@@ -82,5 +82,16 @@ public static class Helpers
             Debug.LogWarning($"[WaitAndSubscribe] Timeout: {typeof(T).Name} was still null after {5} seconds.");
         }
     }
+
+    public static bool HasParameter(string paramName, Animator animator)
+    {
+        foreach (AnimatorControllerParameter param in animator.parameters)
+        {
+            if (param.name == paramName)
+                return true;
+        }
+        return false;
+    }
+
 }
 

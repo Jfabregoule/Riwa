@@ -19,7 +19,8 @@ public class Room3LianaTutorialCollider : MonoBehaviour
         if (_isPlayerInArea && _hasBeenAlreadyTriggered == false && temporality == EnumTemporality.Present)
         {
             _hasBeenAlreadyTriggered = true;
-            DialogueSystem.Instance.BeginDialogue(_instance.TutorialRoom3Manager.LianaDialogue);
+            StartCoroutine(_instance.TutorialRoom3Manager.BringRiwaToLiana());
+            //DialogueSystem.Instance.BeginDialogue(_instance.TutorialRoom3Manager.LianaDialogue);
         }
     }
 

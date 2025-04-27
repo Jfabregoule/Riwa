@@ -352,6 +352,7 @@ public class Damier : MonoBehaviour
 
     private IEnumerator FollowPathCoroutine(bool dragCamera)
     {
+        _instance.ChawaTrail.gameObject.SetActive(true);
         if (dragCamera)
         {
             GameManager.Instance.Character.InputManager.DisableGameplayControls();
@@ -413,10 +414,12 @@ public class Damier : MonoBehaviour
         }
 
         _riwa.transform.position = worldPoints[worldPoints.Count - 1];
+        _instance.ChawaTrail.gameObject.SetActive(false);
         yield return StartCoroutine(MoveRiwaToDiscussionPointHermite(_instance.TutorialRoom3Manager.DamierDiscussionPosition));
         _instance.DamierCamera.Priority = 0;
         _instance.RiwaSensaCamera[0].Priority = 20;
-        StartCoroutine(_instance.TutorialRoom3Manager.HideRiwaAgain(true));
+        _instance.TutorialRoom3Manager.RiwaEndShowDamierPath();
+        //StartCoroutine(_instance.TutorialRoom3Manager.HideRiwaAgain(true));
     }
 
     private IEnumerator FadeCellAlpha(GameObject cell, float startAlpha, float endAlpha, float duration)
@@ -484,6 +487,9 @@ public class Damier : MonoBehaviour
 
     private void OnCellTriggered(CellPos pos, Cell cell)
     {
+        if(_damier.ContainsKey(pos) && _damier[pos].cellPos.x == 5 && _damier[pos].cellPos.x == 5)
+            _instance.InvokeOnPlayerCompletedDamier();
+
         if(_damier.ContainsKey(pos) && _damier[pos].cellState == CellState.Breakable)
         {
             _damier[pos].cell.transform.parent.gameObject.GetComponent<Rigidbody>().isKinematic = false;

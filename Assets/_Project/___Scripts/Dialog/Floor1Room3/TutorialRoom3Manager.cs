@@ -12,6 +12,7 @@ public class TutorialRoom3Manager : MonoBehaviour
     [SerializeField] private DialogueAsset _lianaDialogue;
 
     private Floor1Room3LevelManager _instance;
+    private bool _chawaAlreadySpawned = false;
     private Vector3 _damierDiscussionPosition;
     private int currentIndex = 0;
     private int previousIndex = -1;
@@ -80,6 +81,7 @@ public class TutorialRoom3Manager : MonoBehaviour
     public IEnumerator SensaChawaDiscuss(int cameraID)
     {
         _instance.RiwaSensaCamera[cameraID].Priority = 20;
+        if (_chawaAlreadySpawned == true) yield break;
         _instance.Chawa.SetActive(true);
 
         Vector3 initialChawaPos = _instance.Chawa.transform.position;
@@ -111,13 +113,17 @@ public class TutorialRoom3Manager : MonoBehaviour
         _instance.Chawa.transform.position = targetPosition;
         _instance.Chawa.transform.rotation = chawaTargetRotation;
         _instance.Chawa.transform.localScale = finalScale;
+        _instance.Chawa.transform.SetParent(null);
+        _chawaAlreadySpawned = true;
     }
 
-    public IEnumerator HideRiwaAgain(bool showDamierDialogue)
+    public IEnumerator HideRiwa()
     {
-        if(showDamierDialogue) DialogueSystem.Instance.BeginDialogue(_damierDialogue[1]);
+        //_instance.Chawa.transform.SetParent(GameManager.Instance.Character.transform);
+        //if (showDamierDialogue) DialogueSystem.Instance.BeginDialogue(_damierDialogue[1]);
         Vector3 initialPos = _instance.Chawa.transform.position;
         Vector3 targetPos = GameManager.Instance.Character.transform.position;
+        targetPos.y = 0.5f;
         Vector3 finalScale = new Vector3(0f, 0f, 0f);
         Quaternion finalRotation = Quaternion.Euler(0f, 0f, 0f);
 
@@ -142,11 +148,17 @@ public class TutorialRoom3Manager : MonoBehaviour
 
         yield return new WaitForSeconds(1.5f);
         DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.RiwaHiddingIntoSensa);
-        if (!showDamierDialogue)
-        {
-            _instance.RiwaSensaCamera[1].Priority = 0;
-            //GameManager.Instance.Character.InputManager.EnableGameplayControls();
-        }
+        _instance.RiwaSensaCamera[1].Priority = 0;
+        //if (!showDamierDialogue)
+        //{
+        //    //_instance.RiwaSensaCamera[1].Priority = 0;
+        //    //GameManager.Instance.Character.InputManager.EnableGameplayControls();
+        //}
+    }
+
+    public void RiwaEndShowDamierPath()
+    {
+        DialogueSystem.Instance.BeginDialogue(_damierDialogue[1]);
     }
 
     #endregion
@@ -169,7 +181,51 @@ public class TutorialRoom3Manager : MonoBehaviour
         DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.WaitEndOfLianaPathTravel);
         _instance.RiwaSensaCamera[1].Priority = 20;
         yield return new WaitForSeconds(1.5f);
-        StartCoroutine(HideRiwaAgain(false));
+        StartCoroutine(HideRiwa());
+    }
+
+    public IEnumerator BringRiwaToLiana()
+    {
+        Vector3 initialPos = _instance.Chawa.transform.position;
+        Vector3 targetPos = _instance.ChawaLianaPosition.position;
+
+        float elapsedTime = 0f;
+        float lerpTime = 3f;
+
+        while (elapsedTime < lerpTime)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsedTime / lerpTime);
+            _instance.Chawa.transform.position = Vector3.Lerp(initialPos, targetPos, t);
+            yield return null;
+        }
+        _instance.Chawa.transform.position = targetPos;
+        StartCoroutine(OrientChawaTowardSensa());
+    }
+
+    public IEnumerator OrientChawaTowardSensa()
+    {
+        DialogueSystem.Instance.BeginDialogue(_lianaDialogue);
+        Vector3 chawaPosition = _instance.Chawa.transform.position;
+        Vector3 sensaPosition = GameManager.Instance.Character.transform.position;
+        Vector3 chawaDirecrion = sensaPosition - chawaPosition;
+
+        Quaternion startRotation = _instance.Chawa.transform.rotation;
+        Quaternion lookDirection = Quaternion.identity;
+        lookDirection = Quaternion.LookRotation(chawaDirecrion);
+
+        float elapsedTime = 0f;
+        float lerpTime = 2f;
+
+        while(elapsedTime < lerpTime)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsedTime / lerpTime);
+            _instance.Chawa.transform.rotation = Quaternion.Slerp(startRotation, lookDirection, t);
+            yield return null;
+        }
+
+        _instance.Chawa.transform.rotation = lookDirection;
     }
 
     #endregion

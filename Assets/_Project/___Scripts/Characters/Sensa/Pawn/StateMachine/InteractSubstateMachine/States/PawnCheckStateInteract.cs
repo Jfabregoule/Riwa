@@ -68,6 +68,7 @@ public class PawnCheckStateInteract<TStateEnum> : PawnInteractBaseSubstate<TStat
                 Vector3 direction = (targetPoint - sphereCastOrigin).normalized;
                 float distance = Vector3.Distance(sphereCastOrigin, targetPoint) + 0.5f;
 
+                //SphereCast qui sert de raycast "large" pour vérifier si le chemin pour se rendre au interactable est libre
                 if (Physics.SphereCast(sphereCastOrigin, sphereCastRadius, direction, out RaycastHit hit, distance, layerMask))
                 {
                     if (hit.collider.gameObject == collider.gameObject)

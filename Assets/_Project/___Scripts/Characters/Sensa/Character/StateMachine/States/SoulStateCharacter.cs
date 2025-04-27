@@ -21,7 +21,6 @@ public class SoulStateCharacter : BaseStateCharacter<EnumStateCharacter>
 
         _character.Soul.transform.position = _character.transform.position;
         _character.Soul.transform.rotation = _character.transform.rotation;
-        _character.SoulLinkVFX.Play();
         _character.Soul.SetActive(true);
         _character.IsInSoul = true;
         _character.Soul.transform.parent = null;
@@ -37,7 +36,6 @@ public class SoulStateCharacter : BaseStateCharacter<EnumStateCharacter>
     public override void ExitState()
     {
         base.ExitState();
-        _character.SoulLinkVFX.Stop();
         _character.Soul.SetActive(false);
         _character.IsInSoul = false;
         _character.Soul.transform.parent = _character.transform;
@@ -55,10 +53,6 @@ public class SoulStateCharacter : BaseStateCharacter<EnumStateCharacter>
     {
         base.UpdateState();
 
-        Vector3 VFXOrientation = _character.transform.position - _character.Soul.transform.position  ;
-
-        _character.SoulLinkVFX.transform.position = new Vector3(_character.Soul.transform.position.x, _character.SoulLinkVFX.transform.position.y, _character.Soul.transform.position.z);
-        _character.SoulLinkVFX.transform.forward = VFXOrientation.normalized;
     }
 
     public override void CheckChangeState()

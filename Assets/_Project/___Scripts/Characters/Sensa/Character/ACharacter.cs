@@ -47,10 +47,6 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
     [SerializeField] private float _pushingSpeed = 1;
     [SerializeField] private float _fallingStun = 0.5f;
 
-    [Header("VFX")]
-
-    [SerializeField] private ParticleSystem _soulLinkVFX;
-
     //Animation values
 
     private float magnitudeVelocity;
@@ -77,7 +73,6 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
     public ChangeTime ChangeTime { get => _changeTime; }
     public bool IsInSoul { get => _isInSoul; set => _isInSoul = value; }
     public GameObject Soul { get => _soul; set => _soul = value; }
-    public ParticleSystem SoulLinkVFX { get => _soulLinkVFX; set => _soulLinkVFX = value; }
     public CameraHandler CameraHandler { get => _cameraHandler;}
     new public StateMachineCharacter StateMachine { get => (StateMachineCharacter)_stateMachine; set => _stateMachine = value; }
     public bool CanChangeTime { get => _canChangeTime; set => _canChangeTime = value; }
@@ -92,7 +87,7 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
 
     //Methods
 
-    public void OnEnable()
+    public void Awake()
     {
         _pawn = GameObject.Find(PAWN_OBJECT);
         _rb = GetComponent<Rigidbody>();
@@ -103,7 +98,6 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
 
         _soul = GameObject.Find(SOUL_OBJECT);
         _capsuleCollider = GetComponent<CapsuleCollider>();
-        _soul.SetActive(false);
 
         StateMachine = new StateMachineCharacter();
     }

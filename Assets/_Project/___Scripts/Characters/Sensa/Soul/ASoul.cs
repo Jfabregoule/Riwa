@@ -35,6 +35,9 @@ public class ASoul : APawn<EnumStateSoul>
 
     [SerializeField] private float _timeBeforeWait = 2.0f;
 
+    [Header("VFX")]
+    [SerializeField] private GameObject _soulLinkVFX;
+
     #endregion
 
     #region Properties
@@ -58,29 +61,37 @@ public class ASoul : APawn<EnumStateSoul>
 
     //Methods
 
-   
-
-    public void OnEnable()
+    public void Awake()
     {
         Character = GameObject.Find(CHARACTER_OBJECT);
         _soulPawn = GameObject.Find(SOULPAWN_OBJECT);
         _rb = GetComponent<Rigidbody>();
         _capsuleCollider = GetComponent<CapsuleCollider>();
         _inputManager = InputManager.Instance;
-        Animator = GetComponent<Animator>();    
+        Animator = GetComponent<Animator>();
+        StateMachine = new StateMachineSoul();
+
 
         _cameraHandler = GameManager.Instance.CameraHandler; //Il faut appeler ça après le load des 3C dans gameManager
+    }
 
-        StateMachine = new StateMachineSoul();
-        StateMachine.InitStateMachine(this);
-        StateMachine.InitState(_stateMachine.States[EnumStateSoul.Disable]);
+    private void OnEnable()
+    {
+        _soulLinkVFX.gameObject.SetActive(true);
+    }
 
-
+    public override void OnDisable()
+    {
+        base.OnDisable();
+        _soulLinkVFX.gameObject.SetActive(false);
     }
 
     private void Start()
     {
         _character = GameManager.Instance.Character.gameObject;
+        StateMachine.InitStateMachine(this);
+        StateMachine.InitState(_stateMachine.States[EnumStateSoul.Disable]);
+        gameObject.SetActive(false);
     }
 
     private void Update()

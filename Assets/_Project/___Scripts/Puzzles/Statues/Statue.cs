@@ -6,8 +6,6 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
     [Header("Debug")]
     [SerializeField] private bool _showDebugLog = false;
 
-    [Header("Material")]
-    [SerializeField] private Material _activeMaterial;
 
     private float _lerpTime = 1.5f;
     private float _unitGridSize;
@@ -151,8 +149,8 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
         {
             if(child.TryGetComponent(out Renderer renderer))
             {
-                if(_activeMaterial != null)
-                    renderer.material = _activeMaterial;
+                if (renderer.material.HasProperty("_IsActivated"))
+                    renderer.material.SetFloat("_IsActivated", 1f);
             }
         }
     }

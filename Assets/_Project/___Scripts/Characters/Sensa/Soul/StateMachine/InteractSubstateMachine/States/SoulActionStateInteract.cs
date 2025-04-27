@@ -15,6 +15,8 @@ public class SoulActionStateInteract : PawnActionStateInteract<EnumStateSoul>
     public override void ExitState()
     {
         base.ExitState();
+
+        _subStateMachine.CurrentObjectInteract.GetComponent<IInteractableBase>().Interact();
     }
 
     public override void UpdateState()
@@ -26,10 +28,8 @@ public class SoulActionStateInteract : PawnActionStateInteract<EnumStateSoul>
     {
         base.CheckChangeState();
 
-        if (_animClock > _animationTime) //Temps d'animation
-        {
-            ASoul chara = (ASoul)_character;
-            chara.StateMachine.ChangeState(chara.StateMachine.States[EnumStateSoul.Idle]);
-        }
+        ASoul chara = (ASoul)_character;
+        chara.StateMachine.ChangeState(chara.StateMachine.States[EnumStateSoul.Idle]);
+        
     }
 }

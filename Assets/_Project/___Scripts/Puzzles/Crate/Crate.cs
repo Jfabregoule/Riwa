@@ -79,8 +79,7 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
 
     public bool IsValidObject(Collider collider, EnumTemporality temporality)
     {
-        return collider.gameObject != gameObject
-            && 1 << collider.gameObject.layer == (temporality == EnumTemporality.Past ? _character.PastLayer : _character.PresentLayer);
+        return collider.gameObject != gameObject && 1 << collider.gameObject.layer == (temporality == EnumTemporality.Past ? _character.PastLayer : _character.PresentLayer) && collider.isTrigger == false;
     }
 
 

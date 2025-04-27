@@ -16,6 +16,8 @@ public class CharacterCheckStateInteract : PawnCheckStateInteract<EnumStateChara
             typeof(IInteractable)
         };
 
+        _canInteractThroughWall = false;
+
     }
 
     public override void EnterState()

@@ -308,6 +308,7 @@ public class Grid : MonoBehaviour, IActivable
             {
                 statues.Validate = true;
             }
+            GameManager.Instance.Character.StateMachine.GoToIdle();
             StartCoroutine(ActiveElevator());
             if (_showDebug == true) Debug.Log("Grille complétée avec succès !");
         }
@@ -321,13 +322,13 @@ public class Grid : MonoBehaviour, IActivable
         yield return new WaitForSeconds(2.5f);
 
         _room4LevelManager.ElevatorCamera.Priority = 20;
-        GameManager.Instance.Character.InputManager.DisableGameplayControls();
+        InputManager.Instance.DisableGameplayControls();
         Activate();
 
         yield return new WaitForSeconds(3f);
 
         _room4LevelManager.ElevatorCamera.Priority = 0;
-        GameManager.Instance.Character.InputManager.EnableGameplayControls();
+        InputManager.Instance.EnableGameplayControls();
     }
 
 

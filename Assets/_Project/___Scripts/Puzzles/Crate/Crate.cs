@@ -8,6 +8,7 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
     ACharacter _character;
 
     [SerializeField] private float _speed = 0.1f;
+    [SerializeField] private float _rotateSpeed = 3;
     [SerializeField] private float _angle;
     [SerializeField] private float _distance = 0.1f;
 
@@ -26,6 +27,7 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
     public float MoveDistance { get => _distance; set => _distance = value; }
     public bool CanInteract { get; set; }
     public int Priority { get ; set; }
+    public float RotateSpeed { get => _rotateSpeed; set => _rotateSpeed = value; }
 
     public void Start()
     {
@@ -40,7 +42,7 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
         _boxSize = Vector3.Scale(transform.localScale, _boxSize);
         _floorOffset = -Vector3.up * (_boxSize.y * 0.5f) - (-Vector3.up * security);
 
-        OffsetRadius = _boxSize.x / 2 + _character.GetComponent<CapsuleCollider>().radius * _character.transform.localScale.x * 1.8f + securityRadius; //J'agrandit loffset pour que l'anime de coup de boule rentre pas dans la crate
+        OffsetRadius = _boxSize.x / 2 + _character.GetComponent<CapsuleCollider>().radius * _character.transform.localScale.x + securityRadius; //J'agrandit loffset pour que l'anime de coup de boule rentre pas dans la crate
         Priority = 0;
 
         GameManager.Instance.OnTimeChangeStarted += CheckChangeTempo;
@@ -114,10 +116,10 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
 
         foreach (var col in colliders)
         {
-            if (col.gameObject != gameObject
+            if ((col.gameObject != gameObject
                 && !col.gameObject.TryGetComponent<ACharacter>(out ACharacter chara)
-                && col.isTrigger == false
-                && col.gameObject.TryGetComponent(out LineRenderer lineRenderer))
+                && col.isTrigger == false)
+                || (col.gameObject.TryGetComponent(out LineRenderer lineRenderer)))
             {
                 return false;
             }

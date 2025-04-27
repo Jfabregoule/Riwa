@@ -64,10 +64,11 @@ public class CharacterFeet : MonoBehaviour, IRespawnable
         //    Debug.DrawRay(transform.position + Vector3.up * 0.5f, -Vector3.up * _currentTreshold, Color.green); // rien touché
         //}
 
-        IsGround = Physics.CheckCapsule(transform.position, transform.position - Vector3.up * _currentTreshold, _radius, mask);
+        IsGround = Physics.CheckCapsule(transform.position, transform.position - Vector3.up * _currentTreshold, _radius, mask, QueryTriggerInteraction.Ignore);
         
         Color color = IsGround ? Color.green : Color.red;
         Debug.DrawLine(transform.position, transform.position - Vector3.up * _currentTreshold, color);
+        Debug.DrawLine(transform.position, transform.position + Vector3.right * _radius, color);
     }
 
     //public void OnTriggerEnter(Collider other)

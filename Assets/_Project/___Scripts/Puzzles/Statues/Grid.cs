@@ -197,10 +197,10 @@ public class Grid : MonoBehaviour, IActivable
     public void GenerateGrid()
     {
         solution.Clear();
-        solution.Add(new CellPos(0, 4), new CellContent(1, 135));    // ID 1 --> Blue Statue
-        solution.Add(new CellPos(1, 0), new CellContent(2, 45));     // ID 2 --> Red Statue
-        solution.Add(new CellPos(2, 2), new CellContent(3, 270));    // ID 3 --> Yellow Statue
-        solution.Add(new CellPos(4, 3), new CellContent(4, 0));      // ID 4 --> Green Statue
+        solution.Add(new CellPos(0, 4), new CellContent(1, 225));     // ID 1 --> Blue Statue
+        solution.Add(new CellPos(1, 0), new CellContent(2, 135));     // ID 2 --> Orange Statue
+        solution.Add(new CellPos(2, 2), new CellContent(3, 0));       // ID 3 --> Purple Statue
+        solution.Add(new CellPos(4, 3), new CellContent(4, 90));      // ID 4 --> Green Statue
 
         Origin = transform.position;
 

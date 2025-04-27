@@ -10,13 +10,15 @@ public class VineRetraction : MonoBehaviour
 
     [Header("GOs")]
     [SerializeField] private GameObject _vine;
-    [SerializeField] private List<GameObject> _box;
 
     [Header("Retraction data")]
     [SerializeField] private float _maxHeight;
     [SerializeField] private float _maxCenter;
+    [SerializeField] private float _minCenter = 0f;
     [SerializeField] private BoxCollider _collider;
     [SerializeField] private float _thresholdToTrigger = 0.7f;
+    [SerializeField] private float _minGrowCap = 0f;
+    [SerializeField] private bool _isPivotBroken = false;
 
     private bool _thresholdReached = false;
     private float _growPercentage = 1f;
@@ -39,22 +41,28 @@ public class VineRetraction : MonoBehaviour
         _mat = renderer.material;
         _originalHeight = _collider.size.z;
         _originalCenter = _collider.center;
+        Debug.Log("Original height " + _originalHeight);
+        Debug.Log("Original center " + _originalCenter);
     }
 
     private void OnTriggerStay(Collider other)
     {
-        Debug.Log("Percentage " + _growPercentage);
         if (other.TryGetComponent<Crate>(out Crate crate))
         {
-            Vector3 localEntryPos = _vine.transform.InverseTransformPoint(other.transform.position);
+            Vector3 localEntryPos;
+            if(_isPivotBroken == false)
+                localEntryPos = _vine.transform.InverseTransformPoint(other.transform.position);
+            else
+                localEntryPos = _vine.transform.parent.transform.InverseTransformPoint(other.transform.position);
             float zLocal = localEntryPos.z;
             float zMin = _originalCenter.z - _originalHeight * 0.5f;
             float zMax = _originalCenter.z + _originalHeight * 0.5f;
             _growPercentage = Mathf.Clamp01(Mathf.InverseLerp(zMin, zMax, zLocal));
+            Debug.Log("Percentage " + _growPercentage);
 
-            float growValue = Mathf.Lerp(0f, 1f, _growPercentage);
+            float growValue = Mathf.Lerp(_minGrowCap, 1f, _growPercentage);
             float height = Mathf.Lerp(1f, _maxHeight, _growPercentage);
-            float centerZ = Mathf.Lerp(_maxCenter, 0f, _growPercentage);
+            float centerZ = Mathf.Lerp(_maxCenter, _minCenter, _growPercentage);
 
             ChangeVineDatas(growValue, height, new Vector3(0, 0, centerZ));
             
@@ -75,7 +83,7 @@ public class VineRetraction : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (_box.Contains(other.gameObject))
+        if (other.TryGetComponent<Crate>(out Crate crate))
         {
             _growPercentage = 1f;
             ChangeVineDatas(1, 13.5f, new Vector3(0, 0, -0.5f));

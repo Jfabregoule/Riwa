@@ -7,14 +7,13 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_WoodGrowingPresentRoom4
-  m_Shader: {fileID: -6465566751694194690, guid: 9fc0a035d488c184bb9e63f0504c437e,
+  m_Name: M_WoodSmallVine3
+  m_Shader: {fileID: -6465566751694194690, guid: 7713f55c50dc0a24d8649ffb41214a10,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords:
-  - _ALPHATEST_ON
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -27,10 +26,6 @@ Material:
     m_TexEnvs:
     - _AmbiantOcclusion:
         m_Texture: {fileID: 2800000, guid: 63a8e1be48971c342839b72ade22c428, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _BaseColor:
-        m_Texture: {fileID: 2800000, guid: ad4cbaa45f5c38742a6f2f8f6e4d2a3b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseColorText:
@@ -66,7 +61,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _HighLight:
-        m_Texture: {fileID: 2800000, guid: 005b3759cbb7fee4cbdc3f0597273695, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6b1ec545cfacced43bcd376dade68a1b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -85,10 +80,6 @@ Material:
         m_Texture: {fileID: 2800000, guid: 56ce5ddcb6a16f84283a7fb5f68bef89, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Normal:
-        m_Texture: {fileID: 2800000, guid: 0ca62525879dd2245a933e9ec4218206, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _NormalText:
         m_Texture: {fileID: 2800000, guid: 0ca62525879dd2245a933e9ec4218206, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -99,10 +90,6 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _PresentSubShader_7df014de12544f15bd1c1aa45515d3c9_NoiseTexture_3879434909_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 56ce5ddcb6a16f84283a7fb5f68bef89, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Roughness:
@@ -127,7 +114,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AlphaClip: 1
+    - _AlphaClip: 0
     - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
@@ -146,9 +133,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _Grow: 1
     - _HeightPower: 0
-    - _Metalic: 0
     - _Metallic: 0
     - _MetallicStrength: 0
     - _MoveSpeed: 1
@@ -161,7 +146,6 @@ Material:
     - _RadiusNoiseCutOff: 0.07
     - _RadiusNoiseOffset: 0.01
     - _ReceiveShadows: 1
-    - _Scale: -0.02
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -176,9 +160,8 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _HighLightColor: {r: 1, g: 1, b: 1, a: 0}
     - _OutLineColor: {r: 0.2634389, g: 1.11677, b: 1.509434, a: 0}
-    - _OutlineColor: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _Tiling: {r: 8, g: 8, b: 0, a: 0}
+    - _Tiling: {r: 2, g: 2, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &4472899669555547614
 MonoBehaviour:

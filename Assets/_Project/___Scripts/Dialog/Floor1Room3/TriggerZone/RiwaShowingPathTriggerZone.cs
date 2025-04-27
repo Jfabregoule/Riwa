@@ -15,18 +15,13 @@ public class RiwaShowingPathTriggerZone : MonoBehaviour
     public void DialogueToCall(EnumTemporality temporality)
     {
         if (_isPlayerInArea && temporality == EnumTemporality.Present)
-        {
-            Debug.Log("RiwaShowPathTriggerZone");
             DialogueSystem.Instance.BeginDialogue(_instance.TutorialRoom3Manager.Room3Dialogue[2]);
-        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out ACharacter chara))
-        {
             _isPlayerInArea = true;
-        }
     }
 
     private void OnTriggerExit(Collider other)

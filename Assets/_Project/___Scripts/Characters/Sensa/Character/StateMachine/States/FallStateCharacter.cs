@@ -38,8 +38,8 @@ public class FallStateCharacter : BaseStateCharacter<EnumStateCharacter>
         if (_chara.Feet.IsGround)
         {
             ACharacter chara = (ACharacter)_chara;
+            chara.Animator.SetBool("Land", true);
             chara.InvokeFallStun();
-            chara.Animator.SetBool("Fallin", true);
         }
     }
 
@@ -47,7 +47,7 @@ public class FallStateCharacter : BaseStateCharacter<EnumStateCharacter>
     {
         yield return new WaitForSeconds(sec);
 
-        _character.Animator.SetBool("Fallin", false);
+        _character.Animator.SetBool("Land", false);
         _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Idle]);
 
     }

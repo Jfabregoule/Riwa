@@ -37,13 +37,13 @@ AnimatorStateMachine:
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions:
-  - first: {fileID: 557295765476260243}
-    second:
-    - {fileID: -6829120566765614516}
   - first: {fileID: 6405667783488657727}
     second:
     - {fileID: -718075186273212511}
     - {fileID: -487304793681724058}
+  - first: {fileID: 557295765476260243}
+    second:
+    - {fileID: -6829120566765614516}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: -40, y: 10, z: 0}
   m_EntryPosition: {x: -40, y: 120, z: 0}
@@ -253,7 +253,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: Fallin
+    m_ConditionEvent: Land
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 5028767616924335204}
@@ -514,12 +514,12 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.14038599
-  m_TransitionOffset: 0.73713243
-  m_ExitTime: 0.9848372
+  m_TransitionDuration: 0.4451617
+  m_TransitionOffset: 0
+  m_ExitTime: 0.680384
   m_HasExitTime: 1
   m_HasFixedDuration: 1
-  m_InterruptionSource: 0
+  m_InterruptionSource: 2
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
 --- !u!1101 &-2149881800969834506
@@ -1013,7 +1013,7 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: Fallin
+  - m_Name: Land
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -1084,7 +1084,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: Fallin
+    m_ConditionEvent: Land
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 5028767616924335204}
@@ -1571,7 +1571,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: d72cd7b9d81d7c341b7bcd247abbbb1d, type: 2}
+  m_Motion: {fileID: 7400000, guid: 4ca45238bc1294847adfd957a2f6a76e, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -1960,9 +1960,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.49316785
+  m_TransitionDuration: 0.3198641
   m_TransitionOffset: 0
-  m_ExitTime: 0
+  m_ExitTime: 7.388629e-10
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0

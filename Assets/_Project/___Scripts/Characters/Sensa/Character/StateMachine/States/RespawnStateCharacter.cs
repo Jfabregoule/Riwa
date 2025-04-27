@@ -17,11 +17,17 @@ public class RespawnStateCharacter : BaseStateCharacter<EnumStateCharacter>
 
         _character.transform.position = chara.RespawnPosition;
         _character.transform.localEulerAngles = chara.RespawnRotation;
+
+        chara.Animator.SetBool("Land", true);
+
+        ACharacter character = (ACharacter)_character;
+        character.InvokeFallStun();
     }
 
     public override void ExitState()
     {
         base.ExitState();
+        
     }
 
     public override void UpdateState()
@@ -33,6 +39,7 @@ public class RespawnStateCharacter : BaseStateCharacter<EnumStateCharacter>
     {
         base.CheckChangeState();
 
-        _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Idle]);
+        //_character.Animator.SetBool("Land", true);
+        //_stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Idle]);
     }
 }

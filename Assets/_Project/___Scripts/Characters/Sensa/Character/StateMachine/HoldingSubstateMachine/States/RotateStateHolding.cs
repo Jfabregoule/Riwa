@@ -1,9 +1,12 @@
 
+using System.Collections;
 using UnityEngine;
 
 public class RotateStateHolding : HoldingBaseState
 {
     private int _sens;
+
+    private float _clock;
 
     private IRotatable _rotatable;
     public int Sens { get => _sens; set => _sens = value; }
@@ -16,20 +19,25 @@ public class RotateStateHolding : HoldingBaseState
     {
         base.EnterState();
 
-        if(_character.HoldingObject.TryGetComponent(out IRotatable rotatable))
+        if (_character.HoldingObject.TryGetComponent(out IRotatable rotatable))
+        {
+            _rotatable = rotatable;
+        }
+
+        _character.Animator.SetFloat("HoldingSens", Sens);
+        _character.Animator.SetFloat("RotationSpeed", _rotatable.RotateSpeed);
+
+        _character.OnRotate += LaunchRotate;
+
+    }
+
+    private void LaunchRotate()
+    {
+        if (_character.HoldingObject.TryGetComponent(out IRotatable rotatable))
         {
             _rotatable = rotatable;
             rotatable.Rotate(Sens);
             rotatable.OnRotateFinished += Finish;
-        }
-
-        if(Sens == 1)
-        {
-            _character.Animator.SetBool("Sens", false);
-        }
-        else
-        {
-            _character.Animator.SetBool("Sens", true);
         }
 
     }
@@ -39,12 +47,21 @@ public class RotateStateHolding : HoldingBaseState
         base.ExitState();
 
         _rotatable.OnRotateFinished -= Finish;
+        _character.OnRotate -= LaunchRotate;
 
     }
 
     public override void UpdateState()
     {
         base.UpdateState();
+
+        //Security car je trigger le rotate par l'animation donc si pb avec anim on peut sortir du state
+        //_clock += Time.deltaTime;
+        //if( _clock > 1.5 )
+        //{
+        //    LaunchRotate();
+        //}
+
     }
 
     public override void CheckChangeState()
@@ -114,4 +131,12 @@ public class RotateStateHolding : HoldingBaseState
             }
         }
     }
+
+    public override void DestroyState()
+    {
+        base.DestroyState();
+
+        _character.OnRotate += LaunchRotate;
+    }
+
 }

@@ -58,6 +58,8 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
     //
 
     public event IRespawnable.RespawnEvent OnRespawn;
+    public event System.Action OnRotate;
+    public event System.Action OnInteractAnimation;
 
     #endregion
 
@@ -150,6 +152,16 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
     {
         FallStateCharacter state = (FallStateCharacter)StateMachine.States[EnumStateCharacter.Fall];
         StartCoroutine(state.FallStun(_fallingStun));
+    }
+
+    public void InvokeRotate()
+    {
+        OnRotate?.Invoke(); 
+    }
+
+    public void InvokeInteract()
+    {
+        OnInteractAnimation?.Invoke();
     }
 
     #endregion

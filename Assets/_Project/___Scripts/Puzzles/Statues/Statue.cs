@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Statue : MonoBehaviour, IMovable, IRotatable
 {
+    [SerializeField] private float _rotateSpeed = 1;
+
     [Header("Debug")]
     [SerializeField] private bool _showDebugLog = false;
 
@@ -25,6 +27,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
     public float MoveDistance { get; set; }
     public bool CanInteract { get => !_validate; set => throw new System.NotImplementedException(); }
     public int Priority { get; set; }
+    public float RotateSpeed { get => _rotateSpeed; set => _rotateSpeed = value; }
 
     public delegate bool StatueMoveEvent(CellPos oldPos, Vector2Int nextPos, CellContent statueData);
     public delegate void StatueRotateEvent(CellPos pos, CellContent content);

@@ -37,21 +37,19 @@ public class MoveStateCharacter : PawnMoveState<EnumStateCharacter>
     {
         base.CheckChangeState();
 
-        if (_chara.IsChangingTime)
-        {
-            _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.ChangeTempo]);
-        }
-
-        else if (_chara.InputManager.GetMoveDirection() == Vector2.zero)
-        {
-            _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Idle]);
-        }
-
         if (!_chara.Feet.IsGround)
         {
             GoToFall();
         }
 
+        if (_chara.IsChangingTime)
+        {
+            _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.ChangeTempo]);
+        }
+        else if (_chara.InputManager.GetMoveDirection() == Vector2.zero)
+        {
+            _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Idle]);
+        }
     }
 
     protected override void OnInteract()

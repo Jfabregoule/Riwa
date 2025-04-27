@@ -5,6 +5,7 @@ public class FallStateCharacter : BaseStateCharacter<EnumStateCharacter>
 {
 
     ACharacter _chara;
+    private bool _canTriggerLanding;
 
     public override void InitState(StateMachinePawn<EnumStateCharacter, BaseStatePawn<EnumStateCharacter>> stateMachine, EnumStateCharacter enumValue, APawn<EnumStateCharacter> character)
     {
@@ -16,14 +17,17 @@ public class FallStateCharacter : BaseStateCharacter<EnumStateCharacter>
     {
         base.EnterState();
 
+        //_character.Rb.velocity = new Vector3(0,_character.Rb.velocity.y,0);
+
         //_chara.Feet.OnGround += GoToIdle;
 
+        _canTriggerLanding = true;
     }
 
     public override void ExitState()
     {
         base.ExitState();
-        //_chara.Feet.OnGround -= GoToIdle;
+        
     }
 
     public override void UpdateState()
@@ -35,11 +39,12 @@ public class FallStateCharacter : BaseStateCharacter<EnumStateCharacter>
     {
         base.CheckChangeState();
 
-        if (_chara.Feet.IsGround)
+        if (_chara.Feet.IsGround && _canTriggerLanding)
         {
             ACharacter chara = (ACharacter)_chara;
+            chara.Animator.SetBool("Land", true);
             chara.InvokeFallStun();
-            chara.Animator.SetBool("Fallin", true);
+            _canTriggerLanding = false;
         }
     }
 
@@ -47,7 +52,7 @@ public class FallStateCharacter : BaseStateCharacter<EnumStateCharacter>
     {
         yield return new WaitForSeconds(sec);
 
-        _character.Animator.SetBool("Fallin", false);
+        _character.Animator.SetBool("Land", false);
         _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Idle]);
 
     }

@@ -5,9 +5,13 @@ public class Mirror : MonoBehaviour, IRotatable
 {
     [SerializeField] private float _angle;
     [SerializeField] private MonoBehaviour _activable;
+    [SerializeField] private float _rotateSpeed = 1;
+
     public float OffsetRadius { get; set; }
     public bool CanInteract { get; set; }
     public int Priority { get; set; }
+
+    public float RotateSpeed { get => _rotateSpeed; set => _rotateSpeed = value; }
 
     private void Start()
     {

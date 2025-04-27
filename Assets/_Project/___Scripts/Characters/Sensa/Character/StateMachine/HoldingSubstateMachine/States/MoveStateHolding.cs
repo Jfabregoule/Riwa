@@ -31,6 +31,9 @@ public class MoveStateHolding : HoldingBaseState
 
         _character.Animator.ResetTrigger(_stateMachine.AnimationMap[EnumHolding.IdleHolding]);
 
+        _character.Animator.SetFloat("HoldingSens", Sens);
+        _character.Animator.SetFloat("PushSpeed", _movable.MoveSpeed);
+
         //_character.Feet.OnFall += GoToFall;
     }
 
@@ -160,12 +163,14 @@ public class MoveStateHolding : HoldingBaseState
             {
                 //Pull
                 Sens = 1;
+                _character.Animator.SetFloat("HoldingSens", Sens);
 
             }
             else
             {
                 //Push
                 Sens = -1;
+                _character.Animator.SetFloat("HoldingSens", Sens);
             }
         }
         else

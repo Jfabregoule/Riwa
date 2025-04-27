@@ -14,11 +14,26 @@ public class CharacterActionStateInteract : PawnActionStateInteract<EnumStateCha
     public override void EnterState()
     {
         base.EnterState();
+
+        ACharacter chara = (ACharacter)_character;
+        chara.OnInteractAnimation += Interact;
+        
     }
 
     public override void ExitState()
     {
         base.ExitState();
+
+        ACharacter chara = (ACharacter)_character;
+        chara.OnInteractAnimation -= Interact;
+    }
+
+    public override void DestroyState()
+    {
+        base.DestroyState();
+
+        ACharacter chara = (ACharacter)_character;
+        chara.OnInteractAnimation -= Interact;
     }
 
     public override void UpdateState()
@@ -29,11 +44,14 @@ public class CharacterActionStateInteract : PawnActionStateInteract<EnumStateCha
     public override void CheckChangeState()
     {
         base.CheckChangeState();
-
-        if(_animClock > _animationTime) //Temps d'animation
-        { 
-            ACharacter chara = (ACharacter)_character;
-            chara.StateMachine.ChangeState(chara.StateMachine.States[EnumStateCharacter.Idle]);
-        }
     }
+
+    public void Interact()
+    {
+        _subStateMachine.CurrentObjectInteract.GetComponent<IInteractableBase>().Interact();
+
+        ACharacter chara = (ACharacter)_character;
+        chara.StateMachine.ChangeState(chara.StateMachine.States[EnumStateCharacter.Idle]);
+    }
+
 }

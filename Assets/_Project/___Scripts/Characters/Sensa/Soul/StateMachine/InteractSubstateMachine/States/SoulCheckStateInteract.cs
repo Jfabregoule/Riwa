@@ -13,7 +13,7 @@ public class SoulCheckStateInteract : PawnCheckStateInteract<EnumStateSoul>
             typeof(IInteractableSoul),
         };
 
-
+        _canInteractThroughWall = true;
     }
 
     public override void EnterState()

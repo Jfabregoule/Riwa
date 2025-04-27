@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
@@ -6,26 +7,24 @@ public class Control : MonoBehaviour
 {
     [SerializeField] private BinaryChoice _binaryChoice;
 
-    [SerializeField] private TextMeshProUGUI _textLeft;
-    [SerializeField] private TranslateText _translateTextLeft;
-    [SerializeField] private TranslateText _translateTextRight;
-    [SerializeField] private TextMeshProUGUI _textRight;
+    [SerializeField] private CanvasGroup _interactLeftPart;
+    [SerializeField] private CanvasGroup _joystickLeftPart;
+    [SerializeField] private CanvasGroup _interactRightPart;
+    [SerializeField] private CanvasGroup _joystickRightPart;
     [SerializeField] private TranslateText _translateTextMode;
     [SerializeField] private SentenceTranslate _rightModeSentence;
     [SerializeField] private SentenceTranslate _leftModeSentence;
 
-    private SentenceTranslate _interactText;
-    private SentenceTranslate _joystickText;
+    [SerializeField] private List<CanvasGroup> _uiLeft;
+    [SerializeField] private List<CanvasGroup> _uiRight;
 
     private bool _isRightHanded;
 
     void Start()
     {
         _isRightHanded = SaveSystem.Instance.LoadElement<bool>("_isRightHanded", true);
-        Debug.Log(_isRightHanded);
-        _interactText = _translateTextLeft.GetSentenceTranslate();
-        _joystickText = _translateTextRight.GetSentenceTranslate();
         UpdateBinaryChoice();
+        InvertControlUI();
     }
     private void OnEnable()
     {
@@ -41,6 +40,7 @@ public class Control : MonoBehaviour
     {
         _binaryChoice.InvokeEvent(!_isRightHanded);
         ToggleControlInvert(!_isRightHanded);
+       
     }
     private void UpdateBinaryChoice()
     {
@@ -50,22 +50,25 @@ public class Control : MonoBehaviour
             LeftHanded();
 
         ToggleControlInvert(!_isRightHanded);
-
+        InvertControlUI();
     }
 
     private void RightHanded()
     {
-        _translateTextLeft.SetSentenceTranslate(_interactText);
-        _translateTextRight.SetSentenceTranslate(_joystickText);
+        Helpers.EnabledCanvasGroup(_interactRightPart);
+        Helpers.EnabledCanvasGroup(_joystickLeftPart);
+        Helpers.DisabledCanvasGroup(_interactLeftPart);
+        Helpers.DisabledCanvasGroup(_joystickRightPart);
         _translateTextMode.SetSentenceTranslate(_rightModeSentence);
     }
 
     private void LeftHanded()
     {
-        _translateTextLeft.SetSentenceTranslate(_joystickText);
-        _translateTextRight.SetSentenceTranslate(_interactText);
+        Helpers.DisabledCanvasGroup(_interactRightPart);
+        Helpers.DisabledCanvasGroup(_joystickLeftPart);
+        Helpers.EnabledCanvasGroup(_interactLeftPart);
+        Helpers.EnabledCanvasGroup(_joystickRightPart);
         _translateTextMode.SetSentenceTranslate(_leftModeSentence);
-
     }
 
     private void SetHanded(bool isRightHanded) 
@@ -77,5 +80,36 @@ public class Control : MonoBehaviour
     public void ToggleControlInvert(bool isInvert)
     {
         InputManager.Instance.ToggleControlInversion(isInvert);
+    }
+
+    public void InvertControlUI()
+    {
+        if (_isRightHanded)
+            UIRight();
+        else
+            UILeft();
+    }
+
+    private void UILeft()
+    {
+        for(int i = 0; i < _uiRight.Count; i++)
+        {
+            Helpers.DisabledCanvasGroup(_uiRight[i]);
+        }
+        for(int i = 0; i<_uiLeft.Count;i++)
+        {
+            Helpers.EnabledCanvasGroup(_uiLeft[i]);
+        }
+    }
+    private void UIRight()
+    {
+        for (int i = 0; i < _uiLeft.Count; i++)
+        {
+            Helpers.DisabledCanvasGroup(_uiLeft[i]);
+        }
+        for (int i = 0; i < _uiRight.Count; i++)
+        {
+            Helpers.EnabledCanvasGroup(_uiRight[i]);
+        }
     }
 }

@@ -124,6 +124,12 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &8578570 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4051910961903077886, guid: 64386bc659fff4c489818ce3e7cc6493,
+    type: 3}
+  m_PrefabInstance: {fileID: 378566269}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &52110450
 GameObject:
   m_ObjectHideFlags: 0
@@ -6902,6 +6908,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 707750988919504350, guid: 9834ee94e6699b54f8857f89871e533f,
         type: 3}
+      propertyPath: objectsToFade.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 707750988919504350, guid: 9834ee94e6699b54f8857f89871e533f,
+        type: 3}
       propertyPath: objectsToFade.Array.data[0]
       value: 
       objectReference: {fileID: 378566274}
@@ -6920,6 +6931,11 @@ PrefabInstance:
       propertyPath: objectsToFade.Array.data[3]
       value: 
       objectReference: {fileID: 378566271}
+    - target: {fileID: 707750988919504350, guid: 9834ee94e6699b54f8857f89871e533f,
+        type: 3}
+      propertyPath: objectsToFade.Array.data[4]
+      value: 
+      objectReference: {fileID: 8578570}
     - target: {fileID: 818964426892365947, guid: 9834ee94e6699b54f8857f89871e533f,
         type: 3}
       propertyPath: m_Name
@@ -10269,11 +10285,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fbc253d1998398429897f86879e4bf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 230566527}
-  fadeDuration: 1.5
-  obstructableTag: Obstructable
-  colorPropertyName: _Color
-  targetObstructedAlpha: 0
+  _fadeDuration: 1.5
+  _colorPropertyName: _Color
+  _targetObstructedAlpha: 0
 --- !u!114 &1295893090413329464
 MonoBehaviour:
   m_ObjectHideFlags: 0

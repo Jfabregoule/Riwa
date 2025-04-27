@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: M_Orange_ActiveStatue
-  m_Shader: {fileID: -6465566751694194690, guid: 28774c4e0eb7c8b44b0bbc7dead15376,
+  m_Shader: {fileID: -6465566751694194690, guid: 12549b19cba4d7d48a1e8a8956077340,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -36,6 +36,14 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Base_Activate:
+        m_Texture: {fileID: 2800000, guid: ac75ea55e9ab40e48804929323e20868, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Base_Desactivate:
+        m_Texture: {fileID: 2800000, guid: 221ea7def3138b840b0f416994a3b4f0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -60,6 +68,14 @@ Material:
         m_Texture: {fileID: 2800000, guid: d47c7a52806e0e74ea7aedb1740b7ce4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Emmisive_Activate:
+        m_Texture: {fileID: 2800000, guid: d47c7a52806e0e74ea7aedb1740b7ce4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Emmisive_Desactivate:
+        m_Texture: {fileID: 2800000, guid: cee098225638485479d89f99310dfcd1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _HeightMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -76,6 +92,14 @@ Material:
         m_Texture: {fileID: 2800000, guid: 7fec2ad7d7a7e7842a4c485bf187bb15, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Metallic_Activate:
+        m_Texture: {fileID: 2800000, guid: 7fec2ad7d7a7e7842a4c485bf187bb15, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Metallic_Desactivate:
+        m_Texture: {fileID: 2800000, guid: 0081e978fb606bb47a0823fddcdb828c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _NoiseTexture:
         m_Texture: {fileID: 2800000, guid: 56ce5ddcb6a16f84283a7fb5f68bef89, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -84,12 +108,24 @@ Material:
         m_Texture: {fileID: 2800000, guid: 1284dda0b2cce354e9b3fdae48589f7b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Normal_Activate:
+        m_Texture: {fileID: 2800000, guid: 1284dda0b2cce354e9b3fdae48589f7b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Normal_Desactivate:
+        m_Texture: {fileID: 2800000, guid: 1af348a14a009e64d92e7c22155f7cba, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _PastSubShader_6775bea58ebc4e6d9f93233df66668da_NoiseTexture_901368309_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 56ce5ddcb6a16f84283a7fb5f68bef89, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Roughness:
@@ -135,6 +171,7 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _HeightPower: 0
+    - _IsActivated: 0
     - _Metallic: 0
     - _MetallicStrength: 0
     - _MoveSpeed: 1

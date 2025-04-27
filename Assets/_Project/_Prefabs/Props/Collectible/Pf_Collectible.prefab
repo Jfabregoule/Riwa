@@ -4934,7 +4934,7 @@ GameObject:
   - component: {fileID: 6735792787189876035}
   - component: {fileID: 6224236639870914230}
   m_Layer: 7
-  m_Name: Pf_Collectible
+  m_Name: MOD_Collectible
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4952,7 +4952,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 6495379559967747862}
   m_Father: {fileID: 5106862692904061745}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2358732235496643438
@@ -5057,7 +5058,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 786401219338608806}
-  - {fileID: 6495379559967747862}
   - {fileID: 1119745536232874606}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5085,14 +5085,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5784443153380166206}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4373192573712076705}
   - {fileID: 239893627233851705}
-  m_Father: {fileID: 5106862692904061745}
+  m_Father: {fileID: 786401219338608806}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5906220757143342116
 GameObject:
@@ -5381,7 +5381,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 2.3
+      scalar: 1.5
       minScalar: 1
       maxCurve:
         serializedVersion: 2

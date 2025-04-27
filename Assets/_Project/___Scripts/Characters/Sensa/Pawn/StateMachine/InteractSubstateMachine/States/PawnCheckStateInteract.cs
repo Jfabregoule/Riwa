@@ -68,9 +68,9 @@ public class PawnCheckStateInteract<TStateEnum> : PawnInteractBaseSubstate<TStat
                 Vector3 direction = (targetPoint - sphereCastOrigin).normalized;
                 float distance = Vector3.Distance(sphereCastOrigin, targetPoint) + 0.5f;
 
-                if (Physics.SphereCast(sphereCastOrigin, sphereCastRadius, direction, out RaycastHit hit, distance, layerMask))
+                //if (Physics.SphereCast(sphereCastOrigin, sphereCastRadius, direction, out RaycastHit hit, distance, layerMask))
                 {
-                    if (hit.collider.gameObject == collider.gameObject)
+                    //if (hit.collider.gameObject == collider.gameObject)
                     {
                         _colliderList.Add(collider.gameObject);
                     }

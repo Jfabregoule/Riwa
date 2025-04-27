@@ -42,7 +42,45 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
 
         OffsetRadius = _boxSize.x / 2 + _character.GetComponent<CapsuleCollider>().radius * _character.transform.localScale.x * 1.8f + securityRadius; //J'agrandit loffset pour que l'anime de coup de boule rentre pas dans la crate
         Priority = 0;
+
+        GameManager.Instance.OnTimeChangeStarted += CheckChangeTempo;
+
     }
+
+    private void OnDestroy()
+    {
+        if (GameManager.Instance)
+            GameManager.Instance.OnTimeChangeStarted -= CheckChangeTempo;
+    }
+
+    public void CheckChangeTempo(EnumTemporality temporality)
+    {
+        LayerMask layerMask = temporality == EnumTemporality.Past ? _character.PastLayer : _character.PresentLayer;
+        Collider[] colliders = Physics.OverlapBox(transform.position + Vector3.up * transform.localScale.y * 0.2f, _boxSize * 0.5f, transform.rotation, layerMask);
+
+        if (layerMask.value != (1 << gameObject.layer)) return;
+
+        DebugDrawBox(transform.position + Vector3.up * transform.localScale.y * 0.2f, _boxSize * 0.5f, transform.rotation, UnityEngine.Color.magenta, 20f);
+        foreach (Collider collider in colliders)
+        {
+            if (IsValidObject(collider, temporality))
+            {
+                CanInteract = false;
+                return;
+            }
+        }
+
+        CanInteract = true;
+        return;
+
+    }
+
+    public bool IsValidObject(Collider collider, EnumTemporality temporality)
+    {
+        return collider.gameObject != gameObject
+            && 1 << collider.gameObject.layer == (temporality == EnumTemporality.Past ? _character.PastLayer : _character.PresentLayer);
+    }
+
 
     public void Interact()
     {

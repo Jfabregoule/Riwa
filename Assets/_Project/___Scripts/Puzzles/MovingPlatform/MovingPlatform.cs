@@ -39,6 +39,7 @@ public class MovingPlatform : MonoBehaviour
 
     private void StartMoving()
     {
+        OnMovingPlatformStateUptated(true);
         if (_targetPositions.Count > 1)
             StartCoroutine(MovePlatform());
     }
@@ -82,6 +83,23 @@ public class MovingPlatform : MonoBehaviour
         if (other.CompareTag("Player") && other.transform.IsChildOf(transform))
         {
             other.transform.SetParent(null, true);
+        }
+    }
+
+    public void OnMovingPlatformStateUptated(bool isActive)
+    {
+        float shaderIsActiveFloatValue = 0;
+        if (isActive) shaderIsActiveFloatValue = 1;
+
+        Renderer renderer = GetComponent<Renderer>();
+
+        if (renderer.material.HasProperty("_IsActivated"))
+            renderer.material.SetFloat("_IsActivated", shaderIsActiveFloatValue);
+
+        if (transform.parent.gameObject.TryGetComponent(out Renderer parentRenderer))
+        {
+            if (parentRenderer.material.HasProperty("_IsActivated"))
+                parentRenderer.material.SetFloat("_IsActivated", shaderIsActiveFloatValue);
         }
     }
 }

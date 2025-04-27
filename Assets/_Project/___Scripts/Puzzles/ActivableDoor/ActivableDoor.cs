@@ -78,6 +78,7 @@ public class ActivableDoor : MonoBehaviour
             yield return new WaitForSeconds(1.5f);
             _doorCameras[1].Priority = 25;
             yield return new WaitForSeconds(1.5f);
+            OnDoorStateUpdated(true);
         }
 
         Vector3 start = transform.position;
@@ -105,5 +106,15 @@ public class ActivableDoor : MonoBehaviour
             yield return new WaitForSeconds(1.5f);
         }
         GameManager.Instance.Character.InputManager.EnableGameplayControls();
+    }
+
+    private void OnDoorStateUpdated(bool isActive)
+    {
+        float shaderIsActiveFloatValue = 0;
+        if (isActive) shaderIsActiveFloatValue = 1;
+
+        Renderer renderer = GetComponent<Renderer>();
+        if(renderer.material.HasProperty("_IsActivated"))
+            renderer.material.SetFloat("_IsActivated", shaderIsActiveFloatValue);
     }
 }

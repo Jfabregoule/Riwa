@@ -134,9 +134,11 @@ public class Floor1Room1LevelManager : BaseLevelManager
                 break;
             case DialogueEventType.ResetCamRoom1:
                 StartCoroutine(BlendingCamera(CameraDictionnary[EnumCameraRoom.Main]));
-                StartCoroutine(WaitForPulse());
                 break;
             case DialogueEventType.EnableChangeTime:
+                break;
+            case DialogueEventType.ShowInput:
+                GameManager.Instance.InvokeBasicInput();
                 break;
         }
     }
@@ -170,4 +172,5 @@ public class Floor1Room1LevelManager : BaseLevelManager
     {
         DialogueSystem.Instance.BeginDialogue(_dialogue);
     }
+
 }

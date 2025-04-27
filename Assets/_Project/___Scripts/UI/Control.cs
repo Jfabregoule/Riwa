@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -6,6 +7,7 @@ using static UnityEngine.Rendering.DebugUI;
 public class Control : MonoBehaviour
 {
     [SerializeField] private BinaryChoice _binaryChoice;
+    [SerializeField] private CanvasGroup _controlSettings;
 
     [SerializeField] private CanvasGroup _interactLeftPart;
     [SerializeField] private CanvasGroup _joystickLeftPart;
@@ -18,22 +20,29 @@ public class Control : MonoBehaviour
     [SerializeField] private List<CanvasGroup> _uiLeft;
     [SerializeField] private List<CanvasGroup> _uiRight;
 
+
+    private CanvasGroup _canvasGroup;
     private bool _isRightHanded;
 
+    private bool _isFirstControl;
     void Start()
     {
         _isRightHanded = SaveSystem.Instance.LoadElement<bool>("_isRightHanded", true);
+        _canvasGroup = GetComponent<CanvasGroup>();
+        _isFirstControl = SaveSystem.Instance.LoadElement<bool>("IsFirstControl", false);
         UpdateBinaryChoice();
         InvertControlUI();
     }
     private void OnEnable()
     {
         _binaryChoice.OnValueChange += SetHanded;
+        GameManager.Instance.OnShowBasicInputEvent += ShowInput;
     }
 
     private void OnDisable()
     {
         _binaryChoice.OnValueChange -= SetHanded;
+
     }
 
     public void UpdateControl()
@@ -111,5 +120,22 @@ public class Control : MonoBehaviour
         {
             Helpers.EnabledCanvasGroup(_uiRight[i]);
         }
+    }
+
+    public void ShowInput()
+    {
+        if (!_isFirstControl) return;
+        Helpers.EnabledCanvasGroup(_canvasGroup);
+        Helpers.EnabledCanvasGroup(_controlSettings);
+        _isFirstControl = false;
+        SaveSystem.Instance.SaveElement<bool>("IsFirstControl", _isFirstControl, false);
+        StartCoroutine(WaitSeconds(5f));
+    }
+
+    private IEnumerator WaitSeconds(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        Helpers.DisabledCanvasGroup(_canvasGroup);
+        Helpers.DisabledCanvasGroup(_controlSettings);
     }
 }

@@ -16,6 +16,10 @@ public class LanguageSelector : MonoBehaviour
 
     private TranslateSystem _translateSystem;
 
+    private void OnEnable()
+    {
+        SaveSystem.Instance.OnLoadSettings += SetLanguage;
+    }
     private void Start()
     {
         _translateSystem = GameManager.Instance.TranslateSystem;
@@ -40,7 +44,15 @@ public class LanguageSelector : MonoBehaviour
 
         _buttonLists[index].image.enabled = true;
         _translateSystem.ChangeLanguage(language);
+        SaveSystem.Instance.SaveElement<int>("_language", (int)language, true);
+
     }
 
     private int GetIntCurrentLanguage() => (int)_translateSystem.GetCurrentLanguage();
+
+    private void SetLanguage()
+    {
+        TranslateSystem.EnumLanguage language = (TranslateSystem.EnumLanguage)SaveSystem.Instance.LoadElement<int>("_language",true);
+        SelectLanguage(language);
+    }
 }

@@ -60,7 +60,7 @@ public class SaveSystem : Singleton<SaveSystem>
         { "_vibrationIsOn", true },
         { "_audioIsOn", true },
         { "_isRightHanded", true },
-
+        { "_language", 0 }
     };
 
     private Dictionary<string, object> _defaultProgress = new Dictionary<string, object> // Dictionnaire contenant la progression par defaut.
@@ -70,6 +70,8 @@ public class SaveSystem : Singleton<SaveSystem>
         {"CurrentRoom", 1},
         {"LastDoorID", 0},
         {"LastDoorDirection", DoorDirection.North},
+        {"IsFirstControl",true },
+        {"IsFirstInteraction",true }
     };
 
     /// <summary>

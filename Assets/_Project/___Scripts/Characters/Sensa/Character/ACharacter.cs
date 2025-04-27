@@ -55,8 +55,10 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
 
     private float magnitudeVelocity;
 
+    public delegate void HoldingEvent();
+    public event HoldingEvent OnHoldingStart;
+    public event HoldingEvent OnHoldingEnd;
     //
-
     public event IRespawnable.RespawnEvent OnRespawn;
 
     #endregion
@@ -150,6 +152,15 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
     {
         FallStateCharacter state = (FallStateCharacter)StateMachine.States[EnumStateCharacter.Fall];
         StartCoroutine(state.FallStun(_fallingStun));
+    }
+
+    public void InvokeHoldingStart()
+    {
+        OnHoldingStart?.Invoke();
+    }
+    public void InvokeHoldingEnd()
+    {
+        OnHoldingEnd?.Invoke();
     }
 
     #endregion

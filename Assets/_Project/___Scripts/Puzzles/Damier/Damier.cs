@@ -68,8 +68,6 @@ public class Damier : MonoBehaviour
         _riwa = _instance.Chawa;
         _instance.OnRiwaShowingPath += RiwaFollowPath;
         GeneratePath();
-
-        GameManager.Instance.Character.OnRespawn += RespawnBrokenTile;
     }
 
     [ContextMenu("Generate Damier")]
@@ -501,21 +499,4 @@ public class Damier : MonoBehaviour
         data.cell.GetComponent<Cell>().State = state;
     }
 
-    public void RespawnBrokenTile()
-    {
-        foreach (var cell in _instance.BrokenCells)
-        {
-            if (_damier[cell.Position].cellState == CellState.Broken)
-            {
-                Vector3 respawnPosition = _damier[cell.Position].cell.GetComponent<Cell>().RespawnPosition;
-                Vector3 respawnRotation = _damier[cell.Position].cell.GetComponent<Cell>().RespawnRotation;
-                ChangeCellState(cell.Position, CellState.Breakable);
-                _damier[cell.Position].cell.transform.parent.gameObject.GetComponent<Rigidbody>().isKinematic = true;
-                _damier[cell.Position].cell.transform.parent.gameObject.transform.position = respawnPosition;
-                _damier[cell.Position].cell.transform.parent.gameObject.transform.localEulerAngles = respawnRotation;
-
-            }
-        }
-
-    }
 }

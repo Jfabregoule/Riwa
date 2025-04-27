@@ -22,10 +22,16 @@ public class SequenceActionHeartTaken : SequencerAction
         Vector3 targetPos = GameManager.Instance.Character.transform.position;
         targetPos.y += 0.3f;
 
+        List<Vector3> initialParticleScale = new List<Vector3>();
+        for(int i = 0; i < _instance.RiwaHeartPS.Count; i++)
+        {
+            initialParticleScale.Add(_instance.RiwaHeartPS[i].transform.localScale);
+        }
+
         float elapsedTime = 0f;
         float lerpTime = 3f;
 
-        _instance.RiwaHeart.GetComponent<Animator>().SetTrigger("Taken");
+        _instance.RiwaHeart.transform.GetChild(1).gameObject.GetComponent<Animator>().SetTrigger("Taken");
 
         while(elapsedTime < lerpTime)
         {
@@ -33,6 +39,10 @@ public class SequenceActionHeartTaken : SequencerAction
             float t = Mathf.Clamp01(elapsedTime / lerpTime);
             _instance.RiwaHeart.transform.localScale = Vector3.Lerp(initialScale, targetScale, t);
             _instance.RiwaHeart.transform.position = Vector3.Lerp(initialPos, targetPos, t);
+            for(int i = 0; i < _instance.RiwaHeartPS.Count; i++)
+            {
+                _instance.RiwaHeartPS[i].transform.localScale = Vector3.Lerp(initialParticleScale[i], targetScale, t);
+            }
             yield return null;
         }
 

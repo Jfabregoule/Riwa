@@ -24,6 +24,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
     private CinemachineBrain _brain;
     private CinemachineBlendDefinition _defaultBlend;
     [SerializeField] private GameObject _riwaHeart;
+    [SerializeField] private List<ParticleSystem> _riwaHeartPS;
     [SerializeField] private CinemachineVirtualCamera _endGameCamera;
 
     [Header("Event Sequencer")]
@@ -42,6 +43,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
     public Sequencer EndGameSequencer { get => _endGame; }
     public GameObject RiwaHeart { get => _riwaHeart; }
     public CinemachineVirtualCamera EndGameCamera { get => _endGameCamera; }
+    public List<ParticleSystem> RiwaHeartPS { get => _riwaHeartPS; }
 
     public override void Start()
     {

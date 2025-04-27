@@ -19,8 +19,11 @@ public class DialogueStartFloor1Room2 : MonoBehaviour
         if (_dialogueSystem != null)
             _dialogueSystem.OnDialogueEvent -= DispatchDialogueEvent;
 
-        if(GameManager.Instance)
+        if (GameManager.Instance)
+        {
             GameManager.Instance.CurrentLevelManager.OnLevelEnter -= StartDialogue;
+            GameManager.Instance.OnTimeChangeStarted -= StartChangeTimeDialogue;
+        }
     }
     private void Start()
     {

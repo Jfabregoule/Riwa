@@ -35,14 +35,12 @@ public class RecepterLaser : MonoBehaviour, IActivable
     {
         _isActive = true;
         OnActivated?.Invoke();
-        Debug.Log("Recepteur activé !");
     }
 
     public void Deactivate()
     {
         _isActive = false;
         OnDesactivated?.Invoke();
-        Debug.Log("Recepteur désactivé !");
     }
 
     private IEnumerator DelayedActivation()

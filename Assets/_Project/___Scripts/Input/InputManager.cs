@@ -1,21 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem.EnhancedTouch;
-using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 public class InputManager : Singleton<InputManager>
 {
     private Controls _controls;
 
-    private int? _joystickFingerId = null;
-
     private bool _gameplayEnabled;
     private bool _dialogueEnabled;
     private bool _optionsEnabled;
-
-    private bool _interactEnabled;
-    private bool _moveEnabled;
 
     private bool _controlsInverted = false;
 
@@ -29,6 +22,8 @@ public class InputManager : Singleton<InputManager>
     public event PressEvent OnChangeTime;
     public event PressEvent OnOpenOptions;
     public event PressEvent OnAdvanceDialogue;
+    public event PressEvent OnLockJoystick;
+    public event PressEvent OnUnlockJoystick;
 
     #endregion
 
@@ -37,14 +32,10 @@ public class InputManager : Singleton<InputManager>
         base.Awake();
         _controls = new Controls();
 
-        EnhancedTouchSupport.Enable();
 
         _gameplayEnabled = true;
         _dialogueEnabled = false;
         _optionsEnabled = true;
-
-        _interactEnabled = true;
-        _moveEnabled = true;
     }
 
     private bool IsTouchOverUI(Vector2 touchPosition, int threshold = 0)
@@ -71,6 +62,7 @@ public class InputManager : Singleton<InputManager>
     private void OnEnable()
     {
         _controls.Enable();
+        _controls.Global.Enable();
 
         if (_gameplayEnabled)
             BindGameplayEvents();
@@ -83,6 +75,7 @@ public class InputManager : Singleton<InputManager>
     private void OnDisable()
     {
         _controls.Disable();
+        _controls.Global.Disable();
 
         if (_gameplayEnabled)
             UnbindGameplayEvents();
@@ -103,8 +96,6 @@ public class InputManager : Singleton<InputManager>
     {
         if (_gameplayEnabled) return;
         _gameplayEnabled = true;
-        _interactEnabled = true;
-        _moveEnabled = true;
         BindGameplayEvents();
 
         _controls.Gameplay.Enable();
@@ -114,8 +105,6 @@ public class InputManager : Singleton<InputManager>
     {
         if (!_gameplayEnabled) return;
         _gameplayEnabled = false;
-        _interactEnabled = false;
-        _moveEnabled = false;
         OnMoveEnd?.Invoke();
         UnbindGameplayEvents();
 
@@ -124,20 +113,25 @@ public class InputManager : Singleton<InputManager>
 
     public void EnableGameplayMoveControls()
     {
-        _moveEnabled = true;
-        Touch.onFingerDown += OnFingerDown;
-        Touch.onFingerUp += OnFingerUp;
+        _controls.Gameplay.Touch.Enable();
         _controls.Gameplay.Move.Enable();
     }
 
     public void DisableGameplayMoveControls()
     {
-        _moveEnabled = false;
-        Touch.onFingerDown -= OnFingerDown;
-        Touch.onFingerUp -= OnFingerUp;
-        _joystickFingerId = null;
         OnMoveEnd?.Invoke();
+        _controls.Gameplay.Touch.Disable();
         _controls.Gameplay.Move.Disable();
+    }
+
+    public void LockJoystick()
+    {
+        OnLockJoystick?.Invoke();
+    }
+
+    public void UnlockJoystick()
+    {
+        OnUnlockJoystick?.Invoke();
     }
 
     public void EnableGameplayChangeTimeControls()
@@ -152,17 +146,11 @@ public class InputManager : Singleton<InputManager>
 
     public void EnableGameplayInteractControls()
     {
-        _interactEnabled = true;
-        Touch.onFingerDown += OnFingerDown;
-        Touch.onFingerUp += OnFingerUp;
         _controls.Gameplay.Interact.Enable();
     }
 
     public void DisableGameplayInteractControls()
     {
-        _interactEnabled = false;
-        Touch.onFingerDown -= OnFingerDown;
-        Touch.onFingerUp -= OnFingerUp;
         _controls.Gameplay.Interact.Disable();
     }
 
@@ -213,7 +201,7 @@ public class InputManager : Singleton<InputManager>
 
     public Vector2 GetPressPosition()
     {
-        return _controls.Gameplay.PressPosition.ReadValue<Vector2>();
+        return _controls.Global.PressPosition.ReadValue<Vector2>();
     }
     #endregion
 
@@ -221,23 +209,19 @@ public class InputManager : Singleton<InputManager>
     #region Bind / Unbind Methods
     private void BindGameplayEvents()
     {
-        Touch.onFingerDown += OnFingerDown;
-        Touch.onFingerUp += OnFingerUp;
+        _controls.Gameplay.Touch.performed += ctx => TouchPerfomed();
+        _controls.Gameplay.Touch.canceled += ctx => TouchCanceled();
 
         _controls.Gameplay.ChangeTime.performed += ctx => ChangeTimePerfomed();
-
-        //Pour PC
         _controls.Gameplay.Interact.performed += ctx => InteractPerfomed();
     }
 
     private void UnbindGameplayEvents()
     {
-        Touch.onFingerDown -= OnFingerDown;
-        Touch.onFingerUp -= OnFingerUp;
+        _controls.Gameplay.Touch.performed -= ctx => TouchPerfomed();
+        _controls.Gameplay.Touch.canceled -= ctx => TouchCanceled();
 
         _controls.Gameplay.ChangeTime.performed -= ctx => ChangeTimePerfomed();
-
-        //Pour PC
         _controls.Gameplay.Interact.performed -= ctx => InteractPerfomed();
     }
 
@@ -264,40 +248,29 @@ public class InputManager : Singleton<InputManager>
 
     #region Events Methods
 
-    private void OnFingerDown(Finger finger)
-    {
-        Vector2 pos = finger.currentTouch.screenPosition;
-
+    private void TouchPerfomed() {
+        Vector2 pos = GetPressPosition();
         bool isLeftSide = pos.x < Screen.width / 2;
         if (_controlsInverted) isLeftSide = !isLeftSide;
 
-        if (isLeftSide && _joystickFingerId == null && _moveEnabled)
-        {
-            if (IsTouchOverUI(pos, 1)) return;
-
-            _joystickFingerId = finger.index;
-            OnMove?.Invoke(pos);
-        }
-
-        else if (!isLeftSide && _interactEnabled)
+        if (isLeftSide)
         {
             if (IsTouchOverUI(pos, 0)) return;
-            OnInteract?.Invoke();
+
+            OnMove?.Invoke(pos);
         }
     }
 
-    private void OnFingerUp(Finger finger)
+    private void TouchCanceled()
     {
-        if (_joystickFingerId == finger.index)
-        {
-            _joystickFingerId = null;
-            OnMoveEnd?.Invoke();
-        }
+        OnMoveEnd?.Invoke();
     }
 
     private void InteractPerfomed() => OnInteract?.Invoke();
     private void AdvanceDialoguePerfomed() 
     {
+        if (IsTouchOverUI(GetPressPosition(), 0)) return;
+
         OnAdvanceDialogue?.Invoke();
     }
     private void ChangeTimePerfomed() => OnChangeTime?.Invoke();

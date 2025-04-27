@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using static Statue;
 
@@ -53,7 +54,6 @@ public class GameManager : Singleton<GameManager>
         TranslateSystem = GameObject.FindGameObjectWithTag(TRANSLATE_TAG).GetComponent<TranslateSystem>();
 
         CurrentTemporality = EnumTemporality.Present;
-        InputManager.Instance.DisableGameplayControls();
     }
 
     public void Load3C(CameraHandler cameraHandler, ACharacter character, VariableJoystick joystick)

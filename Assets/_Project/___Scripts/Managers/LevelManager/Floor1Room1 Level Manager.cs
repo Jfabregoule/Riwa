@@ -113,6 +113,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
             
             if (_areEventEnabled)
             {
+                GameManager.Instance.Character.StateMachine.GoToIdle();
                 _event3.InitializeSequence();
             }
         }

@@ -40,7 +40,15 @@ public class ActivableDoor : MonoBehaviour
     private void CheckDoorState()
     {
         if(_currentActivated == _activableComponents.Length)
+        {
             OpenDoor();
+            foreach (IActivable activable in _activableComponents)
+            {
+                activable.OnActivated -= OnActivableActivated;
+                activable.OnDesactivated -= OnActivableDeactivated;
+            }
+        }
+            
         //else
         //    CloseDoor();
     }
@@ -70,8 +78,8 @@ public class ActivableDoor : MonoBehaviour
 
     private IEnumerator LerpDoorPosition(Vector3 targetPosition)
     {
-
-        GameManager.Instance.Character.InputManager.DisableGameplayControls();
+        GameManager.Instance.Character.StateMachine.GoToIdle();
+        InputManager.Instance.DisableGameplayControls();
         if (_doorCameras.Count > 0)
         {
             _doorCameras[0].Priority = 20;
@@ -105,7 +113,7 @@ public class ActivableDoor : MonoBehaviour
             _doorCameras[0].Priority = 0;
             yield return new WaitForSeconds(1.5f);
         }
-        GameManager.Instance.Character.InputManager.EnableGameplayControls();
+        InputManager.Instance.EnableGameplayControls();
     }
 
     private void OnDoorStateUpdated(bool isActive)

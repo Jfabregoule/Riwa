@@ -26,6 +26,7 @@ public class TransitionCamera : MonoBehaviour
         CurrentActive++;
         if (CurrentActive == _activables.Length)
         {
+            GameManager.Instance.Character.StateMachine.GoToIdle();
             StartCoroutine(SwitchCamera());
         }
     }
@@ -40,6 +41,7 @@ public class TransitionCamera : MonoBehaviour
 
     private IEnumerator SwitchCamera()
     {
+        InputManager.Instance.DisableGameplayControls();
         _cameras[0].Priority = 20;
         yield return new WaitForSeconds(_waitOnCamera);
         for (int i = 0; i < _cameras.Length - 1; i++)
@@ -49,5 +51,6 @@ public class TransitionCamera : MonoBehaviour
             yield return new WaitForSeconds(_waitOnCamera);
         }
         _cameras[_cameras.Length - 1].Priority = 0;
+        InputManager.Instance.EnableGameplayControls();
     }
 }

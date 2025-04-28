@@ -22,6 +22,8 @@ public class DialogueSystem : Singleton<DialogueSystem>
 
     public DialogueAsset ProcessingDialogue { get; private set; }
 
+    public bool IsInDialogue { get; private set; }
+
     private int _sectionIndex;
     private int _sentenceIndex;
     private int _characterIndex;
@@ -36,7 +38,7 @@ public class DialogueSystem : Singleton<DialogueSystem>
     public void Start()
     {
         ProcessingDialogue = null;
-
+        IsInDialogue = false;
         EventRegistery = new DialogueEventRegistry();
 
         _beginSequencer.Init();
@@ -83,7 +85,7 @@ public class DialogueSystem : Singleton<DialogueSystem>
             InputManager.Instance?.DisableGameplayControls();
             //Disable EventSystem
         }
-
+        IsInDialogue = true;
         _beginSequencer.InitializeSequence();
     }
 
@@ -96,6 +98,8 @@ public class DialogueSystem : Singleton<DialogueSystem>
 
         if (ProcessingDialogue.ClosureTriggerEvent)
             OnDialogueEvent?.Invoke(ProcessingDialogue.ClosureEventType);
+
+        IsInDialogue = false;
     }
 
     public void AdvanceDialogue()

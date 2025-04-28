@@ -29,11 +29,12 @@ public class Control : MonoBehaviour
 
     void Start()
     {
-        _isRightHanded = SaveSystem.Instance.LoadElement<bool>("_isRightHanded", true);
+        SaveSystem.Instance.OnLoadSettings += LoadingHanded;
+        //_isRightHanded = SaveSystem.Instance.LoadElement<bool>("_isRightHanded", true);
         _canvasGroup = GetComponent<CanvasGroup>();
         _isFirstControl = SaveSystem.Instance.LoadElement<bool>("IsFirstControl", false);
-        UpdateBinaryChoice();
-        InvertControlUI();
+        //UpdateBinaryChoice();
+        //InvertControlUI();
     }
     private void OnEnable()
     {
@@ -136,6 +137,7 @@ public class Control : MonoBehaviour
         Helpers.EnabledCanvasGroup(_controlSettings);
         _isFirstControl = false;
         SaveSystem.Instance.SaveElement<bool>("IsFirstControl", _isFirstControl, false);
+        GameManager.Instance.OnShowBasicInputEvent -= ShowInput;
         StartCoroutine(WaitSeconds(5f));
     }
 
@@ -145,4 +147,12 @@ public class Control : MonoBehaviour
         Helpers.DisabledCanvasGroup(_canvasGroup);
         Helpers.DisabledCanvasGroup(_controlSettings);
     }
+
+    public void LoadingHanded()
+    {
+        _isRightHanded = SaveSystem.Instance.LoadElement<bool>("_isRightHanded", true);
+        UpdateBinaryChoice();
+        InvertControlUI();
+    }
+
 }

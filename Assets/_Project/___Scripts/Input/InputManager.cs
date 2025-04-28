@@ -16,14 +16,16 @@ public class InputManager : Singleton<InputManager>
 
     public delegate void PressEvent();
     public delegate void MoveEvent(Vector2 position);
+    public delegate void Lock(bool isRight);
     public event PressEvent OnInteract;
     public event MoveEvent OnMove;
     public event PressEvent OnMoveEnd;
     public event PressEvent OnChangeTime;
     public event PressEvent OnOpenOptions;
     public event PressEvent OnAdvanceDialogue;
-    public event PressEvent OnLockJoystick;
-    public event PressEvent OnUnlockJoystick;
+    public event Lock OnLockJoystick;
+    public event Lock OnUnlockJoystick;
+    public event PressEvent OnTouchScreen;
 
     #endregion
 
@@ -126,12 +128,12 @@ public class InputManager : Singleton<InputManager>
 
     public void LockJoystick()
     {
-        OnLockJoystick?.Invoke();
+        OnLockJoystick?.Invoke(_controlsInverted);
     }
 
     public void UnlockJoystick()
     {
-        OnUnlockJoystick?.Invoke();
+        OnUnlockJoystick?.Invoke(_controlsInverted);
     }
 
     public void EnableGameplayChangeTimeControls()
@@ -238,11 +240,14 @@ public class InputManager : Singleton<InputManager>
     private void BindOptionsEvents()
     {
         _controls.Options.Open.performed += ctx => OptionsPerfomed();
+        _controls.Options.Touch.performed += ctx => TouchScreenPerformed();
     }
 
     private void UnbindOptionsEvents()
     {
         _controls.Options.Open.performed -= ctx => OptionsPerfomed();
+        _controls.Options.Touch.performed -= ctx => TouchScreenPerformed();
+
     }
     #endregion
 
@@ -275,6 +280,13 @@ public class InputManager : Singleton<InputManager>
     }
     private void ChangeTimePerfomed() => OnChangeTime?.Invoke();
     private void OptionsPerfomed() => OnOpenOptions?.Invoke();
+
+    private void TouchScreenPerformed()
+    {
+        if (IsTouchOverUI(GetPressPosition(), 0)) return;
+
+        OnTouchScreen?.Invoke();
+    }
 
     #endregion
 }

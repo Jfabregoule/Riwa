@@ -190,6 +190,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Touch"",
+                    ""type"": ""Button"",
+                    ""id"": ""79bfb54b-dbf7-4a90-a9da-1d85c883501c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -201,6 +210,17 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Open"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ef6e0399-e909-4f25-966b-cbe35a1e22d5"",
+                    ""path"": ""<Touchscreen>/touch0/press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Touch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -224,6 +244,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         // Options
         m_Options = asset.FindActionMap("Options", throwIfNotFound: true);
         m_Options_Open = m_Options.FindAction("Open", throwIfNotFound: true);
+        m_Options_Touch = m_Options.FindAction("Touch", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -448,11 +469,13 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Options;
     private List<IOptionsActions> m_OptionsActionsCallbackInterfaces = new List<IOptionsActions>();
     private readonly InputAction m_Options_Open;
+    private readonly InputAction m_Options_Touch;
     public struct OptionsActions
     {
         private @Controls m_Wrapper;
         public OptionsActions(@Controls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Open => m_Wrapper.m_Options_Open;
+        public InputAction @Touch => m_Wrapper.m_Options_Touch;
         public InputActionMap Get() { return m_Wrapper.m_Options; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -465,6 +488,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Open.started += instance.OnOpen;
             @Open.performed += instance.OnOpen;
             @Open.canceled += instance.OnOpen;
+            @Touch.started += instance.OnTouch;
+            @Touch.performed += instance.OnTouch;
+            @Touch.canceled += instance.OnTouch;
         }
 
         private void UnregisterCallbacks(IOptionsActions instance)
@@ -472,6 +498,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Open.started -= instance.OnOpen;
             @Open.performed -= instance.OnOpen;
             @Open.canceled -= instance.OnOpen;
+            @Touch.started -= instance.OnTouch;
+            @Touch.performed -= instance.OnTouch;
+            @Touch.canceled -= instance.OnTouch;
         }
 
         public void RemoveCallbacks(IOptionsActions instance)
@@ -507,5 +536,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     public interface IOptionsActions
     {
         void OnOpen(InputAction.CallbackContext context);
+        void OnTouch(InputAction.CallbackContext context);
     }
 }

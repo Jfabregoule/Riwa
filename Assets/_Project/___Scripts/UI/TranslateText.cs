@@ -16,6 +16,7 @@ public class TranslateText : MonoBehaviour
 
     private void Start()
     {
+        SaveSystem.Instance.OnLoadSettings += SetText;
         GameManager.Instance.TranslateSystem.OnLanguageChanged += SetText;
     }
 
@@ -33,4 +34,5 @@ public class TranslateText : MonoBehaviour
     {
         return _sentence;
     }
+
 }

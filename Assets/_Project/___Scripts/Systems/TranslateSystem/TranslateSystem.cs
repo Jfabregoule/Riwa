@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Unity.VisualScripting.Icons;
 
 public class TranslateSystem : MonoBehaviour
 {
@@ -19,6 +20,11 @@ public class TranslateSystem : MonoBehaviour
         Portuguese
     }
 
+    private void Start()
+    {
+        SaveSystem.Instance.OnLoadSettings += SetCurrentLanguage;
+    }
+
     public void ChangeLanguage(EnumLanguage language)
     {
         CurrentLanguage = language;
@@ -28,5 +34,11 @@ public class TranslateSystem : MonoBehaviour
     public EnumLanguage GetCurrentLanguage()
     {
         return CurrentLanguage;
+    }
+
+    private void SetCurrentLanguage()
+    {
+        CurrentLanguage = (EnumLanguage)SaveSystem.Instance.LoadElement<int>("_language", true);
+        ChangeLanguage(CurrentLanguage);
     }
 }

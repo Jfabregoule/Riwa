@@ -142,6 +142,11 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
         StateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.ChangeTempo]);
     }
 
+    public void TriggerChangeTempoWithouCooldown()
+    {
+        StateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.ChangeTempo]);
+    }
+
     public void Respawn()
     {
         OnRespawn?.Invoke();

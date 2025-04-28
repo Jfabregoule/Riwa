@@ -16,6 +16,9 @@ public class Floor1Room0LevelManager : BaseLevelManager
     [Header("Cameras")]
     [SerializeField] private CinemachineVirtualCamera _cameraRiwaSensa;
 
+    [Header("Cinematic")]
+    [SerializeField] private CinematicRoom0Manager _cinematicManager;
+
     private bool _isCinematicDone = false;
 
     public GameObject Riwa { get => _riwa; }
@@ -23,5 +26,6 @@ public class Floor1Room0LevelManager : BaseLevelManager
     public Transform SensaLandPos { get => _sensaLandPos; }
     public CinemachineVirtualCamera RiwaSensaCamera { get => _cameraRiwaSensa; }
     public bool IsCinematicDone { get => _isCinematicDone; set =>  _isCinematicDone = value; }
+    public CinematicRoom0Manager CinematicManager { get => _cinematicManager; }
 
 }

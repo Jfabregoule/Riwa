@@ -11,6 +11,8 @@ public class CinematicRoom0Manager : MonoBehaviour
 
     private System.Action OnFinishSpeak;
 
+    public DialogueAsset Room0Dialogue { get => _dialogueAsset; }
+
     private void Start()
     {
         _instance = (Floor1Room0LevelManager)Floor1Room0LevelManager.Instance;
@@ -22,21 +24,17 @@ public class CinematicRoom0Manager : MonoBehaviour
 
     private void Init()
     {
-        Debug.Log("Player entry");
         _sequencerEntry.Init();
         DialogueSystem.Instance.OnDialogueEvent += DispatchEventOnDialogueEvent;
-        DialogueSystem.Instance.BeginDialogue(_dialogueAsset);
+        _sequencerEntry.InitializeSequence();
     }
 
     private void DispatchEventOnDialogueEvent(DialogueEventType dialogueEvent)
     {
         switch(dialogueEvent)
         {
-            case DialogueEventType.AntreRiwaEntry:
-                _sequencerEntry.InitializeSequence();
-                break;
             case DialogueEventType.AntreRiwaChangeTempo:
-                GameManager.Instance.Character.TriggerChangeTempo();
+                GameManager.Instance.Character.TriggerChangeTempoWithouCooldown();
                 break;
             case DialogueEventType.AntreRiwaCinematicEnd:
                 _instance.IsCinematicDone = true;

@@ -19,7 +19,7 @@ public class SequenceActionRoom0SensaTowardRiwa : SequencerAction
 
     public override IEnumerator StartSequence(Sequencer context)
     {
-
+        Debug.Log("Allo ?");
         _isMoving = true;
         _chara.OnMoveToFinished += FinishMoveto;
 
@@ -43,5 +43,6 @@ public class SequenceActionRoom0SensaTowardRiwa : SequencerAction
     public void FinishMoveto()
     {
         _isMoving = false;
+        DialogueSystem.Instance.BeginDialogue(_instance.CinematicManager.Room0Dialogue);
     }
 }

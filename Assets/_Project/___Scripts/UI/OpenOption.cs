@@ -27,7 +27,7 @@ public class OpenOption : MonoBehaviour
             _inputManager.OnOpenOptions -= OpenOptions;
         }
     }
-    private void OpenOptions()
+    public void OpenOptions()
     {
         Helpers.DisabledCanvasGroup(_optionsButtonCanvasGroup);
         _inputManager.DisableGameplayControls();

@@ -51,8 +51,10 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
 
     private float magnitudeVelocity;
 
+    public delegate void HoldingEvent();
+    public event HoldingEvent OnHoldingStart;
+    public event HoldingEvent OnHoldingEnd;
     //
-
     public event IRespawnable.RespawnEvent OnRespawn;
     public event System.Action OnRotate;
     public event System.Action OnInteractAnimation;
@@ -156,6 +158,15 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
     public void InvokeInteract()
     {
         OnInteractAnimation?.Invoke();
+    }
+
+    public void InvokeHoldingStart()
+    {
+        OnHoldingStart?.Invoke();
+    }
+    public void InvokeHoldingEnd()
+    {
+        OnHoldingEnd?.Invoke();
     }
 
     #endregion

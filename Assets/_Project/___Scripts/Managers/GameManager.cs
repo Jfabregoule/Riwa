@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 using static Statue;
 
 
@@ -29,6 +30,10 @@ public class GameManager : Singleton<GameManager>
     private BaseLevelManager _currentLevelManager;
 
     private BlackScreen _blackScreen;
+
+    public delegate void ShowInput();
+    public event ShowInput OnShowBasicInputEvent;
+    public event ShowInput OnShowMoveInputEvent;
 
     public delegate void ChangeTimeEvent(EnumTemporality temporality);
     public event ChangeTimeEvent OnTimeChangeStarted;
@@ -95,5 +100,14 @@ public class GameManager : Singleton<GameManager>
     public void SetBlackScreen()
     {
         _blackScreen = GameObject.Find("BlackScreen").GetComponent<BlackScreen>();
+    }
+
+    public void InvokeBasicInput()
+    {
+        OnShowBasicInputEvent?.Invoke();
+    }
+    public void InvokeInteractInput()
+    {
+        OnShowMoveInputEvent?.Invoke();
     }
 }

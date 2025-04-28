@@ -7,7 +7,7 @@ public class SequenceChangeTimePulse : SequencerAction
 {
     public override IEnumerator StartSequence(Sequencer context)
     {
-        GameManager.Instance.PulseIndice();
+        //GameManager.Instance.PulseIndice();
         yield return null;
     }
 }

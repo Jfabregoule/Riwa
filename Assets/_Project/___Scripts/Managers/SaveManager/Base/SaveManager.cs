@@ -31,6 +31,7 @@ public class SaveManager<T> : Singleton<T> where T : SaveManager<T>
     {
         SaveSystem.Instance.OnLoadProgress -= LoadProgess;
         SaveSystem.Instance.OnSaveProgress -= SaveProgress;
+        SaveProgress();
     }
 
     protected virtual void LoadProgess()

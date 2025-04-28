@@ -69,7 +69,9 @@ public enum DialogueEventType
     AntreRiwaChangeTempo,
     AntreRiwaCinematicEnd,
     PusleChangeTime,
-    ShowInput
+    ShowInput,
+    OnFinish,
+    UnlockChangeTime
 }
 
 public enum WaitDialogueEventType

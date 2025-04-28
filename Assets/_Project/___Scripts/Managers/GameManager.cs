@@ -34,6 +34,7 @@ public class GameManager : Singleton<GameManager>
     public delegate void ShowInput();
     public event ShowInput OnShowBasicInputEvent;
     public event ShowInput OnShowMoveInputEvent;
+    public event ShowInput OnUnlockChangeTime;
 
     public delegate void ChangeTimeEvent(EnumTemporality temporality);
     public event ChangeTimeEvent OnTimeChangeStarted;
@@ -51,6 +52,7 @@ public class GameManager : Singleton<GameManager>
     public EnumTemporality CurrentTemporality { get => _currentTemporality; set => _currentTemporality = value; }
     public BlackScreen BlackScreen { get => _blackScreen; set => _blackScreen = value; }
     public BaseLevelManager CurrentLevelManager { get => _currentLevelManager; set => _currentLevelManager = value; }
+    public bool ChangeTimeUnlock { get; set; }
 
     #endregion
 
@@ -59,6 +61,7 @@ public class GameManager : Singleton<GameManager>
         TranslateSystem = GameObject.FindGameObjectWithTag(TRANSLATE_TAG).GetComponent<TranslateSystem>();
 
         CurrentTemporality = EnumTemporality.Present;
+        ChangeTimeUnlock = false;
     }
 
     public void Load3C(CameraHandler cameraHandler, ACharacter character, VariableJoystick joystick)
@@ -94,6 +97,13 @@ public class GameManager : Singleton<GameManager>
 
     public void PulseIndice()
     {
+        OnIndicePulse?.Invoke();
+    }
+
+    public void UnlockChangeTime()
+    {
+        ChangeTimeUnlock = true;
+        OnUnlockChangeTime?.Invoke();
         OnIndicePulse?.Invoke();
     }
 

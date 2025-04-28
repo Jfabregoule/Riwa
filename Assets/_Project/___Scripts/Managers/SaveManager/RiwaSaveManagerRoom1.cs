@@ -22,6 +22,8 @@ public class RiwaSaveManagerRoom1 : SaveManager<RiwaSaveManagerRoom1>
             _presentCrate.position = SaveSystem.Instance.LoadElement<SerializableVector3>(_roomPrefix + "PresentCratePosition").ToVector3();
         if (SaveSystem.Instance.ContainsElements(_roomPrefix + "PresentCrateRotation"))
             _presentCrate.rotation = Quaternion.Euler(SaveSystem.Instance.LoadElement<SerializableVector3>(_roomPrefix + "PresentCrateRotation").ToVector3());
+
+
     }
 
     protected override void SaveProgress()

@@ -10,12 +10,12 @@ public class SequencerActionResetDoor : SequencerAction
 
     public override void Initialize(GameObject obj)
     {
-        _door = obj.GetComponent<Door>();
     }
 
 
     public override IEnumerator StartSequence(Sequencer context)
     {
+        _door = context.GetComponent<Door>();
         _door?.ResetDoor();
 
         yield return null;

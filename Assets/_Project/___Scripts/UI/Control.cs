@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 public class Control : MonoBehaviour
 {
@@ -25,6 +24,9 @@ public class Control : MonoBehaviour
     private bool _isRightHanded;
 
     private bool _isFirstControl;
+
+    public bool IsRightHanded { get => _isRightHanded; set => _isRightHanded = value; }
+
     void Start()
     {
         _isRightHanded = SaveSystem.Instance.LoadElement<bool>("_isRightHanded", true);
@@ -105,10 +107,13 @@ public class Control : MonoBehaviour
         {
             Helpers.DisabledCanvasGroup(_uiRight[i]);
         }
-        for(int i = 0; i<_uiLeft.Count;i++)
+        for (int i = 0; i<_uiLeft.Count;i++)
         {
+            if (i == 0 && !GameManager.Instance.ChangeTimeUnlock) continue;
+
             Helpers.EnabledCanvasGroup(_uiLeft[i]);
         }
+        
     }
     private void UIRight()
     {
@@ -118,6 +123,8 @@ public class Control : MonoBehaviour
         }
         for (int i = 0; i < _uiRight.Count; i++)
         {
+            if (i == 0 && !GameManager.Instance.ChangeTimeUnlock) continue;
+
             Helpers.EnabledCanvasGroup(_uiRight[i]);
         }
     }

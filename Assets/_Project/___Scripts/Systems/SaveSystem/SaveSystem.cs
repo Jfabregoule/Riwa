@@ -71,7 +71,8 @@ public class SaveSystem : Singleton<SaveSystem>
         {"LastDoorID", 0},
         {"LastDoorDirection", DoorDirection.North},
         {"IsFirstControl",true },
-        {"IsFirstInteraction",true }
+        {"IsFirstInteraction",true },
+        {"Room1Progress",EnumAdvancementRoom1Test.Start }
     };
 
     /// <summary>

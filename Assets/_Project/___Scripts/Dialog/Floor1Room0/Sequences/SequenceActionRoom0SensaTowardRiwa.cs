@@ -7,28 +7,41 @@ public class SequenceActionRoom0SensaTowardRiwa : SequencerAction
 {
 
     private Floor1Room0LevelManager _instance;
+    private bool _isMoving;
+    private ACharacter _chara;
 
     public override void Initialize(GameObject obj)
     {
         _instance = (Floor1Room0LevelManager)Floor1Room0LevelManager.Instance;
+        _isMoving = false;
+        _chara = GameManager.Instance.Character;
     }
 
     public override IEnumerator StartSequence(Sequencer context)
     {
-        Vector3 initialPos = GameManager.Instance.Character.transform.position;
+
+        _isMoving = true;
+        _chara.OnMoveToFinished += FinishMoveto;
+
         Vector3 landPos = _instance.SensaLandPos.position;
+        Vector3 target = landPos;
 
-        float elapsedTime = 0f;
-        float lerpTime = 3f;
+        MoveToStateCharacter state = (MoveToStateCharacter)_chara.StateMachine.States[EnumStateCharacter.MoveTo];
+        state.LoadState(EnumStateCharacter.Idle, target, target);
+        _chara.StateMachine.ChangeState(state);
 
-        while(elapsedTime < lerpTime)
+        while(_isMoving)
         {
-            elapsedTime += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsedTime / lerpTime);
-            GameManager.Instance.Character.transform.position = Vector3.Lerp(initialPos, landPos, t);
             yield return null;
         }
 
-        GameManager.Instance.Character.transform.position = landPos;
+        _chara.OnMoveToFinished -= FinishMoveto;
+
+        yield break;
+    }
+
+    public void FinishMoveto()
+    {
+        _isMoving = false;
     }
 }

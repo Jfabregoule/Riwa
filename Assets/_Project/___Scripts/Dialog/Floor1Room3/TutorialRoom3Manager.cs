@@ -58,6 +58,7 @@ public class TutorialRoom3Manager : MonoBehaviour
                 _instance.InvokeOnRiwaShowingPath();
                 break;
             case DialogueEventType.RiwaEndShowingPath:
+                _instance.ChawaPathTriggerZone.enabled = true;
                 _instance.RiwaSensaCamera[0].Priority = 0;
                 break;
             case DialogueEventType.ShowLianaPath:
@@ -86,7 +87,7 @@ public class TutorialRoom3Manager : MonoBehaviour
 
         Vector3 initialChawaPos = _instance.Chawa.transform.position;
         Vector3 sensaPosition = GameManager.Instance.Character.transform.position;
-        Vector3 targetPosition = new Vector3(sensaPosition.x - 1f, 0.5f, initialChawaPos.z);
+        Vector3 targetPosition = new Vector3(sensaPosition.x - 1f, 0.5f, initialChawaPos.z + 1f);
         Vector3 finalScale = new Vector3(0.5f, 0.5f, 0.5f);
 
         Quaternion initialChawaRot = _instance.Chawa.transform.rotation;

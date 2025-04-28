@@ -3,6 +3,13 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 
+[System.Serializable]
+public struct MuralPieceData
+{
+    public MuralPiece MuralPiece;
+    public EnumTemporality Temporality;
+}
+
 public class Floor1Room4LevelManager : BaseLevelManager
 {
     [Header("Cameras")]
@@ -24,6 +31,10 @@ public class Floor1Room4LevelManager : BaseLevelManager
     [Header("Puzzle")]
     [SerializeField] private VineRetraction _rootCollider;
     [SerializeField] TreeStumpTest _treeStumpTest;
+    [SerializeField] private List<MuralPiece> _muralPieces;
+    [SerializeField] private CinemachineVirtualCamera _completedFresqueCamera;
+    
+    private Dictionary<MuralPieceData, bool> _fresqueCompletion = new Dictionary<MuralPieceData, bool>();
 
     private bool _isTutorialDone = false;
 
@@ -36,6 +47,7 @@ public class Floor1Room4LevelManager : BaseLevelManager
     public MuralPiece MuralPiece { get => _muralPiece; }
     public Transform SensaLandingTransform { get => _sensaLandingTransform; }
     public Transform RiwaLandingTransform { get => _riwaLandingTransform; }
+    public Dictionary<MuralPieceData, bool> FresqueCompletionData { get => _fresqueCompletion; set => _fresqueCompletion = value; }
 
     public override void OnEnable()
     {
@@ -50,6 +62,15 @@ public class Floor1Room4LevelManager : BaseLevelManager
         _rootCollider.OnGrowthPercentageUnreached -= PlayerCannotInteractWithSocle;
     }
 
+    private void Start()
+    {
+        foreach(MuralPiece piece in _muralPieces)
+        {
+            _fresqueCompletion.Add(new MuralPieceData() { MuralPiece = piece, Temporality = piece.PieceTemporality }, false);
+            piece.OnPickUp += CheckFresqueTemporalityCompletion;
+        }
+    }
+
     private void PlayerCanInteractWithSocle()
     {
         _treeStumpTest.enabled = true;
@@ -58,5 +79,42 @@ public class Floor1Room4LevelManager : BaseLevelManager
     private void PlayerCannotInteractWithSocle()
     {
         _treeStumpTest.enabled = false;
+    }
+
+    public void CheckFresqueTemporalityCompletion()
+    {
+        int pastPiecesPlaced = 0;
+        int presentPiecesPlaced = 0;
+        
+        foreach(var entry in _fresqueCompletion)
+        {
+            if(entry.Value == true)
+            {
+                if(entry.Key.Temporality == EnumTemporality.Past)
+                    pastPiecesPlaced++;
+                else if(entry.Key.Temporality == EnumTemporality.Present)
+                    presentPiecesPlaced++;
+            }
+        }
+
+        if (pastPiecesPlaced == 4 || presentPiecesPlaced == 4) StartCoroutine(SeeCompletedFresque());
+
+    }
+
+    private IEnumerator SeeCompletedFresque()
+    {
+        GameManager.Instance.Character.InputManager.DisableGameplayControls();
+        _completedFresqueCamera.Priority = 50;
+        yield return new WaitForSeconds(4f);
+        GameManager.Instance.Character.InputManager.EnableGameplayControls();
+        _completedFresqueCamera.Priority = 0;
+    }
+
+    public void ChangeFresqueCompletionData(MuralPiece piece, EnumTemporality temporality)
+    {
+        MuralPieceData key = new MuralPieceData() { MuralPiece = piece, Temporality = temporality };
+
+        if(_fresqueCompletion.ContainsKey(key))
+            _fresqueCompletion[key] = true;
     }
 }

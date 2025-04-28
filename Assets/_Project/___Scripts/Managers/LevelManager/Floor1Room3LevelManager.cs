@@ -22,6 +22,7 @@ public class Floor1Room3LevelManager : BaseLevelManager
     [SerializeField] private GameObject _chawa;
     [SerializeField] private ParticleSystem _chawaTrail;
     [SerializeField] private Transform _chawaLianaPosition;
+    [SerializeField] private BoxCollider _chawaPathTriggerZone;
 
     [Header("Dialogue Manager")]
     [SerializeField] private TutorialRoom3Manager _tutorialRoom3Manager;
@@ -41,6 +42,7 @@ public class Floor1Room3LevelManager : BaseLevelManager
     public TutorialRoom3Manager TutorialRoom3Manager { get => _tutorialRoom3Manager; }
     public bool IsDamierCompleted { get => _isDamierCompleted; set => _isDamierCompleted = value; }
     public Transform ChawaLianaPosition { get => _chawaLianaPosition; set => _chawaLianaPosition = value; }
+    public BoxCollider ChawaPathTriggerZone { get => _chawaPathTriggerZone; set => _chawaPathTriggerZone = value; }
 
     #endregion
 

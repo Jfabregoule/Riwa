@@ -31,7 +31,7 @@ public class SequencerActionLerpSensaAtPosition : SequencerAction
 
         while(elapsedTime < MoveDuration)
         {
-            GameManager.Instance.Character.Animator.SetBool("isWalking", true);
+            GameManager.Instance.Character.Animator.SetBool("Move", true);
             elapsedTime += Time.deltaTime;
             float t = Mathf.Clamp01(elapsedTime / MoveDuration);
             GameManager.Instance.Character.transform.position = Vector3.Lerp(initialSensaPosition, targetSensaPosition, t);
@@ -39,7 +39,7 @@ public class SequencerActionLerpSensaAtPosition : SequencerAction
             yield return null;
         }
 
-        GameManager.Instance.Character.Animator.SetBool("isWalking", false);
+        GameManager.Instance.Character.Animator.SetBool("Move", false);
         GameManager.Instance.Character.transform.position = targetSensaPosition;
         if (MoveWithRiwa) _instance.Chawa.transform.position = targetRiwaPosition;
         _dialogueSystem.EventRegistery.Invoke(WaitDialogueEventType.WaitForSensaLandingAtFragment);

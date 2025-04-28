@@ -52,7 +52,15 @@ public class OpenOption : MonoBehaviour
             _inputManager.OnTouchScreen += CloseOptions;
         }
     }
-
+    public void ResetTransform()
+    {
+        _navbarRectTransform.localPosition = _initialPos;
+    }
+    public void OpenWithoutAnim()
+    {
+        _navbarRectTransform.localPosition = new Vector3(0f, _initialPos.y, 0f);
+        Helpers.EnabledCanvasGroup(_navBarCanvasGroup);
+    }
     private IEnumerator MoveNavbarUp()
     {
         float timer = 0f;

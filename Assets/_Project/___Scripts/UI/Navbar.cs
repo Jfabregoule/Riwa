@@ -5,6 +5,10 @@ public class Navbar : MonoBehaviour
 {
     private const string MAIN_MENU_TITLE_TAG = "MainMenuTitle";
 
+    public delegate void MainParam();
+    public MainParam OnMainParamOpen;
+    public MainParam OnMainParamClose;
+
     private CanvasGroup _mainMenuTitleCanvasGroup;
     private void Start()
     {
@@ -19,29 +23,28 @@ public class Navbar : MonoBehaviour
         Helpers.EnabledCanvasGroup(canvasGroup);
     }
 
-    public void DisableMainMenuTitle() {
-        if (SceneManager.GetActiveScene().name != "Systems") return;
-        Helpers.DisabledCanvasGroup(_mainMenuTitleCanvasGroup);
-    }
-    public void EnableMainMenuTitle()
+    public void OpenMainParam()
     {
-        if (SceneManager.GetActiveScene().name != "Systems") return;
-        Helpers.EnabledCanvasGroup(_mainMenuTitleCanvasGroup);
+        OnMainParamOpen?.Invoke();
+    }
+    
+    public void CloseMainParam()
+    {
+        OnMainParamClose?.Invoke();
     }
 
-    public void DisableCanvasDialog()
+    public void StartPause()
     {
-        if (!DialogueSystem.Instance.IsInDialogue) return;
         Time.timeScale = 0f;
+        if (!DialogueSystem.Instance.IsInDialogue) return;
         DialogueSystem.Instance.ChangeCanvasGroupAlpha(0);
     }
 
-    public void EnableCanvasDialog()
+    public void EndPause()
     {
-        if (!DialogueSystem.Instance.IsInDialogue) return;
         Time.timeScale = 1.0f;
+        if (!DialogueSystem.Instance.IsInDialogue) return;
         DialogueSystem.Instance.ChangeCanvasGroupAlpha(1);
-
     }
 
 }

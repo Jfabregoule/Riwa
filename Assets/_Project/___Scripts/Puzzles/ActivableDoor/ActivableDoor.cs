@@ -9,6 +9,7 @@ public class ActivableDoor : MonoBehaviour
     [SerializeField] MonoBehaviour[] _activableComponents;
     [SerializeField] Vector3 _openingOffset;
     [SerializeField] float _lerpTime = 1.0f;
+    [SerializeField] Renderer _contourPorte;
 
     [SerializeField] private List<CinemachineVirtualCamera> _doorCameras;
 
@@ -124,5 +125,7 @@ public class ActivableDoor : MonoBehaviour
         Renderer renderer = GetComponent<Renderer>();
         if(renderer.material.HasProperty("_IsActivated"))
             renderer.material.SetFloat("_IsActivated", shaderIsActiveFloatValue);
+        if (_contourPorte.material.HasProperty("_IsActivated"))
+            _contourPorte.material.SetFloat("_IsActivated", shaderIsActiveFloatValue);
     }
 }

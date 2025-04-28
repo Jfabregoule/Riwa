@@ -34,7 +34,10 @@ public class MovingPlatform : MonoBehaviour
         }
 
         if (_targetPositions.Count > 1 && _activableComponents.Length == 0)
+        {
+            OnMovingPlatformStateUptated(true);
             StartCoroutine(MovePlatform());
+        }
     }
 
     private void StartMoving()

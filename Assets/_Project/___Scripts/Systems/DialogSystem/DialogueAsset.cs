@@ -71,7 +71,7 @@ public enum DialogueEventType
     PusleChangeTime,
     ShowInput,
     OnFinish,
-    UnlockChangeTime
+    UnlockChangeTime,
     SensaSpeaking,
 }
 

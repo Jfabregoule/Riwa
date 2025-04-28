@@ -118,7 +118,7 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
             if ((col.gameObject != gameObject
                 && !col.gameObject.TryGetComponent<ACharacter>(out ACharacter chara)
                 && col.isTrigger == false)
-                || (col.gameObject.TryGetComponent(out LineRenderer lineRenderer)))
+                && !col.gameObject.TryGetComponent(out LineRenderer lineRenderer))
             {
                 return false;
             }

@@ -19,7 +19,7 @@ public class RiwaEndGame : MonoBehaviour
         {
             _gameEndTriggered = true;
             GameManager.Instance.Character.InputManager.DisableGameplayControls();
-            _instance.CurrentAdvancementTest = EnumAdvancementRoom1Test.End;
+            _instance.UpdateAdvancement(EnumAdvancementRoom1Test.End);
             _instance.EndGameSequencer.InitializeSequence();
         }
     }

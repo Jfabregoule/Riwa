@@ -69,7 +69,8 @@ public enum DialogueEventType
     AntreRiwaChangeTempo,
     AntreRiwaCinematicEnd,
     PusleChangeTime,
-    ShowInput
+    ShowInput,
+    SensaSpeaking,
 }
 
 public enum WaitDialogueEventType
@@ -84,5 +85,6 @@ public enum WaitDialogueEventType
     WaitForSensaLandingAtFragment,
     WaitPlayerToInteract,
     WaitShowRoom4End,
-    ChangeTime
+    ChangeTime,
+    SensaFinishToSpeak
 }

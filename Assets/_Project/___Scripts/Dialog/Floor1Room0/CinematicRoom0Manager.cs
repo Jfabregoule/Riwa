@@ -9,6 +9,8 @@ public class CinematicRoom0Manager : MonoBehaviour
 
     private Floor1Room0LevelManager _instance;
 
+    private System.Action OnFinishSpeak;
+
     private void Start()
     {
         _instance = (Floor1Room0LevelManager)Floor1Room0LevelManager.Instance;
@@ -40,7 +42,22 @@ public class CinematicRoom0Manager : MonoBehaviour
                 _instance.IsCinematicDone = true;
                 _instance.RiwaSensaCamera.Priority = 0;
                 break;
+            case DialogueEventType.SensaSpeaking:
+                ACharacter chara = (ACharacter)GameManager.Instance.Character;
+                chara.OnFinishAnimationSpeak += SkipSpeaking;
+                chara.LaunchSensaSpeakingAnimation();
+                DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.SensaFinishToSpeak, OnFinishSpeak);
+                
+                break;
         }
+    }
+
+    private void SkipSpeaking()
+    {
+        DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.SensaFinishToSpeak);
+
+        ACharacter chara = (ACharacter)GameManager.Instance.Character;
+        chara.OnFinishAnimationSpeak -= SkipSpeaking;
     }
 
 }

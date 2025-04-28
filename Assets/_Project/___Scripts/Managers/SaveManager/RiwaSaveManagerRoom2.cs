@@ -4,24 +4,26 @@ using UnityEngine;
 
 public class RiwaSaveManagerRoom2 : SaveManager<RiwaSaveManagerRoom2>
 {
-    [SerializeField] private string _roomPrefix;
+    [SerializeField] protected string _roomPrefix;
     [SerializeField] private List<Transform> _mirrors;
-    [SerializeField] private Transform _pastCrate;
-    [SerializeField] private Transform _presentCrate;
+    [SerializeField] private List<Transform> _pastCrates;
+    [SerializeField] private List<Transform> _presentCrates;
 
     protected override void LoadProgess()
     {
         base.LoadProgess();
 
-        if (SaveSystem.Instance.ContainsElements(_roomPrefix + "PastCratePosition"))
-            _pastCrate.position = SaveSystem.Instance.LoadElement<SerializableVector3>(_roomPrefix + "PastCratePosition").ToVector3();
-        if (SaveSystem.Instance.ContainsElements(_roomPrefix + "PastCrateRotation"))
-            _pastCrate.rotation = Quaternion.Euler(SaveSystem.Instance.LoadElement<SerializableVector3>(_roomPrefix + "PastCrateRotation").ToVector3());
+        for (int i = 0; i < _pastCrates.Count; i++)
+        {
+            if (SaveSystem.Instance.ContainsElements(_roomPrefix + $"PastCratePosition{i}"))
+                _pastCrates[i].position = SaveSystem.Instance.LoadElement<SerializableVector3>(_roomPrefix + $"PastCratePosition{i}").ToVector3();
+        }
 
-        if (SaveSystem.Instance.ContainsElements(_roomPrefix + "PresentCratePosition"))
-            _presentCrate.position = SaveSystem.Instance.LoadElement<SerializableVector3>(_roomPrefix + "PastCratePosition").ToVector3();
-        if (SaveSystem.Instance.ContainsElements(_roomPrefix + "PresentCrateRotation"))
-            _presentCrate.rotation = Quaternion.Euler(SaveSystem.Instance.LoadElement<SerializableVector3>(_roomPrefix + "PastCrateRotation").ToVector3());
+        for (int i = 0; i < _presentCrates.Count; i++)
+        {
+            if (SaveSystem.Instance.ContainsElements(_roomPrefix + $"PastCratePosition{i}"))
+                _presentCrates[i].position = SaveSystem.Instance.LoadElement<SerializableVector3>(_roomPrefix + $"PresentCratePosition{i}").ToVector3();
+        }
 
         for (int i = 0; i < _mirrors.Count; i++)
         {
@@ -34,19 +36,27 @@ public class RiwaSaveManagerRoom2 : SaveManager<RiwaSaveManagerRoom2>
     {
         base.SaveProgress();
 
-        SerializableVector3 pastCratePosition = new SerializableVector3(_pastCrate.position);
-        SerializableVector3 pastCrateRotation = new SerializableVector3(_pastCrate.rotation.eulerAngles);
-        SaveSystem.Instance.SaveElement<SerializableVector3>(_roomPrefix + "PastCratePosition", pastCratePosition);
-        SaveSystem.Instance.SaveElement<SerializableVector3>(_roomPrefix + "PastCrateRotation", pastCrateRotation);
+        SerializableVector3 pastCratePosition;
 
-        SerializableVector3 presentCratePosition = new SerializableVector3(_presentCrate.position);
-        SerializableVector3 presentCrateRotation = new SerializableVector3(_presentCrate.rotation.eulerAngles);
-        SaveSystem.Instance.SaveElement<SerializableVector3>(_roomPrefix + "PresentCratePosition", presentCratePosition);
-        SaveSystem.Instance.SaveElement<SerializableVector3>(_roomPrefix + "PresentCrateRotation", presentCrateRotation);
+        for (int i = 0; i < _pastCrates.Count; i++)
+        {
+            pastCratePosition = new SerializableVector3(_pastCrates[i].position);
+            SaveSystem.Instance.SaveElement<SerializableVector3>(_roomPrefix + $"PastCratePosition{i}", pastCratePosition);
+        }
+
+        SerializableVector3 presentCratePosition;
+
+        for (int i = 0; i < _pastCrates.Count; i++)
+        {
+            presentCratePosition = new SerializableVector3(_presentCrates[i].position);
+            SaveSystem.Instance.SaveElement<SerializableVector3>(_roomPrefix + $"PresentCratePosition{i}", presentCratePosition);
+        }
+
+        SerializableVector3 mirrorRotation;
 
         for (int i = 0; i < _mirrors.Count; i++)
         {
-            SerializableVector3 mirrorRotation = new SerializableVector3(_mirrors[i].rotation.eulerAngles);
+            mirrorRotation = new SerializableVector3(_mirrors[i].rotation.eulerAngles);
             SaveSystem.Instance.SaveElement<SerializableVector3>(_roomPrefix + $"MirrorRotation{i}", mirrorRotation);
         }
     }

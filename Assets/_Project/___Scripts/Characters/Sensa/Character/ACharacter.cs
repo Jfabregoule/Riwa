@@ -10,8 +10,8 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
 
     public const string PAWN_OBJECT = "Pawn";
     public const string SOUL_OBJECT = "Soul";
-    public const string CAMERA_TARGET_OBJECT= "CameraTarget";
-    public const string CAMERA_TARGET_PARENT_OBJECT= "CameraTargetParent";
+    public const string CAMERA_TARGET_OBJECT = "CameraTarget";
+    public const string CAMERA_TARGET_PARENT_OBJECT = "CameraTargetParent";
 
     #endregion
 
@@ -65,7 +65,7 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
 
     //Properties
 
-    public GameObject Pawn { get => _pawn;}
+    public GameObject Pawn { get => _pawn; }
     public GameObject HoldingObject { get => _holdingObject; }
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
     public bool CanInteractSoul { get => _canInteractSoul; set => _canInteractSoul = value; }
@@ -77,7 +77,7 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
     public ChangeTime ChangeTime { get => _changeTime; }
     public bool IsInSoul { get => _isInSoul; set => _isInSoul = value; }
     public GameObject Soul { get => _soul; set => _soul = value; }
-    public CameraHandler CameraHandler { get => _cameraHandler;}
+    public CameraHandler CameraHandler { get => _cameraHandler; }
     new public StateMachineCharacter StateMachine { get => (StateMachineCharacter)_stateMachine; set => _stateMachine = value; }
     public bool CanChangeTime { get => _canChangeTime; set => _canChangeTime = value; }
     public Vector3 RespawnPosition { get => _respawnPosition; set => _respawnPosition = value; }
@@ -152,12 +152,28 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
 
     public void InvokeRotate()
     {
-        OnRotate?.Invoke(); 
+        OnRotate?.Invoke();
     }
 
     public void InvokeInteract()
     {
         OnInteractAnimation?.Invoke();
+    }
+
+    private void LoadCharacterData()
+    {
+        if (SaveSystem.Instance.ContainsElements("RespawnPosition"))
+            RespawnPosition = SaveSystem.Instance.LoadElement<SerializableVector3>("RespawnPosition").ToVector3();
+        if (SaveSystem.Instance.ContainsElements("RespawnRotation"))
+            RespawnRotation = SaveSystem.Instance.LoadElement<SerializableVector3>("RespawnRotation").ToVector3();
+    }
+
+    private void SaveCharacterData()
+    {
+        SerializableVector3 respawnPosition = new SerializableVector3(RespawnPosition);
+        SaveSystem.Instance.SaveElement<SerializableVector3>("RespawnPosition", respawnPosition);
+        SerializableVector3 respawnRotation = new SerializableVector3(RespawnRotation);
+        SaveSystem.Instance.SaveElement<SerializableVector3>("RespawnRotation", respawnRotation);
     }
 
     public void InvokeHoldingStart()

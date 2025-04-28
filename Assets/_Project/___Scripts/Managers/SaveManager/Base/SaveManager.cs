@@ -25,11 +25,9 @@ public class SaveManager<T> : Singleton<T> where T : SaveManager<T>
 
     protected virtual void LoadProgess()
     {
-
     }
 
     protected virtual void SaveProgress()
     {
-
     }
 }

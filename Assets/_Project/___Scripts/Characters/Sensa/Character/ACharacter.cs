@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
@@ -58,6 +59,9 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
     public event IRespawnable.RespawnEvent OnRespawn;
     public event System.Action OnRotate;
     public event System.Action OnInteractAnimation;
+
+    public event System.Action OnFinishAnimationSpeak;
+    private bool _canSkipAnimationSpeak;
 
     #endregion
 
@@ -183,6 +187,38 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
     public void InvokeHoldingEnd()
     {
         OnHoldingEnd?.Invoke();
+    }
+    public void InvokeCinematicSpeak()
+    {
+        OnFinishAnimationSpeak?.Invoke();
+    }
+
+    //Pour trigger animation Sensa
+
+    public void LaunchSensaSpeakingAnimation()
+    {
+        StartCoroutine(SensaSpeakingCoroutine());
+    }
+
+    private IEnumerator SensaSpeakingCoroutine()
+    {
+        _canSkipAnimationSpeak = false;
+
+        OnFinishAnimationSpeak += SetCanSkip;
+        Animator.SetTrigger("CinematicSpeak");
+
+        while (_canSkipAnimationSpeak)
+        {
+            yield return null;
+        }
+
+        OnFinishAnimationSpeak -= SetCanSkip;
+
+    }
+
+    public void SetCanSkip()
+    {
+        _canSkipAnimationSpeak = true;
     }
 
     #endregion

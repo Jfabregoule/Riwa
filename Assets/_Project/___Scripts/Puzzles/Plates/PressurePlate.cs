@@ -22,53 +22,38 @@ public class PressurePlate : MonoBehaviour, IActivable
 
     private HashSet<Collider> _validColliders = new HashSet<Collider>();
 
+    private void Start()
+    {
+        GameManager.Instance.CurrentLevelManager.OnLevelEnter += CheckForObjectsOnStart;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (GameManager.Instance.CurrentTemporality != _triggerInTemporality) return;
 
-        //bool updated = false;
-
-        if ((_canBeTriggeredWithPlayer && other.TryGetComponent(out ACharacter chara) ||
-            _canBeTriggeredWithCrate && other.TryGetComponent(out Crate crate)) && !_isTrigger)
+        if ((_canBeTriggeredWithPlayer && other.TryGetComponent(out ACharacter chara)) ||
+            (_canBeTriggeredWithCrate && other.TryGetComponent(out Crate crate)))
         {
-            //if (((1 << other.gameObject.layer) & _whatIsPlayer) != 0)
-            //{
-            //    if (_validColliders.Add(other))
-            //        updated = true;
-            //}
-            _isTrigger = true;
-            Activate();
+            if (_validColliders.Add(other))
+            {
+                if (!_isTrigger)
+                {
+                    _isTrigger = true;
+                    Activate();
+                }
+            }
         }
-
-        //if (_canBeTriggeredWithCrate && other.TryGetComponent(out Crate crate))
-        //{
-        //    //if (((1 << other.gameObject.layer) & _whatIsPast) != 0)
-        //    //{
-        //    //    if (_validColliders.Add(other))
-        //    //        updated = true;
-        //    //}
-        //}
-
-        //if (updated && !_isTrigger)
-        //{
-        //    _isTrigger = true;
-        //    Activate();
-        //}
-
     }
 
     private void OnTriggerExit(Collider other)
     {
-        //if (_validColliders.Remove(other) && _isTrigger && _validColliders.Count == 0)
-        //{
-        //    _isTrigger = false;
-        //    Deactivate();
-        //}
-
-        if (_isTrigger)
+        if (_validColliders.Remove(other))
         {
-            _isTrigger = false;
-            Deactivate();
+            if (_validColliders.Count == 0 && _isTrigger)
+            {
+                _isTrigger = false;
+                Deactivate();
+            }
         }
     }
 
@@ -83,7 +68,7 @@ public class PressurePlate : MonoBehaviour, IActivable
     {
         _initialPosition = transform.position;
         _destination = _initialPosition - _offset;
-        StartCoroutine(LerpPressed(false));   
+        StartCoroutine(LerpPressed(false));
     }
 
     IEnumerator LerpPressed(bool active)
@@ -116,14 +101,39 @@ public class PressurePlate : MonoBehaviour, IActivable
         if (isActive) shaderIsActiveFloatValue = 1;
 
         Renderer renderer = GetComponent<Renderer>();
-        
-        if(renderer.material.HasProperty("_IsActivated"))
+
+        if (renderer.material.HasProperty("_IsActivated"))
             renderer.material.SetFloat("_IsActivated", shaderIsActiveFloatValue);
 
         if (transform.parent.gameObject.TryGetComponent(out Renderer parentRenderer))
         {
             if (parentRenderer.material.HasProperty("_IsActivated"))
                 parentRenderer.material.SetFloat("_IsActivated", shaderIsActiveFloatValue);
+        }
+    }
+
+    private void CheckForObjectsOnStart()
+    {
+        Collider[] overlappingColliders = Physics.OverlapBox(
+            transform.position,
+            GetComponent<Collider>().bounds.extents,
+            transform.rotation
+        );
+
+        foreach (var collider in overlappingColliders)
+        {
+            if ((_canBeTriggeredWithPlayer && collider.TryGetComponent(out ACharacter chara)) ||
+                (_canBeTriggeredWithCrate && collider.TryGetComponent(out Crate crate)))
+            {
+                if (_validColliders.Add(collider))
+                {
+                    if (!_isTrigger)
+                    {
+                        _isTrigger = true;
+                        Activate();
+                    }
+                }
+            }
         }
     }
 }

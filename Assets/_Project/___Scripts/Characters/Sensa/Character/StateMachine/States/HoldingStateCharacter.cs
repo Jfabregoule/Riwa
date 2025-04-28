@@ -34,6 +34,11 @@ public class HoldingStateCharacter : BaseStateCharacter<EnumStateCharacter>
 
         ACharacter chara = (ACharacter)_character;
 
+        if (chara.HoldingObject.TryGetComponent(out TemporalItem temporalItem))
+        {
+            temporalItem.UpdatePresentPosition();
+        }
+
         chara.SetHoldingObject(null);
         chara.InputManager.OnInteract -= OnInteractEnd;
         _subStateMachine.ChangeState(_subStateMachine.States[EnumHolding.IdleHolding]);

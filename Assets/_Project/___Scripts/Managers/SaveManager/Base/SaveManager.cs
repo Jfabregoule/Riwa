@@ -11,6 +11,16 @@ public class SaveManager<T> : Singleton<T> where T : SaveManager<T>
         LoadProgess();
     }
 
+    private void OnApplicationQuit()
+    {
+        SaveProgress();
+    }
+
+    private void OnApplicationPause(bool pause)
+    {
+        SaveProgress();
+    }
+
     private void OnEnable()
     {
         SaveSystem.Instance.OnLoadProgress += LoadProgess;

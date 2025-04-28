@@ -41,6 +41,8 @@ public class MuralPiece : MonoBehaviour, IInteractable
         }
 
         transform.position = _fresqueTransform.position;
+        if (TryGetComponent<TemporalItem>(out TemporalItem temporalItem))
+            temporalItem.UpdatePresentPosition();
         if (_fresqueTransform.rotation != Quaternion.identity) transform.rotation = _fresqueTransform.rotation;
     }
 }

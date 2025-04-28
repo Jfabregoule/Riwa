@@ -21,7 +21,7 @@ public class RiwaSaveManagerRoom2 : SaveManager<RiwaSaveManagerRoom2>
 
         for (int i = 0; i < _presentCrates.Count; i++)
         {
-            if (SaveSystem.Instance.ContainsElements(_roomPrefix + $"PastCratePosition{i}"))
+            if (SaveSystem.Instance.ContainsElements(_roomPrefix + $"PresentCratePosition{i}"))
                 _presentCrates[i].position = SaveSystem.Instance.LoadElement<SerializableVector3>(_roomPrefix + $"PresentCratePosition{i}").ToVector3();
         }
 
@@ -46,7 +46,7 @@ public class RiwaSaveManagerRoom2 : SaveManager<RiwaSaveManagerRoom2>
 
         SerializableVector3 presentCratePosition;
 
-        for (int i = 0; i < _pastCrates.Count; i++)
+        for (int i = 0; i < _presentCrates.Count; i++)
         {
             presentCratePosition = new SerializableVector3(_presentCrates[i].position);
             SaveSystem.Instance.SaveElement<SerializableVector3>(_roomPrefix + $"PresentCratePosition{i}", presentCratePosition);

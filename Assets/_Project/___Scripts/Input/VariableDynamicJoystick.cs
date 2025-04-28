@@ -69,14 +69,14 @@ public class VariableDynamicJoystick : MonoBehaviour
         }
     }
 
-    private void LockJoystick()
+    private void LockJoystick(bool isRight)
     {
         _isLocked = true;
-        _background.position = _startPos;
+        _background.position = isRight ? new Vector2(462.03f, 418.3191f) : new Vector2(1500, 500);
         Helpers.EnabledCanvasGroup(_canvasGroup);
     }
 
-    private void UnlockJoystick()
+    private void UnlockJoystick(bool isRight)
     {
         _isLocked = false;
         Helpers.DisabledCanvasGroup(_canvasGroup);
@@ -105,6 +105,7 @@ public class VariableDynamicJoystick : MonoBehaviour
     }
     private void SetCanvasGroup()
     {
+        InputManager.Instance.LockJoystick();
         Vector3 caissePosition = _character.HoldingObject.transform.position;
         Vector3 playerPosition = _character.transform.position;
 
@@ -128,9 +129,11 @@ public class VariableDynamicJoystick : MonoBehaviour
             {
                 // Pull en haut
                 SetAnchor(1, 0);
+                SetRotation(1, 180);
 
                 // Push en bas
                 SetAnchor(0, 1);
+                SetRotation(0, 180);
 
                 // Rotation (Droite à Gauche)
                 SetAnchor(3, 2);
@@ -157,9 +160,11 @@ public class VariableDynamicJoystick : MonoBehaviour
             {
                 // Pull à droite
                 SetAnchor(1, 3);
+                SetRotation(1, 90);
 
                 // Push à gauche
                 SetAnchor(0, 2);
+                SetRotation(0, 90);
 
                 // Rotation (Gauche en bas)
                 SetAnchor(2, 1);
@@ -171,9 +176,11 @@ public class VariableDynamicJoystick : MonoBehaviour
             {
                 // Pull à gauche
                 SetAnchor(1, 2);
+                SetRotation(1, -90);
 
                 // Push à droite
                 SetAnchor(0, 3);
+                SetRotation(0, -90);
 
                 // Rotation (Gauche en haut)
                 SetAnchor(2, 0);
@@ -192,9 +199,20 @@ public class VariableDynamicJoystick : MonoBehaviour
         _arrowsRect[idRect].anchorMin = _anchors[Direction];
         _arrowsRect[idRect].anchoredPosition = _anchors[Direction];
     }
+    private void SetRotation(int idRect, float rotation)
+    {
+        Vector3 currentRotation = _arrowsRect[idRect].eulerAngles;
+        currentRotation.z = rotation;
+        _arrowsRect[idRect].eulerAngles = currentRotation;
+    }
 
     private void DisableCanvasGroup()
     {
+        InputManager.Instance.UnlockJoystick();
         Helpers.DisabledCanvasGroup(_arrowCanvasGroup);
+        SetRotation(0, 0);
+        SetRotation(1, 0);
+        SetRotation(2, 0);
+        SetRotation(3, 0);
     }
 }

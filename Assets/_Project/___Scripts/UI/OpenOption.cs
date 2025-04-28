@@ -6,7 +6,6 @@ public class OpenOption : MonoBehaviour
 {
     [SerializeField] private CanvasGroup _navBarCanvasGroup;
     [SerializeField] private float _movingTime;
-
     private InputManager _inputManager;
     private CanvasGroup _optionsButtonCanvasGroup;
     private RectTransform _navbarRectTransform;
@@ -25,6 +24,7 @@ public class OpenOption : MonoBehaviour
         if (_inputManager != null)
         {
             _inputManager.OnOpenOptions -= OpenOptions;
+            _inputManager.OnTouchScreen -= CloseOptions;
         }
     }
     public void OpenOptions()
@@ -37,8 +37,10 @@ public class OpenOption : MonoBehaviour
 
     public void CloseOptions()
     {
-        _inputManager.EnableGameplayControls();
         //_inputManager.EnableDialogueControls();
+        if (_navBarCanvasGroup.alpha != 1) return;
+        _inputManager.EnableGameplayControls();
+        Helpers.EnabledCanvasGroup(_optionsButtonCanvasGroup);
         StartCoroutine(MoveNavbarDown());
     }
     private void SubscribeToInputManager(InputManager script)
@@ -47,6 +49,7 @@ public class OpenOption : MonoBehaviour
         {
             _inputManager = script;
             _inputManager.OnOpenOptions += OpenOptions;
+            _inputManager.OnTouchScreen += CloseOptions;
         }
     }
 

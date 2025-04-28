@@ -129,6 +129,7 @@ public class Control : MonoBehaviour
         Helpers.EnabledCanvasGroup(_controlSettings);
         _isFirstControl = false;
         SaveSystem.Instance.SaveElement<bool>("IsFirstControl", _isFirstControl, false);
+        GameManager.Instance.OnShowBasicInputEvent -= ShowInput;
         StartCoroutine(WaitSeconds(5f));
     }
 

@@ -25,5 +25,7 @@ public class CrateSaveInteraction : MonoBehaviour
         _isFirstInteraction = false;
         SaveSystem.Instance.SaveElement<bool>("IsFirstInteraction", _isFirstInteraction, false);
         GameManager.Instance.InvokeInteractInput();
+        GameManager.Instance.Character.OnInteractStarted -= SetInteraction;
+
     }
 }

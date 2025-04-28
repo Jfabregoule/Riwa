@@ -1896,6 +1896,30 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 259204910}
+        m_TargetAssemblyTypeName: Navbar, Assembly-CSharp
+        m_MethodName: EnableMainMenuTitle
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 259204910}
+        m_TargetAssemblyTypeName: Navbar, Assembly-CSharp
+        m_MethodName: EnableCanvasDialog
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &157965794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5393,6 +5417,7 @@ GameObject:
   - component: {fileID: 429731579}
   - component: {fileID: 429731581}
   - component: {fileID: 429731580}
+  - component: {fileID: 429731582}
   m_Layer: 5
   m_Name: Pull
   m_TagString: Untagged
@@ -5458,6 +5483,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 429731578}
   m_CullTransparentMesh: 1
+--- !u!114 &429731582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 429731578}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e934093a7df5494c8e86a51ea2a8db1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pastColor: {r: 0.84313726, g: 0.52156866, b: 0.03137255, a: 1}
+  _presentColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &447248951
 GameObject:
   m_ObjectHideFlags: 0
@@ -13425,11 +13464,35 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 259204910}
         m_TargetAssemblyTypeName: Navbar, Assembly-CSharp
+        m_MethodName: DisableMainMenuTitle
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 259204910}
+        m_TargetAssemblyTypeName: Navbar, Assembly-CSharp
         m_MethodName: EnableCanvasGroup
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 356223336}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.CanvasGroup, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 259204910}
+        m_TargetAssemblyTypeName: Navbar, Assembly-CSharp
+        m_MethodName: DisableCanvasDialog
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -13790,6 +13853,7 @@ GameObject:
   - component: {fileID: 1138670763}
   - component: {fileID: 1138670765}
   - component: {fileID: 1138670764}
+  - component: {fileID: 1138670766}
   m_Layer: 5
   m_Name: Push
   m_TagString: Untagged
@@ -13855,6 +13919,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1138670762}
   m_CullTransparentMesh: 1
+--- !u!114 &1138670766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1138670762}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e934093a7df5494c8e86a51ea2a8db1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pastColor: {r: 0.84313726, g: 0.52156866, b: 0.03137255, a: 1}
+  _presentColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1154094348
 GameObject:
   m_ObjectHideFlags: 0
@@ -16650,6 +16728,7 @@ GameObject:
   - component: {fileID: 1368291830}
   - component: {fileID: 1368291832}
   - component: {fileID: 1368291831}
+  - component: {fileID: 1368291833}
   m_Layer: 5
   m_Name: Left
   m_TagString: Untagged
@@ -16715,6 +16794,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1368291829}
   m_CullTransparentMesh: 1
+--- !u!114 &1368291833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1368291829}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e934093a7df5494c8e86a51ea2a8db1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pastColor: {r: 0.84313726, g: 0.52156866, b: 0.03137255, a: 1}
+  _presentColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1370215179
 GameObject:
   m_ObjectHideFlags: 0
@@ -18636,6 +18729,7 @@ GameObject:
   - component: {fileID: 1497352097}
   - component: {fileID: 1497352099}
   - component: {fileID: 1497352098}
+  - component: {fileID: 1497352100}
   m_Layer: 5
   m_Name: Right
   m_TagString: Untagged
@@ -18701,6 +18795,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1497352096}
   m_CullTransparentMesh: 1
+--- !u!114 &1497352100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1497352096}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e934093a7df5494c8e86a51ea2a8db1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pastColor: {r: 0.84313726, g: 0.52156866, b: 0.03137255, a: 1}
+  _presentColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1567040432
 GameObject:
   m_ObjectHideFlags: 0
@@ -22221,6 +22329,30 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 259204910}
+        m_TargetAssemblyTypeName: Navbar, Assembly-CSharp
+        m_MethodName: DisableMainMenuTitle
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 259204910}
+        m_TargetAssemblyTypeName: Navbar, Assembly-CSharp
+        m_MethodName: DisableCanvasDialog
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1877173740
 GameObject:
   m_ObjectHideFlags: 0
@@ -22686,6 +22818,30 @@ MonoBehaviour:
       - m_Target: {fileID: 1091147281}
         m_TargetAssemblyTypeName: Settings, Assembly-CSharp
         m_MethodName: SaveSettings
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 259204910}
+        m_TargetAssemblyTypeName: Navbar, Assembly-CSharp
+        m_MethodName: EnableMainMenuTitle
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 259204910}
+        m_TargetAssemblyTypeName: Navbar, Assembly-CSharp
+        m_MethodName: EnableCanvasDialog
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

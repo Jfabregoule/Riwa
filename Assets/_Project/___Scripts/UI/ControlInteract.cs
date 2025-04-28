@@ -31,5 +31,6 @@ public class ControlInteract : MonoBehaviour
     {
         yield return new WaitForSeconds(duration);
         Helpers.DisabledCanvasGroup(_canvasGroup);
+
     }
 }

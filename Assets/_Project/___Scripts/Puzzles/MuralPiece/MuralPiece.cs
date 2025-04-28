@@ -10,7 +10,7 @@ public class MuralPiece : MonoBehaviour, IInteractable
 
     private Floor1Room4LevelManager _instance;
 
-    public float OffsetRadius { get => 0f; set => OffsetRadius = value; }
+    public float OffsetRadius { get => 0.3f; set => OffsetRadius = value; }
     public bool CanInteract { get; set; }
     public int Priority { get ; set; }
     public Transform FresqueTransform { get => _fresqueTransform; }

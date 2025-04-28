@@ -28,7 +28,7 @@ public class LanguageSelector : MonoBehaviour
             TranslateSystem.EnumLanguage language = (TranslateSystem.EnumLanguage)i;
             AddListener(_buttonLists[i].button, language);
         }
-        SelectLanguage(TranslateSystem.EnumLanguage.French);
+        //SelectLanguage(TranslateSystem.EnumLanguage.French);
     }
 
     private void AddListener(Button btn, TranslateSystem.EnumLanguage language)

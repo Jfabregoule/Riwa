@@ -43,6 +43,7 @@ public class VariableDynamicJoystick : MonoBehaviour
 
     private void Start()
     {
+        _startPos = _background.position;
         _anchors = new Vector2[4];
         _anchors[0] = new Vector2(0.5f, 1f);
         _anchors[1] = new Vector2(0.5f, 0f);
@@ -72,7 +73,7 @@ public class VariableDynamicJoystick : MonoBehaviour
     private void LockJoystick(bool isRight)
     {
         _isLocked = true;
-        _background.position = isRight ? new Vector2(462.03f, 418.3191f) : new Vector2(1500, 500);
+        _background.position = isRight ? new Vector2(1900, 500) : new Vector2(404f,345f);
         Helpers.EnabledCanvasGroup(_canvasGroup);
     }
 

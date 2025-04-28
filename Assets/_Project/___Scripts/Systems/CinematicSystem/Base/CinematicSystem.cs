@@ -92,24 +92,25 @@ public class CinematicSystem<T> : Singleton<T> where T : CinematicSystem<T>
     private void OnVideoFinished(VideoPlayer vp)
     {
         Helpers.DisabledCanvasGroup(_cinematicCanvasGroup);
+        Helpers.DisabledCanvasGroup(_skipCanvasGroup);
         SetVolume(false);
         OnVideoEnded?.Invoke();
         _onEndCallback?.Invoke();
         _onEndCallback = null;
     }
 
-    public void StopVideo()
-    {
-        if (_videoPlayer.isPlaying)
-        {
-            _videoPlayer.Stop();
-            SetVolume(false);
-            
-            OnVideoEnded?.Invoke();
-            _onEndCallback?.Invoke();
-            _onEndCallback = null;
-        }
-    }
+    //public void StopVideo()
+    //{
+    //    if (_videoPlayer.isPlaying)
+    //    {
+    //        _videoPlayer.Stop();
+    //        SetVolume(false);
+    //        Helpers.DisabledCanvasGroup(_skipCanvasGroup);
+    //        OnVideoEnded?.Invoke();
+    //        _onEndCallback?.Invoke();
+    //        _onEndCallback = null;
+    //    }
+    //}
 
     public void SetCanvasGroup()
     {
@@ -123,6 +124,7 @@ public class CinematicSystem<T> : Singleton<T> where T : CinematicSystem<T>
     private void SkipCinematic()
     {
         _videoPlayer.Stop();
+        StopAllCoroutines();
         OnVideoFinished(_videoPlayer);
     }
 

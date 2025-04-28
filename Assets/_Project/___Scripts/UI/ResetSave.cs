@@ -7,8 +7,12 @@ public class ResetSave : MonoBehaviour
     
     public void ResetSaveConfirmation()
     {
-        SaveSystem.Instance.DeleteAllData();
+        if (DialogueSystem.Instance.IsInDialogue)
+        {
+            DialogueSystem.Instance.ChangeCanvasGroupAlpha(0);
+        }
         string CurrentRoomSceneName = RiwaLoadSceneSystem.Instance.GetCurrentRoomSceneName();
-        StartCoroutine(RiwaLoadSceneSystem.Instance.ChangeScene(new[] { new SceneData(CurrentRoomSceneName) }, new[] { new SceneData("MainMenu", 0, new System.Action[] { SaveSystem.Instance.DeleteProgressData } )})); ;
+        StartCoroutine(RiwaLoadSceneSystem.Instance.ChangeScene(new[] { new SceneData(CurrentRoomSceneName) }, new[] { new SceneData("MainMenu", 0, new System.Action[] { SaveSystem.Instance.DeleteAllData } )})); ;
+
     }
 }

@@ -29,8 +29,6 @@ public class MoveStateHolding : HoldingBaseState
             _movable.OnReplacePlayer += ReplacePlayer;
         }
 
-        _character.Animator.ResetTrigger(_stateMachine.AnimationMap[EnumHolding.IdleHolding]);
-
         _character.Animator.SetFloat("HoldingSens", Sens);
         _character.Animator.SetFloat("PushSpeed", _movable.MoveSpeed);
 

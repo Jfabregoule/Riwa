@@ -135,17 +135,6 @@ public class Floor1Room1LevelManager : BaseLevelManager
             DialogueSystem.Instance.OnDialogueEvent -= EventDispatcher;
     }
 
-
-    //public void TriggerEvent2()
-    //{
-    //    if (CurrentAdvancement < EnumAdvancementRoom1.HasEnterTree)
-    //    { 
-    //        CurrentAdvancement = EnumAdvancementRoom1.HasEnterTree;
-    //        //if (_areEventEnabled)
-
-    //    }
-    //}
-
     public void SetCrateWellPlaced(bool value)
     {
         _isCrateWellPlaced = value;

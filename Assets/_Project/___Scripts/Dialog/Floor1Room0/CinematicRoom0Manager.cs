@@ -47,7 +47,6 @@ public class CinematicRoom0Manager : MonoBehaviour
                 chara.OnFinishAnimationSpeak += SkipSpeaking;
                 chara.LaunchSensaSpeakingAnimation();
                 DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.SensaFinishToSpeak, OnFinishSpeak);
-                
                 break;
         }
     }

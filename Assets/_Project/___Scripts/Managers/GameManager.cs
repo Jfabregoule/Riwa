@@ -18,10 +18,12 @@ public class GameManager : Singleton<GameManager>
     private const string SOUND_MANAGER_TAG = "SoundManager";
     private const string MAIN_CAMERA_TAG = "MainCamera";
     private const string TRANSLATE_TAG = "TranslateSystem";
+    private const string NAVBAR_TAG = "Navbar";
 
     [HideInInspector] public GameObject MainCamera;
     [HideInInspector] public RiwaSoundSystem SoundSystem;
     [HideInInspector] public TranslateSystem TranslateSystem;
+
 
     private CameraHandler _cameraHandler;
     private ACharacter _character;
@@ -45,6 +47,7 @@ public class GameManager : Singleton<GameManager>
 
     #region Properties
 
+    public Navbar Navbar { get; private set; }
     public CameraHandler CameraHandler { get => _cameraHandler; }
     public ACharacter Character { get => _character; }
     public Joystick Joystick { get => _joystick; }
@@ -57,7 +60,6 @@ public class GameManager : Singleton<GameManager>
     private void Start()
     {
         TranslateSystem = GameObject.FindGameObjectWithTag(TRANSLATE_TAG).GetComponent<TranslateSystem>();
-
         CurrentTemporality = EnumTemporality.Present;
     }
 
@@ -102,6 +104,10 @@ public class GameManager : Singleton<GameManager>
         _blackScreen = GameObject.Find("BlackScreen").GetComponent<BlackScreen>();
     }
 
+    public void SetNavbar()
+    {
+        Navbar = GameObject.FindGameObjectWithTag(NAVBAR_TAG).GetComponent<Navbar>();
+    }
     public void InvokeBasicInput()
     {
         OnShowBasicInputEvent?.Invoke();

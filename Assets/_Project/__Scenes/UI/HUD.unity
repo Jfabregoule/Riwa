@@ -1898,7 +1898,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 259204910}
         m_TargetAssemblyTypeName: Navbar, Assembly-CSharp
-        m_MethodName: EnableMainMenuTitle
+        m_MethodName: EnableCanvasDialog
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1910,7 +1910,19 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 259204910}
         m_TargetAssemblyTypeName: Navbar, Assembly-CSharp
-        m_MethodName: EnableCanvasDialog
+        m_MethodName: CloseMainParam
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 259204910}
+        m_TargetAssemblyTypeName: Navbar, Assembly-CSharp
+        m_MethodName: EndPause
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2997,7 +3009,7 @@ GameObject:
   - component: {fileID: 259204910}
   m_Layer: 0
   m_Name: -----NAVBAR-----
-  m_TagString: Untagged
+  m_TagString: Navbar
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -11906,9 +11918,45 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 771800567}
+        m_TargetAssemblyTypeName: OpenOption, Assembly-CSharp
+        m_MethodName: ResetTransform
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 259204910}
         m_TargetAssemblyTypeName: Navbar, Assembly-CSharp
-        m_MethodName: EnableMainMenuTitle
+        m_MethodName: EndPause
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 259204910}
+        m_TargetAssemblyTypeName: Navbar, Assembly-CSharp
+        m_MethodName: EnableCanvasGroup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1080777456}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.CanvasGroup, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 259204910}
+        m_TargetAssemblyTypeName: Navbar, Assembly-CSharp
+        m_MethodName: CloseMainParam
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -13476,18 +13524,6 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 259204910}
         m_TargetAssemblyTypeName: Navbar, Assembly-CSharp
-        m_MethodName: DisableMainMenuTitle
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 259204910}
-        m_TargetAssemblyTypeName: Navbar, Assembly-CSharp
         m_MethodName: EnableCanvasGroup
         m_Mode: 2
         m_Arguments:
@@ -13500,7 +13536,19 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 259204910}
         m_TargetAssemblyTypeName: Navbar, Assembly-CSharp
-        m_MethodName: DisableCanvasDialog
+        m_MethodName: StartPause
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 259204910}
+        m_TargetAssemblyTypeName: Navbar, Assembly-CSharp
+        m_MethodName: OpenMainParam
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -22319,47 +22367,35 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 259204910}
         m_TargetAssemblyTypeName: Navbar, Assembly-CSharp
+        m_MethodName: OpenMainParam
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 259204910}
+        m_TargetAssemblyTypeName: Navbar, Assembly-CSharp
+        m_MethodName: StartPause
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 259204910}
+        m_TargetAssemblyTypeName: Navbar, Assembly-CSharp
         m_MethodName: DisableCanvasGroup
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 802686285}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.CanvasGroup, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 259204910}
-        m_TargetAssemblyTypeName: Navbar, Assembly-CSharp
-        m_MethodName: EnableCanvasGroup
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 1080777456}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.CanvasGroup, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 259204910}
-        m_TargetAssemblyTypeName: Navbar, Assembly-CSharp
-        m_MethodName: DisableMainMenuTitle
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 259204910}
-        m_TargetAssemblyTypeName: Navbar, Assembly-CSharp
-        m_MethodName: DisableCanvasDialog
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -22781,18 +22817,6 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 259204910}
         m_TargetAssemblyTypeName: Navbar, Assembly-CSharp
-        m_MethodName: EnableCanvasGroup
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 802686285}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.CanvasGroup, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 259204910}
-        m_TargetAssemblyTypeName: Navbar, Assembly-CSharp
         m_MethodName: DisableCanvasGroup
         m_Mode: 2
         m_Arguments:
@@ -22841,7 +22865,19 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 259204910}
         m_TargetAssemblyTypeName: Navbar, Assembly-CSharp
-        m_MethodName: EnableMainMenuTitle
+        m_MethodName: EnableCanvasDialog
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 771800567}
+        m_TargetAssemblyTypeName: OpenOption, Assembly-CSharp
+        m_MethodName: OpenWithoutAnim
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -22853,7 +22889,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 259204910}
         m_TargetAssemblyTypeName: Navbar, Assembly-CSharp
-        m_MethodName: EnableCanvasDialog
+        m_MethodName: CloseMainParam
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

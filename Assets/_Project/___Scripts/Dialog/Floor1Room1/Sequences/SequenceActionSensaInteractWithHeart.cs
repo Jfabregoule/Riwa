@@ -7,7 +7,7 @@ public class SequenceActionSensaInteractWithHeart : SequencerAction
 {
     public override IEnumerator StartSequence(Sequencer context)
     {
-        GameManager.Instance.Character.Animator.SetTrigger("Interact");
+        GameManager.Instance.Character.Animator.SetTrigger("CinematicInteract");
         yield return null;
     }
 }

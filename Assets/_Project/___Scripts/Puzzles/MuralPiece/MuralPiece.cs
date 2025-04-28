@@ -5,10 +5,16 @@ public class MuralPiece : MonoBehaviour, IInteractable
 {
     [SerializeField] private Transform _fresqueTransform;
     [SerializeField] private float _lerpTime = 3f;
+    [SerializeField] private ParticleSystem _onPlaceVFX;
+    [SerializeField] private EnumTemporality _muralPieceTemporality;
+
+    private Floor1Room4LevelManager _instance;
 
     public float OffsetRadius { get => 0f; set => OffsetRadius = value; }
     public bool CanInteract { get; set; }
     public int Priority { get ; set; }
+    public Transform FresqueTransform { get => _fresqueTransform; }
+    public EnumTemporality PieceTemporality { get; set; }
 
     public delegate void MuralPieceEvent();
     public MuralPieceEvent OnPickUp;
@@ -16,6 +22,7 @@ public class MuralPiece : MonoBehaviour, IInteractable
     {
         CanInteract = true;
         Priority = 0;
+        _instance = (Floor1Room4LevelManager)Floor1Room4LevelManager.Instance;
     }
     public void Interact()
     {
@@ -40,9 +47,13 @@ public class MuralPiece : MonoBehaviour, IInteractable
             yield return null;
         }
 
+        _onPlaceVFX.Play();
         transform.position = _fresqueTransform.position;
         if (TryGetComponent<TemporalItem>(out TemporalItem temporalItem))
             temporalItem.UpdatePresentPosition();
         if (_fresqueTransform.rotation != Quaternion.identity) transform.rotation = _fresqueTransform.rotation;
+
+        EnumTemporality temporality = GameManager.Instance.CurrentTemporality;
+        _instance.ChangeFresqueCompletionData(this, temporality);
     }
 }

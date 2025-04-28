@@ -43,6 +43,7 @@ public class BridgeVineScript : MonoBehaviour, IInteractableSoul
 
     private IEnumerator RaiseVine()
     {
+        CanInteract = false;
         float growValue = _material.GetFloat("_Grow");
 
         while (_maxGrow - growValue > 0.01f)

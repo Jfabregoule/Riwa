@@ -13,6 +13,7 @@ public class EmitterLaser : MonoBehaviour
     private bool _isReflecting;
     private bool _isActive;
     private int _layerMask;
+    private Renderer[] _renderers;
 
     [SerializeField] private MonoBehaviour[] _activables;
     private int CurrentActive;
@@ -34,6 +35,7 @@ public class EmitterLaser : MonoBehaviour
                 act.OnDesactivated += RemoveActivate;
             }
         }
+        _renderers = transform.GetChild(0).GetChild(0).GetComponentsInChildren<Renderer>();
 
         ResetLaser();
     }
@@ -140,6 +142,12 @@ public class EmitterLaser : MonoBehaviour
         if (CurrentActive == _activables.Length)
         {
             _isActive = true;
+            foreach (Renderer renderer in _renderers)
+            {
+                Material material = renderer.material;
+                if (material.HasProperty("_IsActivated"))
+                    material.SetFloat("_IsActivated", 1f);
+            }
         }
     }
 
@@ -148,6 +156,12 @@ public class EmitterLaser : MonoBehaviour
         if (CurrentActive == _activables.Length)
         {
             _isActive = false;
+            foreach (Renderer renderer in _renderers)
+            {
+                Material material = renderer.material;
+                if (material.HasProperty("_IsActivated"))
+                    material.SetFloat("_IsActivated", 0f);
+            }
             ResetLaser();
         }
         CurrentActive--;

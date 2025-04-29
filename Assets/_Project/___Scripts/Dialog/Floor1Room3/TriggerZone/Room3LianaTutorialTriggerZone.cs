@@ -11,6 +11,7 @@ public class Room3LianaTutorialCollider : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.OnTimeChangeStarted += DialogueToCall;
+        DialogueSystem.Instance.OnDialogueEvent += EventDispatcher;
         _instance = (Floor1Room3LevelManager)Floor1Room3LevelManager.Instance;
     }
 
@@ -18,6 +19,9 @@ public class Room3LianaTutorialCollider : MonoBehaviour
     {
         if (_isPlayerInArea && _hasBeenAlreadyTriggered == false && temporality == EnumTemporality.Present)
         {
+            _instance.RiwaShowingPathTriggerZone.CanInteract = false;
+            _instance.TreeStumpTest.CanInteract = false;
+
             _hasBeenAlreadyTriggered = true;
             StartCoroutine(_instance.TutorialRoom3Manager.BringRiwaToLiana());
             //DialogueSystem.Instance.BeginDialogue(_instance.TutorialRoom3Manager.LianaDialogue);
@@ -35,4 +39,15 @@ public class Room3LianaTutorialCollider : MonoBehaviour
         if (other.TryGetComponent(out ACharacter chara))
             _isPlayerInArea = false;
     }
+
+    public void EventDispatcher(DialogueEventType eventType)
+    {
+        switch (eventType)
+        {
+            case DialogueEventType.EnableStumpRoom3:
+                _instance.TreeStumpTest.CanInteract = true;
+                break;
+        }
+    }
+
 }

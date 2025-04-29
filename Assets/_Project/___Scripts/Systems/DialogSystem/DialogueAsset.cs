@@ -73,6 +73,7 @@ public enum DialogueEventType
     OnFinish,
     UnlockChangeTime,
     SensaSpeaking,
+    EnableStumpRoom3,
 }
 
 public enum WaitDialogueEventType

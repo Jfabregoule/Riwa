@@ -51,8 +51,10 @@ public class MoveStateHolding : HoldingBaseState
         Vector3 dir = Helpers.GetDominantDirection(_character.transform.forward);
 
         float moveDistance = _movable.MoveDistance;
-        moveDistance *= 5;
+        //moveDistance *= 5;
         float radius = _capsuleCollider.radius;
+
+        moveDistance = Mathf.Clamp(moveDistance, 0.5f, 1);
 
         LayerMask layerMask = GameManager.Instance.CurrentTemporality == EnumTemporality.Past ? _character.PastLayer : _character.PresentLayer;
 
@@ -61,7 +63,7 @@ public class MoveStateHolding : HoldingBaseState
         Quaternion orientation = Quaternion.Euler(new Vector3(0, 90 * (Sens * dir).z, 0));
 
         halfExtents *= 0.4f;
-
+        
         Collider[] colliders = Physics.OverlapBox(center, halfExtents, orientation, layerMask);
 
         DebugDrawBox(center, halfExtents, orientation, UnityEngine.Color.blue, 1f);

@@ -54,8 +54,32 @@ public class CollectibleUI : MonoBehaviour
 
     private IEnumerator ShowCollectible()
     {
+        yield return StartCoroutine(FadeShowCollectible(1f));
+        Helpers.GetWait(_timeToShow);
+        StartCoroutine(FadeHideCollectible(1f));
+    }
+
+    private IEnumerator FadeShowCollectible(float duration)
+    {
+        float timer = 0;
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+            _canvas.alpha = Mathf.Lerp(0f, 1f, timer / duration);
+            yield return null;
+        }
         Helpers.EnabledCanvasGroup(_canvas);
-        yield return Helpers.GetWait(_timeToShow);
+    }
+
+    private IEnumerator FadeHideCollectible(float duration)
+    {
+        float timer = 0;
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+            _canvas.alpha = Mathf.Lerp(1f, 0f, timer / duration);
+            yield return null;
+        }
         Helpers.DisabledCanvasGroup(_canvas);
     }
 }

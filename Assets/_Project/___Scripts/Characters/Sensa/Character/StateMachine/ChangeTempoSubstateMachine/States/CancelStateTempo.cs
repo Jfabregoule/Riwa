@@ -54,4 +54,10 @@ public class CancelStateTempo : ChangeTempoBaseState
         Helpers.Camera.cullingMask &= ~(1 << layermaskToHide);
         _changedTime = true;
     }
+
+    public override void DestroyState()
+    {
+        base.DestroyState();
+        GameManager.Instance.OnTimeChangeAborted -= TimeChangeAborted;
+    }
 }

@@ -93,6 +93,7 @@ public class PawnMoveStateInteract<TStateEnum> : PawnInteractBaseSubstate<TState
     {
         base.DestroyState();
         _character.InputManager.OnInteract -= EndInteract;
+        _character.OnMoveToFinished -= InteractEndOfPath;
     }
 
     protected virtual void ChangeStateToIdle() { }

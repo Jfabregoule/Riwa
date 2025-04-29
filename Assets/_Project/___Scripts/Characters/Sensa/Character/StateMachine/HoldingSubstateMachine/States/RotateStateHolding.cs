@@ -136,7 +136,8 @@ public class RotateStateHolding : HoldingBaseState
     {
         base.DestroyState();
 
-        _character.OnRotate += LaunchRotate;
+        _character.OnRotate -= LaunchRotate;
+        _rotatable.OnRotateFinished -= Finish;
     }
 
 }

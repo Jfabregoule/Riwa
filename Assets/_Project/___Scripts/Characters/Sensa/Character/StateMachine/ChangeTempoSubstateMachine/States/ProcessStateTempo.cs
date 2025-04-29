@@ -65,4 +65,10 @@ public class ProcessStateTempo : ChangeTempoBaseState
         _changedTime = true;
         _character.CanChangeTime = true;
     }
+
+    public override void DestroyState()
+    {
+        base.DestroyState();
+        GameManager.Instance.OnTimeChangeEnded -= TimeChangeEnded;
+    }
 }

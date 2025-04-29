@@ -65,4 +65,9 @@ public class HoldingStateCharacter : BaseStateCharacter<EnumStateCharacter>
     {
         _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Idle]);
     }
+
+    public override void DestroyState()
+    {
+        _character.InputManager.OnInteract -= OnInteractEnd;
+    }
 }

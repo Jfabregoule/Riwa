@@ -19,17 +19,16 @@ public class SequenceActionRoom0SensaTowardRiwa : SequencerAction
 
     public override IEnumerator StartSequence(Sequencer context)
     {
-        Debug.Log("Allo ?");
         _isMoving = true;
         _chara.OnMoveToFinished += FinishMoveto;
 
         Vector3 landPos = _instance.SensaLandPos.position;
         Vector3 target = landPos;
 
+        _chara.WalkSpeed *= 5;
         MoveToStateCharacter state = (MoveToStateCharacter)_chara.StateMachine.States[EnumStateCharacter.MoveTo];
         state.LoadState(EnumStateCharacter.Idle, target, target);
         _chara.StateMachine.ChangeState(state);
-        _chara.WalkSpeed *= 2;
 
         while(_isMoving)
         {
@@ -44,7 +43,7 @@ public class SequenceActionRoom0SensaTowardRiwa : SequencerAction
     public void FinishMoveto()
     {
         _isMoving = false;
-        _chara.WalkSpeed *= 0.5f;
+        _chara.WalkSpeed = 2f;
         DialogueSystem.Instance.BeginDialogue(_instance.CinematicManager.Room0Dialogue);
     }
 }

@@ -419,7 +419,6 @@ public class Damier : MonoBehaviour
         _instance.DamierCamera.Priority = 0;
         _instance.RiwaSensaCamera[0].Priority = 20;
         _instance.TutorialRoom3Manager.RiwaEndShowDamierPath();
-        //StartCoroutine(_instance.TutorialRoom3Manager.HideRiwaAgain(true));
     }
 
     private IEnumerator FadeCellAlpha(GameObject cell, float startAlpha, float endAlpha, float duration)

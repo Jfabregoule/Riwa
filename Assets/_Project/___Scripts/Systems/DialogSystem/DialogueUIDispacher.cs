@@ -68,7 +68,6 @@ public class DialogueUIDispacher : MonoBehaviour
             dialogueSystem.OnSentenceChanged += OnSentenceChanged;
             dialogueSystem.OnCanvasGroupChanged += OnCanvasGroupChange;
             dialogueSystem.OnCanvasGroupAlphaChanged += OnCanvasGroupAlphaChanged;
-            Debug.Log("Script is ready!");
         }
         else
         {

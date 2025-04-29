@@ -11,7 +11,6 @@ public class CrateSaveInteraction : MonoBehaviour
     private void Start()
     {
         _isFirstInteraction = SaveSystem.Instance.LoadElement<bool>("IsFirstInteraction", false);
-        Debug.Log(_isFirstInteraction);
     }
     private void OnEnable()
     {

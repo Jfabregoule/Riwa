@@ -49,8 +49,18 @@ public class ChangeTime : MonoBehaviour
         _radius = 0;
 
         Shader.SetGlobalFloat("_Radius", _radius);
-        Shader.SetGlobalInt("_PresentEnum", 1);
-        Shader.SetGlobalInt("_PastEnum", 0);
+
+        if(GameManager.Instance.CurrentTemporality == EnumTemporality.Present)
+        {
+            Shader.SetGlobalInt("_PresentEnum", 1);
+            Shader.SetGlobalInt("_PastEnum", 0);
+        }
+        else
+        {
+            Shader.SetGlobalInt("_PresentEnum", 0);
+            Shader.SetGlobalInt("_PastEnum", 1);
+        }
+        
         _present = Shader.GetGlobalInt("_PresentEnum");
         _past = Shader.GetGlobalInt("_PastEnum");
     }

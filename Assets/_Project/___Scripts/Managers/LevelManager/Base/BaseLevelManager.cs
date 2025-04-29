@@ -61,6 +61,19 @@ public class BaseLevelManager : Singleton<BaseLevelManager>
     public virtual void Start()
     {
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(gameObject.scene.name));
+
+        if (GameManager.Instance.CurrentTemporality == EnumTemporality.Present)
+        {
+            Helpers.Camera.cullingMask |= 1 << 7;
+            Physics.IgnoreLayerCollision(_character.gameObject.layer, Mathf.Clamp(Mathf.RoundToInt(Mathf.Log(_character.PastLayer.value, 2)), 0, 31), true);
+            Physics.IgnoreLayerCollision(_character.gameObject.layer, Mathf.Clamp(Mathf.RoundToInt(Mathf.Log(_character.PresentLayer.value, 2)), 0, 31), false);
+        }
+        else
+        {
+            Helpers.Camera.cullingMask |= 1 << 6;
+            Physics.IgnoreLayerCollision(_character.gameObject.layer, Mathf.Clamp(Mathf.RoundToInt(Mathf.Log(_character.PresentLayer.value, 2)), 0, 31), true);
+            Physics.IgnoreLayerCollision(_character.gameObject.layer, Mathf.Clamp(Mathf.RoundToInt(Mathf.Log(_character.PastLayer.value, 2)), 0, 31), false);
+        }
     }
 
     public virtual void LevelEnter()

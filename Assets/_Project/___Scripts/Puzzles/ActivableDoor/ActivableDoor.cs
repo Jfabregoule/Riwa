@@ -100,8 +100,8 @@ public class ActivableDoor : MonoBehaviour
             yield return new WaitForSeconds(1.5f);
             _doorCameras[1].Priority = 25;
             yield return new WaitForSeconds(1.5f);
-            OnDoorStateUpdated(true);
         }
+        OnDoorStateUpdated(true);
 
         Vector3 start = transform.position;
 

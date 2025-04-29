@@ -45,7 +45,7 @@ public class PulseEffect : MonoBehaviour
         transform.localScale = targetScale;
     }
 
-    public void StopPulsing(EnumTemporality temporality)
+    public void StopPulsing()
     {
         _isPulsing = false;
 

@@ -5,14 +5,6 @@ using UnityEngine;
 
 public enum EnumAdvancementRoom1
 {
-    None,
-    LookAtTree,
-    HasEnterTree,
-    HasOpenDoor
-}
-
-public enum EnumAdvancementRoom1Test
-{
     Start,
     Room0,
     Liana,
@@ -23,7 +15,7 @@ public enum EnumAdvancementRoom1Test
 [System.Serializable]
 public struct CinematicRoom1
 {
-    public EnumAdvancementRoom1Test ID;
+    public EnumAdvancementRoom1 ID;
     public DialogueAsset Dialogue;
     public Sequencer[] Sequencers;
 }
@@ -33,9 +25,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
 
     [Header("Floor1 Room1")]
 
-    public EnumAdvancementRoom1 CurrentAdvancement = EnumAdvancementRoom1.None; //A sauvegarder
-    public EnumAdvancementRoom1Test CurrentAdvancementTest = EnumAdvancementRoom1Test.Start; //A sauvegarder
-    [SerializeField] private bool _areEventEnabled = true;
+    public EnumAdvancementRoom1 CurrentAdvancement = EnumAdvancementRoom1.Start; //A sauvegarder
 
     [SerializeField] private float _durationCameraBlending = 1f;
     private CinemachineBrain _brain;
@@ -44,14 +34,13 @@ public class Floor1Room1LevelManager : BaseLevelManager
     [SerializeField] private List<ParticleSystem> _riwaHeartPS;
     [SerializeField] private CinemachineVirtualCamera _endGameCamera;
 
+    [SerializeField] private Door _backTrakingDoor;
+    [SerializeField] private GameObject _blockDoor;
+    [SerializeField] private Renderer _aroundDoor;
+
     [SerializeField] private CinematicRoom1[] _cinematics;
 
     [Header("Event Sequencer")]
-
-    //[SerializeField] private Sequencer _endGame;
-    //[SerializeField] private Sequencer _event3;
-
-    //[SerializeField] private DialogueAsset _dialogue;
 
     private System.Action OnChangeTime;
 
@@ -59,7 +48,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
 
     private bool _isCrateWellPlaced;
 
-    public Sequencer EndGameSequencer { get => _cinematics[(int)EnumAdvancementRoom1Test.End].Sequencers[0]; }
+    public Sequencer EndGameSequencer { get => _cinematics[(int)EnumAdvancementRoom1.End].Sequencers[0]; }
     public GameObject RiwaHeart { get => _riwaHeart; }
     public CinemachineVirtualCamera EndGameCamera { get => _endGameCamera; }
     public List<ParticleSystem> RiwaHeartPS { get => _riwaHeartPS; }
@@ -74,30 +63,27 @@ public class Floor1Room1LevelManager : BaseLevelManager
     private void OnDisable()
     {
         SaveSystem.Instance.OnLoadProgress -= LoadData;
-        SaveSystem.Instance.SaveElement<int>("Room1Progress", (int)CurrentAdvancementTest);
+        SaveSystem.Instance.SaveElement<int>("Room1Progress", (int)CurrentAdvancement);
     }
 
     private void LoadData()
     {
-        UpdateAdvancement((EnumAdvancementRoom1Test)SaveSystem.Instance.LoadElement<int>("Room1Progress"));
+        UpdateAdvancement((EnumAdvancementRoom1)SaveSystem.Instance.LoadElement<int>("Room1Progress"));
     }
 
     public override void Start()
     {
         base.Start();
-        //OnLevelEnter += BeginDialogue;
-
-        if(CurrentAdvancementTest == EnumAdvancementRoom1Test.Start)
+        _backTrakingDoor.DisableDoor();
+        if (CurrentAdvancement == EnumAdvancementRoom1.Start)
         {
             OnLevelEnter += BeginDialogue;
         }
 
-        if (CurrentAdvancementTest > EnumAdvancementRoom1Test.Room0)
+        if (CurrentAdvancement >= EnumAdvancementRoom1.Room0)
         {
             GameManager.Instance.UnlockChangeTime();
         }
-
-        //_endGame.Init();
         DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.ChangeTime, OnChangeTime);
 
         foreach (var cam in _cameras)
@@ -107,18 +93,6 @@ public class Floor1Room1LevelManager : BaseLevelManager
 
         _character.InputManager.OnChangeTime += CheckCrateEnigma;
         _character.InputManager.OnChangeTime += InvokeChangeTime;
-
-        //if (CurrentAdvancement < EnumAdvancementRoom1.LookAtTree)
-        //{
-        //    CurrentAdvancement = EnumAdvancementRoom1.LookAtTree;
-
-        //    if(_areEventEnabled)
-        //    {
-        //        _event3.Init();
-
-        //        //_dialogue.LaunchDialogue(0);
-        //    }
-        //}
 
         _brain = Helpers.Camera.GetComponent<CinemachineBrain>();
         _defaultBlend = _brain.m_DefaultBlend;
@@ -135,17 +109,6 @@ public class Floor1Room1LevelManager : BaseLevelManager
             DialogueSystem.Instance.OnDialogueEvent -= EventDispatcher;
     }
 
-
-    //public void TriggerEvent2()
-    //{
-    //    if (CurrentAdvancement < EnumAdvancementRoom1.HasEnterTree)
-    //    { 
-    //        CurrentAdvancement = EnumAdvancementRoom1.HasEnterTree;
-    //        //if (_areEventEnabled)
-
-    //    }
-    //}
-
     public void SetCrateWellPlaced(bool value)
     {
         _isCrateWellPlaced = value;
@@ -155,18 +118,13 @@ public class Floor1Room1LevelManager : BaseLevelManager
     {
         if (!_isCrateWellPlaced || !_character.CanChangeTime) { return; }
 
-        if (CurrentAdvancement < EnumAdvancementRoom1.HasEnterTree)
-        {
-            CurrentAdvancement = EnumAdvancementRoom1.HasEnterTree;
             
-            if (_areEventEnabled)
-            {
-                GameManager.Instance.Character.StateMachine.GoToIdle();
-                UpdateAdvancement(EnumAdvancementRoom1Test.Liana);
-                DialogueSystem.Instance.BeginDialogue(_cinematics[(int)CurrentAdvancementTest].Dialogue);
-                _cinematics[(int)EnumAdvancementRoom1Test.Liana].Sequencers[0].InitializeSequence();
-                //_event3.InitializeSequence();
-            }
+        if (CurrentAdvancement == EnumAdvancementRoom1.Room0)
+        {
+            GameManager.Instance.Character.StateMachine.GoToIdle();
+            UpdateAdvancement(EnumAdvancementRoom1.Liana);
+            DialogueSystem.Instance.BeginDialogue(_cinematics[(int)CurrentAdvancement].Dialogue);
+            _cinematics[(int)EnumAdvancementRoom1.Liana].Sequencers[0].InitializeSequence();
         }
 
         _character.InputManager.OnChangeTime -= CheckCrateEnigma;
@@ -191,6 +149,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
                 break;
             case DialogueEventType.UnlockChangeTime:
                 GameManager.Instance.UnlockChangeTime();
+                GameManager.Instance.PulseChangeTime();
                 break;
             case DialogueEventType.ShowInput:
                 GameManager.Instance.InvokeBasicInput();
@@ -219,38 +178,40 @@ public class Floor1Room1LevelManager : BaseLevelManager
     public IEnumerator WaitForPulse()
     {
         yield return new WaitForSeconds(1.5f);
-        GameManager.Instance.PulseIndice();
+        GameManager.Instance.PulseChangeTime();
         InputManager.Instance.EnableGameplayChangeTimeControls();
     }
 
     private void BeginDialogue()
     {
-        //DialogueSystem.Instance.BeginDialogue(_dialogue);
-
-        DialogueSystem.Instance.BeginDialogue(_cinematics[(int)CurrentAdvancementTest].Dialogue);
+        DialogueSystem.Instance.BeginDialogue(_cinematics[(int)CurrentAdvancement].Dialogue);
     }
 
     public void EnterFromRoom0()
     {
-        if(CurrentAdvancementTest == EnumAdvancementRoom1Test.Start)
+        if(CurrentAdvancement == EnumAdvancementRoom1.Start)
         {
-            UpdateAdvancement(EnumAdvancementRoom1Test.Room0);
+            UpdateAdvancement(EnumAdvancementRoom1.Room0);
         }
     }
 
     public void EnterFromRoom4()
     {
-        if (CurrentAdvancementTest == EnumAdvancementRoom1Test.Liana)
+        if (CurrentAdvancement == EnumAdvancementRoom1.Liana)
         {
-            UpdateAdvancement(EnumAdvancementRoom1Test.Room4);
+            UpdateAdvancement(EnumAdvancementRoom1.Room4);
             OnLevelEnter += BeginDialogue;
+            _backTrakingDoor.EnableDoor();
+            _blockDoor.SetActive(false);
+            if (_aroundDoor.material.HasProperty("_IsActivated"))
+                _aroundDoor.material.SetFloat("_IsActivated", 1);
         }
     }
 
-    public void UpdateAdvancement(EnumAdvancementRoom1Test advancement)
+    public void UpdateAdvancement(EnumAdvancementRoom1 advancement)
     {
-        CurrentAdvancementTest = advancement;
-        foreach (Sequencer sequencer in _cinematics[(int)CurrentAdvancementTest].Sequencers)
+        CurrentAdvancement = advancement;
+        foreach (Sequencer sequencer in _cinematics[(int)CurrentAdvancement].Sequencers)
         {
             sequencer.Init();
         }

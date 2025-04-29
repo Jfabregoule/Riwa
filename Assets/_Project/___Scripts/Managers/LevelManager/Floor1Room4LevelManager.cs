@@ -71,8 +71,9 @@ public class Floor1Room4LevelManager : BaseLevelManager
         _isTutorialDone = SaveSystem.Instance.LoadElement<bool>("Room4TutorialDone");
     }
 
-    private void Start()
+    public override void Start()
     {
+        base.Start();
         GameManager.Instance.UnlockChangeTime();
     }
 

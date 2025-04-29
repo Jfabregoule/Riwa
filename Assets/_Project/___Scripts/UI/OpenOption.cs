@@ -5,6 +5,10 @@ using UnityEngine;
 public class OpenOption : MonoBehaviour
 {
     [SerializeField] private CanvasGroup _navBarCanvasGroup;
+    [SerializeField] private CanvasGroup _settingsCanvasGroup;
+    [SerializeField] private CanvasGroup _languageCanvasGroup;
+    [SerializeField] private CanvasGroup _rightPartCanvasGroup;
+
     [SerializeField] private float _movingTime;
     private InputManager _inputManager;
     private CanvasGroup _optionsButtonCanvasGroup;
@@ -42,6 +46,19 @@ public class OpenOption : MonoBehaviour
         _inputManager.EnableGameplayControls();
         Helpers.EnabledCanvasGroup(_optionsButtonCanvasGroup);
         StartCoroutine(MoveNavbarDown());
+
+        if (_settingsCanvasGroup.alpha == 1)
+        {
+            Helpers.DisabledCanvasGroup(_settingsCanvasGroup);
+            Helpers.EnabledCanvasGroup(_rightPartCanvasGroup);
+        }
+
+        if(_languageCanvasGroup.alpha == 1)
+        {
+            Helpers.DisabledCanvasGroup(_languageCanvasGroup);
+            Helpers.EnabledCanvasGroup(_settingsCanvasGroup.gameObject.transform.GetChild(1).GetComponent<CanvasGroup>());
+            Helpers.EnabledCanvasGroup(_rightPartCanvasGroup);
+        }
     }
     private void SubscribeToInputManager(InputManager script)
     {

@@ -128,12 +128,12 @@ public class InputManager : Singleton<InputManager>
 
     public void LockJoystick()
     {
-        OnLockJoystick?.Invoke(_controlsInverted);
+        OnLockJoystick?.Invoke(!_controlsInverted);
     }
 
     public void UnlockJoystick()
     {
-        OnUnlockJoystick?.Invoke(_controlsInverted);
+        OnUnlockJoystick?.Invoke(!_controlsInverted);
     }
 
     public void EnableGameplayChangeTimeControls()

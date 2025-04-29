@@ -25,6 +25,12 @@ public class SoundMixerManager<T> : Singleton<T> where T : SoundMixerManager<T>
         float dB = normalized == 0f ? -80f : Mathf.Log10(normalized) * 20f;
         _audioMixer.SetFloat("SoundFXVolume", dB);
     }
+    public void SetAmbiantVolume(float level)
+    {
+        float normalized = Mathf.Clamp01(level / 10f);
+        float dB = normalized == 0f ? -80f : Mathf.Log10(normalized) * 20f;
+        _audioMixer.SetFloat("AmbianceVolume", dB);
+    }
 
     public void SetCinematicVolume(float level)
     {

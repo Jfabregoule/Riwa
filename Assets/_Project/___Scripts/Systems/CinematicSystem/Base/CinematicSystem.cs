@@ -23,6 +23,7 @@ public class CinematicSystem<T> : Singleton<T> where T : CinematicSystem<T>
     [Header("Audio Settigs")]
     [SerializeField] private AudioMixer _audioMixer;
     [SerializeField] private List<string> _audioMixerGroupName;
+    [SerializeField] private AudioMixerGroup _audioMixerGroup;
 
     private CanvasGroup _cinematicCanvasGroup;
     private VideoPlayer _videoPlayer;
@@ -55,7 +56,18 @@ public class CinematicSystem<T> : Singleton<T> where T : CinematicSystem<T>
     private void InitializePlayer()
     {
         _videoPlayer.renderMode = VideoRenderMode.RenderTexture;
+        _videoPlayer.EnableAudioTrack(0, true);
         _videoPlayer.targetTexture = _targetTexture;
+        _videoPlayer.audioOutputMode = VideoAudioOutputMode.AudioSource;
+
+        AudioSource audioSource = _videoPlayer.GetTargetAudioSource(0);
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+            _videoPlayer.SetTargetAudioSource(0, audioSource);
+        }
+        audioSource.outputAudioMixerGroup = _audioMixerGroup; 
+
         _videoPlayer.loopPointReached += OnVideoFinished;
     }
 
@@ -77,6 +89,7 @@ public class CinematicSystem<T> : Singleton<T> where T : CinematicSystem<T>
             _videoPlayer.clip = clip;
             _videoPlayer.isLooping = loop;
             _onEndCallback = onEnd;
+            
             SetVolume(true);
             _videoPlayer.Play();
             OnVideoStarted?.Invoke();
@@ -99,19 +112,6 @@ public class CinematicSystem<T> : Singleton<T> where T : CinematicSystem<T>
         _onEndCallback = null;
     }
 
-    //public void StopVideo()
-    //{
-    //    if (_videoPlayer.isPlaying)
-    //    {
-    //        _videoPlayer.Stop();
-    //        SetVolume(false);
-    //        Helpers.DisabledCanvasGroup(_skipCanvasGroup);
-    //        OnVideoEnded?.Invoke();
-    //        _onEndCallback?.Invoke();
-    //        _onEndCallback = null;
-    //    }
-    //}
-
     public void SetCanvasGroup()
     {
         _cinematicCanvasGroup = GameObject.FindGameObjectWithTag(CINEMATIC_TAG).GetComponent<CanvasGroup>();
@@ -131,20 +131,8 @@ public class CinematicSystem<T> : Singleton<T> where T : CinematicSystem<T>
     private IEnumerator WaitBeforeAppear()
     {
         yield return new WaitForSeconds(3.0f);
-        StartCoroutine(AppearButton());
-
-    }
-
-    private IEnumerator AppearButton()
-    {
-        float timer = 0;
-        while (timer < _appearTimer)
-        {
-            timer += Time.deltaTime;
-            _skipCanvasGroup.alpha = Mathf.Clamp01(timer / _appearTimer);
-            yield return null;
-        }
         Helpers.EnabledCanvasGroup(_skipCanvasGroup);
+
     }
 
     private void SetVolume(bool isVideoEnable)

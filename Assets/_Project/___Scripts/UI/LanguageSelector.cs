@@ -15,7 +15,7 @@ public class LanguageSelector : MonoBehaviour
     [SerializeField] private LanguageButton[] _buttonLists;
 
     private TranslateSystem _translateSystem;
-
+    private int _previousLanguage;
     private void OnEnable()
     {
         SaveSystem.Instance.OnLoadSettings += SetLanguage;
@@ -52,6 +52,7 @@ public class LanguageSelector : MonoBehaviour
 
     private void SetLanguage()
     {
+        _previousLanguage = GetIntCurrentLanguage();
         TranslateSystem.EnumLanguage language = (TranslateSystem.EnumLanguage)SaveSystem.Instance.LoadElement<int>("_language",true);
         SelectLanguage(language);
     }

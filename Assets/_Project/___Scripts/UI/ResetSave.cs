@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ResetSave : MonoBehaviour
 {
@@ -11,8 +12,16 @@ public class ResetSave : MonoBehaviour
         {
             DialogueSystem.Instance.ChangeCanvasGroupAlpha(0);
         }
-        string CurrentRoomSceneName = RiwaLoadSceneSystem.Instance.GetCurrentRoomSceneName();
-        StartCoroutine(RiwaLoadSceneSystem.Instance.ChangeScene(new[] { new SceneData(CurrentRoomSceneName) }, new[] { new SceneData("MainMenu", 0, new System.Action[] { SaveSystem.Instance.DeleteAllData } )})); ;
 
+        if (SceneManager.GetActiveScene().name == "Systems")
+        {
+            SaveSystem.Instance.DeleteAllData();
+        }
+        else
+        {
+            string CurrentRoomSceneName = RiwaLoadSceneSystem.Instance.GetCurrentRoomSceneName();
+            StartCoroutine(RiwaLoadSceneSystem.Instance.ChangeScene(new[] { new SceneData(CurrentRoomSceneName) }, new[] { new SceneData("MainMenu", 0, new System.Action[] { SaveSystem.Instance.DeleteAllData }) })); ;
+
+        }
     }
 }

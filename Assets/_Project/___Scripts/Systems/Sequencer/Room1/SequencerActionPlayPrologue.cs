@@ -1,19 +1,19 @@
 using Cinemachine;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Play Prologue", menuName = "Riwa/Room1/Play Prologue")]
 public class SequencerActionPlayPrologue : SequencerAction
 {
+    private bool _isFirstCinematic;
     public override void Initialize(GameObject obj)
     {
+        _isFirstCinematic = SaveSystem.Instance.LoadElement<bool>("FinishPrologue");
     }
 
     public override IEnumerator StartSequence(Sequencer context)
     {
-        bool isFirstCinematic = SaveSystem.Instance.LoadElement<bool>("FinishPrologue");
-        if (!isFirstCinematic)
+        if (!_isFirstCinematic)
         {
             bool videoFinished = false;
 
@@ -33,5 +33,4 @@ public class SequencerActionPlayPrologue : SequencerAction
 
         }
     }
-
 }

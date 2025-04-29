@@ -9,10 +9,15 @@ public class Navbar : MonoBehaviour
     public MainParam OnMainParamOpen;
     public MainParam OnMainParamClose;
 
+    private OpenOption _openOption;
     private CanvasGroup _mainMenuTitleCanvasGroup;
     private void Start()
     {
+        SaveSystem.Instance.OnLoadProgress += DisableDialogue;
+
         _mainMenuTitleCanvasGroup = GameObject.FindGameObjectWithTag(MAIN_MENU_TITLE_TAG).GetComponent<CanvasGroup>();
+        
+        _openOption = transform.GetChild(0).transform.GetChild(0).GetComponent<OpenOption>();
     }
     public void DisableCanvasGroup(CanvasGroup canvasGroup)
     {
@@ -47,4 +52,13 @@ public class Navbar : MonoBehaviour
         DialogueSystem.Instance.ChangeCanvasGroupAlpha(1);
     }
 
+    public void CloseOption()
+    {
+        _openOption.CloseOptions();
+    }
+
+    public void DisableDialogue()
+    {
+        DialogueSystem.Instance.ChangeCanvasGroupAlpha(0);
+    }
 }

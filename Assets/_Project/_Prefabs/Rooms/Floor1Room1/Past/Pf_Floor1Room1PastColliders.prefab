@@ -124,6 +124,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &466885747889109069
 GameObject:
   m_ObjectHideFlags: 0
@@ -177,6 +178,102 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.54, y: 4.5, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &516890325410010703
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7052311114604348014}
+  - component: {fileID: 7649789312487585277}
+  - component: {fileID: 7355379151505156992}
+  m_Layer: 6
+  m_Name: CheckCrateCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7052311114604348014
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 516890325410010703}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.674, y: 0.59, z: -12.95}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4907523696128847022}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &7649789312487585277
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 516890325410010703}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.48830602, y: 1, z: 6.852971}
+  m_Center: {x: -0.06276305, y: 0, z: 0.109553814}
+--- !u!114 &7355379151505156992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 516890325410010703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46f3697c7b244a440bb4c4bd22c691a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnEnter:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Floor1Room1LevelManager, Assembly-CSharp
+        m_MethodName: SetCrateWellPlaced
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  OnExit:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Floor1Room1LevelManager, Assembly-CSharp
+        m_MethodName: SetCrateWellPlaced
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &818964426892365947
 GameObject:
   m_ObjectHideFlags: 0
@@ -213,6 +310,8 @@ Transform:
   - {fileID: 6935312629454784593}
   - {fileID: 1121528644874847919}
   - {fileID: 4217225055974136402}
+  - {fileID: 3732032987555118760}
+  - {fileID: 7052311114604348014}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1006143067029670404
@@ -283,34 +382,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnGrow:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Floor1Room1LevelManager, Assembly-CSharp
-        m_MethodName: SetCrateWellPlaced
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
   OnUnGrow:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Floor1Room1LevelManager, Assembly-CSharp
-        m_MethodName: SetCrateWellPlaced
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   _vine: {fileID: 0}
   _maxHeight: 13.5
   _maxCenter: -7
@@ -370,8 +445,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 15.3, y: 5.02, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 15.3, y: 5.02, z: 5.199133}
+  m_Center: {x: 0, y: 0, z: -2.0995665}
 --- !u!1 &1095933425436751788
 GameObject:
   m_ObjectHideFlags: 0
@@ -406,6 +481,38 @@ Transform:
   - {fileID: 6530260825712618113}
   - {fileID: 7253287820080933938}
   - {fileID: 2054478729605405699}
+  m_Father: {fileID: 4907523696128847022}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1143381228126326320
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3732032987555118760}
+  m_Layer: 6
+  m_Name: TeleportDoors
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3732032987555118760
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1143381228126326320}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8985274274629344280}
   m_Father: {fileID: 4907523696128847022}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1298403168720420746
@@ -2339,6 +2446,118 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.06, y: 4.5, z: 0.55}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &6826171605494532929
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8985274274629344280}
+  - component: {fileID: 4752747077682473781}
+  - component: {fileID: 6056954092602836258}
+  - component: {fileID: 2188594162140783030}
+  - component: {fileID: 6320374687631142219}
+  m_Layer: 6
+  m_Name: DoorWest1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!4 &8985274274629344280
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6826171605494532929}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -14.399, y: 0.6, z: -8.36}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3732032987555118760}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &4752747077682473781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6826171605494532929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bd04cf1c106e7743975af69433a8938, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canBeEntered: 1
+  _floorNumber: 1
+  _roomNumber: 4
+  _nextDoorDirection: 4
+  _nextDoorID: 1
+  _animationExit: 1
+  _enterDoorSequencer: {fileID: 2188594162140783030}
+  _exitDoorSequencer: {fileID: 6320374687631142219}
+--- !u!65 &6056954092602836258
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6826171605494532929}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.1466374, y: 1.7756267, z: 0.47687632}
+  m_Center: {x: 0.13229811, y: 0.38781285, z: -0.2615619}
+--- !u!114 &2188594162140783030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6826171605494532929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e5d8709be7c39548b08fbe3b0d835c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SequenceActions:
+  - {fileID: 11400000, guid: bcd6018c190657e44a5ab09e769e5b49, type: 2}
+  - {fileID: 11400000, guid: 40233cf5b27c1894ab4e4f03ecdb5309, type: 2}
+  - {fileID: 11400000, guid: 406ef1089baeeeb419f0466ac46a9035, type: 2}
+  - {fileID: 11400000, guid: f7389e2a053890940b80ab28e7d5bfb6, type: 2}
+--- !u!114 &6320374687631142219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6826171605494532929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e5d8709be7c39548b08fbe3b0d835c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SequenceActions:
+  - {fileID: 11400000, guid: bcd6018c190657e44a5ab09e769e5b49, type: 2}
+  - {fileID: 11400000, guid: 18424c2db6b653f44868825aad5a8948, type: 2}
+  - {fileID: 11400000, guid: cc42e50e97f6f9d4d8c14255e2dd9758, type: 2}
+  - {fileID: 11400000, guid: 88fa570a6a9065d4ab5d8609cccc0d9b, type: 2}
+  - {fileID: 11400000, guid: 684c0904c22f05c428b2a7f46e66eadc, type: 2}
+  - {fileID: 11400000, guid: 9181a0364f4eee24ebd2c96c1221e932, type: 2}
 --- !u!1 &6872216432506957503
 GameObject:
   m_ObjectHideFlags: 0

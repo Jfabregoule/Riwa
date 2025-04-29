@@ -118,7 +118,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
 
     public void CheckCrateEnigma()
     {
-        if (!_isCrateWellPlaced || !_character.CanChangeTime) { return; }
+        if (!_isCrateWellPlaced || !_character.CanChangeTime || GameManager.Instance.CurrentTemporality == EnumTemporality.Present) { return; }
 
             
         if (CurrentAdvancement == EnumAdvancementRoom1.Room0)

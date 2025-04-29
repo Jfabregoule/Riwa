@@ -33,6 +33,8 @@ public class Floor1Room1LevelManager : BaseLevelManager
     [SerializeField] private GameObject _riwaHeart;
     [SerializeField] private List<ParticleSystem> _riwaHeartPS;
     [SerializeField] private CinemachineVirtualCamera _endGameCamera;
+    [SerializeField] private CinemachineVirtualCamera _lianaCamera;
+    [SerializeField] private CinemachineVirtualCamera _crateCamera;
     [SerializeField] private GameObject _evelator;
 
     [SerializeField] private Door _backTrakingDoor;
@@ -52,6 +54,8 @@ public class Floor1Room1LevelManager : BaseLevelManager
     public Sequencer EndGameSequencer { get => _cinematics[(int)EnumAdvancementRoom1.End].Sequencers[0]; }
     public GameObject RiwaHeart { get => _riwaHeart; }
     public CinemachineVirtualCamera EndGameCamera { get => _endGameCamera; }
+    public CinemachineVirtualCamera LianaCamera { get => _lianaCamera; }
+    public CinemachineVirtualCamera CrateCamera { get => _crateCamera; }
     public List<ParticleSystem> RiwaHeartPS { get => _riwaHeartPS; }
     public GameObject Evelator { get => _evelator; set => _evelator = value; }
 
@@ -194,6 +198,9 @@ public class Floor1Room1LevelManager : BaseLevelManager
         if(CurrentAdvancement == EnumAdvancementRoom1.Start)
         {
             UpdateAdvancement(EnumAdvancementRoom1.Room0);
+            //OnLevelEnter += BeginDialogue;
+            _cinematics[(int)EnumAdvancementRoom1.Room0].Sequencers[0].InitializeSequence();
+
         }
     }
 

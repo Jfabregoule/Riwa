@@ -26,6 +26,14 @@ public class Platform : MonoBehaviour, IRespawnable
     {
         _rb = GetComponent<Rigidbody>();
         _tree = GetComponent<TreeStumpTest>();
+
+        GameManager.Instance.Character.OnRespawn += RespawnWithPlayer;
+
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.Instance.Character.OnRespawn -= RespawnWithPlayer;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -127,6 +135,11 @@ public class Platform : MonoBehaviour, IRespawnable
 
     public void Respawn()
     {
+        
+    }
+
+    public void RespawnWithPlayer()
+    {
         transform.position = RespawnPosition;
         transform.localEulerAngles = RespawnRotation;
         _rb.constraints |= RigidbodyConstraints.FreezePositionY;
@@ -140,4 +153,5 @@ public class Platform : MonoBehaviour, IRespawnable
         _tree.CanInteract = true;
         _isFalling = false;
     }
+
 }

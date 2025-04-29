@@ -36,6 +36,9 @@ public class DialogueFisrtTutoLiana : MonoBehaviour
             case DialogueEventType.RiwaInFloor1Room2:
                 ((Floor1Room2LevelManager)Floor1Room2LevelManager.Instance).RiwaFloor1Room2.MoveToSensa();
                 break;
+            case DialogueEventType.EnablePlantRoom2:
+                ((Floor1Room2LevelManager)Floor1Room2LevelManager.Instance).BridgeVineScript.CanInteract = true;
+                break;
         }
     }
 

@@ -74,6 +74,7 @@ public enum DialogueEventType
     UnlockChangeTime,
     SensaSpeaking,
     EnableStumpRoom3,
+    EnablePlantRoom2,
 }
 
 public enum WaitDialogueEventType

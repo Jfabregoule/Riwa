@@ -19,6 +19,8 @@ public class SequenceActionChangeSceneModular : SequencerAction
         _attachedDoor = context.gameObject.GetComponent<Door>();
         _attachedDoor.ChangeScene();
 
+        DialogueSystem.Instance.FinishDialogue();
+
         yield return null;
     }
 }

@@ -30,13 +30,17 @@ public class BridgeVineScript : MonoBehaviour, IInteractableSoul
     private DialogueSystem _dialogueSystem;
     public Action OnInteract;
 
+    public void Awake()
+    {
+        CanInteract = true;
+    }
+
     void Start()
     {
         Priority = 1;
         _boxCollider = GetComponent<BoxCollider>();
         _minColliderHeight = _boxCollider.size.x;
         _material = GetComponent<MeshRenderer>().material;
-        CanInteract = true;
 
         StartCoroutine(Helpers.WaitMonoBeheviour(() => DialogueSystem.Instance, SubscribeToDialogueSystem));
     }

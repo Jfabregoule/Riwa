@@ -8,6 +8,7 @@ public class TemporalItem : MonoBehaviour
 
     public GameObject PresentItem { get => presentItem; }
 
+  
     public void UpdatePresentPosition()
     {
         presentItem.transform.position = transform.position;

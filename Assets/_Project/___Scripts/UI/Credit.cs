@@ -11,6 +11,16 @@ public class Credit : MonoBehaviour
 
 
     private bool _isEnable = false;
+    private void OnEnable()
+    {
+        StartCoroutine(Helpers.WaitMonoBeheviour(() => GameManager.Instance, SubscribeToGameManager));
+    }
+
+    private void OnDisable()
+    {
+        if(GameManager.Instance)
+            GameManager.Instance.OnCredit += ToggleCredit;
+    }
     private void Start()
     {
         _creditCanvasGroup = transform.parent.GetComponent<CanvasGroup>();
@@ -38,5 +48,11 @@ public class Credit : MonoBehaviour
     {
         _isEnable = true;
         Helpers.EnabledCanvasGroup(_creditCanvasGroup);
+    }
+
+    private void SubscribeToGameManager(GameManager manager)
+    {
+        if (manager == null) return;
+        manager.OnCredit += ToggleCredit;
     }
 }

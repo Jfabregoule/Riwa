@@ -54,6 +54,7 @@ public class GameManager : Singleton<GameManager>
 
     public delegate void RoomChangeEvent();
     public event RoomChangeEvent OnRoomChange;
+    public event RoomChangeEvent OnCredit;
 
     #region Properties
 
@@ -149,5 +150,10 @@ public class GameManager : Singleton<GameManager>
     public void InvokeInteractInput()
     {
         OnShowMoveInputEvent?.Invoke();
+    }
+
+    public void InvokeCredit()
+    {
+        OnCredit?.Invoke();
     }
 }

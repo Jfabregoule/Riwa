@@ -2,7 +2,6 @@ using System.Collections;
 using UnityEngine;
 using Cinemachine;
 
-[ExecuteInEditMode]
 public class ChangeTime : MonoBehaviour
 {
     #region Fields
@@ -50,7 +49,7 @@ public class ChangeTime : MonoBehaviour
 
         Shader.SetGlobalFloat("_Radius", _radius);
 
-        if(GameManager.Instance.CurrentTemporality == EnumTemporality.Present)
+        if (GameManager.Instance.CurrentTemporality == EnumTemporality.Present)
         {
             Shader.SetGlobalInt("_PresentEnum", 1);
             Shader.SetGlobalInt("_PastEnum", 0);
@@ -60,7 +59,7 @@ public class ChangeTime : MonoBehaviour
             Shader.SetGlobalInt("_PresentEnum", 0);
             Shader.SetGlobalInt("_PastEnum", 1);
         }
-        
+
         _present = Shader.GetGlobalInt("_PresentEnum");
         _past = Shader.GetGlobalInt("_PastEnum");
     }

@@ -121,5 +121,7 @@ public class RiwaSaveManagerRoom4 : SaveManager<RiwaSaveManagerRoom4>
             SaveSystem.Instance.SaveElement<bool>(_roomPrefix + $"MuralPieceIsPlace{i}", _muralPieces[i].IsPiecePlaced);
             SaveSystem.Instance.SaveElement<int>(_roomPrefix + $"MuralPieceEnum{i}", (int)_muralPieces[i].PieceTemporality);
         }
+
+        //SUIcide toi feu feu
     }
 }

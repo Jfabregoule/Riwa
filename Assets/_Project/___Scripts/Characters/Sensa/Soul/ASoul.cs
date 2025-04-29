@@ -63,8 +63,7 @@ public class ASoul : APawn<EnumStateSoul>
 
     public void Awake()
     {
-        Character = GameObject.Find(CHARACTER_OBJECT);
-        _soulPawn = GameObject.Find(SOULPAWN_OBJECT);
+        _soulPawn = transform.Find(SOULPAWN_OBJECT).gameObject;
         _rb = GetComponent<Rigidbody>();
         _capsuleCollider = GetComponent<CapsuleCollider>();
         _inputManager = InputManager.Instance;

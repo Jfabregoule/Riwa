@@ -271,7 +271,11 @@ public class InputManager : Singleton<InputManager>
         OnMoveEnd?.Invoke();
     }
 
-    private void InteractPerfomed() => OnInteract?.Invoke();
+    private void InteractPerfomed()
+    {
+        System.Delegate[] deletages = OnInteract.GetInvocationList();
+        OnInteract?.Invoke();
+    }
     private void AdvanceDialoguePerfomed() 
     {
         if (IsTouchOverUI(GetPressPosition(), 0)) return;

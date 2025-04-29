@@ -36,7 +36,7 @@ public class SoulMoveStateInteract : PawnMoveStateInteract<EnumStateSoul>
                 SoulInteractSubstateMachine stateMachine = (SoulInteractSubstateMachine)_subStateMachine;
                 stateMachine.Player.StateMachine.ChangeState(stateMachine.Player.StateMachine.States[EnumStateCharacter.Idle]);
             }
-            ChangeStateToIdle();
+            ChangeStateToSoul();
             return;
         }
 
@@ -59,7 +59,8 @@ public class SoulMoveStateInteract : PawnMoveStateInteract<EnumStateSoul>
         chara.StateMachine.ChangeState(chara.StateMachine.States[EnumStateSoul.Idle]);
     }
     protected override void ChangeStateToSoul() {
-        
+        ASoul chara = (ASoul)_character;
+        chara.StateMachine.ChangeState(chara.StateMachine.States[EnumStateSoul.Disable]);
     }
     protected override void SetHoldingObject() { }
 

@@ -104,7 +104,7 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
         _animator = GetComponent<Animator>();
         _feet = GetComponentInChildren<CharacterFeet>();
 
-        _soul = GameObject.Find(SOUL_OBJECT);
+        _soul = transform.GetComponentInChildren<ASoul>().gameObject;
         _capsuleCollider = GetComponent<CapsuleCollider>();
 
         StateMachine = new StateMachineCharacter();

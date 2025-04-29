@@ -55,6 +55,7 @@ public class GameManager : Singleton<GameManager>
     public delegate void RoomChangeEvent();
     public event RoomChangeEvent OnRoomChange;
     public event RoomChangeEvent OnCredit;
+    public event RoomChangeEvent OnResetSave;
 
     #region Properties
 
@@ -155,5 +156,12 @@ public class GameManager : Singleton<GameManager>
     public void InvokeCredit()
     {
         OnCredit?.Invoke();
+    }
+
+    public void ResetSave()
+    {
+        CurrentTemporality = EnumTemporality.Present;
+        ChangeTimeUnlock = false;
+        OnResetSave?.Invoke();
     }
 }

@@ -11,8 +11,19 @@ public class DialogueStartFloor1Room2 : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera[] _cameras;
     [SerializeField] private float _waitOnCamera = 3f;
     private DialogueSystem _dialogueSystem;
+    private bool _done = false;
 
     public Action ChangeTime;
+    private void OnEnable()
+    {
+        LoadData();
+        SaveSystem.Instance.OnLoadProgress += LoadData;
+    }
+
+    private void LoadData()
+    {
+        _done = SaveSystem.Instance.LoadElement<bool>("Room2FirstDialog");
+    }
 
     private void OnDisable()
     {
@@ -25,10 +36,16 @@ public class DialogueStartFloor1Room2 : MonoBehaviour
             GameManager.Instance.OnTimeChangeStarted -= StartChangeTimeDialogue;
             GameManager.Instance.StopPusleChangeTime();
         }
+
+        SaveSystem.Instance.OnLoadProgress -= LoadData;
+        SaveSystem.Instance.SaveElement<bool>("Room2FirstDialog", _done);
     }
     private void Start()
     {
-        GameManager.Instance.CurrentLevelManager.OnLevelEnter += StartDialogue;
+        if (!_done)
+        {
+            GameManager.Instance.CurrentLevelManager.OnLevelEnter += StartDialogue;
+        }
     }
     private void DispatchDialogueEvent(DialogueEventType dialogueEventType)
     {
@@ -78,5 +95,7 @@ public class DialogueStartFloor1Room2 : MonoBehaviour
             yield return new WaitForSeconds(_waitOnCamera);
         }
         _cameras[_cameras.Length - 1].Priority = 0;
+        _done = true;
+        SaveSystem.Instance.SaveElement<bool>("Room2FirstDialog", _done);
     }
 }

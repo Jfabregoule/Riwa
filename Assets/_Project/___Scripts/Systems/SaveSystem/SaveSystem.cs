@@ -87,7 +87,8 @@ public class SaveSystem : Singleton<SaveSystem>
         {"IsFirstControl",true },
         {"IsFirstInteraction",true },
         {"Room1Progress",EnumAdvancementRoom1.Start },
-        {"DialogRoom0", false }
+        {"DialogRoom0", false },
+        {"Room2FirstDialog", false },
     };
 
     /// <summary>

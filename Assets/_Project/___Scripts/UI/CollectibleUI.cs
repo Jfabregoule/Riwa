@@ -24,7 +24,7 @@ public class CollectibleUI : MonoBehaviour
     }
     void Start()
     {
-        
+        UpdateTextAll(0);
     }
 
     private void DisplayCollectibleCanvas()

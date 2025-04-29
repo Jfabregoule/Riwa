@@ -19,18 +19,19 @@ public class SequencerActionScreenFadeInOut : SequencerAction
 
     public override IEnumerator StartSequence(Sequencer context)
     {
-        _isFading = true;
-        _blackScreen.OnFinishFade += Finish;
+        _blackScreen.FadeOut();
+        //_isFading = true;
+        //_blackScreen.OnFinishFade += Finish;
 
-        if(_fadeIn) _blackScreen.FadeIn(_fadeInSpeed);
-        else _blackScreen.FadeOut(_fadeInSpeed);
+        //if (_fadeIn) _blackScreen.FadeIn();
+        //else _blackScreen.FadeOut();
 
-        while (_isFading)
-        {
-            yield return null;
-        }
+        //while (_isFading)
+        //{
+        //    yield return null;
+        //}
 
-        _blackScreen.OnFinishFade -= Finish;
+        //_blackScreen.OnFinishFade -= Finish;
 
         yield break;
     }

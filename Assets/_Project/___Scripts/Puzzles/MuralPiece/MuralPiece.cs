@@ -10,10 +10,9 @@ public class MuralPiece : MonoBehaviour, IInteractable
     [SerializeField] private bool _isTutorialPiece = false;
 
     private Floor1Room4LevelManager _instance;
-    private bool _canInteract = true;
     private bool _isPiecePlaced = false;
 
-    public bool CanInteract { get => _canInteract; set => _canInteract = value; }
+    public bool CanInteract { get => !_isPiecePlaced; set => _isPiecePlaced = value; }
     public float OffsetRadius { get => 0.3f; set => OffsetRadius = value; }
     public int Priority { get ; set; }
     public Transform FresqueTransform { get => _fresqueTransform; }

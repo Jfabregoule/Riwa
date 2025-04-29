@@ -13,6 +13,7 @@ public class ButtonChangeTime : MonoBehaviour
     {
         _pulseEffect = GetComponent<PulseEffect>();
         _canvasGroup = GetComponent<CanvasGroup>();
+        GameManager.Instance.OnResetSave += Reset;
         GameManager.Instance.OnChangeTimePulse += _pulseEffect.StartPulsing;
         GameManager.Instance.OnChangeTimeStopPulse += _pulseEffect.StopPulsing;
         GameManager.Instance.OnTimeChangeStarted += OnChangeTime;
@@ -27,6 +28,7 @@ public class ButtonChangeTime : MonoBehaviour
             GameManager.Instance.OnChangeTimeStopPulse -= _pulseEffect.StopPulsing;
             GameManager.Instance.OnTimeChangeStarted -= OnChangeTime;
             GameManager.Instance.OnUnlockChangeTime -= Display;
+            GameManager.Instance.OnResetSave -= Reset;
         }
     }
 
@@ -41,5 +43,10 @@ public class ButtonChangeTime : MonoBehaviour
     private void OnChangeTime(EnumTemporality temporality)
     {
         _pulseEffect.StopPulsing();
+    }
+
+    private void Reset() 
+    {
+        Helpers.DisabledCanvasGroup(_canvasGroup);
     }
 }

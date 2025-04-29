@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 [System.Serializable]
 public struct CellPos
@@ -164,6 +165,52 @@ public class Grid : MonoBehaviour, IActivable
     public Dictionary<CellPos, CellContent> Solution { get => solution; set => solution = value; }
     public bool IsGridActivated { get => _isGridActivated; set => _isGridActivated = value; }
 
+    public void OnEnable()
+    {
+        LoadData();
+        SaveSystem.Instance.OnLoadProgress += LoadData;
+    }
+
+    private void OnDisable()
+    {
+        SaveSystem.Instance.OnLoadProgress -= LoadData;
+
+        SerializableVector3 statuePosition;
+        SerializableVector3 statueRotation;
+
+        for (int i = 0; i < _statues.Count; i++)
+        {
+            if (_statues[i].IsMoving) continue;
+            statuePosition = new SerializableVector3(_statues[i].transform.position);
+            SaveSystem.Instance.SaveElement<SerializableVector3>($"StatuePosition{i}", statuePosition);
+            statueRotation = new SerializableVector3(_statues[i].transform.rotation.eulerAngles);
+            SaveSystem.Instance.SaveElement<SerializableVector3>($"StatueRotation{i}", statueRotation);
+        }
+    }
+
+    private void LoadData()
+    {
+        statueData.Clear();
+        for (int i = 0; i < _statues.Count; i++)
+        {
+            if (SaveSystem.Instance.ContainsElements($"StatuePosition{i}"))
+                _statues[i].transform.position = SaveSystem.Instance.LoadElement<SerializableVector3>($"StatuePosition{i}").ToVector3();
+            if (SaveSystem.Instance.ContainsElements($"StatueRotation{i}"))
+                _statues[i].transform.rotation = Quaternion.Euler(SaveSystem.Instance.LoadElement<SerializableVector3>($"StatueRotation{i}").ToVector3());
+            if (SaveSystem.Instance.ContainsElements($"StatueDatas{i}"))
+            {
+                statueData.Add(_statues[i], SaveSystem.Instance.LoadElement<StatueData>($"StatueDatas{i}"));
+                StatueData data = statueData[_statues[i]];
+                _statues[i].SetStatuesData(data);
+                _statues[i].OnStatueMoved += Move;
+                _statues[i].OnStatueRotate += UpdateStatueRotation;
+                _statues[i].OnStatueEndMoving += Check;
+                CellPos pos = new CellPos(data.posX, data.posY);
+                grid[pos] = new CellContent(data.id, data.rotation);
+            }
+        }
+    }
+
     private void Awake()
     {
         Origin = transform.position;
@@ -194,8 +241,8 @@ public class Grid : MonoBehaviour, IActivable
 
     private void Start()
     {
-        if(_isGridActivated == false) SaveSystem.Instance.SaveElement<bool>("GridActivated", false);
-        if (_isGridActivated == true) _finalMP.StartMoving();
+        //if(_isGridActivated == false) SaveSystem.Instance.SaveElement<bool>("GridActivated", false);
+        //if (_isGridActivated == true) _finalMP.StartMoving();
         _room4LevelManager = (Floor1Room4LevelManager)Floor1Room4LevelManager.Instance;
     }
 
@@ -310,7 +357,7 @@ public class Grid : MonoBehaviour, IActivable
 
         if (isGridComplete)
         {
-            SaveSystem.Instance.SaveElement<bool>("GridActivated", true);
+            //SaveSystem.Instance.SaveElement<bool>("GridActivated", true);
             _isGridActivated = true;
             foreach (Statue statues in _statues)
             {

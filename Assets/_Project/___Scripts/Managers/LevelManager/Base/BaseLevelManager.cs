@@ -7,7 +7,8 @@ public enum EnumCameraRoom
 {
     Main,
     LookAtTree,
-    LookAtDoor
+    LookAtDoor,
+    LastCameraRoom1,
 }
 
 [System.Serializable]

@@ -43,6 +43,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
     [SerializeField] private GameObject _riwaHeart;
     [SerializeField] private List<ParticleSystem> _riwaHeartPS;
     [SerializeField] private CinemachineVirtualCamera _endGameCamera;
+    [SerializeField] private GameObject _evelator;
 
     [SerializeField] private CinematicRoom1[] _cinematics;
 
@@ -63,6 +64,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
     public GameObject RiwaHeart { get => _riwaHeart; }
     public CinemachineVirtualCamera EndGameCamera { get => _endGameCamera; }
     public List<ParticleSystem> RiwaHeartPS { get => _riwaHeartPS; }
+    public GameObject Evelator { get => _evelator; set => _evelator = value; }
 
     public override void OnEnable()
     {

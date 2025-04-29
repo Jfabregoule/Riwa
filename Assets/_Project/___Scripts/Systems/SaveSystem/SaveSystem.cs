@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using static UnityEngine.Rendering.DebugUI;
+using JetBrains.Annotations;
 
 [System.Serializable]
 public class SerializableVector3
@@ -18,6 +19,19 @@ public class SerializableVector3
     }
 
     public Vector3 ToVector3() => new Vector3(x, y, z);
+}
+
+[System.Serializable]
+public class SerializableCellPos
+{
+    public int x, y;
+    public SerializableCellPos(CellPos pos)
+    {
+        x = pos.x;
+        y = pos.y;
+    }
+
+    public CellPos ToCellPos() => new CellPos(x, y);
 }
 
 /// <summary>

@@ -21,8 +21,8 @@ public class TutorialDialogRoom4Manager : MonoBehaviour
 
     private void Init()
     {
-        _instance.MuralPiece.OnPickUp += OnTutorialMuralPiecePickup;
         if (_instance.IsTutorialDone == true) return;
+        _instance.MuralPiece.OnPickUp += OnTutorialMuralPiecePickup;
         _sequencerCinematics[0].Init();
         _sequencerCinematics[1].Init();
         StartCoroutine(Helpers.WaitMonoBeheviour(() => DialogueSystem.Instance, SubscribeToDialogueSystem));
@@ -38,7 +38,7 @@ public class TutorialDialogRoom4Manager : MonoBehaviour
         }
     }
 
-    private void OnTutorialMuralPiecePickup()
+    private void OnTutorialMuralPiecePickup(MuralPiece piece)
     {
         _dialogueSystem.EventRegistery.Invoke(WaitDialogueEventType.WaitPlayerToInteract);
         _sequencerCinematics[1].InitializeSequence();

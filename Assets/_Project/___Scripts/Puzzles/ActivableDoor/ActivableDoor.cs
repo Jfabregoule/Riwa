@@ -17,9 +17,14 @@ public class ActivableDoor : MonoBehaviour
     private Vector3 _closedPosition;
     private Coroutine _currentLerp;
 
+    private bool _isActivated = false;
+
+    public bool IsActivated { get => _isActivated; set => _isActivated = value; }
+
     private void Start()
     {
-        foreach(var activable in _activableComponents)
+        SaveSystem.Instance.SaveElement<bool>("ActivableDoorState", false);
+        foreach (var activable in _activableComponents)
         {
             if(activable.TryGetComponent(out IActivable act))
             {
@@ -67,21 +72,29 @@ public class ActivableDoor : MonoBehaviour
 
     private void OpenDoor()
     {
+        SaveSystem.Instance.SaveElement<bool>("ActivableDoorState", true);
         if (_currentLerp != null) StopCoroutine(_currentLerp);
-        _currentLerp = StartCoroutine(LerpDoorPosition(_openingOffset));
+        _currentLerp = StartCoroutine(LerpDoorPosition(_openingOffset, true));
+    }
+
+    public void OpenDoorOnLoad()
+    {
+        _isActivated = true;
+        OnDoorStateUpdated(true);
+        transform.position = new Vector3(transform.position.x, -5f, transform.position.z);
     }
 
     private void CloseDoor()
     {
         if (_currentLerp != null) StopCoroutine(_currentLerp);
-        _currentLerp = StartCoroutine(LerpDoorPosition(_closedPosition));
+        _currentLerp = StartCoroutine(LerpDoorPosition(_closedPosition, false));
     }
 
-    private IEnumerator LerpDoorPosition(Vector3 targetPosition)
+    private IEnumerator LerpDoorPosition(Vector3 targetPosition, bool showOpening)
     {
         GameManager.Instance.Character.StateMachine.GoToIdle();
         InputManager.Instance.DisableGameplayControls();
-        if (_doorCameras.Count > 0)
+        if (_doorCameras.Count > 0 && showOpening == true)
         {
             _doorCameras[0].Priority = 20;
             yield return new WaitForSeconds(1.5f);
@@ -107,17 +120,18 @@ public class ActivableDoor : MonoBehaviour
 
         transform.position = targetPosition;
 
-        if (_doorCameras.Count > 0)
+        if (_doorCameras.Count > 0 && showOpening == true)
         {
             _doorCameras[1].Priority = 0;
             yield return new WaitForSeconds(1.5f);
             _doorCameras[0].Priority = 0;
             yield return new WaitForSeconds(1.5f);
         }
+        _isActivated = true;
         InputManager.Instance.EnableGameplayControls();
     }
 
-    private void OnDoorStateUpdated(bool isActive)
+    public void OnDoorStateUpdated(bool isActive)
     {
         float shaderIsActiveFloatValue = 0;
         if (isActive) shaderIsActiveFloatValue = 1;

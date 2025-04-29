@@ -52,21 +52,35 @@ public class Floor1Room4LevelManager : BaseLevelManager
     public override void OnEnable()
     {
         base.OnEnable();
+        LoadData();
+        SaveSystem.Instance.OnLoadProgress += LoadData;
         _rootCollider.OnGrowthPercentageReached += PlayerCanInteractWithSocle;
         _rootCollider.OnGrowthPercentageUnreached += PlayerCannotInteractWithSocle;
     }
 
     private void OnDisable()
     {
+        SaveSystem.Instance.OnLoadProgress -= LoadData;
+        SaveSystem.Instance.SaveElement<bool>("Room4TutorialDone", _isTutorialDone);
         _rootCollider.OnGrowthPercentageReached -= PlayerCanInteractWithSocle;
         _rootCollider.OnGrowthPercentageUnreached -= PlayerCannotInteractWithSocle;
     }
 
+    private void LoadData()
+    {
+        _isTutorialDone = SaveSystem.Instance.LoadElement<bool>("Room4TutorialDone");
+    }
+
     private void Start()
     {
-        foreach(MuralPiece piece in _muralPieces)
+        GameManager.Instance.UnlockChangeTime();
+    }
+
+    public void FillMuralPieceDictionary()
+    {
+        foreach (MuralPiece piece in _muralPieces)
         {
-            _fresqueCompletion.Add(new MuralPieceData() { MuralPiece = piece, Temporality = piece.PieceTemporality }, false);
+            _fresqueCompletion.Add(new MuralPieceData() { MuralPiece = piece, Temporality = piece.PieceTemporality }, piece.IsPiecePlaced);
             piece.OnPickUp += CheckFresqueTemporalityCompletion;
         }
     }
@@ -81,10 +95,17 @@ public class Floor1Room4LevelManager : BaseLevelManager
         _treeStumpTest.enabled = false;
     }
 
-    public void CheckFresqueTemporalityCompletion()
+    public void CheckFresqueTemporalityCompletion(MuralPiece piece)
     {
         int pastPiecesPlaced = 0;
         int presentPiecesPlaced = 0;
+
+        if(piece.PieceTemporality == EnumTemporality.Past)
+        {
+            MuralPiece presentPiece = piece.gameObject.GetComponent<TemporalItem>().PresentItem.GetComponent<MuralPiece>();
+            StartCoroutine(presentPiece.PlacePieceOnFresque());
+            ChangeFresqueCompletionData(presentPiece, EnumTemporality.Present);
+        }
         
         foreach(var entry in _fresqueCompletion)
         {

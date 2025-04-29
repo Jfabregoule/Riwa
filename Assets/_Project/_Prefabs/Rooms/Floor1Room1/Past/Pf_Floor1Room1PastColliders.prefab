@@ -312,12 +312,13 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   _vine: {fileID: 0}
-  _box:
-  - {fileID: 0}
   _maxHeight: 13.5
   _maxCenter: -7
+  _minCenter: 0
   _collider: {fileID: 0}
   _thresholdToTrigger: 0.7
+  _minGrowCap: 0
+  _isPivotBroken: 0
 --- !u!1 &1095385754961466435
 GameObject:
   m_ObjectHideFlags: 0
@@ -738,6 +739,7 @@ Transform:
   - {fileID: 5546746845955745}
   - {fileID: 6281413780314014902}
   - {fileID: 3582070891452192918}
+  - {fileID: 1843046336392808422}
   m_Father: {fileID: 4907523696128847022}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2284883310477620530
@@ -1161,6 +1163,59 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 5, y: 1, z: 5}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &3167538036578376787
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1843046336392808422}
+  - component: {fileID: 5254382325144172008}
+  m_Layer: 6
+  m_Name: Wall05
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!4 &1843046336392808422
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3167538036578376787}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -15.34, y: 2.62, z: -0.22}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2102402314688491001}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!65 &5254382325144172008
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3167538036578376787}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 6.8629584, y: 5.02, z: 1}
+  m_Center: {x: 4.2185216, y: 0, z: -3.1053922e-15}
 --- !u!1 &3237999993717528105
 GameObject:
   m_ObjectHideFlags: 0
@@ -1424,8 +1479,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 15.3, y: 5.02, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 6.8629584, y: 5.02, z: 1}
+  m_Center: {x: 4.2185216, y: 0, z: -3.1053922e-15}
 --- !u!1 &4656666577038667096
 GameObject:
   m_ObjectHideFlags: 0
@@ -1684,8 +1739,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.06, y: 4.5, z: 0.55}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.06, y: 4.5, z: 0.40495536}
+  m_Center: {x: -0.00000001790067, y: 0, z: -0.07252246}
 --- !u!1 &5146696802604466010
 GameObject:
   m_ObjectHideFlags: 0
@@ -1770,7 +1825,6 @@ Transform:
   m_Children:
   - {fileID: 4158084547682377907}
   - {fileID: 7750217624940568046}
-  - {fileID: 1780819621589114651}
   - {fileID: 8135355628637715042}
   - {fileID: 693948229887866705}
   m_Father: {fileID: 4907523696128847022}
@@ -2338,59 +2392,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3.2, y: 1, z: 3.2}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!1 &6931693405054210344
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1780819621589114651}
-  - component: {fileID: 5444521508453199615}
-  m_Layer: 6
-  m_Name: Door03
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
---- !u!4 &1780819621589114651
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6931693405054210344}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -15.291, y: 1.06, z: -8.476}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5145483923766662437}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &5444521508453199615
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6931693405054210344}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.78, y: 1.9, z: 1.8}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6980294920521834659
 GameObject:
   m_ObjectHideFlags: 0
@@ -2661,8 +2662,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7925162115328918668}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0.7057647, z: -0, w: 0.7084464}
+  m_LocalPosition: {x: -15.793846, y: 0, z: -1.1542444}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2681,7 +2682,7 @@ Transform:
   - {fileID: 6236444371751086582}
   - {fileID: 950818922060026249}
   m_Father: {fileID: 4907523696128847022}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -89.783, z: 0}
 --- !u!1 &8055091408848359523
 GameObject:
   m_ObjectHideFlags: 0
@@ -2733,8 +2734,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.06, y: 4.5, z: 0.55}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.06, y: 4.5, z: 0.35032374}
+  m_Center: {x: 0.00000008514932, y: 0, z: 0.09983822}
 --- !u!1 &8693037022399929945
 GameObject:
   m_ObjectHideFlags: 0

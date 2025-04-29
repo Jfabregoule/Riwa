@@ -127,6 +127,7 @@ public class Grid : MonoBehaviour, IActivable
     [SerializeField] private float _unitGridSize = 2.5f;
     [SerializeField] private GameObject _defaultTile;
     [SerializeField] private GameObject _stair;
+    [SerializeField] private MovingPlatform _finalMP;
     [Header("Debug")]
     [SerializeField] private bool _showDebug = false;
 
@@ -152,6 +153,7 @@ public class Grid : MonoBehaviour, IActivable
     Dictionary<Statue, StatueData> statueData = new Dictionary<Statue, StatueData>();
 
     private Floor1Room4LevelManager _room4LevelManager;
+    private bool _isGridActivated = false;
 
     public event IActivable.ActivateEvent OnActivated;
     public event IActivable.ActivateEvent OnDesactivated;
@@ -159,6 +161,8 @@ public class Grid : MonoBehaviour, IActivable
     public float UnitGridSize => _unitGridSize;
     public Vector3 Origin { get; private set; }
     public Vector2Int GridSize => _gridSize;
+    public Dictionary<CellPos, CellContent> Solution { get => solution; set => solution = value; }
+    public bool IsGridActivated { get => _isGridActivated; set => _isGridActivated = value; }
 
     private void Awake()
     {
@@ -190,6 +194,8 @@ public class Grid : MonoBehaviour, IActivable
 
     private void Start()
     {
+        if(_isGridActivated == false) SaveSystem.Instance.SaveElement<bool>("GridActivated", false);
+        if (_isGridActivated == true) _finalMP.StartMoving();
         _room4LevelManager = (Floor1Room4LevelManager)Floor1Room4LevelManager.Instance;
     }
 
@@ -304,7 +310,9 @@ public class Grid : MonoBehaviour, IActivable
 
         if (isGridComplete)
         {
-            foreach(Statue statues in _statues)
+            SaveSystem.Instance.SaveElement<bool>("GridActivated", true);
+            _isGridActivated = true;
+            foreach (Statue statues in _statues)
             {
                 statues.Validate = true;
             }
@@ -313,7 +321,10 @@ public class Grid : MonoBehaviour, IActivable
             if (_showDebug == true) Debug.Log("Grille complétée avec succès !");
         }
         else
+        {
+            _isGridActivated = false;
             if (_showDebug == true) Debug.Log("La grille n'est pas encore correctement remplie.");
+        }
     }
 
     private IEnumerator ActiveElevator()

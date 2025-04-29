@@ -40,7 +40,7 @@ public class MovingPlatform : MonoBehaviour
         }
     }
 
-    private void StartMoving()
+    public void StartMoving()
     {
         OnMovingPlatformStateUptated(true);
         if (_targetPositions.Count > 1)

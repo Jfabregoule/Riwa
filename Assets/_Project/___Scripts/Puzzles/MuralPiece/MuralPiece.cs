@@ -7,31 +7,37 @@ public class MuralPiece : MonoBehaviour, IInteractable
     [SerializeField] private float _lerpTime = 3f;
     [SerializeField] private ParticleSystem _onPlaceVFX;
     [SerializeField] private EnumTemporality _muralPieceTemporality;
+    [SerializeField] private bool _isTutorialPiece = false;
 
     private Floor1Room4LevelManager _instance;
+    private bool _canInteract = true;
+    private bool _isPiecePlaced = false;
 
     public float OffsetRadius { get => 0f; set => OffsetRadius = value; }
-    public bool CanInteract { get; set; }
+    public bool CanInteract { get => _canInteract; set => _canInteract = value; }
     public int Priority { get ; set; }
     public Transform FresqueTransform { get => _fresqueTransform; }
-    public EnumTemporality PieceTemporality { get; set; }
+    public EnumTemporality PieceTemporality { get => _muralPieceTemporality; set => _muralPieceTemporality = value; }
+    public bool IsTutorialPiece { get => _isTutorialPiece; }
+    public bool IsPiecePlaced { get => _isPiecePlaced; set => _isPiecePlaced = value; }
 
-    public delegate void MuralPieceEvent();
+    public delegate void MuralPieceEvent(MuralPiece piece);
     public MuralPieceEvent OnPickUp;
+
     private void Start()
     {
-        CanInteract = true;
         Priority = 0;
         _instance = (Floor1Room4LevelManager)Floor1Room4LevelManager.Instance;
     }
     public void Interact()
     {
-        OnPickUp?.Invoke();
+        _instance.ChangeFresqueCompletionData(this, PieceTemporality);
+        OnPickUp?.Invoke(this);
         StartCoroutine(PlacePieceOnFresque());
         CanInteract = false;
     }
 
-    private IEnumerator PlacePieceOnFresque()
+    public IEnumerator PlacePieceOnFresque()
     {
         Vector3 initialPos = transform.position;
         Quaternion initialRot = transform.rotation;
@@ -49,11 +55,14 @@ public class MuralPiece : MonoBehaviour, IInteractable
 
         _onPlaceVFX.Play();
         transform.position = _fresqueTransform.position;
+        _isPiecePlaced = true;
         if (TryGetComponent<TemporalItem>(out TemporalItem temporalItem))
             temporalItem.UpdatePresentPosition();
         if (_fresqueTransform.rotation != Quaternion.identity) transform.rotation = _fresqueTransform.rotation;
+    }
 
-        EnumTemporality temporality = GameManager.Instance.CurrentTemporality;
-        _instance.ChangeFresqueCompletionData(this, temporality);
+    public bool GetIsTutorialDone()
+    {
+        return _instance.IsTutorialDone;
     }
 }

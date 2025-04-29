@@ -28,6 +28,10 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
     public bool CanInteract { get => !_validate; set => throw new System.NotImplementedException(); }
     public int Priority { get; set; }
     public float RotateSpeed { get => _rotateSpeed; set => _rotateSpeed = value; }
+    public Animator StatueAnimator { get => _animator; set => _animator = value; }
+    public CellPos Pos { get => _pos; set => _pos = value; }
+    public CellContent Content { get => _content; set => _content = value; }
+    public bool IsMoving { get => _isMoving; set => _isMoving = value; }
 
     public delegate bool StatueMoveEvent(CellPos oldPos, Vector2Int nextPos, CellContent statueData);
     public delegate void StatueRotateEvent(CellPos pos, CellContent content);

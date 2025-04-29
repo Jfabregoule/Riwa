@@ -14,6 +14,9 @@ public class Floor1Room3LevelManager : BaseLevelManager
 
     private bool _isDamierCompleted = false;
 
+    [Header("Labyliane")]
+    [SerializeField] private TreeStumpTest _treeStumpTest;
+
     [Header("Tutorial Camera")]
     [SerializeField] private List<CinemachineVirtualCamera> _riwaSensaCamera;
     [SerializeField] private List<CinemachineVirtualCamera> _vinesCameras;
@@ -23,6 +26,7 @@ public class Floor1Room3LevelManager : BaseLevelManager
     [SerializeField] private ParticleSystem _chawaTrail;
     [SerializeField] private Transform _chawaLianaPosition;
     [SerializeField] private BoxCollider _chawaPathTriggerZone;
+                     private RiwaShowingPathTriggerZone _riwaShowingPathTriggerZone;
 
     [Header("Dialogue Manager")]
     [SerializeField] private TutorialRoom3Manager _tutorialRoom3Manager;
@@ -43,6 +47,8 @@ public class Floor1Room3LevelManager : BaseLevelManager
     public bool IsDamierCompleted { get => _isDamierCompleted; set => _isDamierCompleted = value; }
     public Transform ChawaLianaPosition { get => _chawaLianaPosition; set => _chawaLianaPosition = value; }
     public BoxCollider ChawaPathTriggerZone { get => _chawaPathTriggerZone; set => _chawaPathTriggerZone = value; }
+    public TreeStumpTest TreeStumpTest { get => _treeStumpTest; set => _treeStumpTest = value; }
+    public RiwaShowingPathTriggerZone RiwaShowingPathTriggerZone { get => _riwaShowingPathTriggerZone; set => _riwaShowingPathTriggerZone = value; }
 
     #endregion
 
@@ -63,6 +69,8 @@ public class Floor1Room3LevelManager : BaseLevelManager
     {
         base.Start();
         _chawaTrail.gameObject.SetActive(false);
+        _treeStumpTest = GameObject.Find("Pf_SocleMoveable").GetComponent<TreeStumpTest>(); //Je fais un Find pour éviter les merges conflicts dans la scene
+        _riwaShowingPathTriggerZone = _chawa.GetComponentInChildren<RiwaShowingPathTriggerZone>(); //same, mais mieux
         GameManager.Instance.UnlockChangeTime();
     }
 

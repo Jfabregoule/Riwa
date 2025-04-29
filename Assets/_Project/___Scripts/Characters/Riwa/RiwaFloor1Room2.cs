@@ -11,6 +11,8 @@ public class RiwaFloor1Room2 : MonoBehaviour
     private GameObject _trail;
     private GameObject _sensa;
 
+    private bool _isOut;
+
     private delegate void RiwaEvent();
     private event RiwaEvent _onMoveToFinsihed;
     void Start()
@@ -20,6 +22,15 @@ public class RiwaFloor1Room2 : MonoBehaviour
         _trail = transform.GetChild(1).gameObject;
         GoInSensa();
     }
+
+    private void Update()
+    {
+        if (_isOut)
+        {
+            transform.LookAt(_sensa.transform.position);
+        }
+    }
+
     public void MoveToSensa()
     {
         _onMoveToFinsihed += GoInSensa;
@@ -28,6 +39,8 @@ public class RiwaFloor1Room2 : MonoBehaviour
 
     public void MoveOutSensa()
     {
+        _isOut = true;
+        transform.parent = null;
         _mode.SetActive(true);
         _trail.SetActive(true);
         _onMoveToFinsihed += GetOutSensa;
@@ -36,6 +49,7 @@ public class RiwaFloor1Room2 : MonoBehaviour
 
     private void GoInSensa()
     {
+        _isOut = false;
         transform.position = _sensa.transform.position;
         transform.SetParent(_sensa.transform);
         _mode.SetActive(false);

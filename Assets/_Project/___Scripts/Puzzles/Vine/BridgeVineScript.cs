@@ -63,11 +63,12 @@ public class BridgeVineScript : MonoBehaviour, IInteractableSoul
 
     public void Interact()
     {
-        if (CanInteract)
-            _dialogueSystem.EventRegistery.Invoke(WaitDialogueEventType.LianaFloor1Room2);
     }
+
     public void InteractableSoul()
     {
+        if (CanInteract)
+            _dialogueSystem.EventRegistery.Invoke(WaitDialogueEventType.LianaFloor1Room2);
         if (_bourgeonAnimator)
             _bourgeonAnimator.SetBool("Activate", true);
         if(_bourgeonActivationVFX.Count > 0)
@@ -76,6 +77,7 @@ public class BridgeVineScript : MonoBehaviour, IInteractableSoul
                 particle.Play();
             }
         StartCoroutine(RaiseVine());
+
     }
 
     private void SubscribeToDialogueSystem(DialogueSystem script)

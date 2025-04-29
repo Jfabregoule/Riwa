@@ -11,6 +11,8 @@ public class CancelStateTempo : ChangeTempoBaseState
     {
         base.EnterState();
 
+        _character.CanChangeTime = false;
+
         GameManager.Instance.OnTimeChangeAborted += TimeChangeAborted;
         _character.ChangeTime.AbortChangeTime();
 
@@ -47,6 +49,7 @@ public class CancelStateTempo : ChangeTempoBaseState
 
     private void TimeChangeAborted(EnumTemporality temporality)
     {
+        _character.CanChangeTime = true;
         int layermaskToHide = temporality == EnumTemporality.Present ? 6 : 7;
         Helpers.Camera.cullingMask &= ~(1 << layermaskToHide);
         _changedTime = true;

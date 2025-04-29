@@ -29,7 +29,6 @@ public class RiwaShowingPathTriggerZone : MonoBehaviour, IInteractable
 
     private void EndDamier()
     {
-        Debug.Log("J'ai complété le damier omg");
         _canInteract = false;
     }
 }

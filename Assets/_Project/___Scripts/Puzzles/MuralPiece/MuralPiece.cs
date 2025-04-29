@@ -13,8 +13,8 @@ public class MuralPiece : MonoBehaviour, IInteractable
     private bool _canInteract = true;
     private bool _isPiecePlaced = false;
 
-    public float OffsetRadius { get => 0f; set => OffsetRadius = value; }
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
+    public float OffsetRadius { get => 0.3f; set => OffsetRadius = value; }
     public int Priority { get ; set; }
     public Transform FresqueTransform { get => _fresqueTransform; }
     public EnumTemporality PieceTemporality { get => _muralPieceTemporality; set => _muralPieceTemporality = value; }

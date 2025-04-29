@@ -28,4 +28,30 @@ public class Floor1Room0LevelManager : BaseLevelManager
     public bool IsCinematicDone { get => _isCinematicDone; set =>  _isCinematicDone = value; }
     public CinematicRoom0Manager CinematicManager { get => _cinematicManager; }
 
+    public override void OnEnable()
+    {
+        base.OnEnable();
+        LoadData();
+        SaveSystem.Instance.OnLoadProgress += LoadData;
+    }
+
+    private void OnDisable()
+    {
+        SaveSystem.Instance.OnLoadProgress -= LoadData;
+    }
+
+    public override void Start()
+    {
+        base.Start();
+        
+    }
+
+    private void LoadData()
+    {
+        if((EnumAdvancementRoom1)SaveSystem.Instance.LoadElement<int>("Room1Progress") >= EnumAdvancementRoom1.Room0)
+        {
+            GameManager.Instance.UnlockChangeTime();
+        }
+    }
+
 }

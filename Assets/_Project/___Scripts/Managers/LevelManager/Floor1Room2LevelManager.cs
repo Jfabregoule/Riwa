@@ -9,5 +9,10 @@ public class Floor1Room2LevelManager : BaseLevelManager
 
     public CameraCinematicRoom2 CameraCinematicRoom2 { get => _cameraCinematicRoom2; }
     public RiwaFloor1Room2 RiwaFloor1Room2 { get => _riwaFloor1Room2; }
+    public override void Start()
+    {
+        base.Start();
+        GameManager.Instance.UnlockChangeTime();
+    }
 
 }

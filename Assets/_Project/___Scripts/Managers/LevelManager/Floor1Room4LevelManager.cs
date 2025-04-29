@@ -62,9 +62,11 @@ public class Floor1Room4LevelManager : BaseLevelManager
         _rootCollider.OnGrowthPercentageUnreached -= PlayerCannotInteractWithSocle;
     }
 
-    private void Start()
+    public override void Start()
     {
-        foreach(MuralPiece piece in _muralPieces)
+        base.Start();
+        GameManager.Instance.UnlockChangeTime();
+        foreach (MuralPiece piece in _muralPieces)
         {
             _fresqueCompletion.Add(new MuralPieceData() { MuralPiece = piece, Temporality = piece.PieceTemporality }, false);
             piece.OnPickUp += CheckFresqueTemporalityCompletion;

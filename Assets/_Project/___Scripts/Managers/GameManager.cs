@@ -19,10 +19,12 @@ public class GameManager : Singleton<GameManager>
     private const string MAIN_CAMERA_TAG = "MainCamera";
     private const string TRANSLATE_TAG = "TranslateSystem";
     private const string NAVBAR_TAG = "Navbar";
+    private const string COLLECTIBLE_TAG = "CollectibleManager";
 
     [HideInInspector] public GameObject MainCamera;
     [HideInInspector] public RiwaSoundSystem SoundSystem;
     [HideInInspector] public TranslateSystem TranslateSystem;
+    [HideInInspector] public CollectibleManager CollectibleManager;
 
 
     private CameraHandler _cameraHandler;
@@ -44,7 +46,10 @@ public class GameManager : Singleton<GameManager>
     public event ChangeTimeEvent OnTimeChangeAborted;
 
     public delegate void IndiceEvent();
-    public event IndiceEvent OnIndicePulse;
+    public event IndiceEvent OnChangeTimePulse;
+    public event IndiceEvent OnChangeTimeStopPulse;
+    public event IndiceEvent OnInteractPulse;
+    public event IndiceEvent OnInteractStopPulse;
 
     #region Properties
 
@@ -61,6 +66,7 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
+        CollectibleManager = GameObject.FindGameObjectWithTag(COLLECTIBLE_TAG).GetComponent<CollectibleManager>();
         TranslateSystem = GameObject.FindGameObjectWithTag(TRANSLATE_TAG).GetComponent<TranslateSystem>();
         CurrentTemporality = EnumTemporality.Present;
         ChangeTimeUnlock = false;
@@ -97,16 +103,30 @@ public class GameManager : Singleton<GameManager>
         OnTimeChangeAborted?.Invoke(_currentTemporality);
     }
 
-    public void PulseIndice()
+    public void PulseChangeTime()
     {
-        OnIndicePulse?.Invoke();
+        OnChangeTimePulse?.Invoke();
+    }
+
+    public void StopPusleChangeTime()
+    {
+        OnChangeTimeStopPulse?.Invoke();
+    }
+
+    public void PulseInteract()
+    {
+        OnInteractPulse?.Invoke();
+    }
+
+    public void StopPusleInteract()
+    {
+        OnInteractStopPulse?.Invoke();
     }
 
     public void UnlockChangeTime()
     {
         ChangeTimeUnlock = true;
         OnUnlockChangeTime?.Invoke();
-        OnIndicePulse?.Invoke();
     }
 
     public void SetBlackScreen()

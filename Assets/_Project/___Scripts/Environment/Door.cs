@@ -16,8 +16,11 @@ public class Door : MonoBehaviour
     private bool _isExitingDoor = false;
     private bool _isEnteringDoor = false;
 
+    private BoxCollider _collider;
+
     private void Start()
     {
+        _collider = GetComponent<BoxCollider>();
         if (_enterDoorSequencer)
             _enterDoorSequencer.Init();
         if(_exitDoorSequencer)
@@ -52,5 +55,13 @@ public class Door : MonoBehaviour
     public void ChangeScene()
     {
         RiwaLoadSceneSystem.Instance.GoToNewScene(_floorNumber, _roomNumber, _nextDoorID, _nextDoorDirection);
+    }
+    public void EnableDoor()
+    {
+        _collider.enabled = true;
+    }
+    public void DisableDoor()
+    {
+        _collider.enabled = false;
     }
 }

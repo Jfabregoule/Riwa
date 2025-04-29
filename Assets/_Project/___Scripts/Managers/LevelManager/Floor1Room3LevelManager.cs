@@ -59,9 +59,11 @@ public class Floor1Room3LevelManager : BaseLevelManager
     public void InvokeOnRiwaShowingPath() { OnRiwaShowingPath?.Invoke(); }
     public void InvokeOnPlayerCompletedDamier() { OnPlayerCompletedDamier?.Invoke(); }
 
-    private void Start()
+    public override void Start()
     {
+        base.Start();
         _chawaTrail.gameObject.SetActive(false);
+        GameManager.Instance.UnlockChangeTime();
     }
 
 }

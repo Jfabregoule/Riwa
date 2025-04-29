@@ -8,10 +8,27 @@ public class CinematicRoom0Manager : MonoBehaviour
     [SerializeField] private Sequencer _sequencerEntry;
 
     private Floor1Room0LevelManager _instance;
+    private bool _isTrigger;
 
     private System.Action OnFinishSpeak;
 
     public DialogueAsset Room0Dialogue { get => _dialogueAsset; }
+    private void OnEnable()
+    {
+        LoadData();
+        SaveSystem.Instance.OnLoadProgress += LoadData;
+    }
+
+    private void OnDisable()
+    {
+        SaveSystem.Instance.OnLoadProgress -= LoadData;
+        SaveSystem.Instance.SaveElement<bool>("DialogRoom0", _isTrigger);
+    }
+
+    private void LoadData()
+    {
+        _isTrigger = SaveSystem.Instance.LoadElement<bool>("DialogRoom0");
+    }
 
     private void Start()
     {
@@ -24,9 +41,13 @@ public class CinematicRoom0Manager : MonoBehaviour
 
     private void Init()
     {
-        _sequencerEntry.Init();
-        DialogueSystem.Instance.OnDialogueEvent += DispatchEventOnDialogueEvent;
-        _sequencerEntry.InitializeSequence();
+        if (!_isTrigger)
+        {
+            _sequencerEntry.Init();
+            DialogueSystem.Instance.OnDialogueEvent += DispatchEventOnDialogueEvent;
+            _sequencerEntry.InitializeSequence();
+            _isTrigger = true;
+        }
     }
 
     private void DispatchEventOnDialogueEvent(DialogueEventType dialogueEvent)

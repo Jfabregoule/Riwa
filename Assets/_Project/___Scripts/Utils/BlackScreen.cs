@@ -5,43 +5,44 @@ using UnityEngine.UI;
 public class BlackScreen : MonoBehaviour
 {
 
-    private Image _panel;
-
-    public delegate void NoArgVoidReturn();
-    public event NoArgVoidReturn OnFinishFade;
-
+    private CanvasGroup _canvasGroup;
 
     public void Awake()
     {
-        _panel = GetComponentInChildren<Image>();
+        _canvasGroup = GetComponent<CanvasGroup>();
+        GameManager.Instance.OnRoomChange += FadeIn;
+
+    }
+    public void FadeIn()
+    {
+        StartCoroutine(Fade(0,1,1f,true));
     }
 
-    public void FadeIn(float fadeSpeed = 1f)
+    public void FadeOut()
     {
-        StartCoroutine(Fade(0,1,fadeSpeed));
+        StartCoroutine(Fade(1,0,1f,false));
     }
 
-    public void FadeOut(float fadeSpeed = 1f)
+    public IEnumerator Fade(float start, float end, float duration,bool isEnable)
     {
-        StartCoroutine(Fade(1,0,fadeSpeed));
-    }
 
-    public IEnumerator Fade(float start, float end, float speed)
-    {
-        float distance = Mathf.Abs(end - start);
-        float duration = distance * speed;
         float clock = 0f;
 
         while (clock < duration)
         {
-            
             clock += Time.deltaTime * 10;
-            _panel.color = new Color(0,0,0,Mathf.Lerp(start,end,clock / duration));
+            _canvasGroup.alpha = Mathf.Lerp(start, end, clock / duration);
             yield return null;
         }
 
-        OnFinishFade?.Invoke();
-
+        if (isEnable)
+        {
+            Helpers.EnabledCanvasGroup(_canvasGroup);
+        }
+        else
+        {
+            Helpers.DisabledCanvasGroup(_canvasGroup);
+        }
     }
 
 }

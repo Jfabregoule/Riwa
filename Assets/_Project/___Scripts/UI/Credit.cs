@@ -42,6 +42,8 @@ public class Credit : MonoBehaviour
         _isEnable = false;
         Helpers.DisabledCanvasGroup(_creditCanvasGroup);
         _rectTransform.anchoredPosition = Vector2.zero;
+        string currentRoomName = RiwaLoadSceneSystem.Instance.GetCurrentRoomSceneName();
+        RiwaLoadSceneSystem.Instance.ChangeScene(new[] { new SceneData(currentRoomName) }, new[] { new SceneData("MainMenu") });
     }
 
     public void ToggleCredit()

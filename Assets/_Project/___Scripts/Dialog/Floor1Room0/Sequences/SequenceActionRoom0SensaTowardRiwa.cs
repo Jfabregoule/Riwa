@@ -29,6 +29,7 @@ public class SequenceActionRoom0SensaTowardRiwa : SequencerAction
         MoveToStateCharacter state = (MoveToStateCharacter)_chara.StateMachine.States[EnumStateCharacter.MoveTo];
         state.LoadState(EnumStateCharacter.Idle, target, target);
         _chara.StateMachine.ChangeState(state);
+        _chara.WalkSpeed *= 2;
 
         while(_isMoving)
         {
@@ -43,6 +44,7 @@ public class SequenceActionRoom0SensaTowardRiwa : SequencerAction
     public void FinishMoveto()
     {
         _isMoving = false;
+        _chara.WalkSpeed *= 0.5f;
         DialogueSystem.Instance.BeginDialogue(_instance.CinematicManager.Room0Dialogue);
     }
 }

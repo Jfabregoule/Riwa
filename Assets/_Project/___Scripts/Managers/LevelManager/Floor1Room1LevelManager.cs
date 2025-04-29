@@ -92,7 +92,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
             OnLevelEnter += BeginDialogue;
         }
 
-        if (CurrentAdvancementTest > EnumAdvancementRoom1Test.Room0)
+        if (CurrentAdvancementTest >= EnumAdvancementRoom1Test.Room0)
         {
             GameManager.Instance.UnlockChangeTime();
         }

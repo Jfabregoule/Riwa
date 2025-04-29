@@ -30,17 +30,13 @@ public class Credit : MonoBehaviour
     public void ToggleOffCredit()
     {
         _isEnable = false;
-        _creditCanvasGroup.alpha = 0;
-        _creditCanvasGroup.blocksRaycasts = false;
-        _creditCanvasGroup.interactable = false;
+        Helpers.DisabledCanvasGroup(_creditCanvasGroup);
         _rectTransform.anchoredPosition = Vector2.zero;
     }
 
     public void ToggleCredit()
     {
         _isEnable = true;
-        _creditCanvasGroup.alpha = 1;
-        _creditCanvasGroup.blocksRaycasts = true;
-        _creditCanvasGroup.interactable = true;
+        Helpers.EnabledCanvasGroup(_creditCanvasGroup);
     }
 }

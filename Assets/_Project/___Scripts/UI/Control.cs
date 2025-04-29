@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ public class Control : MonoBehaviour
 {
     [SerializeField] private BinaryChoice _binaryChoice;
     [SerializeField] private CanvasGroup _controlSettings;
+    [SerializeField] private CanvasGroup _skipCanvasGroup;
 
     [SerializeField] private CanvasGroup _interactLeftPart;
     [SerializeField] private CanvasGroup _joystickLeftPart;
@@ -19,6 +21,8 @@ public class Control : MonoBehaviour
     [SerializeField] private List<CanvasGroup> _uiLeft;
     [SerializeField] private List<CanvasGroup> _uiRight;
 
+    public BinaryChoice BinaryChoice { get { return _binaryChoice; } private set { _binaryChoice = value; } }
+
 
     private CanvasGroup _canvasGroup;
     private bool _isRightHanded;
@@ -30,11 +34,8 @@ public class Control : MonoBehaviour
     void Start()
     {
         SaveSystem.Instance.OnLoadSettings += LoadingHanded;
-        //_isRightHanded = SaveSystem.Instance.LoadElement<bool>("_isRightHanded", true);
+        SaveSystem.Instance.OnLoadProgress += LoadingControl;
         _canvasGroup = GetComponent<CanvasGroup>();
-        _isFirstControl = SaveSystem.Instance.LoadElement<bool>("IsFirstControl", false);
-        //UpdateBinaryChoice();
-        //InvertControlUI();
     }
     private void OnEnable()
     {
@@ -133,19 +134,51 @@ public class Control : MonoBehaviour
     public void ShowInput()
     {
         if (!_isFirstControl) return;
+        InputManager.Instance.DisableGameplayControls();
+        StartCoroutine(FadeInCanvas(1f));
+    }
+
+
+    private IEnumerator FadeInCanvas(float duration)
+    {
+        float timer = 0;
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+
+            _canvasGroup.alpha = Mathf.Lerp(0f, 1f, timer / duration);
+            _controlSettings.alpha = Mathf.Lerp(0f, 1f, timer / duration);
+            _skipCanvasGroup.alpha = Mathf.Lerp(0f, 1f, timer / duration);
+            yield return null;
+        }
         Helpers.EnabledCanvasGroup(_canvasGroup);
         Helpers.EnabledCanvasGroup(_controlSettings);
+        Helpers.EnabledCanvasGroup(_skipCanvasGroup);
         _isFirstControl = false;
         SaveSystem.Instance.SaveElement<bool>("IsFirstControl", _isFirstControl, false);
         GameManager.Instance.OnShowBasicInputEvent -= ShowInput;
-        StartCoroutine(WaitSeconds(5f));
     }
 
-    private IEnumerator WaitSeconds(float duration)
+    public void FadeOut()
     {
-        yield return new WaitForSeconds(duration);
+        InputManager.Instance.EnableGameplayControls();
+        StartCoroutine(FadeOutCanvas(0.5f));
+    }
+    private IEnumerator FadeOutCanvas(float duration)
+    {
+        float timer = 0;
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+
+            _canvasGroup.alpha = Mathf.Lerp(1f, 0f, timer / duration);
+            _controlSettings.alpha = Mathf.Lerp(1f, 0f, timer / duration);
+            _skipCanvasGroup.alpha = Mathf.Lerp(1f, 0f, timer / duration);
+            yield return null;
+        }
         Helpers.DisabledCanvasGroup(_canvasGroup);
         Helpers.DisabledCanvasGroup(_controlSettings);
+        Helpers.DisabledCanvasGroup(_skipCanvasGroup);
     }
 
     public void LoadingHanded()
@@ -153,6 +186,11 @@ public class Control : MonoBehaviour
         _isRightHanded = SaveSystem.Instance.LoadElement<bool>("_isRightHanded", true);
         UpdateBinaryChoice();
         InvertControlUI();
+    }
+
+    public void LoadingControl()
+    {
+        _isFirstControl = SaveSystem.Instance.LoadElement<bool>("IsFirstControl", false);
     }
 
 }

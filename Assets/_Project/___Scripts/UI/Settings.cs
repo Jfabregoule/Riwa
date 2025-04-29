@@ -21,7 +21,10 @@ public class Settings : MonoBehaviour
 
     //private void SetLanguage(int language) => _saveData.CurrentLanguage = language;
     public void SetMusicVolume(float level) => RiwaSoundMixerManager.Instance.SetMusicVolume(level);
-    public void SetSoundFXVolume(float level) => RiwaSoundMixerManager.Instance.SetSoundFXVolume(level);
+    public void SetSoundFXVolume(float level) {
+        RiwaSoundMixerManager.Instance.SetSoundFXVolume(level);
+        RiwaSoundMixerManager.Instance.SetAmbiantVolume(level);
+    }
     public void SetMasterVolume(float level) => RiwaSoundMixerManager.Instance.SetMasterVolume(level);
     public void SetCinematicVolume(float level) => RiwaSoundMixerManager.Instance.SetCinematicVolume(level);
     public void SetVibration(bool enabled) => VibrationSystem.Instance.SetVibrationEnabled(enabled);

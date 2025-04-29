@@ -1,4 +1,5 @@
 ﻿using Cinemachine.Utility;
+using System;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
@@ -18,11 +19,32 @@ public class VariableDynamicJoystick : MonoBehaviour
     private Vector2 _startPos;
 
     private bool _isLocked = false;
+    private bool _isHolding = false;
 
     void OnEnable()
     {
         StartCoroutine(Helpers.WaitMonoBeheviour(() => InputManager.Instance, SubscribeToInputManager));
-        StartCoroutine(Helpers.WaitMonoBeheviour(() => GameManager.Instance.Character, SubscribeToCharacter));
+        StartCoroutine(Helpers.WaitMonoBeheviour(() => GameManager.Instance, SubscribeToGameManager));
+        StartCoroutine(Helpers.WaitMonoBeheviour(() => GameManager.Instance.Control, SubscribeToControl));
+    }
+
+    private void SubscribeToControl(Control control)
+    {
+        if (control == null) return;
+        control.BinaryChoice.OnValueChange += LockJoystick;
+    }
+
+    private void SubscribeToGameManager(GameManager manager)
+    {
+        if (manager == null) return;
+        manager.OnRoomChange += CharacterHolding;
+    }
+
+    private void CharacterHolding()
+    {
+        _character = GameManager.Instance.Character;
+        _character.OnHoldingStart += SetCanvasGroup;
+        _character.OnHoldingEnd += DisableCanvasGroup;
     }
 
     void OnDisable()
@@ -39,6 +61,11 @@ public class VariableDynamicJoystick : MonoBehaviour
             _character.OnHoldingStart -= SetCanvasGroup;
             _character.OnHoldingEnd -= DisableCanvasGroup;
         }
+        if (GameManager.Instance == null) return;
+        GameManager.Instance.OnRoomChange -= CharacterHolding;
+
+        if (GameManager.Instance.Control == null) return;
+        GameManager.Instance.Control.BinaryChoice.OnValueChange -= LockJoystick;
     }
 
     private void Start()
@@ -72,8 +99,23 @@ public class VariableDynamicJoystick : MonoBehaviour
 
     private void LockJoystick(bool isRight)
     {
+        if (!_isHolding)
+        {
+            return;
+        }
         _isLocked = true;
-        _background.position = isRight ? new Vector2(1900, 500) : new Vector2(404f,345f);
+        if (isRight)
+        {
+            _background.pivot = new Vector2(0, 0);
+            _background.position = new Vector2(400, Screen.height * 1 / 3);
+            _background.pivot = new Vector2(0.5f, 0.5f);
+        }
+        else
+        {
+            _background.pivot = new Vector2(1, 0);
+            _background.position = new Vector2(Screen.width - 400, Screen.height * 1/3);
+            _background.pivot = new Vector2(0.5f, 0.5f);
+        }
         Helpers.EnabledCanvasGroup(_canvasGroup);
     }
 
@@ -95,17 +137,9 @@ public class VariableDynamicJoystick : MonoBehaviour
         }
     }
 
-    private void SubscribeToCharacter(ACharacter script)
-    {
-        if(script != null)
-        {
-            _character = script;
-            script.OnHoldingStart += SetCanvasGroup;
-            script.OnHoldingEnd += DisableCanvasGroup;
-        }
-    }
     private void SetCanvasGroup()
     {
+        _isHolding = true;
         InputManager.Instance.LockJoystick();
         Vector3 caissePosition = _character.HoldingObject.transform.position;
         Vector3 playerPosition = _character.transform.position;
@@ -209,6 +243,7 @@ public class VariableDynamicJoystick : MonoBehaviour
 
     private void DisableCanvasGroup()
     {
+        _isHolding = false;
         InputManager.Instance.UnlockJoystick();
         Helpers.DisabledCanvasGroup(_arrowCanvasGroup);
         SetRotation(0, 0);

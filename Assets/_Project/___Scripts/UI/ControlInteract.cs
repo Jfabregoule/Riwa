@@ -15,22 +15,40 @@ public class ControlInteract : MonoBehaviour
         GameManager.Instance.OnShowMoveInputEvent += ShowInteract;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void ShowInteract()
     {
-        Helpers.EnabledCanvasGroup(_canvasGroup);
-        StartCoroutine(WaitSeconds(5f));
+        InputManager.Instance.DisableGameplayControls();
+        StartCoroutine(FadeInCanvas(1f));
     }
 
-    private IEnumerator WaitSeconds(float duration)
+    private IEnumerator FadeInCanvas(float duration)
     {
-        yield return new WaitForSeconds(duration);
-        Helpers.DisabledCanvasGroup(_canvasGroup);
+        float timer = 0;
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
 
+            _canvasGroup.alpha = Mathf.Lerp(0f, 1f, timer / duration);
+            yield return null;
+        }
+        Helpers.EnabledCanvasGroup(_canvasGroup);
+    }
+
+    public void FadeOut()
+    {
+        InputManager.Instance.EnableGameplayControls();
+        StartCoroutine(FadeOutCanvas(0.5f));
+    }
+    private IEnumerator FadeOutCanvas(float duration)
+    {
+        float timer = 0;
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+
+            _canvasGroup.alpha = Mathf.Lerp(1f, 0f, timer / duration);
+            yield return null;
+        }
+        Helpers.DisabledCanvasGroup(_canvasGroup);
     }
 }

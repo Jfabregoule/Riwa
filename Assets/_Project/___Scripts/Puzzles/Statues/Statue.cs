@@ -33,8 +33,8 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
     public CellContent Content { get => _content; set => _content = value; }
     public bool IsMoving { get => _isMoving; set => _isMoving = value; }
 
-    public delegate bool StatueMoveEvent(CellPos oldPos, Vector2Int nextPos, CellContent statueData);
-    public delegate void StatueRotateEvent(CellPos pos, CellContent content);
+    public delegate bool StatueMoveEvent(CellPos oldPos, Vector2Int nextPos, CellContent statueData, Statue statue);
+    public delegate void StatueRotateEvent(CellPos pos, CellContent content, Statue statue);
     public delegate void StatueEndMoving();
 
     public event StatueMoveEvent OnStatueMoved;
@@ -68,7 +68,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
         if (_showDebugLog == true) Debug.Log("UnitgridSize: " + _unitGridSize + " | Direction: " + direction);
         if (_showDebugLog == true) Debug.Log("PosX: " + _pos.x + " | PosY: " + _pos.y + " | Rotation: " + _content.rotation + " | ID: " + _content.id);
         
-        bool canMove = OnStatueMoved.Invoke(_pos, Helpers.Vector2To2Int(new Vector2(direction.x, direction.z)), _content);
+        bool canMove = OnStatueMoved.Invoke(_pos, Helpers.Vector2To2Int(new Vector2(direction.x, direction.z)), _content, this);
         
         if (!canMove) return false;
         if (direction.x != 0) _pos.x += (int)direction.x;
@@ -136,7 +136,7 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
         transform.localRotation = desiredRotation;
         if (_showDebugLog == true) Debug.Log("Rotation: " + transform.localRotation.eulerAngles + " | Current content rot: " + _content.rotation);
         _isMoving = false;
-        OnStatueRotate?.Invoke(_pos, _content);
+        OnStatueRotate?.Invoke(_pos, _content, this);
         OnStatueEndMoving?.Invoke();
         OnRotateFinished?.Invoke();
     }

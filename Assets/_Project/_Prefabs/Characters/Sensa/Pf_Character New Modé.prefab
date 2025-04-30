@@ -254,7 +254,6 @@ MonoBehaviour:
   _isInSoul: 0
   _pushingSpeed: 1
   _fallingStun: 0.4
-  _soulLinkVFX: {fileID: 3945142488935582225}
 --- !u!114 &7584557337342341741
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -360,6 +359,7 @@ MonoBehaviour:
   _linkMaxDistance: 3
   _linkElasticity: 500
   _timeBeforeWait: 2
+  _soulLinkVFX: {fileID: 0}
 --- !u!136 &8688910687259542908
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3893,6 +3893,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4293373727082862296, guid: 8cd829988f7f903459056e199b90784d,
+        type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 5.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4515063489416162572, guid: 8cd829988f7f903459056e199b90784d,
+        type: 3}
+      propertyPath: ShapeModule.m_Scale.x
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4515063489416162572, guid: 8cd829988f7f903459056e199b90784d,
+        type: 3}
+      propertyPath: ShapeModule.m_Scale.y
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4515063489416162572, guid: 8cd829988f7f903459056e199b90784d,
+        type: 3}
+      propertyPath: ShapeModule.m_Scale.z
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4689556506527830475, guid: 8cd829988f7f903459056e199b90784d,
         type: 3}
       propertyPath: m_Layer
@@ -3903,8 +3923,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 9030210483841841922, guid: 8cd829988f7f903459056e199b90784d,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d4a6e3c0e791d874086975bc5fc6f38b, type: 2}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 7831650464820749761, guid: 8cd829988f7f903459056e199b90784d, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8cd829988f7f903459056e199b90784d, type: 3}
@@ -4012,12 +4038,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f3e7c373ab1a4a4fbda28661acba594, type: 3}
---- !u!198 &3945142488935582225 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 5993370743406513324, guid: 4f3e7c373ab1a4a4fbda28661acba594,
-    type: 3}
-  m_PrefabInstance: {fileID: 7319278339376055997}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7737908485752170848 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1076885995930365917, guid: 4f3e7c373ab1a4a4fbda28661acba594,

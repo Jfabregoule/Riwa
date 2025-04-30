@@ -107,6 +107,15 @@ public struct Solution
 [System.Serializable]
 public struct StatueData
 {
+    public StatueData(int id, int rotation, float unitGridSize, int posX, int posY)
+    {
+        this.id = id;
+        this.rotation = rotation;
+        this.unitGridSize = unitGridSize;
+        this.posX = posX;
+        this.posY = posY;
+    }
+
     public int id;
     public int rotation;
     public float unitGridSize;
@@ -167,8 +176,31 @@ public class Grid : MonoBehaviour, IActivable
 
     public void OnEnable()
     {
-        LoadData();
+        if (!SaveSystem.Instance.ContainsElements("StatuePosition0"))
+        {
+            statueData.Clear();
+            foreach (var entry in serializedStatues)
+                statueData.Add(entry.statue, entry.data);
+
+            foreach (var pair in statueData)
+            {
+                pair.Key.SetStatuesData(pair.Value);
+                pair.Key.OnStatueMoved += Move;
+                pair.Key.OnStatueRotate += UpdateStatueRotation;
+                pair.Key.OnStatueEndMoving += Check;
+                CellPos pos = new CellPos(pair.Value.posX, pair.Value.posY);
+                grid[pos] = new CellContent(pair.Value.id, pair.Value.rotation);
+            }
+
+        }
+        else
+        {            
+            LoadData();
+        }
+
+
         SaveSystem.Instance.OnLoadProgress += LoadData;
+       
     }
 
     private void OnDisable()
@@ -177,6 +209,7 @@ public class Grid : MonoBehaviour, IActivable
 
         SerializableVector3 statuePosition;
         SerializableVector3 statueRotation;
+        StatueData statueDataSerialize; 
 
         for (int i = 0; i < _statues.Count; i++)
         {
@@ -185,11 +218,19 @@ public class Grid : MonoBehaviour, IActivable
             SaveSystem.Instance.SaveElement<SerializableVector3>($"StatuePosition{i}", statuePosition);
             statueRotation = new SerializableVector3(_statues[i].transform.rotation.eulerAngles);
             SaveSystem.Instance.SaveElement<SerializableVector3>($"StatueRotation{i}", statueRotation);
+            statueDataSerialize = statueData[_statues[i]];
+            SaveSystem.Instance.SaveElement<StatueData>($"StatueDatas{i}", statueDataSerialize);
+
+            SaveSystem.Instance.SaveAllData();
         }
     }
 
     private void LoadData()
     {
+        if (!SaveSystem.Instance.ContainsElements("StatuePosition0"))
+        {
+            return;
+        }
         statueData.Clear();
         for (int i = 0; i < _statues.Count; i++)
         {
@@ -223,20 +264,6 @@ public class Grid : MonoBehaviour, IActivable
         foreach (var entry in serializedGrid)
             grid[entry.position] = entry.content;
 
-        statueData.Clear();
-        foreach (var entry in serializedStatues)
-            statueData.Add(entry.statue, entry.data);
-
-        foreach (var pair in statueData)
-        {
-            pair.Key.SetStatuesData(pair.Value);
-            pair.Key.OnStatueMoved += Move;
-            pair.Key.OnStatueRotate += UpdateStatueRotation;
-            pair.Key.OnStatueEndMoving += Check;
-            CellPos pos = new CellPos(pair.Value.posX, pair.Value.posY);
-            grid[pos] = new CellContent(pair.Value.id, pair.Value.rotation);
-        }
-
     }
 
     private void Start()
@@ -244,6 +271,7 @@ public class Grid : MonoBehaviour, IActivable
         //if(_isGridActivated == false) SaveSystem.Instance.SaveElement<bool>("GridActivated", false);
         //if (_isGridActivated == true) _finalMP.StartMoving();
         _room4LevelManager = (Floor1Room4LevelManager)Floor1Room4LevelManager.Instance;
+        Check();
     }
 
     [ContextMenu("Generate Grid")]
@@ -390,7 +418,7 @@ public class Grid : MonoBehaviour, IActivable
     }
 
 
-    public bool Move(CellPos oldPos, Vector2Int direction, CellContent statueData)
+    public bool Move(CellPos oldPos, Vector2Int direction, CellContent statueDataValue, Statue statue)
     {
         CellPos newPos = new CellPos(oldPos.x + direction.x, oldPos.y + direction.y);
 
@@ -406,15 +434,25 @@ public class Grid : MonoBehaviour, IActivable
         }
 
         grid[oldPos] = null;
-        grid[newPos] = statueData;
+        grid[newPos] = statueDataValue;
+
+        StatueData data = statueData[statue]; 
+        data.posX = newPos.x;
+        data.posY = newPos.y;
+        statueData[statue] = data;
 
         if (_showDebug == true) Debug.Log($"Statue déplacée en {newPos.x}, {newPos.y}");
         return true;
     }
 
-    public void UpdateStatueRotation(CellPos pos, CellContent statueData)
+    public void UpdateStatueRotation(CellPos pos, CellContent statueDataValue, Statue statue)
     {
-        grid[pos] = statueData;
+        grid[pos] = statueDataValue;
+
+        StatueData data = statueData[statue];
+        data.id = statueDataValue.id;
+        data.rotation = statueDataValue.rotation;
+        statueData[statue] = data;
     }
 
     private bool IsCellEmpty(CellPos pos)

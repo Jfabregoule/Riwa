@@ -6,8 +6,8 @@ using UnityEngine;
 public class RiwaSaveManagerRoom4 : SaveManager<RiwaSaveManagerRoom4>
 {
     [SerializeField] protected string _roomPrefix;
-    //[SerializeField] private MovingPlatform _finalMovingPlatform;
-    //[SerializeField] private ActivableDoor _activableDoor;
+    [SerializeField] private MovingPlatform _finalMovingPlatform;
+    [SerializeField] private List<ActivableDoor> _activableDoor;
     [SerializeField] private List<Transform> _statues;
     [SerializeField] private List<Transform> _pastCrates;
     [SerializeField] private List<Transform> _presentCrates;
@@ -73,12 +73,21 @@ public class RiwaSaveManagerRoom4 : SaveManager<RiwaSaveManagerRoom4>
                 _muralPieces[i].IsPiecePlaced = SaveSystem.Instance.LoadElement<bool>(_roomPrefix + $"MuralPieceIsPlace{i}");
         }
 
-        //if (SaveSystem.Instance.ContainsElements("ActivableDoorState"))
-        //    _activableDoor.IsActivated = SaveSystem.Instance.LoadElement<bool>("ActivableDoorState");
+        for (int i = 0; i < _activableDoor.Count; i++)
+        {
+            if (SaveSystem.Instance.ContainsElements($"ActivableDoorState{i}"))
+                _activableDoor[i].IsActivated = SaveSystem.Instance.LoadElement<bool>($"ActivableDoorState{i}");
 
-        //if(_activableDoor.IsActivated == true)
-        //    _activableDoor.OpenDoorOnLoad();
-        //_grid.Check();
+            if (_activableDoor[i].IsActivated)
+                _activableDoor[i].OpenDoorOnLoad();
+        }
+
+        if (SaveSystem.Instance.ContainsElements($"MovablePlateform"))
+            _finalMovingPlatform.IsActivated = SaveSystem.Instance.LoadElement<bool>($"MovablePlateform");
+
+        if (_finalMovingPlatform.IsActivated)
+            _finalMovingPlatform.StartOnLoad();
+
         ((Floor1Room4LevelManager)Floor1Room4LevelManager.Instance).FillMuralPieceDictionary();
     }
 
@@ -129,5 +138,12 @@ public class RiwaSaveManagerRoom4 : SaveManager<RiwaSaveManagerRoom4>
             SaveSystem.Instance.SaveElement<bool>(_roomPrefix + $"MuralPieceIsPlace{i}", _muralPieces[i].IsPiecePlaced);
             SaveSystem.Instance.SaveElement<int>(_roomPrefix + $"MuralPieceEnum{i}", (int)_muralPieces[i].PieceTemporality);
         }
+
+        for (int i = 0; i < _activableDoor.Count; i++)
+        {
+            SaveSystem.Instance.SaveElement<bool>($"ActivableDoorState{i}", _activableDoor[i].IsActivated);
+        }
+
+        SaveSystem.Instance.SaveElement<bool>("MovablePlateform", _finalMovingPlatform.IsActivated);
     }
 }

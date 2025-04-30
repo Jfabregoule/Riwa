@@ -236,6 +236,7 @@ MonoBehaviour:
   _linkElasticity: 500
   _timeBeforeWait: 2
   _soulLinkVFX: {fileID: 8278749709014207508}
+  _auraVFX: {fileID: 6887695607054245030}
 --- !u!136 &7779698921644670571
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -658,6 +659,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 9030210483841841922, guid: 8cd829988f7f903459056e199b90784d,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d4a6e3c0e791d874086975bc5fc6f38b, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 7831650464820749761, guid: 8cd829988f7f903459056e199b90784d, type: 3}
@@ -667,6 +673,12 @@ PrefabInstance:
 --- !u!4 &51771734560669476 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2612137365908168824, guid: 8cd829988f7f903459056e199b90784d,
+    type: 3}
+  m_PrefabInstance: {fileID: 2663812137039683420}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &6887695607054245030 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8890600096968950778, guid: 8cd829988f7f903459056e199b90784d,
     type: 3}
   m_PrefabInstance: {fileID: 2663812137039683420}
   m_PrefabAsset: {fileID: 0}

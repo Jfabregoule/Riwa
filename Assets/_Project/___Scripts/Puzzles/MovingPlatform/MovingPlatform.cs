@@ -12,6 +12,10 @@ public class MovingPlatform : MonoBehaviour
     private int _direction = 1;
     private List<Vector3> _targetPositions = new List<Vector3>();
 
+    private bool _isActivated = false;
+
+    public bool IsActivated { get => _isActivated; set => _isActivated = value; }
+
     private void Start()
     {
         _targetPositions.Add(transform.position);
@@ -40,9 +44,19 @@ public class MovingPlatform : MonoBehaviour
         }
     }
 
+    public void StartOnLoad()
+    {
+        _isActivated = true;
+        OnMovingPlatformStateUptated(true);
+        if (_targetPositions.Count > 1)
+            StartCoroutine(MovePlatform());
+    }
+
     public void StartMoving()
     {
+        if (_isActivated) return;
         OnMovingPlatformStateUptated(true);
+        _isActivated = true;
         if (_targetPositions.Count > 1)
             StartCoroutine(MovePlatform());
     }

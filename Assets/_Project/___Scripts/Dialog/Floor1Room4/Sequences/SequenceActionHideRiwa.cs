@@ -37,8 +37,8 @@ public class SequenceActionHideRiwa : SequencerAction
         _instance.Chawa.transform.position = targetPos;
         _instance.Chawa.transform.localScale = finalScale;
         _instance.Chawa.SetActive(false);
-        _instance.IsTutorialDone = true;
-        SaveSystem.Instance.SaveElement<bool>("Room4TutorialDone", true);
+        //_instance.IsTutorialDone = true;
+        //SaveSystem.Instance.SaveElement<bool>("Room4TutorialDone", true);
         _dialogueSystem.EventRegistery.Invoke(WaitDialogueEventType.RiwaHiddingIntoSensa);
     }
 }

@@ -37,6 +37,7 @@ public class ASoul : APawn<EnumStateSoul>
 
     [Header("VFX")]
     [SerializeField] private GameObject _soulLinkVFX;
+    [SerializeField] private ParticleSystem _auraVFX;
 
     #endregion
 
@@ -77,12 +78,14 @@ public class ASoul : APawn<EnumStateSoul>
     private void OnEnable()
     {
         _soulLinkVFX.gameObject.SetActive(true);
+        _auraVFX.Play();
     }
 
     public override void OnDisable()
     {
         base.OnDisable();
         _soulLinkVFX.gameObject.SetActive(false);
+        _auraVFX.Stop();
     }
 
     private void Start()

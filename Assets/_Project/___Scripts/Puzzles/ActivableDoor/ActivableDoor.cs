@@ -23,7 +23,7 @@ public class ActivableDoor : MonoBehaviour
 
     private void Start()
     {
-        SaveSystem.Instance.SaveElement<bool>("ActivableDoorState", false);
+        //SaveSystem.Instance.SaveElement<bool>("ActivableDoorState", false);
         foreach (var activable in _activableComponents)
         {
             if(activable.TryGetComponent(out IActivable act))
@@ -72,7 +72,7 @@ public class ActivableDoor : MonoBehaviour
 
     private void OpenDoor()
     {
-        SaveSystem.Instance.SaveElement<bool>("ActivableDoorState", true);
+        //SaveSystem.Instance.SaveElement<bool>("ActivableDoorState", true);
         if (_currentLerp != null) StopCoroutine(_currentLerp);
         _currentLerp = StartCoroutine(LerpDoorPosition(_openingOffset, true));
     }

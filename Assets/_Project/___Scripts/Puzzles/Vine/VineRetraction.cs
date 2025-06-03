@@ -86,7 +86,7 @@ public class VineRetraction : MonoBehaviour
         if (other.TryGetComponent<Crate>(out Crate crate))
         {
             _growPercentage = 1f;
-            ChangeVineDatas(1, 13.5f, new Vector3(0, 0, -0.5f));
+            ChangeVineDatas(1, _maxHeight, new Vector3(0, 0, _minCenter));
             OnUnGrow.Invoke();
         }
     }

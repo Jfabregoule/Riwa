@@ -15,27 +15,20 @@ public class SequenceActionShowRoom4 : SequencerAction
 
     public override IEnumerator StartSequence(Sequencer context)
     {
-        yield return new WaitForSeconds(2.5f);
-        GameManager.Instance.Character.TriggerChangeTempo();
+        yield return new WaitForSeconds(1.5f);
         int currentIndex = 0;
 
         _instance.FresqueCameras[currentIndex].Priority = 20;
 
         for (int nextIndex = 1; nextIndex < _instance.FresqueCameras.Count; nextIndex++)
         {
-            if (currentIndex == 3 && nextIndex == 4)
-                yield return new WaitForSeconds(5f);
-            else
-                yield return new WaitForSeconds(4f);
+            yield return new WaitForSeconds(2.5f);
 
             _instance.FresqueCameras[currentIndex].Priority = 0;
 
             _instance.FresqueCameras[nextIndex].Priority = 20;
 
             currentIndex = nextIndex;
-
-            if (currentIndex == 3 || currentIndex == 4)
-                GameManager.Instance.Character.TriggerChangeTempo();
         }
         yield return new WaitForSeconds(1.8f);
     }

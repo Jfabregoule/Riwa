@@ -507,9 +507,9 @@ GameObject:
   m_Component:
   - component: {fileID: 64187767}
   - component: {fileID: 64187773}
+  - component: {fileID: 64187770}
   - component: {fileID: 64187772}
   - component: {fileID: 64187771}
-  - component: {fileID: 64187770}
   - component: {fileID: 64187769}
   - component: {fileID: 64187768}
   - component: {fileID: 64187775}
@@ -580,7 +580,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isRight: 0
-  _control: {fileID: 1604280882}
 --- !u!114 &64187771
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4174,10 +4173,10 @@ GameObject:
   m_Component:
   - component: {fileID: 363387801}
   - component: {fileID: 363387804}
-  - component: {fileID: 363387803}
-  - component: {fileID: 363387805}
   - component: {fileID: 363387807}
   - component: {fileID: 363387806}
+  - component: {fileID: 363387805}
+  - component: {fileID: 363387803}
   - component: {fileID: 363387808}
   - component: {fileID: 363387810}
   - component: {fileID: 363387811}
@@ -4287,7 +4286,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isRight: 1
-  _control: {fileID: 1604280882}
 --- !u!225 &363387808
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -6232,6 +6230,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 158593838}
+  - {fileID: 1663961584}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &499786684
@@ -11957,12 +11956,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1003484991}
+  - component: {fileID: 1003484999}
   - component: {fileID: 1003484996}
   - component: {fileID: 1003484995}
   - component: {fileID: 1003484994}
   - component: {fileID: 1003484993}
   - component: {fileID: 1003484997}
-  - component: {fileID: 1003484999}
   - component: {fileID: 1003484998}
   m_Layer: 0
   m_Name: InteractLeft
@@ -21216,6 +21215,62 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1630053208}
   m_CullTransparentMesh: 1
+--- !u!1 &1663961583
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1663961584}
+  - component: {fileID: 1663961585}
+  m_Layer: 0
+  m_Name: UIManager
+  m_TagString: UIManager
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1663961584
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1663961583}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 499214562}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1663961585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1663961583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 022f44cab0d2fdb40af78a74e8d5e750, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _control: {fileID: 1604280882}
+  _navbar: {fileID: 259204910}
+  _blackScreen: {fileID: 8281917352775312297}
+  _pulsableList:
+  - Enum: 0
+    Pulsable: {fileID: 64187770}
+  - Enum: 0
+    Pulsable: {fileID: 363387807}
+  - Enum: 1
+    Pulsable: {fileID: 1003484999}
+  - Enum: 1
+    Pulsable: {fileID: 2017545215}
 --- !u!1 &1665919790
 GameObject:
   m_ObjectHideFlags: 0
@@ -25017,12 +25072,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2017545208}
+  - component: {fileID: 2017545215}
   - component: {fileID: 2017545210}
   - component: {fileID: 2017545209}
   - component: {fileID: 2017545212}
   - component: {fileID: 2017545211}
   - component: {fileID: 2017545213}
-  - component: {fileID: 2017545215}
   - component: {fileID: 2017545214}
   m_Layer: 0
   m_Name: InteractRight

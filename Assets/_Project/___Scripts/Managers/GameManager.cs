@@ -18,14 +18,14 @@ public class GameManager : Singleton<GameManager>
     private const string SOUND_MANAGER_TAG = "SoundManager";
     private const string MAIN_CAMERA_TAG = "MainCamera";
     private const string TRANSLATE_TAG = "TranslateSystem";
-    private const string NAVBAR_TAG = "Navbar";
     private const string COLLECTIBLE_TAG = "CollectibleManager";
-    private const string CONTROL_TAG = "Control";
+    private const string UIMANAGER_TAG = "UIManager";
 
     [HideInInspector] public GameObject MainCamera;
     [HideInInspector] public RiwaSoundSystem SoundSystem;
     [HideInInspector] public TranslateSystem TranslateSystem;
     [HideInInspector] public CollectibleManager CollectibleManager;
+    [HideInInspector] public UIManager UIManager;
 
 
     private CameraHandler _cameraHandler;
@@ -33,8 +33,6 @@ public class GameManager : Singleton<GameManager>
     private VariableJoystick _joystick;
     private EnumTemporality _currentTemporality;
     private BaseLevelManager _currentLevelManager;
-
-    private BlackScreen _blackScreen;
 
     public delegate void ShowInput();
     public event ShowInput OnShowBasicInputEvent;
@@ -46,12 +44,6 @@ public class GameManager : Singleton<GameManager>
     public event ChangeTimeEvent OnTimeChangeEnded;
     public event ChangeTimeEvent OnTimeChangeAborted;
 
-    public delegate void IndiceEvent();
-    public event IndiceEvent OnChangeTimePulse;
-    public event IndiceEvent OnChangeTimeStopPulse;
-    public event IndiceEvent OnInteractPulse;
-    public event IndiceEvent OnInteractStopPulse;
-
     public delegate void RoomChangeEvent();
     public event RoomChangeEvent OnRoomChange;
     public event RoomChangeEvent OnCredit;
@@ -59,13 +51,10 @@ public class GameManager : Singleton<GameManager>
 
     #region Properties
 
-    public Control Control { get; private set; }
-    public Navbar Navbar { get; private set; }
     public CameraHandler CameraHandler { get => _cameraHandler; }
     public ACharacter Character { get => _character; }
     public Joystick Joystick { get => _joystick; }
     public EnumTemporality CurrentTemporality { get => _currentTemporality; set => _currentTemporality = value; }
-    public BlackScreen BlackScreen { get => _blackScreen; set => _blackScreen = value; }
     public BaseLevelManager CurrentLevelManager { get => _currentLevelManager; set => _currentLevelManager = value; }
     public bool ChangeTimeUnlock { get; set; }
 
@@ -75,6 +64,8 @@ public class GameManager : Singleton<GameManager>
     {
         CollectibleManager = GameObject.FindGameObjectWithTag(COLLECTIBLE_TAG).GetComponent<CollectibleManager>();
         TranslateSystem = GameObject.FindGameObjectWithTag(TRANSLATE_TAG).GetComponent<TranslateSystem>();
+        //UIManager = GameObject.FindGameObjectWithTag(UIMANAGER_TAG).GetComponent<UIManager>();
+        StartCoroutine(Helpers.WaitMonoBeheviour(() => GameObject.FindGameObjectWithTag(UIMANAGER_TAG), WaitUIManager));
         CurrentTemporality = EnumTemporality.Present;
         ChangeTimeUnlock = false;
     }
@@ -111,38 +102,12 @@ public class GameManager : Singleton<GameManager>
         OnTimeChangeAborted?.Invoke(_currentTemporality);
     }
 
-    public void PulseChangeTime()
-    {
-        OnChangeTimePulse?.Invoke();
-    }
-
-    public void StopPusleChangeTime()
-    {
-        OnChangeTimeStopPulse?.Invoke();
-    }
-
-    public void PulseInteract()
-    {
-        OnInteractPulse?.Invoke();
-    }
-
-    public void StopPusleInteract()
-    {
-        OnInteractStopPulse?.Invoke();
-    }
-
     public void UnlockChangeTime()
     {
         ChangeTimeUnlock = true;
         OnUnlockChangeTime?.Invoke();
     }
 
-    public void SetEverything()
-    {
-        _blackScreen = GameObject.Find("BlackScreen").GetComponent<BlackScreen>();
-        Navbar = GameObject.FindGameObjectWithTag(NAVBAR_TAG).GetComponent<Navbar>();
-        Control = GameObject.FindGameObjectWithTag(CONTROL_TAG).GetComponent<Control>();
-    }
 
     public void InvokeBasicInput()
     {
@@ -163,5 +128,13 @@ public class GameManager : Singleton<GameManager>
         CurrentTemporality = EnumTemporality.Present;
         ChangeTimeUnlock = false;
         OnResetSave?.Invoke();
+    }
+
+    private void WaitUIManager(GameObject go)
+    {
+        if (go != null)
+        {
+            UIManager = go.GetComponent<UIManager>();
+        }
     }
 }

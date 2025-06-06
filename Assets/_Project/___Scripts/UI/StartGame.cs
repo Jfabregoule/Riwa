@@ -13,16 +13,16 @@ public class StartGame : MonoBehaviour
     //private Canvas
     private void Start()
     {
-        StartCoroutine(Helpers.WaitMonoBeheviour(() => GameManager.Instance.Navbar, SubscribeToNavbar));
+        StartCoroutine(Helpers.WaitMonoBeheviour(() => GameManager.Instance.UIManager, SubscribeToNavbar));
         _mainMenuTitleCanvasGroup = transform.parent.GetComponent<CanvasGroup>();
     }
 
-    private void SubscribeToNavbar(Navbar navbar)
+    private void SubscribeToNavbar(UIManager manager)
     {
-        if (navbar != null) {
-            _navbar = navbar;
-            navbar.OnMainParamOpen += DisableMainMenuTitle;
-            navbar.OnMainParamClose += EnableMainMenuTitle;
+        if (manager != null) {
+            _navbar = manager.Navbar;
+            _navbar.OnMainParamOpen += DisableMainMenuTitle;
+            _navbar.OnMainParamClose += EnableMainMenuTitle;
         }
     }
 

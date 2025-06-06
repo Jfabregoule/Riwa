@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
+    [SerializeField] MonoBehaviour[] _activableComponents;
+    private int _currentActivated = 0;
+
     [SerializeField] private bool _canBeEntered = true;
     [SerializeField] private int _floorNumber = 1;
     [SerializeField] private int _roomNumber = 1;
@@ -25,6 +28,33 @@ public class Door : MonoBehaviour
             _enterDoorSequencer.Init();
         if(_exitDoorSequencer)
             _exitDoorSequencer.Init();
+
+        foreach (var activable in _activableComponents)
+        {
+            if (activable.TryGetComponent(out IActivable act))
+            {
+                act.OnActivated += OnActivableActivated;
+                act.OnDesactivated += OnActivableDeactivated;
+            }
+        }
+
+        if (_activableComponents.Length > 0)
+        {
+            DisableDoor();
+        }
+        else
+        {
+            EnableDoor();
+        }
+    }
+
+    private void OnDisable()
+    {
+        foreach (IActivable activable in _activableComponents)
+        {
+            activable.OnActivated -= OnActivableActivated;
+            activable.OnDesactivated -= OnActivableDeactivated;
+        }
     }
 
 
@@ -58,10 +88,34 @@ public class Door : MonoBehaviour
     }
     public void EnableDoor()
     {
-        _collider.enabled = true;
+        _collider.isTrigger = true;
     }
     public void DisableDoor()
     {
-        _collider.enabled = false;
+        _collider.isTrigger = false;
+    }
+
+    private void OnActivableActivated()
+    {
+        _currentActivated += 1;
+        CheckDoorState();
+    }
+
+    private void OnActivableDeactivated()
+    {
+        _currentActivated -= 1;
+    }
+
+    private void CheckDoorState()
+    {
+        if (_currentActivated == _activableComponents.Length)
+        {
+            EnableDoor();
+            foreach (IActivable activable in _activableComponents)
+            {
+                activable.OnActivated -= OnActivableActivated;
+                activable.OnDesactivated -= OnActivableDeactivated;
+            }
+        }
     }
 }

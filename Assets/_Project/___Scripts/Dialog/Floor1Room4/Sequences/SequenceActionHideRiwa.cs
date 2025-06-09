@@ -17,7 +17,6 @@ public class SequenceActionHideRiwa : SequencerAction
 
     public override IEnumerator StartSequence(Sequencer context)
     {
-        GameManager.Instance.Character.TriggerChangeTempo();
         _instance.Chawa.transform.SetParent(GameManager.Instance.Character.transform);
         Vector3 initialPos = _instance.Chawa.transform.position;
         Vector3 targetPos = GameManager.Instance.Character.transform.position;

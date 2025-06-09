@@ -59,11 +59,11 @@ public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
     }
 
     /// <summary>
-    /// Charge une nouvelle scène de salle tout en déchargeant la salle actuelle.
-    /// Les autres scènes nécessaires ne seront pas affectées.
+    /// Charge une nouvelle scÃ¨ne de salle tout en dÃ©chargeant la salle actuelle.
+    /// Les autres scÃ¨nes nÃ©cessaires ne seront pas affectÃ©es.
     /// </summary>
-    /// <param name="floor">Numéro de l'étage.</param>
-    /// <param name="room">Numéro de la salle.</param>
+    /// <param name="floor">NumÃ©ro de l'Ã©tage.</param>
+    /// <param name="room">NumÃ©ro de la salle.</param>
     public IEnumerator LoadRoomScene(int floor, int room)
     {
         string currentRoomName = GetCurrentRoomSceneName();
@@ -83,7 +83,7 @@ public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
     {
         if (SceneManager.GetActiveScene().name == "Systems")
         {
-            Debug.LogWarning("Tentative de reload hors d'une scène gameplay - Ignoré.");
+            Debug.LogWarning("Tentative de reload hors d'une scÃ¨ne gameplay - IgnorÃ©.");
             return;
         }
 
@@ -95,7 +95,7 @@ public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
 
     /// <summary>
     /// Recharge la scene actuelle.
-    /// Les autres scènes nécessaires ne seront pas affectées.
+    /// Les autres scÃ¨nes nÃ©cessaires ne seront pas affectÃ©es.
     /// </summary>
     private IEnumerator ReloadCurrentSceneCoroutine()
     {
@@ -109,9 +109,9 @@ public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
     }
 
     /// <summary>
-    /// Récupère le nom de la scène de la salle actuellement chargée.
+    /// RÃ©cupÃ¨re le nom de la scÃ¨ne de la salle actuellement chargÃ©e.
     /// </summary>
-    /// <returns>Le nom de la scène de la salle actuellement chargée.</returns>
+    /// <returns>Le nom de la scÃ¨ne de la salle actuellement chargÃ©e.</returns>
     public string GetCurrentRoomSceneName()
     {
         return $"Floor{_currentFloorNum}Room{_currentRoomNum}";

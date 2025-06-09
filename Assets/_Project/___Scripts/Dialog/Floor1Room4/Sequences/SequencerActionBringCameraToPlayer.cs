@@ -26,7 +26,7 @@ public class SequencerActionBringCameraToPlayer : SequencerAction
                 _instance.FresqueCameras[j].Priority = (j == i) ? 20 : 0;
             }
 
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1.5f);
         }
 
         _instance.FresqueCameras[0].Priority = 0;

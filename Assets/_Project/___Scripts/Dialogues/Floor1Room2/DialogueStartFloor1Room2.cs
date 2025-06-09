@@ -34,7 +34,7 @@ public class DialogueStartFloor1Room2 : MonoBehaviour
         {
             GameManager.Instance.CurrentLevelManager.OnLevelEnter -= StartDialogue;
             GameManager.Instance.OnTimeChangeStarted -= StartChangeTimeDialogue;
-            GameManager.Instance.StopPusleChangeTime();
+            GameManager.Instance.UIManager.StopPulse(UIPulseEnum.ChangeTime);
         }
 
         SaveSystem.Instance.OnLoadProgress -= LoadData;
@@ -52,7 +52,7 @@ public class DialogueStartFloor1Room2 : MonoBehaviour
         switch (dialogueEventType)
         {
             case DialogueEventType.PusleChangeTime:
-                GameManager.Instance.PulseChangeTime();
+                GameManager.Instance.UIManager.StartPulse(UIPulseEnum.ChangeTime);
                 GameManager.Instance.OnTimeChangeStarted += StartChangeTimeDialogue;
                 break;
 

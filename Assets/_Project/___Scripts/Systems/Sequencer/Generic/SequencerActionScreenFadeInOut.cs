@@ -13,25 +13,13 @@ public class SequencerActionScreenFadeInOut : SequencerAction
 
     public override void Initialize(GameObject obj)
     {
-        _blackScreen = GameManager.Instance.BlackScreen;
+        _blackScreen = GameManager.Instance.UIManager.BlackScreen;
     }
 
 
     public override IEnumerator StartSequence(Sequencer context)
     {
         _blackScreen.FadeOut();
-        //_isFading = true;
-        //_blackScreen.OnFinishFade += Finish;
-
-        //if (_fadeIn) _blackScreen.FadeIn();
-        //else _blackScreen.FadeOut();
-
-        //while (_isFading)
-        //{
-        //    yield return null;
-        //}
-
-        //_blackScreen.OnFinishFade -= Finish;
 
         yield break;
     }

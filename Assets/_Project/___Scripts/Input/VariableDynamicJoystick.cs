@@ -25,13 +25,13 @@ public class VariableDynamicJoystick : MonoBehaviour
     {
         StartCoroutine(Helpers.WaitMonoBeheviour(() => InputManager.Instance, SubscribeToInputManager));
         StartCoroutine(Helpers.WaitMonoBeheviour(() => GameManager.Instance, SubscribeToGameManager));
-        StartCoroutine(Helpers.WaitMonoBeheviour(() => GameManager.Instance.Control, SubscribeToControl));
+        StartCoroutine(Helpers.WaitMonoBeheviour(() => GameManager.Instance.UIManager, SubscribeToControl));
     }
 
-    private void SubscribeToControl(Control control)
+    private void SubscribeToControl(UIManager manager)
     {
-        if (control == null) return;
-        control.BinaryChoice.OnValueChange += LockJoystick;
+        if (manager == null) return;
+        manager.Control.BinaryChoice.OnValueChange += LockJoystick;
     }
 
     private void SubscribeToGameManager(GameManager manager)
@@ -64,8 +64,8 @@ public class VariableDynamicJoystick : MonoBehaviour
         if (GameManager.Instance == null) return;
         GameManager.Instance.OnRoomChange -= CharacterHolding;
 
-        if (GameManager.Instance.Control == null) return;
-        GameManager.Instance.Control.BinaryChoice.OnValueChange -= LockJoystick;
+        if (GameManager.Instance.UIManager.Control == null) return;
+        GameManager.Instance.UIManager.Control.BinaryChoice.OnValueChange -= LockJoystick;
     }
 
     private void Start()

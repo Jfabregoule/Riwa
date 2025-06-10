@@ -156,7 +156,23 @@ public class MoveStateHolding : HoldingBaseState
         float dotForward = Vector3.Dot(worldForward, inputDir);
         float dotRight = Vector3.Dot(worldRight, inputDir);
 
-        if (Mathf.Abs(dotForward) > Mathf.Abs(dotRight))
+        if (Mathf.Abs(dotForward) < Mathf.Abs(dotRight) && joystickDir.magnitude >= 0.8f)
+        {
+            if (!_character.HoldingObject.TryGetComponent(out IRotatable rotatable)) return;
+            if (dotRight > 0.5f)
+            {
+                //Rotate Droite
+                ((RotateStateHolding)_stateMachine.States[EnumHolding.Rotate]).Sens = 1;
+                _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Rotate]);
+            }
+            else
+            {
+                //Rotate Gauche
+                ((RotateStateHolding)_stateMachine.States[EnumHolding.Rotate]).Sens = -1;
+                _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Rotate]);
+            }
+        }
+        else
         {
             if (!_character.HoldingObject.TryGetComponent(out IMovable movable)) return;
             if (dotForward > 0.5f)
@@ -171,22 +187,6 @@ public class MoveStateHolding : HoldingBaseState
                 //Push
                 Sens = -1;
                 _character.Animator.SetFloat("HoldingSens", Sens);
-            }
-        }
-        else
-        {
-            if (!_character.HoldingObject.TryGetComponent(out IRotatable rotatable)) return;
-            if (dotRight > 0.5f)
-            {
-                //Rotate Droite
-                ((RotateStateHolding)_stateMachine.States[EnumHolding.Rotate]).Sens = 1;
-                _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Rotate]);
-            }
-            else
-            {
-                //Rotate Gauche
-                ((RotateStateHolding)_stateMachine.States[EnumHolding.Rotate]).Sens = -1;
-                _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Rotate]);
             }
         }
     }

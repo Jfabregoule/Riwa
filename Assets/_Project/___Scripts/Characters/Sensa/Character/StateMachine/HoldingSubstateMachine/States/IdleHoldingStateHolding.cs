@@ -46,23 +46,7 @@ public class IdleHoldingStateHolding : HoldingBaseState
         float dotForward = Vector3.Dot(worldForward, inputDir);
         float dotRight = Vector3.Dot(worldRight, inputDir);
 
-        if (Mathf.Abs(dotForward) > Mathf.Abs(dotRight))
-        {
-            if (!_character.HoldingObject.TryGetComponent(out IMovable movable)) return;
-            if (dotForward > 0.5f)
-            {
-                //Pull
-                ((MoveStateHolding)_stateMachine.States[EnumHolding.Move]).Sens = 1;
-                _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Move]);
-            } 
-            else 
-            {
-                //Push
-                ((MoveStateHolding)_stateMachine.States[EnumHolding.Move]).Sens = -1;
-                _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Move]);
-            }
-        }
-        else
+        if (Mathf.Abs(dotForward) < Mathf.Abs(dotRight) && joystickDir.magnitude >= 0.8f)
         {
             if (!_character.HoldingObject.TryGetComponent(out IRotatable rotatable)) return;
             if (dotRight > 0.5f)
@@ -76,6 +60,22 @@ public class IdleHoldingStateHolding : HoldingBaseState
                 //Rotate Gauche
                 ((RotateStateHolding)_stateMachine.States[EnumHolding.Rotate]).Sens = -1;
                 _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Rotate]);
+            }
+        }
+        else
+        {
+            if (!_character.HoldingObject.TryGetComponent(out IMovable movable)) return;
+            if (dotForward > 0.5f)
+            {
+                //Pull
+                ((MoveStateHolding)_stateMachine.States[EnumHolding.Move]).Sens = 1;
+                _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Move]);
+            }
+            else
+            {
+                //Push
+                ((MoveStateHolding)_stateMachine.States[EnumHolding.Move]).Sens = -1;
+                _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Move]);
             }
         }
     }

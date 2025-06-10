@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OpeningTriggerEvent: 0
   OpeningEventType: 0
-  ClosureTriggerEvent: 1
-  ClosureEventType: 16
+  ClosureTriggerEvent: 0
+  ClosureEventType: 0
   DisablePlayerInputsOnOpening: 1
-  EnablePlayerInputsOnClosure: 1
+  EnablePlayerInputsOnClosure: 0
   IsAllSkipable: 0
   Sections:
   - UIType: 0
@@ -128,10 +128,14 @@ MonoBehaviour:
       SpeedWriting: 0.03
       TimeToPass: 2
       WaitEventType: 0
-    - TextTranslate: {fileID: 11400000, guid: 57daa429d2fbf6247a15c6dd0af7df85, type: 2}
+    TriggerEvent: 1
+    EventType: 26
+  - UIType: 0
+    Sentences:
+    - TextTranslate: {fileID: 11400000, guid: f45bc7d0cd28f29478c530e871ae619f, type: 2}
       Options: 1
       SpeedWriting: 0.03
-      TimeToPass: 2
+      TimeToPass: 3
       WaitEventType: 0
-    TriggerEvent: 0
-    EventType: 0
+    TriggerEvent: 1
+    EventType: 27

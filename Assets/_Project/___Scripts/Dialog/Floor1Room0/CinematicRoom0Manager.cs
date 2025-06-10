@@ -5,7 +5,12 @@ using UnityEngine;
 public class CinematicRoom0Manager : MonoBehaviour
 {
     [SerializeField] private DialogueAsset _dialogueAsset;
+    [SerializeField] private DialogueAsset _collectibleAsset;
+    [SerializeField] private DialogueAsset _closeAsset;
     [SerializeField] private Sequencer _sequencerEntry;
+    [SerializeField] private Sequencer _collectibleSequencer;
+    [SerializeField] private Sequencer _closeSequencer;
+    [SerializeField] private Transform _collectibleLandingPosition;
 
     private Floor1Room0LevelManager _instance;
     private bool _isTrigger;
@@ -13,6 +18,9 @@ public class CinematicRoom0Manager : MonoBehaviour
     private System.Action OnFinishSpeak;
 
     public DialogueAsset Room0Dialogue { get => _dialogueAsset; }
+    public DialogueAsset Room0CollectibleDialogue { get => _collectibleAsset; }
+    public DialogueAsset Room0CloseDialogue { get => _closeAsset; }
+    public Transform CollectibleLandingPosition { get => _collectibleLandingPosition; }
     private void OnEnable()
     {
         LoadData();
@@ -44,8 +52,13 @@ public class CinematicRoom0Manager : MonoBehaviour
         if (!_isTrigger)
         {
             _sequencerEntry.Init();
+            _collectibleSequencer.Init();
+            _closeSequencer.Init();
+            
             DialogueSystem.Instance.OnDialogueEvent += DispatchEventOnDialogueEvent;
+            
             _sequencerEntry.InitializeSequence();
+            
             _isTrigger = true;
         }
     }
@@ -54,6 +67,19 @@ public class CinematicRoom0Manager : MonoBehaviour
     {
         switch(dialogueEvent)
         {
+            case DialogueEventType.Room0CollectibleDialogueEnd:
+                _closeSequencer.InitializeSequence();
+                break;
+            case DialogueEventType.Room0CollectibleInformationEnd:
+                _instance.CollectibleCamera.Priority = 0;
+                DialogueSystem.Instance.BeginDialogue(_closeAsset);
+                break;
+            case DialogueEventType.Room0CollectibleCamera:
+                _instance.CollectibleCamera.Priority = 200;
+                break;
+            case DialogueEventType.Room0MoveToCollectible:
+                _collectibleSequencer.InitializeSequence();
+                break;
             case DialogueEventType.AntreRiwaChangeTempo:
                 GameManager.Instance.Character.TriggerChangeTempoWithouCooldown();
                 break;

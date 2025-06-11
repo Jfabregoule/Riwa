@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Screen Fade InOut Sequence", menuName = "Riwa/GenericAction/ScreenFadeInOut")]
 public class SequencerActionScreenFadeInOut : SequencerAction
 {
-    [SerializeField] private float _fadeInSpeed = 1f;
+    [SerializeField] private float _fadeSpeed = 1f;
     [SerializeField] private bool _fadeIn = true;
 
     private bool _isFading;
@@ -19,7 +19,11 @@ public class SequencerActionScreenFadeInOut : SequencerAction
 
     public override IEnumerator StartSequence(Sequencer context)
     {
-        _blackScreen.FadeOut();
+
+        if (_fadeIn)
+            _blackScreen.FadeIn(_fadeSpeed);
+        else
+            _blackScreen.FadeOut(_fadeSpeed);
 
         yield break;
     }

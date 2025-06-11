@@ -15,17 +15,16 @@ public class BlackScreen : MonoBehaviour
     public void Awake()
     {
         _canvasGroup = GetComponent<CanvasGroup>();
-        GameManager.Instance.OnRoomChange += FadeIn;
-
-    }
-    public void FadeIn()
-    {
-        StartCoroutine(Fade(0, 1, 1f, true));
     }
 
-    public void FadeOut()
+    public void FadeIn(float time)
     {
-        StartCoroutine(Fade(1, 0, 1f, false));
+        StartCoroutine(Fade(0, 1, time, true));
+    }
+
+    public void FadeOut(float time)
+    {
+        StartCoroutine(Fade(1, 0, time, false));
     }
 
     private void GrayIn() {

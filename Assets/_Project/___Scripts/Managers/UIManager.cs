@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public enum UIPulseEnum
 {
@@ -40,12 +42,14 @@ public class UIManager : MonoBehaviour
     }
     void Start()
     {
+    }
 
+    private void OnDestroy()
+    {
     }
 
     void Update()
     {
-        
     }
 
     public void StartPulse(UIPulseEnum pulseEnum)
@@ -56,4 +60,8 @@ public class UIManager : MonoBehaviour
     {
         _pulses[pulseEnum].StopPulsing();
     }
+
+    public void StartHighlight(UIPulseEnum pulseEnum) => _blackScreen.HighlightButton(_pulses[pulseEnum]);
+    public void StopHighlight() => _blackScreen.ResetHighlighButton();
+
 }

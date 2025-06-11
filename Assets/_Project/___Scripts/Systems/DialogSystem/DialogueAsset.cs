@@ -75,6 +75,10 @@ public enum DialogueEventType
     SensaSpeaking,
     EnableStumpRoom3,
     EnablePlantRoom2,
+    Room0CollectibleDialogueEnd,
+    Room0CollectibleInformationEnd,
+    Room0CollectibleCamera,
+    Room0MoveToCollectible,
 }
 
 public enum WaitDialogueEventType

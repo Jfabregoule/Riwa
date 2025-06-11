@@ -6940,47 +6940,6 @@ ParticleSystem:
     type: 3}
   m_PrefabInstance: {fileID: 1638070300}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1648478042 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4157492513682439468, guid: 4899750f0d811ce49919701d4b94ebfc,
-    type: 3}
-  m_PrefabInstance: {fileID: 2873427280228574107}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1648478043
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1648478042}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4e38f33d346a4a4ea92d9b6df8901b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _collectibleDialogue: {fileID: 11400000, guid: 662b1327f72687a46b0103627259f91a,
-    type: 2}
---- !u!65 &1648478044
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1648478042}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1662731552 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3405962998659090815, guid: 99963b64c11c67949b5fcd6365287d88,
@@ -9558,18 +9517,16 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: cad5573e0c7bd1d48bb9127bb3143493, type: 2}
+    - target: {fileID: 9182943200213607430, guid: 4899750f0d811ce49919701d4b94ebfc,
+        type: 3}
+      propertyPath: _collectibleDialogue
+      value: 
+      objectReference: {fileID: 11400000, guid: 662b1327f72687a46b0103627259f91a,
+        type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4157492513682439468, guid: 4899750f0d811ce49919701d4b94ebfc,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1648478043}
-    - targetCorrespondingSourceObject: {fileID: 4157492513682439468, guid: 4899750f0d811ce49919701d4b94ebfc,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1648478044}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4899750f0d811ce49919701d4b94ebfc, type: 3}
 --- !u!4 &2873427280228574108 stripped
 Transform:

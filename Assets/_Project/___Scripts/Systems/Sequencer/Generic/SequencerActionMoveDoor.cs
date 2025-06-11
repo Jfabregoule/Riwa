@@ -24,6 +24,7 @@ public class SequencerActionMoveDoor : SequencerAction
     public override IEnumerator StartSequence(Sequencer context)
     {
         _door = context.gameObject;
+        GameManager.Instance.InvokeRoomExit();
 
         _isMoving = true;
         _chara.OnMoveToFinished += FinishMoveto;

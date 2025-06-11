@@ -210,11 +210,11 @@ public class Floor1Room1LevelManager : BaseLevelManager
         {
             UpdateAdvancement(EnumAdvancementRoom1.Room4);
             OnLevelEnter += BeginDialogue;
-            _backTrakingDoor.EnableDoor();
-            _blockDoor.SetActive(false);
-            if (_aroundDoor.material.HasProperty("_IsActivated"))
-                _aroundDoor.material.SetFloat("_IsActivated", 1);
         }
+        _backTrakingDoor.EnableDoor();
+        _blockDoor.SetActive(false);
+        if (_aroundDoor.material.HasProperty("_IsActivated"))
+            _aroundDoor.material.SetFloat("_IsActivated", 1);
     }
 
     public void UpdateAdvancement(EnumAdvancementRoom1 advancement)

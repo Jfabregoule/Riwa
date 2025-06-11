@@ -66,7 +66,9 @@ public class GameManager : Singleton<GameManager>
         TranslateSystem = GameObject.FindGameObjectWithTag(TRANSLATE_TAG).GetComponent<TranslateSystem>();
         //UIManager = GameObject.FindGameObjectWithTag(UIMANAGER_TAG).GetComponent<UIManager>();
         StartCoroutine(Helpers.WaitMonoBeheviour(() => GameObject.FindGameObjectWithTag(UIMANAGER_TAG), WaitUIManager));
-        CurrentTemporality = EnumTemporality.Present;
+        if (SaveSystem.Instance.ContainsElements("Temporality"))
+            CurrentTemporality = SaveSystem.Instance.LoadElement<EnumTemporality>("Temporality");
+        //CurrentTemporality = EnumTemporality.Present;
         ChangeTimeUnlock = false;
     }
 
@@ -136,5 +138,10 @@ public class GameManager : Singleton<GameManager>
         {
             UIManager = go.GetComponent<UIManager>();
         }
+    }
+
+    private void OnDisable()
+    {
+        SaveSystem.Instance.SaveElement<EnumTemporality>("Temporality", CurrentTemporality);
     }
 }

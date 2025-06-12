@@ -93,6 +93,8 @@ public class Control : MonoBehaviour
     public void ToggleControlInvert(bool isInvert)
     {
         InputManager.Instance.ToggleControlInversion(isInvert);
+        GameManager.Instance.UIManager.SetHanded(!isInvert);
+
     }
 
     public void InvertControlUI()

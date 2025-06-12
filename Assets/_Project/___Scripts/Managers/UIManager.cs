@@ -27,6 +27,7 @@ public class UIManager : MonoBehaviour
 
     private Dictionary<UIPulseEnum, IPulsable> _pulses;
 
+    public bool IsRightHanded { get; private set; }
     public Control Control { get { return _control; } }
     public BlackScreen BlackScreen { get { return _blackScreen; } }
     
@@ -64,4 +65,5 @@ public class UIManager : MonoBehaviour
     public void StartHighlight(UIPulseEnum pulseEnum) => _blackScreen.HighlightButton(_pulses[pulseEnum]);
     public void StopHighlight() => _blackScreen.ResetHighlighButton();
 
+    public void SetHanded(bool handed) => IsRightHanded = handed;
 }

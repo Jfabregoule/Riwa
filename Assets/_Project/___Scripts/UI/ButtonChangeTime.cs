@@ -2,21 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ButtonChangeTime : MonoBehaviour, IPulsable
+public class ButtonChangeTime : MonoBehaviour
 {
     [SerializeField] private bool _isRight;
 
-    private PulseEffect _pulseEffect;
     private CanvasGroup _canvasGroup;
     private Control _control;
 
     private void Start()
     {
-        _pulseEffect = GetComponent<PulseEffect>();
         _canvasGroup = GetComponent<CanvasGroup>();
         StartCoroutine(Helpers.WaitMonoBeheviour(() => GameManager.Instance.UIManager, WaitUIManager));
         GameManager.Instance.OnResetSave += Reset;
-        GameManager.Instance.OnTimeChangeStarted += OnChangeTime;
         GameManager.Instance.OnUnlockChangeTime += Display;
     }
 
@@ -24,7 +21,6 @@ public class ButtonChangeTime : MonoBehaviour, IPulsable
     {
         if (GameManager.Instance)
         {
-            GameManager.Instance.OnTimeChangeStarted -= OnChangeTime;
             GameManager.Instance.OnUnlockChangeTime -= Display;
             GameManager.Instance.OnResetSave -= Reset;
         }
@@ -38,24 +34,9 @@ public class ButtonChangeTime : MonoBehaviour, IPulsable
         } 
     }
 
-    private void OnChangeTime(EnumTemporality temporality)
-    {
-        _pulseEffect.StopPulsing();
-    }
-
     private void Reset() 
     {
         Helpers.DisabledCanvasGroup(_canvasGroup);
-    }
-
-    public void StartPulsing()
-    {
-        _pulseEffect.StartPulsing();
-    }
-
-    public void StopPulsing()
-    {
-        _pulseEffect.StopPulsing();
     }
 
     private void WaitUIManager(UIManager manager)

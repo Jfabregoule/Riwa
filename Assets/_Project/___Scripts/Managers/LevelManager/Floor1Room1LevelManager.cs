@@ -155,7 +155,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
                 break;
             case DialogueEventType.UnlockChangeTime:
                 GameManager.Instance.UnlockChangeTime();
-                GameManager.Instance.UIManager.StartPulse(UIPulseEnum.ChangeTime);
+                GameManager.Instance.UIManager.StartPulse(UIElementEnum.ChangeTime);
                 break;
             case DialogueEventType.ShowInput:
                 GameManager.Instance.InvokeBasicInput();
@@ -184,7 +184,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
     public IEnumerator WaitForPulse()
     {
         yield return new WaitForSeconds(1.5f);
-        GameManager.Instance.UIManager.StartPulse(UIPulseEnum.ChangeTime);
+        GameManager.Instance.UIManager.StartPulse(UIElementEnum.ChangeTime);
         InputManager.Instance.EnableGameplayChangeTimeControls();
     }
 

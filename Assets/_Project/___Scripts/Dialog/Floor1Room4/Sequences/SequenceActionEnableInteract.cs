@@ -8,7 +8,7 @@ public class SequenceActionEnableInteract : SequencerAction
     public override IEnumerator StartSequence(Sequencer context)
     {
         InputManager.Instance.EnableGameplayInteractControls();
-        GameManager.Instance.UIManager.StartPulse(UIPulseEnum.Interact);
+        GameManager.Instance.UIManager.StartPulse(UIElementEnum.Interact);
         yield return null;
     }
 }

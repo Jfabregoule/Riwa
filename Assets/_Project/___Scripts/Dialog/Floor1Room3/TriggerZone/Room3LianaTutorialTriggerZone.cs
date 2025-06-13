@@ -23,7 +23,8 @@ public class Room3LianaTutorialCollider : MonoBehaviour
             _instance.TreeStumpTest.CanInteract = false;
 
             _hasBeenAlreadyTriggered = true;
-            StartCoroutine(_instance.TutorialRoom3Manager.BringRiwaToLiana());
+            //StartCoroutine(_instance.TutorialRoom3Manager.BringRiwaToLiana());
+            StartCoroutine(_instance.TutorialRoom3Manager.MoveAndOrientChawaToLiana());
             //DialogueSystem.Instance.BeginDialogue(_instance.TutorialRoom3Manager.LianaDialogue);
         }
     }

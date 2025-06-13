@@ -319,10 +319,10 @@ public class Damier : MonoBehaviour
             elapsedTime += Time.deltaTime;
             float t = Mathf.Clamp01(elapsedTime / duration);
 
-            Vector3 pos = InterpolationHermite(p0, p1, p2, p3, t);
+            Vector3 pos = Helpers.InterpolationHermite(p0, p1, p2, p3, t);
             _riwa.transform.position = pos;
 
-            Vector3 dir = (InterpolationHermite(p0, p1, p2, p3, t + 0.05f) - pos).normalized;
+            Vector3 dir = (Helpers.InterpolationHermite(p0, p1, p2, p3, t + 0.05f) - pos).normalized;
             if (dir.sqrMagnitude > 0.001f)
             {
                 _riwa.transform.rotation = Quaternion.Slerp(_riwa.transform.rotation, Quaternion.LookRotation(new Vector3(dir.x, 0f, dir.z)), 0.2f);
@@ -352,7 +352,7 @@ public class Damier : MonoBehaviour
 
     private IEnumerator FollowPathCoroutine(bool dragCamera)
     {
-        _instance.ChawaTrail.gameObject.SetActive(true);
+        //_instance.ChawaTrail.gameObject.SetActive(true);
         if (dragCamera)
         {
             GameManager.Instance.Character.InputManager.DisableGameplayControls();
@@ -399,10 +399,10 @@ public class Damier : MonoBehaviour
                 elapsedTime += Time.deltaTime;
                 float t = Mathf.Clamp01(elapsedTime / _lerpTime);
 
-                Vector3 pos = InterpolationHermite(p0, p1, p2, p3, t);
+                Vector3 pos = Helpers.InterpolationHermite(p0, p1, p2, p3, t);
                 _riwa.transform.position = pos;
 
-                Vector3 dir = (InterpolationHermite(p0, p1, p2, p3, t + 0.05f) - pos).normalized;
+                Vector3 dir = (Helpers.InterpolationHermite(p0, p1, p2, p3, t + 0.05f) - pos).normalized;
                 if (dir.sqrMagnitude > 0.001f)
                     _riwa.transform.rotation = Quaternion.LookRotation(new Vector3(dir.x, 0, dir.z));
 
@@ -414,7 +414,7 @@ public class Damier : MonoBehaviour
         }
 
         _riwa.transform.position = worldPoints[worldPoints.Count - 1];
-        _instance.ChawaTrail.gameObject.SetActive(false);
+        //_instance.ChawaTrail.gameObject.SetActive(false);
         yield return StartCoroutine(MoveRiwaToDiscussionPointHermite(_instance.TutorialRoom3Manager.DamierDiscussionPosition));
         _instance.DamierCamera.Priority = 0;
         _instance.RiwaSensaCamera[0].Priority = 20;
@@ -453,17 +453,6 @@ public class Damier : MonoBehaviour
 
             renderer.material.SetFloat("_Alpha", startAlpha);
         }
-    }
-
-
-    private Vector3 InterpolationHermite(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
-    {
-        return 0.5f * (
-            2f * p1 +
-            (-p0 + p2) * t +
-            (2f * p0 - 5f * p1 + 4f * p2 - p3) * t * t +
-            (-p0 + 3f * p1 - 3f * p2 + p3) * t * t * t
-        );
     }
 
     private bool CheckDirection(CellPos pos)

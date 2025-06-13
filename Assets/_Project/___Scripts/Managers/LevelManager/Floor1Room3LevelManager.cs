@@ -14,8 +14,7 @@ public class Floor1Room3LevelManager : BaseLevelManager
 
     private bool _isDamierCompleted = false;
 
-    [Header("Labyliane")]
-    [SerializeField] private TreeStumpTest _treeStumpTest;
+    private TreeStumpTest _treeStumpTest;
 
     [Header("Tutorial Camera")]
     [SerializeField] private List<CinemachineVirtualCamera> _riwaSensaCamera;
@@ -26,7 +25,9 @@ public class Floor1Room3LevelManager : BaseLevelManager
     [SerializeField] private ParticleSystem _chawaTrail;
     [SerializeField] private Transform _chawaLianaPosition;
     [SerializeField] private BoxCollider _chawaPathTriggerZone;
-                     private RiwaShowingPathTriggerZone _riwaShowingPathTriggerZone;
+    
+    private RiwaShowingPathTriggerZone _riwaShowingPathTriggerZone;
+    private bool _playerHasChangedTemporality;
 
     [Header("Dialogue Manager")]
     [SerializeField] private TutorialRoom3Manager _tutorialRoom3Manager;
@@ -68,10 +69,25 @@ public class Floor1Room3LevelManager : BaseLevelManager
     public override void Start()
     {
         base.Start();
-        _chawaTrail.gameObject.SetActive(false);
-        _treeStumpTest = GameObject.Find("Pf_SocleMoveable").GetComponent<TreeStumpTest>(); //Je fais un Find pour éviter les merges conflicts dans la scene
+        GameManager.Instance.OnTimeChangeStarted += PlayerGoesInPast;
+        _treeStumpTest = GameObject.Find("Pf_SocleMoveable").GetComponent<TreeStumpTest>(); //Je fais un Find pour Ã©viter les merges conflicts dans la scene
+        _treeStumpTest.enabled = false;
         _riwaShowingPathTriggerZone = _chawa.GetComponentInChildren<RiwaShowingPathTriggerZone>(); //same, mais mieux
         GameManager.Instance.UnlockChangeTime();
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.OnTimeChangeStarted -= PlayerGoesInPast;
+    }
+
+    private void PlayerGoesInPast(EnumTemporality temporality)
+    {
+        if (temporality == EnumTemporality.Past && _playerHasChangedTemporality == false)
+        {
+            _playerHasChangedTemporality = true;
+            GameManager.Instance.UIManager.StopPulse(UIPulseEnum.ChangeTime);
+        }
     }
 
 }

@@ -60,6 +60,7 @@ public class TutorialRoom3Manager : MonoBehaviour
             case DialogueEventType.RiwaEndShowingPath:
                 _instance.ChawaPathTriggerZone.enabled = true;
                 _instance.RiwaSensaCamera[0].Priority = 0;
+                GameManager.Instance.UIManager.StartPulse(UIPulseEnum.ChangeTime);
                 break;
             case DialogueEventType.ShowLianaPath:
                 StartCoroutine(SwitchLianaCamera());
@@ -184,50 +185,98 @@ public class TutorialRoom3Manager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         StartCoroutine(HideRiwa());
     }
-
-    public IEnumerator BringRiwaToLiana()
+    
+    public IEnumerator MoveAndOrientChawaToLiana()
     {
-        Vector3 initialPos = _instance.Chawa.transform.position;
-        Vector3 targetPos = _instance.ChawaLianaPosition.position;
+        Vector3 start = _instance.Chawa.transform.position;
+        Vector3 end = _instance.ChawaLianaPosition.position;
+        Vector3 controlBefore = start - (_instance.Chawa.transform.forward * 2f);
+        Vector3 controlAfter = end + (_instance.Chawa.transform.forward * 2f);
+        
+        Vector3 sensaPos = GameManager.Instance.Character.transform.position;
+        Vector3 direction = (sensaPos - end).normalized;
+        Quaternion targetRot = Quaternion.LookRotation(direction);
+        
+        Vector3 directionToTarget = (end - start).normalized;
+        _instance.Chawa.transform.rotation = Quaternion.LookRotation(directionToTarget);
+        
+        Quaternion startRot = _instance.Chawa.transform.rotation;
 
-        float elapsedTime = 0f;
-        float lerpTime = 3f;
+        float duration = 3f;
+        float elapsed = 0f;
 
-        while (elapsedTime < lerpTime)
+        while (elapsed < duration)
         {
-            elapsedTime += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsedTime / lerpTime);
-            _instance.Chawa.transform.position = Vector3.Lerp(initialPos, targetPos, t);
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+
+            Vector3 pos = Helpers.InterpolationHermite(controlBefore, start, end, controlAfter, t);
+            _instance.Chawa.transform.position = pos;
+
             yield return null;
         }
-        _instance.Chawa.transform.position = targetPos;
-        StartCoroutine(OrientChawaTowardSensa());
-    }
 
-    public IEnumerator OrientChawaTowardSensa()
-    {
+        _instance.Chawa.transform.position = end;
+        elapsed = 0;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            
+            _instance.Chawa.transform.rotation = Quaternion.Slerp(startRot, targetRot, t);
+            yield return null;
+        }
+
+        _instance.Chawa.transform.rotation = targetRot;
+
+        // Lancer le dialogue à la fin
         DialogueSystem.Instance.BeginDialogue(_lianaDialogue);
-        Vector3 chawaPosition = _instance.Chawa.transform.position;
-        Vector3 sensaPosition = GameManager.Instance.Character.transform.position;
-        Vector3 chawaDirecrion = sensaPosition - chawaPosition;
-
-        Quaternion startRotation = _instance.Chawa.transform.rotation;
-        Quaternion lookDirection = Quaternion.identity;
-        lookDirection = Quaternion.LookRotation(chawaDirecrion);
-
-        float elapsedTime = 0f;
-        float lerpTime = 2f;
-
-        while(elapsedTime < lerpTime)
-        {
-            elapsedTime += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsedTime / lerpTime);
-            _instance.Chawa.transform.rotation = Quaternion.Slerp(startRotation, lookDirection, t);
-            yield return null;
-        }
-
-        _instance.Chawa.transform.rotation = lookDirection;
     }
+
+    // public IEnumerator BringRiwaToLiana()
+    // {
+    //     Vector3 initialPos = _instance.Chawa.transform.position;
+    //     Vector3 targetPos = _instance.ChawaLianaPosition.position;
+    //
+    //     float elapsedTime = 0f;
+    //     float lerpTime = 3f;
+    //
+    //     while (elapsedTime < lerpTime)
+    //     {
+    //         elapsedTime += Time.deltaTime;
+    //         float t = Mathf.Clamp01(elapsedTime / lerpTime);
+    //         _instance.Chawa.transform.position = Vector3.Lerp(initialPos, targetPos, t);
+    //         yield return null;
+    //     }
+    //     _instance.Chawa.transform.position = targetPos;
+    //     StartCoroutine(OrientChawaTowardSensa());
+    // }
+    //
+    // public IEnumerator OrientChawaTowardSensa()
+    // {
+    //     DialogueSystem.Instance.BeginDialogue(_lianaDialogue);
+    //     Vector3 chawaPosition = _instance.Chawa.transform.position;
+    //     Vector3 sensaPosition = GameManager.Instance.Character.transform.position;
+    //     Vector3 chawaDirecrion = sensaPosition - chawaPosition;
+    //
+    //     Quaternion startRotation = _instance.Chawa.transform.rotation;
+    //     Quaternion lookDirection = Quaternion.identity;
+    //     lookDirection = Quaternion.LookRotation(chawaDirecrion);
+    //
+    //     float elapsedTime = 0f;
+    //     float lerpTime = 2f;
+    //
+    //     while(elapsedTime < lerpTime)
+    //     {
+    //         elapsedTime += Time.deltaTime;
+    //         float t = Mathf.Clamp01(elapsedTime / lerpTime);
+    //         _instance.Chawa.transform.rotation = Quaternion.Slerp(startRotation, lookDirection, t);
+    //         yield return null;
+    //     }
+    //
+    //     _instance.Chawa.transform.rotation = lookDirection;
+    // }
 
     #endregion
 

@@ -33,7 +33,8 @@ public class Platform : MonoBehaviour, IRespawnable
 
     private void OnDestroy()
     {
-        GameManager.Instance.Character.OnRespawn -= RespawnWithPlayer;
+        if(GameManager.Instance != null)
+            GameManager.Instance.Character.OnRespawn -= RespawnWithPlayer;
     }
 
     private void OnTriggerEnter(Collider other)

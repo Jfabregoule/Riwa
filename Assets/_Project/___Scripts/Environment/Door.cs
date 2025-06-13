@@ -92,7 +92,8 @@ public class Door : MonoBehaviour
     }
     public void DisableDoor()
     {
-        _collider.isTrigger = false;
+        if (_collider)
+            _collider.isTrigger = false;
     }
 
     private void OnActivableActivated()

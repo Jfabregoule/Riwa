@@ -80,7 +80,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
     public override void Start()
     {
         base.Start();
-        _backTrakingDoor.DisableDoor();
+
         if (CurrentAdvancement == EnumAdvancementRoom1.Start)
         {
             OnLevelEnter += BeginDialogue;

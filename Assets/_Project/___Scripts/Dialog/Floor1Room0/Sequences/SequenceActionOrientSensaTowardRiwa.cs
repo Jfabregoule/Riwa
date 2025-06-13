@@ -8,10 +8,12 @@ public class SequenceActionOrientSensaTowardRiwa : SequencerAction
 
     private Floor1Room0LevelManager _instance;
     public float LerpTime = 2f;
+    private ACharacter _chara;
     
     public override void Initialize(GameObject obj)
     {
         _instance = (Floor1Room0LevelManager)Floor1Room0LevelManager.Instance;
+        _chara = GameManager.Instance.Character;
     }
 
     public override IEnumerator StartSequence(Sequencer context)
@@ -22,6 +24,8 @@ public class SequenceActionOrientSensaTowardRiwa : SequencerAction
         Vector3 sensaTargetPosition = _instance.Chawa.transform.position;
         Vector3 direction = sensaTargetPosition - GameManager.Instance.Character.transform.position;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
+        
+        _chara.Animator.SetBool("MoveTo", true);
 
         while (elapsedTime < LerpTime)
         {
@@ -32,6 +36,7 @@ public class SequenceActionOrientSensaTowardRiwa : SequencerAction
             yield return null;
         }
 
+        _chara.Animator.SetBool("MoveTo", false);
         GameManager.Instance.Character.transform.rotation = lookRotation;
     }
 }

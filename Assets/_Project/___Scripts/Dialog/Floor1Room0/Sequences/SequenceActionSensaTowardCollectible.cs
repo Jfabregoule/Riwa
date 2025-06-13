@@ -25,6 +25,8 @@ public class SequenceActionSensaTowardCollectible : SequencerAction
         Vector3 landPos = _instance.CinematicManager.CollectibleLandingPosition.position;
         Vector3 target = landPos;
 
+        _chara.WalkSpeed *= 0.5f;
+
         MoveToStateCharacter state = (MoveToStateCharacter)_chara.StateMachine.States[EnumStateCharacter.MoveTo];
         state.LoadState(EnumStateCharacter.Idle, target, target);
         _chara.StateMachine.ChangeState(state);
@@ -32,7 +34,6 @@ public class SequenceActionSensaTowardCollectible : SequencerAction
         while (_isMoving)
             yield return null;
 
-        _chara.Animator.SetTrigger("CinematicInteract");
         _chara.OnMoveToFinished -= FinishMoveTo;
     }
 

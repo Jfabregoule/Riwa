@@ -1,20 +1,19 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using System.Collections.ObjectModel;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public enum UIPulseEnum
+public enum UIElementEnum
 {
     ChangeTime, 
     Interact
 }
 
 [System.Serializable]
-public struct UIPulse
+public struct UIElement
 {
-    public UIPulseEnum Enum;
-    public MonoBehaviour Pulsable;
+    public UIElementEnum Enum;
+    public UIElementComponent Element;
 }
 
 [DefaultExecutionOrder(-1)]
@@ -23,9 +22,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Control _control;
     [SerializeField] private Navbar _navbar;
     [SerializeField] private BlackScreen _blackScreen;
-    [SerializeField] private List<UIPulse> _pulsableList;
+    [SerializeField] private List<UIElement> _uiElementsList;
 
-    private Dictionary<UIPulseEnum, IPulsable> _pulses;
+    private ReadOnlyDictionary<UIElementEnum, UIElementComponent> _uiElements;
 
     public bool IsRightHanded { get; private set; }
     public Control Control { get { return _control; } }
@@ -35,35 +34,29 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        _pulses = new Dictionary<UIPulseEnum, IPulsable>();
-        foreach (var pair in _pulsableList)
-        {
-            _pulses[pair.Enum] = (IPulsable)pair.Pulsable;
-        }
-    }
-    void Start()
-    {
+        _uiElements = new ReadOnlyDictionary<UIElementEnum, UIElementComponent>(
+            _uiElementsList.ToDictionary(e => e.Enum, e => e.Element)
+        );
     }
 
-    private void OnDestroy()
+    public void StartPulse(UIElementEnum uiElementEnum)
     {
+        _uiElements[uiElementEnum].StartPulsing();
+    }
+    public void StopPulse(UIElementEnum uiElementEnum)
+    {
+        _uiElements[uiElementEnum].StopPulsing();
     }
 
-    void Update()
+    public void StartHighlight(UIElementEnum uiElementEnum)
     {
+        _uiElements[uiElementEnum].StartHighlight();
     }
 
-    public void StartPulse(UIPulseEnum pulseEnum)
+    public void StopHighlight(UIElementEnum uiElementEnum)
     {
-        _pulses[pulseEnum].StartPulsing();
+        _uiElements[uiElementEnum].StopHighlight();
     }
-    public void StopPulse(UIPulseEnum pulseEnum)
-    {
-        _pulses[pulseEnum].StopPulsing();
-    }
-
-    public void StartHighlight(UIPulseEnum pulseEnum) => _blackScreen.HighlightButton(_pulses[pulseEnum]);
-    public void StopHighlight() => _blackScreen.ResetHighlighButton();
 
     public void SetHanded(bool handed) => IsRightHanded = handed;
 }

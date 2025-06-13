@@ -6,10 +6,6 @@ public class BlackScreen : MonoBehaviour
 {
 
     private CanvasGroup _canvasGroup;
-
-    private GameObject _tempoButtonParent;
-    private GameObject _tempoButton;
-
     private Coroutine _currentCoroutine;
 
     public void Awake()
@@ -28,11 +24,11 @@ public class BlackScreen : MonoBehaviour
         StartCoroutine(Fade(1, 0, time, false));
     }
 
-    private void GrayIn() {
+    public void GrayIn() {
         if (_currentCoroutine != null) StopCoroutine(_currentCoroutine);
         _currentCoroutine = StartCoroutine(Fade(0, 0.8f, 0.3f, true));
     }
-    private void GrayOut()
+    public void GrayOut()
     {
         if (_currentCoroutine != null) StopCoroutine(_currentCoroutine);
         _currentCoroutine = StartCoroutine(Fade(0.8f, 0, 0.3f, false));
@@ -44,13 +40,7 @@ public class BlackScreen : MonoBehaviour
         float clock = 0f;
 
         if (isEnable)
-        {
             Helpers.EnabledCanvasGroup(_canvasGroup);
-        }
-        else
-        {
-            Helpers.DisabledCanvasGroup(_canvasGroup);
-        }
 
         while (clock < duration)
         {
@@ -58,34 +48,8 @@ public class BlackScreen : MonoBehaviour
             _canvasGroup.alpha = Mathf.Lerp(start, end, clock / duration);
             yield return null;
         }
+
+        if (!isEnable)
+            Helpers.DisabledCanvasGroup(_canvasGroup);
     }
-
-    public void HighlightButton(IPulsable button)
-    {
-        GrayIn();
-
-        MonoBehaviour obj = (MonoBehaviour)button;
-
-        _tempoButton = obj.gameObject;
-        _tempoButtonParent = obj.gameObject.transform.parent.gameObject;
-        _tempoButton.transform.parent = transform.parent.transform;
-        //_tempoButton.transform.SetSiblingIndex(0);
-    }
-
-    public void ResetHighlighButton()
-    {
-        GrayOut();
-
-        if (_tempoButton == null) return;
-
-        if( _tempoButtonParent != null )
-        {
-            _tempoButton.transform.parent = _tempoButtonParent.transform;
-            _tempoButtonParent = null;
-            _tempoButton = null;
-        } 
-
-    }
-
-
 }

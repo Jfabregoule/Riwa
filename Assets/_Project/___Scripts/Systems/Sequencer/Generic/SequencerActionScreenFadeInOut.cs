@@ -25,7 +25,7 @@ public class SequencerActionScreenFadeInOut : SequencerAction
         else
             _blackScreen.FadeOut(_fadeSpeed);
 
-        yield break;
+        yield return new WaitForSeconds(_fadeSpeed);
     }
 
     public void Finish()

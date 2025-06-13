@@ -15,6 +15,7 @@ public class BlackScreen : MonoBehaviour
     public void Awake()
     {
         _canvasGroup = GetComponent<CanvasGroup>();
+        //GameManager.Instance.OnRoomExit += FadeIn;
     }
 
     public void FadeIn(float time)
@@ -53,7 +54,7 @@ public class BlackScreen : MonoBehaviour
 
         while (clock < duration)
         {
-            clock += Time.deltaTime * 10;
+            clock += Time.deltaTime;
             _canvasGroup.alpha = Mathf.Lerp(start, end, clock / duration);
             yield return null;
         }

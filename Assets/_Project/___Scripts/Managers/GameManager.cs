@@ -45,7 +45,11 @@ public class GameManager : Singleton<GameManager>
     public event ChangeTimeEvent OnTimeChangeAborted;
 
     public delegate void RoomChangeEvent();
+    public delegate void RoomExitEvent(float value = 0); //C'est pour que ça soit compatible avec la méthde fadein qui attend un float, bricolage
     public event RoomChangeEvent OnRoomChange;
+    public void InvokeRoomExit() => OnRoomExit?.Invoke();
+
+    public event RoomExitEvent OnRoomExit;
     public event RoomChangeEvent OnCredit;
     public event RoomChangeEvent OnResetSave;
 

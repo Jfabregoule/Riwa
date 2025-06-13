@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.ShaderGraph;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -9,6 +10,10 @@ public class InputManager : Singleton<InputManager>
     private bool _gameplayEnabled;
     private bool _dialogueEnabled;
     private bool _optionsEnabled;
+
+    private bool _rotateEnabled;
+    private bool _pushEnabled;
+    private bool _pullEnabled;
 
     private bool _controlsInverted = false;
 
@@ -26,6 +31,10 @@ public class InputManager : Singleton<InputManager>
     public event Lock OnLockJoystick;
     public event Lock OnUnlockJoystick;
     public event PressEvent OnTouchScreen;
+    public event PressEvent OnPush;
+    public event PressEvent OnPull;
+    public event PressEvent OnRotateRight;
+    public event PressEvent OnRotateLeft;
 
     #endregion
 
@@ -38,7 +47,11 @@ public class InputManager : Singleton<InputManager>
         _gameplayEnabled = true;
         _dialogueEnabled = false;
         _optionsEnabled = true;
-    }
+
+        _rotateEnabled = true;
+        _pushEnabled = true;
+        _pullEnabled = true;
+}
 
     private bool IsTouchOverUI(Vector2 touchPosition, int threshold = 0)
     {
@@ -98,6 +111,10 @@ public class InputManager : Singleton<InputManager>
     {
         if (_gameplayEnabled) return;
         _gameplayEnabled = true;
+
+        _rotateEnabled = true;
+        _pushEnabled = true;
+        _pullEnabled = true;
         BindGameplayEvents();
 
         _controls.Gameplay.Enable();
@@ -107,6 +124,10 @@ public class InputManager : Singleton<InputManager>
     {
         if (!_gameplayEnabled) return;
         _gameplayEnabled = false;
+
+        _rotateEnabled = false;
+        _pushEnabled = false;
+        _pullEnabled = false;
         OnMoveEnd?.Invoke();
         UnbindGameplayEvents();
 
@@ -154,6 +175,31 @@ public class InputManager : Singleton<InputManager>
     public void DisableGameplayInteractControls()
     {
         _controls.Gameplay.Interact.Disable();
+    }
+
+    public void EnableGameplayRotateControls()
+    {
+        _rotateEnabled = true;
+    }
+    public void DisableGameplayRotateControls()
+    {
+        _rotateEnabled = false;
+    }
+    public void EnableGameplayPushControls()
+    {
+        _pushEnabled = true;
+    }
+    public void DisableGameplayPushControls()
+    {
+        _pushEnabled = false;
+    }
+    public void EnableGameplayPullControls()
+    {
+        _pullEnabled = true;
+    }
+    public void DisableGameplayPullControls()
+    {
+        _pullEnabled = false;
     }
 
     public void EnableDialogueControls()
@@ -216,6 +262,8 @@ public class InputManager : Singleton<InputManager>
 
         _controls.Gameplay.ChangeTime.performed += ctx => ChangeTimePerfomed();
         _controls.Gameplay.Interact.performed += ctx => InteractPerfomed();
+
+        _controls.Gameplay.Displacement.performed += ctx => DisplacementPerfomed();
     }
 
     private void UnbindGameplayEvents()
@@ -225,6 +273,8 @@ public class InputManager : Singleton<InputManager>
 
         _controls.Gameplay.ChangeTime.performed -= ctx => ChangeTimePerfomed();
         _controls.Gameplay.Interact.performed -= ctx => InteractPerfomed();
+
+        _controls.Gameplay.Displacement.performed -= ctx => DisplacementPerfomed();
     }
 
     private void BindDialogueEvents()
@@ -290,6 +340,20 @@ public class InputManager : Singleton<InputManager>
         if (IsTouchOverUI(GetPressPosition(), 0)) return;
 
         OnTouchScreen?.Invoke();
+    }
+
+    private void DisplacementPerfomed()
+    {
+        Vector2 action = _controls.Gameplay.Displacement.ReadValue<Vector2>();
+
+        if (action == Vector2.up)
+            OnPush?.Invoke();
+        else if (action == Vector2.down)
+            OnPull?.Invoke();
+        else if (action == Vector2.left)
+            OnRotateLeft?.Invoke();
+        else if (action == Vector2.right)
+            OnRotateRight?.Invoke();
     }
 
     #endregion

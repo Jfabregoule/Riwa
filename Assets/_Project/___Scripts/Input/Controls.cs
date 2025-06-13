@@ -90,6 +90,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Displacement"",
+                    ""type"": ""Value"",
+                    ""id"": ""afb7b2f7-69b5-47a6-88c6-8b28c1a97d4c"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -147,6 +156,116 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""Touch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""76e31ac9-5d3e-450c-8956-01eefc68022e"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Displacement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""d8842ba3-5901-4eb3-a72d-b927a9f4ba46"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Displacement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""88619630-fc70-49d5-9d0c-d786a90f0806"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Displacement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""d69f83e5-e7a5-42d9-b2a0-80e18bfb3c9c"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Displacement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""74001feb-6f26-4445-8410-6c02f055900e"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Displacement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""dabc997a-9442-49a6-9c06-82b9941e1389"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Displacement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""d41f39dd-ea80-4e1b-ac5e-79586ebd3797"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Displacement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""a36b805e-3828-43de-a2fb-97422f272312"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Displacement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""3df99629-70b5-4f49-967f-575d4bdd1351"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Displacement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""422de092-4245-4d84-91cb-f807da7863f5"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Displacement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -238,6 +357,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
         m_Gameplay_Interact = m_Gameplay.FindAction("Interact", throwIfNotFound: true);
         m_Gameplay_ChangeTime = m_Gameplay.FindAction("ChangeTime", throwIfNotFound: true);
+        m_Gameplay_Displacement = m_Gameplay.FindAction("Displacement", throwIfNotFound: true);
         // Dialogue
         m_Dialogue = asset.FindActionMap("Dialogue", throwIfNotFound: true);
         m_Dialogue_Advance = m_Dialogue.FindAction("Advance", throwIfNotFound: true);
@@ -356,6 +476,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Move;
     private readonly InputAction m_Gameplay_Interact;
     private readonly InputAction m_Gameplay_ChangeTime;
+    private readonly InputAction m_Gameplay_Displacement;
     public struct GameplayActions
     {
         private @Controls m_Wrapper;
@@ -364,6 +485,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Gameplay_Move;
         public InputAction @Interact => m_Wrapper.m_Gameplay_Interact;
         public InputAction @ChangeTime => m_Wrapper.m_Gameplay_ChangeTime;
+        public InputAction @Displacement => m_Wrapper.m_Gameplay_Displacement;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -385,6 +507,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @ChangeTime.started += instance.OnChangeTime;
             @ChangeTime.performed += instance.OnChangeTime;
             @ChangeTime.canceled += instance.OnChangeTime;
+            @Displacement.started += instance.OnDisplacement;
+            @Displacement.performed += instance.OnDisplacement;
+            @Displacement.canceled += instance.OnDisplacement;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -401,6 +526,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @ChangeTime.started -= instance.OnChangeTime;
             @ChangeTime.performed -= instance.OnChangeTime;
             @ChangeTime.canceled -= instance.OnChangeTime;
+            @Displacement.started -= instance.OnDisplacement;
+            @Displacement.performed -= instance.OnDisplacement;
+            @Displacement.canceled -= instance.OnDisplacement;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -528,6 +656,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnChangeTime(InputAction.CallbackContext context);
+        void OnDisplacement(InputAction.CallbackContext context);
     }
     public interface IDialogueActions
     {

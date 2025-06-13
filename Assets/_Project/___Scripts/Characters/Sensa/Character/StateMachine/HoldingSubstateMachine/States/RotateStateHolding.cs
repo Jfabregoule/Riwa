@@ -1,5 +1,6 @@
 
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class RotateStateHolding : HoldingBaseState
@@ -29,6 +30,11 @@ public class RotateStateHolding : HoldingBaseState
 
         _character.OnRotate += LaunchRotate;
 
+        _character.InputManager.OnRotateLeft += OnRotateLeft;
+        _character.InputManager.OnRotateRight += OnRotateRight;
+        _character.InputManager.OnPush += OnPush;
+        _character.InputManager.OnPull += OnPull;
+
     }
 
     private void LaunchRotate()
@@ -48,6 +54,11 @@ public class RotateStateHolding : HoldingBaseState
 
         _rotatable.OnRotateFinished -= Finish;
         _character.OnRotate -= LaunchRotate;
+
+        _character.InputManager.OnRotateLeft -= OnRotateLeft;
+        _character.InputManager.OnRotateRight -= OnRotateRight;
+        _character.InputManager.OnPush -= OnPush;
+        _character.InputManager.OnPull -= OnPull;
 
     }
 
@@ -79,57 +90,6 @@ public class RotateStateHolding : HoldingBaseState
             _stateMachine.ChangeState(_stateMachine.States[EnumHolding.IdleHolding]);
             return;
         }
-
-        //Pour calculer avec l'orientation de la caméra
-
-        Vector3 camForward = Vector3.ProjectOnPlane(_cam.transform.forward, Vector3.up).normalized;
-        Vector3 camRight = Vector3.Cross(Vector3.up, camForward);
-
-        /////////
-
-        Vector3 inputDir = (camForward * joystickDir.y + camRight * joystickDir.x).normalized;
-
-        Vector3 worldForward = _character.transform.forward;
-        Vector3 worldRight = _character.transform.right;
-
-        float dotForward = Vector3.Dot(worldForward, inputDir);
-        float dotRight = Vector3.Dot(worldRight, inputDir);
-
-        if (Mathf.Abs(dotForward) > Mathf.Abs(dotRight))
-        {
-            if (!_character.HoldingObject.TryGetComponent(out IMovable movable)) return;
-            if (dotForward > 0.5f)
-            {
-                //Pull
-                ((MoveStateHolding)_stateMachine.States[EnumHolding.Move]).Sens = 1;
-                _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Move]);
-            }
-            else
-            {
-                //Push
-                ((MoveStateHolding)_stateMachine.States[EnumHolding.Move]).Sens = -1;
-                _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Move]);
-            }
-        }
-        else
-        {
-            if (!_character.HoldingObject.TryGetComponent(out IRotatable rotatable)) return;
-            if (dotRight > 0.5f)
-            {
-                //Rotate Droite
-                //Sens = 1;
-                ((RotateStateHolding)_stateMachine.States[EnumHolding.Rotate]).Sens = 1;
-                _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Rotate]);
-            }
-            else
-            {
-                //Rotate Gauche
-                //Sens = -1;
-                ((RotateStateHolding)_stateMachine.States[EnumHolding.Rotate]).Sens = -1;
-                _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Rotate]);
-
-            }
-        }
     }
 
     public override void DestroyState()
@@ -138,6 +98,34 @@ public class RotateStateHolding : HoldingBaseState
 
         _character.OnRotate -= LaunchRotate;
         _rotatable.OnRotateFinished -= Finish;
+
+        _character.InputManager.OnRotateLeft -= OnRotateLeft;
+        _character.InputManager.OnRotateRight -= OnRotateRight;
+        _character.InputManager.OnPush -= OnPush;
+        _character.InputManager.OnPull -= OnPull;
     }
 
+    private void OnRotateLeft()
+    {
+        ((RotateStateHolding)_stateMachine.States[EnumHolding.Rotate]).Sens = 1;
+        _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Rotate]);
+    }
+
+    private void OnRotateRight()
+    {
+        ((RotateStateHolding)_stateMachine.States[EnumHolding.Rotate]).Sens = -1;
+        _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Rotate]);
+    }
+
+    private void OnPush()
+    {
+        Sens = 1;
+        _character.Animator.SetFloat("HoldingSens", Sens);
+    }
+
+    private void OnPull()
+    {
+        Sens = -1;
+        _character.Animator.SetFloat("HoldingSens", Sens);
+    }
 }

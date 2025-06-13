@@ -12,6 +12,7 @@ public class TutoGhostChangeTime : MonoBehaviour
     [SerializeField] private float _fadeTime;
     [SerializeField] private float _moveTime;
     [SerializeField] private ParticleSystem _ChangeTimeVFX;
+    [SerializeField] private bool _move;
 
     private void Start()
     {
@@ -31,7 +32,8 @@ public class TutoGhostChangeTime : MonoBehaviour
     private IEnumerator Move()
     {
         yield return new WaitForSeconds(_fadeTime);
-        _animator.SetBool("Moving", true);
+        if (_move)
+            _animator.SetBool("Moving", true);
         float currentTime = 0f;
         while (currentTime < _moveTime)
         {
@@ -43,7 +45,8 @@ public class TutoGhostChangeTime : MonoBehaviour
             yield return null;
 
         }
-        _animator.SetBool("Moving", false);
+        if(_move)
+            _animator.SetBool("Moving", false);
         yield return new WaitForSeconds(0.5f);
         _ChangeTimeVFX.Play();
         yield return new WaitForSeconds(1f);

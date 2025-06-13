@@ -60,7 +60,7 @@ public class TutorialRoom3Manager : MonoBehaviour
             case DialogueEventType.RiwaEndShowingPath:
                 _instance.ChawaPathTriggerZone.enabled = true;
                 _instance.RiwaSensaCamera[0].Priority = 0;
-                GameManager.Instance.UIManager.StartPulse(UIPulseEnum.ChangeTime);
+                GameManager.Instance.UIManager.StartPulse(UIElementEnum.ChangeTime);
                 break;
             case DialogueEventType.ShowLianaPath:
                 StartCoroutine(SwitchLianaCamera());

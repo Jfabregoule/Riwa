@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public enum UIElementEnum
 {
@@ -13,6 +14,7 @@ public enum UIElementEnum
 public struct UIElement
 {
     public UIElementEnum Enum;
+    public bool IsRight;
     public UIElementComponent Element;
 }
 
@@ -22,9 +24,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Control _control;
     [SerializeField] private Navbar _navbar;
     [SerializeField] private BlackScreen _blackScreen;
-    [SerializeField] private List<UIElement> _uiElementsList;
+    [SerializeField] private UIElement[] _uiElementsList;
 
-    private ReadOnlyDictionary<UIElementEnum, UIElementComponent> _uiElements;
+    private Dictionary<UIElementEnum, Dictionary<bool, UIElementComponent>> _uiElements;
 
     public bool IsRightHanded { get; private set; }
     public Control Control { get { return _control; } }
@@ -34,28 +36,32 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        _uiElements = new ReadOnlyDictionary<UIElementEnum, UIElementComponent>(
-            _uiElementsList.ToDictionary(e => e.Enum, e => e.Element)
+        _uiElements = _uiElementsList
+        .GroupBy(e => e.Enum)
+        .ToDictionary(
+            g => g.Key,
+            g => g.ToDictionary(e => e.IsRight, e => e.Element)
         );
+
     }
 
     public void StartPulse(UIElementEnum uiElementEnum)
     {
-        _uiElements[uiElementEnum].StartPulsing();
+        _uiElements[uiElementEnum][IsRightHanded].StartPulsing();
     }
     public void StopPulse(UIElementEnum uiElementEnum)
     {
-        _uiElements[uiElementEnum].StopPulsing();
+        _uiElements[uiElementEnum][IsRightHanded].StopPulsing();
     }
 
     public void StartHighlight(UIElementEnum uiElementEnum)
     {
-        _uiElements[uiElementEnum].StartHighlight();
+        _uiElements[uiElementEnum][IsRightHanded].StartHighlight();
     }
 
     public void StopHighlight(UIElementEnum uiElementEnum)
     {
-        _uiElements[uiElementEnum].StopHighlight();
+        _uiElements[uiElementEnum][IsRightHanded].StopHighlight();
     }
 
     public void SetHanded(bool handed) => IsRightHanded = handed;

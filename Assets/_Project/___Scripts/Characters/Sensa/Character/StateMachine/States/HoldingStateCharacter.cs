@@ -26,6 +26,7 @@ public class HoldingStateCharacter : BaseStateCharacter<EnumStateCharacter>
         _subStateMachine.ChangeState(_subStateMachine.States[EnumHolding.IdleHolding]);
         _character.InputManager.OnInteract += OnInteractEnd;
         ((ACharacter)_character).InvokeHoldingStart();
+        _character.InputManager.DisableGameplayMoveControls();
     }
 
     public override void ExitState()
@@ -43,6 +44,8 @@ public class HoldingStateCharacter : BaseStateCharacter<EnumStateCharacter>
         chara.InputManager.OnInteract -= OnInteractEnd;
         _subStateMachine.ChangeState(_subStateMachine.States[EnumHolding.IdleHolding]);
         chara.InvokeHoldingEnd();
+
+        _character.InputManager.EnableGameplayMoveControls();
     }
 
     public override void UpdateState()

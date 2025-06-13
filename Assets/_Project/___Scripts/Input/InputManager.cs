@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.ShaderGraph;
 using UnityEngine;
@@ -16,6 +17,10 @@ public class InputManager : Singleton<InputManager>
     private bool _pullEnabled;
 
     private bool _controlsInverted = false;
+
+    private Coroutine _displacementCoroutine;
+    private Vector2 _currentDisplacement = Vector2.zero;
+    //[SerializeField] private float _repeatDisplacementRate = 0.2f;
 
     #region Events
 
@@ -264,6 +269,7 @@ public class InputManager : Singleton<InputManager>
         _controls.Gameplay.Interact.performed += ctx => InteractPerfomed();
 
         _controls.Gameplay.Displacement.performed += ctx => DisplacementPerfomed();
+        _controls.Gameplay.Displacement.canceled += ctx => DisplacementCanceled();
     }
 
     private void UnbindGameplayEvents()
@@ -275,6 +281,7 @@ public class InputManager : Singleton<InputManager>
         _controls.Gameplay.Interact.performed -= ctx => InteractPerfomed();
 
         _controls.Gameplay.Displacement.performed -= ctx => DisplacementPerfomed();
+        _controls.Gameplay.Displacement.canceled += ctx => DisplacementCanceled();
     }
 
     private void BindDialogueEvents()
@@ -344,16 +351,39 @@ public class InputManager : Singleton<InputManager>
 
     private void DisplacementPerfomed()
     {
-        Vector2 action = _controls.Gameplay.Displacement.ReadValue<Vector2>();
+        _currentDisplacement = _controls.Gameplay.Displacement.ReadValue<Vector2>();
 
-        if (action == Vector2.up)
-            OnPush?.Invoke();
-        else if (action == Vector2.down)
-            OnPull?.Invoke();
-        else if (action == Vector2.left)
-            OnRotateLeft?.Invoke();
-        else if (action == Vector2.right)
-            OnRotateRight?.Invoke();
+        if (_displacementCoroutine == null)
+            _displacementCoroutine = StartCoroutine(DisplacementLoop());
+    }
+
+    private IEnumerator DisplacementLoop()
+    {
+        while (true)
+        {
+            if (_currentDisplacement == Vector2.up && _pushEnabled)
+                OnPush?.Invoke();
+            else if (_currentDisplacement == Vector2.down && _pullEnabled)
+                OnPull?.Invoke();
+            else if (_currentDisplacement == Vector2.left && _rotateEnabled)
+                OnRotateLeft?.Invoke();
+            else if (_currentDisplacement == Vector2.right && _rotateEnabled)
+                OnRotateRight?.Invoke();
+
+            yield return null;
+            //yield return new WaitForSeconds(_repeatDisplacementRate);
+        }
+    }
+
+    private void DisplacementCanceled()
+    {
+        _currentDisplacement = Vector2.zero;
+
+        if (_displacementCoroutine != null)
+        {
+            StopCoroutine(_displacementCoroutine);
+            _displacementCoroutine = null;
+        }
     }
 
     #endregion

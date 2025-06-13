@@ -86,7 +86,7 @@ public class Floor1Room3LevelManager : BaseLevelManager
         if (temporality == EnumTemporality.Past && _playerHasChangedTemporality == false)
         {
             _playerHasChangedTemporality = true;
-            GameManager.Instance.UIManager.StopPulse(UIPulseEnum.ChangeTime);
+            GameManager.Instance.UIManager.StopPulse(UIElementEnum.ChangeTime);
         }
     }
 

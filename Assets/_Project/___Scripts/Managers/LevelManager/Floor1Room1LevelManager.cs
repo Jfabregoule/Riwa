@@ -70,6 +70,8 @@ public class Floor1Room1LevelManager : BaseLevelManager
     {
         SaveSystem.Instance.OnLoadProgress -= LoadData;
         SaveSystem.Instance.SaveElement<int>("Room1Progress", (int)CurrentAdvancement);
+        if(GameManager.Instance)
+            GameManager.Instance.OnTimeChangeEnded -= OnTimeChangeEndedHandler;
     }
 
     private void LoadData()
@@ -156,11 +158,18 @@ public class Floor1Room1LevelManager : BaseLevelManager
             case DialogueEventType.UnlockChangeTime:
                 GameManager.Instance.UnlockChangeTime();
                 GameManager.Instance.UIManager.StartPulse(UIElementEnum.ChangeTime);
+                GameManager.Instance.OnTimeChangeEnded += OnTimeChangeEndedHandler;
                 break;
             case DialogueEventType.ShowInput:
                 GameManager.Instance.InvokeBasicInput();
                 break;
         }
+    }
+
+    private void OnTimeChangeEndedHandler(EnumTemporality temporality)
+    {
+        GameManager.Instance.UIManager.StopPulse(UIElementEnum.ChangeTime);
+        GameManager.Instance.OnTimeChangeEnded -= OnTimeChangeEndedHandler;
     }
 
     public IEnumerator BlendingCamera(CinemachineVirtualCamera cam)
@@ -185,6 +194,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
     {
         yield return new WaitForSeconds(1.5f);
         GameManager.Instance.UIManager.StartPulse(UIElementEnum.ChangeTime);
+        GameManager.Instance.OnTimeChangeEnded += OnTimeChangeEndedHandler;
         InputManager.Instance.EnableGameplayChangeTimeControls();
     }
 

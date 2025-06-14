@@ -14,7 +14,8 @@ public class Floor1Room3LevelManager : BaseLevelManager
 
     private bool _isDamierCompleted = false;
 
-    private TreeStumpTest _treeStumpTest;
+    [Header("Liana")]
+    [SerializeField] private TreeStumpTest _treeStumpTest;
 
     [Header("Tutorial Camera")]
     [SerializeField] private List<CinemachineVirtualCamera> _riwaSensaCamera;
@@ -64,21 +65,30 @@ public class Floor1Room3LevelManager : BaseLevelManager
     #endregion
 
     public void InvokeOnRiwaShowingPath() { OnRiwaShowingPath?.Invoke(); }
-    public void InvokeOnPlayerCompletedDamier() { OnPlayerCompletedDamier?.Invoke(); }
+    public void InvokeOnPlayerCompletedDamier() 
+    {
+        if(IsDamierCompleted == false)
+        {
+            IsDamierCompleted = true;
+            _chawaPathTriggerZone.enabled = false;
+            OnPlayerCompletedDamier?.Invoke(); 
+        }
+    }
 
     public override void Start()
     {
         base.Start();
         GameManager.Instance.OnTimeChangeStarted += PlayerGoesInPast;
-        _treeStumpTest = GameObject.Find("Pf_SocleMoveable").GetComponent<TreeStumpTest>(); //Je fais un Find pour éviter les merges conflicts dans la scene
         _treeStumpTest.enabled = false;
-        _riwaShowingPathTriggerZone = _chawa.GetComponentInChildren<RiwaShowingPathTriggerZone>(); //same, mais mieux
+        _treeStumpTest.CanInteract = false;
+        _riwaShowingPathTriggerZone = _chawa.GetComponentInChildren<RiwaShowingPathTriggerZone>();
         GameManager.Instance.UnlockChangeTime();
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.OnTimeChangeStarted -= PlayerGoesInPast;
+        if(GameManager.Instance != null)
+            GameManager.Instance.OnTimeChangeStarted -= PlayerGoesInPast;
     }
 
     private void PlayerGoesInPast(EnumTemporality temporality)

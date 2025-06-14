@@ -121,8 +121,6 @@ public class TutorialRoom3Manager : MonoBehaviour
 
     public IEnumerator HideRiwa()
     {
-        //_instance.Chawa.transform.SetParent(GameManager.Instance.Character.transform);
-        //if (showDamierDialogue) DialogueSystem.Instance.BeginDialogue(_damierDialogue[1]);
         Vector3 initialPos = _instance.Chawa.transform.position;
         Vector3 targetPos = GameManager.Instance.Character.transform.position;
         targetPos.y = 0.5f;
@@ -131,10 +129,10 @@ public class TutorialRoom3Manager : MonoBehaviour
 
         float elapsedTime = 0f;
 
-        while (elapsedTime < 2f)
+        while (elapsedTime < 1.5f)
         {
             elapsedTime += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsedTime / 2f);
+            float t = Mathf.Clamp01(elapsedTime / 1.5f);
             _instance.Chawa.transform.position = Vector3.Lerp(initialPos, targetPos, t);
             _instance.Chawa.transform.localScale = Vector3.Lerp(_instance.Chawa.transform.localScale, finalScale, t);
             _instance.Chawa.transform.rotation = Quaternion.Slerp(_instance.Chawa.transform.rotation, finalRotation, t);
@@ -151,11 +149,6 @@ public class TutorialRoom3Manager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.RiwaHiddingIntoSensa);
         _instance.RiwaSensaCamera[1].Priority = 0;
-        //if (!showDamierDialogue)
-        //{
-        //    //_instance.RiwaSensaCamera[1].Priority = 0;
-        //    //GameManager.Instance.Character.InputManager.EnableGameplayControls();
-        //}
     }
 
     public void RiwaEndShowDamierPath()
@@ -183,6 +176,9 @@ public class TutorialRoom3Manager : MonoBehaviour
         DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.WaitEndOfLianaPathTravel);
         _instance.RiwaSensaCamera[1].Priority = 20;
         yield return new WaitForSeconds(1.5f);
+        _instance.TreeStumpTest.enabled = true;
+        _instance.TreeStumpTest.CanInteract = true;
+        _instance.ChawaTrail.gameObject.SetActive(false);
         StartCoroutine(HideRiwa());
     }
     
@@ -230,53 +226,8 @@ public class TutorialRoom3Manager : MonoBehaviour
 
         _instance.Chawa.transform.rotation = targetRot;
 
-        // Lancer le dialogue à la fin
         DialogueSystem.Instance.BeginDialogue(_lianaDialogue);
     }
-
-    // public IEnumerator BringRiwaToLiana()
-    // {
-    //     Vector3 initialPos = _instance.Chawa.transform.position;
-    //     Vector3 targetPos = _instance.ChawaLianaPosition.position;
-    //
-    //     float elapsedTime = 0f;
-    //     float lerpTime = 3f;
-    //
-    //     while (elapsedTime < lerpTime)
-    //     {
-    //         elapsedTime += Time.deltaTime;
-    //         float t = Mathf.Clamp01(elapsedTime / lerpTime);
-    //         _instance.Chawa.transform.position = Vector3.Lerp(initialPos, targetPos, t);
-    //         yield return null;
-    //     }
-    //     _instance.Chawa.transform.position = targetPos;
-    //     StartCoroutine(OrientChawaTowardSensa());
-    // }
-    //
-    // public IEnumerator OrientChawaTowardSensa()
-    // {
-    //     DialogueSystem.Instance.BeginDialogue(_lianaDialogue);
-    //     Vector3 chawaPosition = _instance.Chawa.transform.position;
-    //     Vector3 sensaPosition = GameManager.Instance.Character.transform.position;
-    //     Vector3 chawaDirecrion = sensaPosition - chawaPosition;
-    //
-    //     Quaternion startRotation = _instance.Chawa.transform.rotation;
-    //     Quaternion lookDirection = Quaternion.identity;
-    //     lookDirection = Quaternion.LookRotation(chawaDirecrion);
-    //
-    //     float elapsedTime = 0f;
-    //     float lerpTime = 2f;
-    //
-    //     while(elapsedTime < lerpTime)
-    //     {
-    //         elapsedTime += Time.deltaTime;
-    //         float t = Mathf.Clamp01(elapsedTime / lerpTime);
-    //         _instance.Chawa.transform.rotation = Quaternion.Slerp(startRotation, lookDirection, t);
-    //         yield return null;
-    //     }
-    //
-    //     _instance.Chawa.transform.rotation = lookDirection;
-    // }
 
     #endregion
 

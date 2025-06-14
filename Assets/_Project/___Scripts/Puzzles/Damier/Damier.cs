@@ -352,7 +352,7 @@ public class Damier : MonoBehaviour
 
     private IEnumerator FollowPathCoroutine(bool dragCamera)
     {
-        //_instance.ChawaTrail.gameObject.SetActive(true);
+        _instance.ChawaTrail.gameObject.SetActive(true);
         if (dragCamera)
         {
             GameManager.Instance.Character.InputManager.DisableGameplayControls();

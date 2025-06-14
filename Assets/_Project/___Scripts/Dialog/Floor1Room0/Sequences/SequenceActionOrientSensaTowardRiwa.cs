@@ -26,6 +26,7 @@ public class SequenceActionOrientSensaTowardRiwa : SequencerAction
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         
         _chara.Animator.SetBool("MoveTo", true);
+        _chara.Animator.speed = 0.5f;
 
         while (elapsedTime < LerpTime)
         {
@@ -36,6 +37,7 @@ public class SequenceActionOrientSensaTowardRiwa : SequencerAction
             yield return null;
         }
 
+        _chara.Animator.speed = 1f;
         _chara.Animator.SetBool("MoveTo", false);
         GameManager.Instance.Character.transform.rotation = lookRotation;
     }

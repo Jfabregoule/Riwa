@@ -96,10 +96,11 @@ public class ActivableDoor : MonoBehaviour
         InputManager.Instance.DisableGameplayControls();
         if (_doorCameras.Count > 0 && showOpening == true)
         {
-            _doorCameras[0].Priority = 20;
-            yield return new WaitForSeconds(1.5f);
-            _doorCameras[1].Priority = 25;
-            yield return new WaitForSeconds(1.5f);
+            for(int i = 0; i < _doorCameras.Count; i++)
+            {
+                _doorCameras[i].Priority = 20 + i;
+                yield return new WaitForSeconds(1.5f);
+            }
         }
         OnDoorStateUpdated(true);
 
@@ -122,10 +123,11 @@ public class ActivableDoor : MonoBehaviour
 
         if (_doorCameras.Count > 0 && showOpening == true)
         {
-            _doorCameras[1].Priority = 0;
-            yield return new WaitForSeconds(1.5f);
-            _doorCameras[0].Priority = 0;
-            yield return new WaitForSeconds(1.5f);
+            for (int i = 0; i < _doorCameras.Count; i++)
+            {
+                _doorCameras[i].Priority = 0;
+                yield return new WaitForSeconds(1.5f);
+            }
         }
         _isActivated = true;
         InputManager.Instance.EnableGameplayControls();

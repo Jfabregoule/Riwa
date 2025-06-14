@@ -7,7 +7,8 @@ using UnityEngine.UIElements;
 public enum UIElementEnum
 {
     ChangeTime, 
-    Interact
+    Interact,
+    Joystick
 }
 
 [System.Serializable]
@@ -37,10 +38,10 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         _uiElements = _uiElementsList
-        .GroupBy(e => e.Enum)
-        .ToDictionary(
-            g => g.Key,
-            g => g.ToDictionary(e => e.IsRight, e => e.Element)
+            .GroupBy(e => e.Enum)
+            .ToDictionary(
+                g => g.Key,
+                g => g.ToDictionary(e => e.IsRight, e => e.Element)
         );
 
     }
@@ -62,6 +63,16 @@ public class UIManager : MonoBehaviour
     public void StopHighlight(UIElementEnum uiElementEnum)
     {
         _uiElements[uiElementEnum][IsRightHanded].StopHighlight();
+    }
+
+    public void Display(UIElementEnum uiElementEnum)
+    {
+        _uiElements[uiElementEnum][IsRightHanded].Display();
+    }
+
+    public void Hide(UIElementEnum uiElementEnum)
+    {
+        _uiElements[uiElementEnum][IsRightHanded].Hide();
     }
 
     public void SetHanded(bool handed) => IsRightHanded = handed;

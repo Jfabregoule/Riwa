@@ -107,24 +107,28 @@ public class RotateStateHolding : HoldingBaseState
 
     private void OnRotateLeft()
     {
+        if (!_character.HoldingObject.TryGetComponent(out IRotatable rotatable)) return;
         ((RotateStateHolding)_stateMachine.States[EnumHolding.Rotate]).Sens = 1;
         _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Rotate]);
     }
 
     private void OnRotateRight()
     {
+        if (!_character.HoldingObject.TryGetComponent(out IRotatable rotatable)) return;
         ((RotateStateHolding)_stateMachine.States[EnumHolding.Rotate]).Sens = -1;
         _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Rotate]);
     }
 
     private void OnPush()
     {
+        if (!_character.HoldingObject.TryGetComponent(out IMovable movable)) return;
         Sens = 1;
         _character.Animator.SetFloat("HoldingSens", Sens);
     }
 
     private void OnPull()
     {
+        if (!_character.HoldingObject.TryGetComponent(out IMovable movable)) return;
         Sens = -1;
         _character.Animator.SetFloat("HoldingSens", Sens);
     }

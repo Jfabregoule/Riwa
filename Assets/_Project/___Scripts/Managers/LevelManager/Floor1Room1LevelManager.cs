@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public enum EnumAdvancementRoom1
 {
@@ -46,6 +47,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
     [Header("Event Sequencer")]
 
     private System.Action OnChangeTime;
+    private System.Action OnMove;
 
     //Enigmes
 
@@ -102,6 +104,8 @@ public class Floor1Room1LevelManager : BaseLevelManager
         _character.InputManager.OnChangeTime += CheckCrateEnigma;
         _character.InputManager.OnChangeTime += InvokeChangeTime;
 
+        _character.InputManager.OnMove += InvokeMove;
+
         _brain = Helpers.Camera.GetComponent<CinemachineBrain>();
         _defaultBlend = _brain.m_DefaultBlend;
 
@@ -112,6 +116,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
     {
         _character.InputManager.OnChangeTime -= CheckCrateEnigma;
         _character.InputManager.OnChangeTime -= InvokeChangeTime;
+        _character.InputManager.OnMove -= InvokeMove;
         OnLevelEnter -= BeginDialogue;
         if (DialogueSystem.Instance)
             DialogueSystem.Instance.OnDialogueEvent -= EventDispatcher;
@@ -125,8 +130,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
     public void CheckCrateEnigma()
     {
         if (!_isCrateWellPlaced || !_character.CanChangeTime || GameManager.Instance.CurrentTemporality == EnumTemporality.Present) { return; }
-
-            
+        
         if (CurrentAdvancement == EnumAdvancementRoom1.Room0)
         {
             GameManager.Instance.Character.StateMachine.GoToIdle();
@@ -136,13 +140,19 @@ public class Floor1Room1LevelManager : BaseLevelManager
         }
 
         _character.InputManager.OnChangeTime -= CheckCrateEnigma;
-
     }
 
     public void InvokeChangeTime() {
         if (!_character.CanChangeTime) return;
         DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.ChangeTime);
         _character.InputManager.OnChangeTime -= InvokeChangeTime;
+    }
+
+    public void InvokeMove(Vector2 position)
+    {
+        DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.Move);
+        GameManager.Instance.UIManager.StopHighlight(UIElementEnum.Joystick);
+        _character.InputManager.OnMove -= InvokeMove;
     }
 
     public void EventDispatcher(DialogueEventType eventType)
@@ -160,8 +170,10 @@ public class Floor1Room1LevelManager : BaseLevelManager
                 GameManager.Instance.UIManager.StartPulse(UIElementEnum.ChangeTime);
                 GameManager.Instance.OnTimeChangeEnded += OnTimeChangeEndedHandler;
                 break;
-            case DialogueEventType.ShowInput:
-                GameManager.Instance.InvokeBasicInput();
+            case DialogueEventType.DisplayJoystick:
+                InputManager.Instance.EnableGameplayMoveControls();
+                GameManager.Instance.UIManager.StartHighlight(UIElementEnum.Joystick);
+                GameManager.Instance.UIManager.Display(UIElementEnum.Joystick);
                 break;
         }
     }

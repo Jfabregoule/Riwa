@@ -79,6 +79,7 @@ public enum DialogueEventType
     Room0CollectibleInformationEnd,
     Room0CollectibleCamera,
     Room0MoveToCollectible,
+    DisplayJoystick
 }
 
 public enum WaitDialogueEventType
@@ -94,5 +95,6 @@ public enum WaitDialogueEventType
     WaitPlayerToInteract,
     WaitShowRoom4End,
     ChangeTime,
-    SensaFinishToSpeak
+    SensaFinishToSpeak,
+    Move
 }

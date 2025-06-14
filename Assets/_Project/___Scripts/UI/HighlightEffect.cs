@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.ShaderGraph;
 using UnityEngine;
 
 public class HighlightEffect : MonoBehaviour
@@ -10,22 +11,23 @@ public class HighlightEffect : MonoBehaviour
     private GameObject _tempoButton;
     void Start()
     {
-        _blackScreen = GameManager.Instance.UIManager.BlackScreen;
+        StartCoroutine(Helpers.WaitMonoBeheviour(() => GameManager.Instance.UIManager, WaitUIManager));
+        
     }
 
     public void StartHighlight()
     {
-        _blackScreen.GrayIn();
+        _blackScreen.FadeIn(0.3f);
 
         _tempoButton = gameObject;
         _tempoButtonParent = gameObject.transform.parent.gameObject;
         _tempoButton.transform.parent = transform.parent.transform;
-        //_tempoButton.transform.SetSiblingIndex(0);
+        _tempoButton.transform.SetSiblingIndex(0);
     }
 
     public void StopHighlight()
     {
-        _blackScreen.GrayOut();
+        _blackScreen.FadeOut(0.3f);
 
         if (_tempoButton == null) return;
 
@@ -36,5 +38,13 @@ public class HighlightEffect : MonoBehaviour
             _tempoButton = null;
         }
 
+    }
+
+    private void WaitUIManager(UIManager manager)
+    {
+        if (manager != null)
+        {
+            _blackScreen = manager.BlackScreen;
+        }
     }
 }

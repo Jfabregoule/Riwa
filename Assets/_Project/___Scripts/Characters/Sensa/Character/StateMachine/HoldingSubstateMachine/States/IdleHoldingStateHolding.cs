@@ -47,24 +47,28 @@ public class IdleHoldingStateHolding : HoldingBaseState
 
     private void OnRotateLeft()
     {
+        if (!_character.HoldingObject.TryGetComponent(out IRotatable rotatable)) return;
         ((RotateStateHolding)_stateMachine.States[EnumHolding.Rotate]).Sens = 1;
         _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Rotate]);
     }
 
     private void OnRotateRight()
     {
+        if (!_character.HoldingObject.TryGetComponent(out IRotatable rotatable)) return;
         ((RotateStateHolding)_stateMachine.States[EnumHolding.Rotate]).Sens = -1;
         _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Rotate]);
     }
 
     private void OnPush()
     {
+        if (!_character.HoldingObject.TryGetComponent(out IMovable movable)) return;
         ((MoveStateHolding)_stateMachine.States[EnumHolding.Move]).Sens = 1;
         _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Move]);
     }
 
     private void OnPull()
     {
+        if (!_character.HoldingObject.TryGetComponent(out IMovable movable)) return;
         ((MoveStateHolding)_stateMachine.States[EnumHolding.Move]).Sens = -1;
         _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Move]);
     }

@@ -13797,7 +13797,15 @@ PrefabInstance:
         type: 3}
       insertIndex: 0
       addedObject: {fileID: 1352953572}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3881087803815115468, guid: ec536a7718376554185e4a856d5ae230,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1058325233}
+    - targetCorrespondingSourceObject: {fileID: 3881087803815115468, guid: ec536a7718376554185e4a856d5ae230,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1058325234}
   m_SourcePrefab: {fileID: 100100000, guid: ec536a7718376554185e4a856d5ae230, type: 3}
 --- !u!224 &1058325228 stripped
 RectTransform:
@@ -13823,6 +13831,36 @@ CanvasGroup:
     type: 3}
   m_PrefabInstance: {fileID: 1058325227}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1058325232 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3881087803815115468, guid: ec536a7718376554185e4a856d5ae230,
+    type: 3}
+  m_PrefabInstance: {fileID: 1058325227}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1058325233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1058325232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0f0bedead91b6142951df1ace399e5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1058325234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1058325232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25157280036906945ab56a300514f599, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1062828714
 GameObject:
   m_ObjectHideFlags: 0
@@ -22597,6 +22635,12 @@ MonoBehaviour:
   - Enum: 0
     IsRight: 1
     Element: {fileID: 363387812}
+  - Enum: 2
+    IsRight: 0
+    Element: {fileID: 1058325233}
+  - Enum: 2
+    IsRight: 1
+    Element: {fileID: 1058325233}
 --- !u!1 &1665919790
 GameObject:
   m_ObjectHideFlags: 0

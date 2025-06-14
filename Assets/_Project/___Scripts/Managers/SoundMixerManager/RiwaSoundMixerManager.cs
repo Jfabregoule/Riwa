@@ -11,7 +11,7 @@ public class RiwaSoundMixerManager : SoundMixerManager<RiwaSoundMixerManager>
 
     private void Start()
     {
-        BlendToTemporality(GameManager.Instance.CurrentTemporality);
+        //BlendToTemporality(GameManager.Instance.CurrentTemporality);
     }
 
     private void OnEnable()

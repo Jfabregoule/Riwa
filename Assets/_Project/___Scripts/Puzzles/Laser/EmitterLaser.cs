@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EmitterLaser : MonoBehaviour
@@ -15,11 +16,14 @@ public class EmitterLaser : MonoBehaviour
     private int _layerMask;
     private Renderer[] _renderers;
 
+    private LoopedSoundPlayer _soundPlayer;
+
     [SerializeField] private MonoBehaviour[] _activables;
     private int CurrentActive;
 
     void Start()
     {
+        _soundPlayer = GetComponent<LoopedSoundPlayer>();
         _laser = GetComponent<LineRenderer>();
 
         _directions = new List<Vector3>();
@@ -142,6 +146,8 @@ public class EmitterLaser : MonoBehaviour
         if (CurrentActive == _activables.Length)
         {
             _isActive = true;
+            if (GameManager.Instance.CurrentTemporality == EnumTemporality.Past)
+                _soundPlayer.Play();
             foreach (Renderer renderer in _renderers)
             {
                 Material material = renderer.material;
@@ -156,6 +162,7 @@ public class EmitterLaser : MonoBehaviour
         if (CurrentActive == _activables.Length)
         {
             _isActive = false;
+            _soundPlayer.Stop();
             foreach (Renderer renderer in _renderers)
             {
                 Material material = renderer.material;

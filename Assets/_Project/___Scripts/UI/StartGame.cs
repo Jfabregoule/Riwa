@@ -8,13 +8,13 @@ using UnityEngine.UI;
 public class StartGame : MonoBehaviour
 {
 
-    private CanvasGroup _mainMenuTitleCanvasGroup;
+    [SerializeField] private CanvasGroup _mainMenuTitleCanvasGroup;
+    [SerializeField] private Button _button;
     private Navbar _navbar;
     //private Canvas
     private void Start()
     {
         StartCoroutine(Helpers.WaitMonoBeheviour(() => GameManager.Instance.UIManager, SubscribeToNavbar));
-        _mainMenuTitleCanvasGroup = transform.parent.GetComponent<CanvasGroup>();
     }
 
     private void SubscribeToNavbar(UIManager manager)
@@ -30,7 +30,7 @@ public class StartGame : MonoBehaviour
     {
         _navbar.CloseOption();
         RiwaLoadSceneSystem.Instance.LoadFirstScene();
-        GetComponent<Button>().interactable = false;
+        _button.interactable = false;
     }
 
     public void DisableMainMenuTitle()

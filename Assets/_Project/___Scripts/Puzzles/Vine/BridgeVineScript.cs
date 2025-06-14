@@ -30,9 +30,12 @@ public class BridgeVineScript : MonoBehaviour, IInteractableSoul
     private DialogueSystem _dialogueSystem;
     public Action OnInteract;
 
+    private LoopedSoundPlayer _soundPlayer;
+
     public void Awake()
     {
         CanInteract = true;
+        _soundPlayer = GetComponent<LoopedSoundPlayer>();
     }
 
     void Start()
@@ -63,6 +66,7 @@ public class BridgeVineScript : MonoBehaviour, IInteractableSoul
         }
 
         _material.SetFloat("_Grow", _maxGrow);
+        _soundPlayer.Stop();
     }
 
     public void Interact()
@@ -80,6 +84,8 @@ public class BridgeVineScript : MonoBehaviour, IInteractableSoul
             {
                 particle.Play();
             }
+        _soundPlayer.Play();
+        RiwaSoundSystem.Instance.PlaySoundFXClipByKey("Plants Grow");
         StartCoroutine(RaiseVine());
 
     }

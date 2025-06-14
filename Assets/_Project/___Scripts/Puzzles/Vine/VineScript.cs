@@ -33,6 +33,13 @@ public class VineScript : MonoBehaviour, IInteractableSoul
     private float _offset;
     private Vector3 _startSocketPos;
 
+    private LoopedSoundPlayer _soundPlayer;
+
+    private void Awake()
+    {
+        _soundPlayer = GetComponent<LoopedSoundPlayer>();
+    }
+
     void Start()
     {
         Priority = 1;
@@ -79,6 +86,7 @@ public class VineScript : MonoBehaviour, IInteractableSoul
         }
 
         _material.SetFloat("_Grow", _maxGrow);
+        _soundPlayer.Stop();
         StartCoroutine(DissolveVine());
 
     }
@@ -152,6 +160,11 @@ public class VineScript : MonoBehaviour, IInteractableSoul
                 _onActivateParticles[i].Play();
             }
         }
+
+
+        _soundPlayer.Play();
+        RiwaSoundSystem.Instance.PlaySoundFXClipByKey("Plants Grow");
+
         StartCoroutine(RaiseVine());
     }
 
@@ -163,6 +176,7 @@ public class VineScript : MonoBehaviour, IInteractableSoul
                 _bourgeonAnimator.SetBool("Activate", false);
             StopAllCoroutines();
             StartCoroutine(RetractedVine());
+            _soundPlayer.Stop();
             IsActive = false;
         }
     }

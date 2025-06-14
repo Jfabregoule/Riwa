@@ -49,6 +49,7 @@ public class VineRetraction : MonoBehaviour
     {
         if (other.TryGetComponent<Crate>(out Crate crate))
         {
+            Debug.Log(crate.name + " is in the vine retraction zone");
             Vector3 localEntryPos;
             if(_isPivotBroken == false)
                 localEntryPos = _vine.transform.InverseTransformPoint(other.transform.position);

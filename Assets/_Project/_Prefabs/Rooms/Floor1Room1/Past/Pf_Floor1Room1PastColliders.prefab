@@ -1969,6 +1969,59 @@ Transform:
   - {fileID: 1097922488416010684}
   m_Father: {fileID: 1121528644874847919}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!1 &5508917434598027103
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1911494855963763982}
+  - component: {fileID: 8632838201618352170}
+  m_Layer: 6
+  m_Name: W015
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!4 &1911494855963763982
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5508917434598027103}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.72381216, z: -0, w: -0.6899971}
+  m_LocalPosition: {x: -7.189, y: 2.7, z: -7.263}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6935312629454784593}
+  m_LocalEulerAnglesHint: {x: 0, y: 267.26, z: 0}
+--- !u!65 &8632838201618352170
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5508917434598027103}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.06, y: 4.5, z: 0.8061564}
+  m_Center: {x: 0.00000009428458, y: 0, z: 0.1289416}
 --- !u!1 &5656620331394676477
 GameObject:
   m_ObjectHideFlags: 0
@@ -2493,6 +2546,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bd04cf1c106e7743975af69433a8938, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _activableComponents: []
   _canBeEntered: 1
   _floorNumber: 1
   _roomNumber: 4
@@ -2553,9 +2607,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SequenceActions:
   - {fileID: 11400000, guid: bcd6018c190657e44a5ab09e769e5b49, type: 2}
+  - {fileID: 11400000, guid: 88fa570a6a9065d4ab5d8609cccc0d9b, type: 2}
   - {fileID: 11400000, guid: 18424c2db6b653f44868825aad5a8948, type: 2}
   - {fileID: 11400000, guid: cc42e50e97f6f9d4d8c14255e2dd9758, type: 2}
-  - {fileID: 11400000, guid: 88fa570a6a9065d4ab5d8609cccc0d9b, type: 2}
   - {fileID: 11400000, guid: 684c0904c22f05c428b2a7f46e66eadc, type: 2}
   - {fileID: 11400000, guid: 9181a0364f4eee24ebd2c96c1221e932, type: 2}
 --- !u!1 &6872216432506957503
@@ -2900,6 +2954,7 @@ Transform:
   - {fileID: 7840021663741788206}
   - {fileID: 6236444371751086582}
   - {fileID: 950818922060026249}
+  - {fileID: 1911494855963763982}
   m_Father: {fileID: 4907523696128847022}
   m_LocalEulerAnglesHint: {x: 0, y: -89.783, z: 0}
 --- !u!1 &8055091408848359523

@@ -2,42 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.ShaderGraph;
 using UnityEngine;
+using static Unity.VisualScripting.Member;
 
 public class HighlightEffect : MonoBehaviour
 {
     private BlackScreen _blackScreen;
-
-    private GameObject _tempoButtonParent;
-    private GameObject _tempoButton;
+    [SerializeField] private float _size;
+    [SerializeField] private float _speed = 0.3f;
+    [SerializeField] private float _transparancy = 0.95f;
     void Start()
     {
         StartCoroutine(Helpers.WaitMonoBeheviour(() => GameManager.Instance.UIManager, WaitUIManager));
-        
     }
 
     public void StartHighlight()
     {
-        _blackScreen.FadeIn(0.3f);
-
-        _tempoButton = gameObject;
-        _tempoButtonParent = gameObject.transform.parent.gameObject;
-        _tempoButton.transform.parent = transform.parent.transform;
-        _tempoButton.transform.SetSiblingIndex(0);
+        RectTransform transform = gameObject.GetComponent<RectTransform>();
+        _blackScreen.SetCercle(RectTransformUtility.WorldToScreenPoint(null, transform.position), _size);
+        Canvas.ForceUpdateCanvases();
+        _blackScreen.FadeIn(_transparancy, _speed);
+        Canvas.ForceUpdateCanvases();
     }
 
     public void StopHighlight()
     {
-        _blackScreen.FadeOut(0.3f);
+        _blackScreen.FadeOut(_speed);
 
-        if (_tempoButton == null) return;
-
-        if (_tempoButtonParent != null)
-        {
-            _tempoButton.transform.parent = _tempoButtonParent.transform;
-            _tempoButtonParent = null;
-            _tempoButton = null;
-        }
-
+        _blackScreen.ResetCercle();
     }
 
     private void WaitUIManager(UIManager manager)

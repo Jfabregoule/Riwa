@@ -79,5 +79,6 @@ public class DialogueUIDispacher : MonoBehaviour
 public enum DialogueUIType
 {
     Basis,
-    Other
+    Other,
+    BlackScreen
 }

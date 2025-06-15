@@ -25,6 +25,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Control _control;
     [SerializeField] private Navbar _navbar;
     [SerializeField] private BlackScreen _blackScreen;
+    [SerializeField] private DialogueUIDispacher _dialogueUIDispacher;
     [SerializeField] private UIElement[] _uiElementsList;
 
     private Dictionary<UIElementEnum, Dictionary<bool, UIElementComponent>> _uiElements;
@@ -32,7 +33,8 @@ public class UIManager : MonoBehaviour
     public bool IsRightHanded { get; private set; }
     public Control Control { get { return _control; } }
     public BlackScreen BlackScreen { get { return _blackScreen; } }
-    
+    public DialogueUIDispacher DialogueUIDispacher { get { return _dialogueUIDispacher; } }
+
     public Navbar Navbar { get { return _navbar; } } 
 
     private void Awake()

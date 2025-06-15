@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Drawing;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,30 +9,40 @@ public class BlackScreen : MonoBehaviour
     private CanvasGroup _canvasGroup;
     private Coroutine _currentCoroutine;
 
+    private RectTransform _fondNoirRect;
+    private CutoutMaskUi _blackScreenImage;
+
+    private RectTransform _circleRect;
+    private RectTransform _canvasRect;
+
     public void Awake()
     {
         _canvasGroup = GetComponent<CanvasGroup>();
-        //GameManager.Instance.OnRoomExit += FadeIn;
+
+        _circleRect = GetComponent<RectTransform>();
+        _fondNoirRect = _circleRect.GetChild(0).GetComponent<RectTransform>();
+        _blackScreenImage = _circleRect.GetComponentInChildren<CutoutMaskUi>();
+        _canvasRect = _circleRect.GetComponentInParent<Canvas>().GetComponent<RectTransform>();
     }
 
-    public void FadeIn(float time)
+    private void Start()
     {
-        StartCoroutine(Fade(0, 1, time, true));
+        ResetCercle();
+
+        _fondNoirRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _canvasRect.rect.size.x);
+        _fondNoirRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, _canvasRect.rect.size.y);
+    }
+
+    public void FadeIn(float transparancy, float time)
+    {
+        if (_currentCoroutine != null) StopCoroutine(_currentCoroutine);
+        _currentCoroutine = StartCoroutine(Fade(0, transparancy, time, true));
     }
 
     public void FadeOut(float time)
     {
-        StartCoroutine(Fade(1, 0, time, false));
-    }
-
-    public void GrayIn() {
         if (_currentCoroutine != null) StopCoroutine(_currentCoroutine);
-        _currentCoroutine = StartCoroutine(Fade(0, 0.8f, 0.3f, true));
-    }
-    public void GrayOut()
-    {
-        if (_currentCoroutine != null) StopCoroutine(_currentCoroutine);
-        _currentCoroutine = StartCoroutine(Fade(0.8f, 0, 0.3f, false));
+        _currentCoroutine = StartCoroutine(Fade(_canvasGroup.alpha, 0, time, false));
     }
 
     public IEnumerator Fade(float start, float end, float duration,bool isEnable)
@@ -51,5 +62,38 @@ public class BlackScreen : MonoBehaviour
 
         if (!isEnable)
             Helpers.DisabledCanvasGroup(_canvasGroup);
+    }
+
+    public void SetCercle(Vector3 position, float size)
+    {
+        Vector2 localPoint;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            _circleRect.parent as RectTransform,
+            position,
+            null,
+            out localPoint
+        );
+        _circleRect.localPosition = new Vector3(localPoint.x, localPoint.y, _circleRect.localPosition.z); ;
+
+        _circleRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, size);
+        _circleRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, size);
+
+        UpdateFondNoir();
+    }
+
+    public void ResetCercle()
+    {
+        _circleRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 0);
+        _circleRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 0);
+
+        UpdateFondNoir();
+    }
+
+    private void UpdateFondNoir()
+    {
+        _fondNoirRect.localPosition = -_circleRect.localPosition;
+
+        _blackScreenImage.RefreshMaterial();
+        _blackScreenImage.SetMaterialDirty();
     }
 }

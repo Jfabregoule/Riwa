@@ -11,25 +11,18 @@ public class DialogueUI : MonoBehaviour
     private TextMeshProUGUI _text;
     private CanvasGroup _canvasGroup;
     [SerializeField] private DialogueUIType _type;
-    //private DialogueSystem _dialogueSystem;
-    void OnEnable()
-    {
-        //StartCoroutine(Helpers.WaitMonoBeheviour(() => DialogueSystem.Instance, SubcribeToDialogueEvent));
-    }
 
-    private void OnDisable() 
-    { 
-        //if (_dialogueSystem != null)
-        //{
-        //    //_dialogueSystem.OnSentenceChanged -= OnSentenceChange;
-        //    _dialogueSystem.OnCanvasGroupChanged -= OnCanvasGroupChange;
-        //    _dialogueSystem.OnCanvasGroupAlphaChanged -= OnCanvasGroupAlphaChange;
-        //} 
+    private void WaitUIManager(UIManager manager)
+    {
+        if (manager != null)
+        {
+            manager.DialogueUIDispacher.RegisterUI(_type, this);
+        }
     }
 
     private void Start()
     {
-        GetComponentInParent<DialogueUIDispacher>().RegisterUI(_type, this);
+        StartCoroutine(Helpers.WaitMonoBeheviour(() => GameManager.Instance.UIManager, WaitUIManager));
         _canvasGroup = GetComponent<CanvasGroup>();
         _text = GetComponentInChildren<TextMeshProUGUI>();
     }
@@ -49,39 +42,8 @@ public class DialogueUI : MonoBehaviour
         _canvasGroup.alpha = alpha;
     }
 
-    private void OnSentenceChange(string sentence)
-    {
-        _text.SetText(sentence);
-    }
-
-    private void OnCanvasGroupChange(bool isActive)
-    {
-        Helpers.ToggleCanvasGroup(isActive, _canvasGroup);
-    }
-
-    private void OnCanvasGroupAlphaChange(float alpha)
-    {
-        _canvasGroup.alpha = alpha;
-    }
-
     public void OnSkip()
     {
         DialogueSystem.Instance.SkipAll();
     }
-
-    //private void SubcribeToDialogueEvent(DialogueSystem dialogueSystem)
-    //{
-    //    if (dialogueSystem != null)
-    //    {
-    //        _dialogueSystem = dialogueSystem;
-    //        //dialogueSystem.OnSentenceChanged += OnSentenceChange;
-    //        //dialogueSystem.OnCanvasGroupChanged += OnCanvasGroupChange;
-    //        //dialogueSystem.OnCanvasGroupAlphaChanged += OnCanvasGroupAlphaChange;
-    //        Debug.Log("Script is ready!");
-    //    }
-    //    else
-    //    {
-    //        Debug.LogWarning("Script was still null after timeout.");
-    //    }
-    //}
 }

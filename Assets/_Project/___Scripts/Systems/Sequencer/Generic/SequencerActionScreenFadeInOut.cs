@@ -21,7 +21,7 @@ public class SequencerActionScreenFadeInOut : SequencerAction
     {
 
         if (_fadeIn)
-            _blackScreen.FadeIn(_fadeSpeed);
+            _blackScreen.FadeIn(1, _fadeSpeed);
         else
             _blackScreen.FadeOut(_fadeSpeed);
 

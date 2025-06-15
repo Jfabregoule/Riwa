@@ -290,6 +290,11 @@ public class DialogueSystem : Singleton<DialogueSystem>
         OnCanvasGroupChanged?.Invoke(_currentDialogueUI, false);
     }
 
+    public void ResetText()
+    {
+        OnSentenceChanged?.Invoke(_currentDialogueUI, "");
+    }
+
     public void ChangeCanvasGroupAlpha(float alpha)
     {
         OnCanvasGroupAlphaChanged?.Invoke(_currentDialogueUI, alpha);

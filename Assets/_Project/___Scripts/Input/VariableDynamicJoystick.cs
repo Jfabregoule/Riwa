@@ -18,7 +18,7 @@ public class VariableDynamicJoystick : MonoBehaviour
 
     //private Vector2 _startPos;
 
-    //private bool _isLocked = false;
+    private bool _isLocked = false;
     //private bool _isHolding = false;
 
     void OnEnable()
@@ -53,8 +53,8 @@ public class VariableDynamicJoystick : MonoBehaviour
         {
             _inputManager.OnMove -= OnTouchStarted;
             _inputManager.OnMoveEnd -= OnTouchEnded;
-            //_inputManager.OnLockJoystick -= LockJoystick;
-            //_inputManager.OnUnlockJoystick -= UnlockJoystick;
+            _inputManager.OnLockJoystick -= LockJoystick;
+            _inputManager.OnUnlockJoystick -= UnlockJoystick;
         }
         //if(_character != null)
         //{
@@ -80,57 +80,50 @@ public class VariableDynamicJoystick : MonoBehaviour
 
     private void OnTouchStarted(Vector2 position)
     {
-        //if (!_isLocked)
-        //{
-        //    Helpers.EnabledCanvasGroup(_canvasGroup);
-        //    _background.position = position;
-        //}
-        //_handle.anchoredPosition = Vector2.zero;
-
-        Helpers.EnabledCanvasGroup(_canvasGroup);
-        _background.position = position;
+        if (!_isLocked)
+        {
+            Helpers.EnabledCanvasGroup(_canvasGroup);
+            _background.position = position;
+        }
         _handle.anchoredPosition = Vector2.zero;
     }
 
     private void OnTouchEnded()
     {
-        //if (!_isLocked)
-        //{
-        //    Helpers.DisabledCanvasGroup(_canvasGroup);
-        //    _handle.anchoredPosition = Vector2.zero;
-        //}
-
-        Helpers.DisabledCanvasGroup(_canvasGroup);
-        _handle.anchoredPosition = Vector2.zero;
+        if (!_isLocked)
+        {
+            Helpers.DisabledCanvasGroup(_canvasGroup);
+            _handle.anchoredPosition = Vector2.zero;
+        }
     }
 
-    //private void LockJoystick(bool isRight)
-    //{
-    //    if (!_isHolding)
-    //    {
-    //        return;
-    //    }
-    //    _isLocked = true;
-    //    if (isRight)
-    //    {
-    //        _background.pivot = new Vector2(0, 0);
-    //        _background.position = new Vector2(400, Screen.height * 1 / 3);
-    //        _background.pivot = new Vector2(0.5f, 0.5f);
-    //    }
-    //    else
-    //    {
-    //        _background.pivot = new Vector2(1, 0);
-    //        _background.position = new Vector2(Screen.width - 400, Screen.height * 1/3);
-    //        _background.pivot = new Vector2(0.5f, 0.5f);
-    //    }
-    //    Helpers.EnabledCanvasGroup(_canvasGroup);
-    //}
+    private void LockJoystick(bool isRight)
+    {
+        //if (!_isHolding)
+        //{
+        //    return;
+        //}
+        _isLocked = true;
+        if (isRight)
+        {
+            _background.pivot = new Vector2(0, 0);
+            _background.position = new Vector2(400, Screen.height * 1 / 3);
+            _background.pivot = new Vector2(0.5f, 0.5f);
+        }
+        else
+        {
+            _background.pivot = new Vector2(1, 0);
+            _background.position = new Vector2(Screen.width - 400, Screen.height * 1 / 3);
+            _background.pivot = new Vector2(0.5f, 0.5f);
+        }
+        Helpers.EnabledCanvasGroup(_canvasGroup);
+    }
 
-    //private void UnlockJoystick(bool isRight)
-    //{
-    //    _isLocked = false;
-    //    Helpers.DisabledCanvasGroup(_canvasGroup);
-    //}
+    private void UnlockJoystick(bool isRight)
+    {
+        _isLocked = false;
+        Helpers.DisabledCanvasGroup(_canvasGroup);
+    }
 
     private void SubscribeToInputManager(InputManager script)
     {
@@ -139,8 +132,8 @@ public class VariableDynamicJoystick : MonoBehaviour
             _inputManager = script;
             script.OnMove += OnTouchStarted;
             script.OnMoveEnd += OnTouchEnded;
-            //script.OnLockJoystick += LockJoystick;
-            //script.OnUnlockJoystick += UnlockJoystick;
+            script.OnLockJoystick += LockJoystick;
+            script.OnUnlockJoystick += UnlockJoystick;
         }
     }
 

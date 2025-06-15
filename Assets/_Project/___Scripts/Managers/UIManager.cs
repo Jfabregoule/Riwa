@@ -8,7 +8,9 @@ public enum UIElementEnum
 {
     ChangeTime, 
     Interact,
-    Joystick
+    Joystick,
+    Pull,
+    Push
 }
 
 [System.Serializable]

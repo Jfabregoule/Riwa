@@ -51,7 +51,7 @@ public class BlackScreen : MonoBehaviour
         float clock = 0f;
 
         if (isEnable)
-            Helpers.EnabledCanvasGroup(_canvasGroup);
+            Helpers.EnabledCanvasGroup(_canvasGroup, false);
 
         while (clock < duration)
         {

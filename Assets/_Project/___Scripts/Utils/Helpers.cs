@@ -20,15 +20,15 @@ public static class Helpers
         return new Vector2Int((int)vec.x, (int)vec.y);
     }
 
-    public static void ToggleCanvasGroup(bool isEnable, CanvasGroup canvasGroup)
+    public static void ToggleCanvasGroup(bool isEnable, CanvasGroup canvasGroup, bool isInteractable = true)
     {
         canvasGroup.alpha = isEnable ? 1 : 0;
-        canvasGroup.interactable = isEnable;
-        canvasGroup.blocksRaycasts = isEnable;
+        canvasGroup.interactable = isEnable && isInteractable;
+        canvasGroup.blocksRaycasts = isEnable && isInteractable;
     }
-    public static void EnabledCanvasGroup(CanvasGroup canvasGroup)
+    public static void EnabledCanvasGroup(CanvasGroup canvasGroup, bool isInteractable = true)
     {
-        ToggleCanvasGroup(true, canvasGroup);
+        ToggleCanvasGroup(true, canvasGroup, isInteractable);
     }
 
     public static void DisabledCanvasGroup(CanvasGroup canvasGroup) 

@@ -84,6 +84,12 @@ public enum DialogueEventType
     DisplayPull,
     TutoEndInteract,
     DisplayPush,
+    WaitInteract,
+    ValidateTuto1Room1,
+    DisplayChangeTime,
+    ShowGhost,
+    HideGhost,
+    DisableInput,
 }
 
 public enum WaitDialogueEventType

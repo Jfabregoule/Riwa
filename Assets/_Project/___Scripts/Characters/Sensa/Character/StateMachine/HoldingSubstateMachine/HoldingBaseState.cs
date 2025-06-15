@@ -2,7 +2,8 @@ public enum EnumHolding
 {
     IdleHolding, 
     Move,
-    Rotate
+    Rotate,
+    StandBy
 }
 
 public class HoldingBaseState : BaseState<EnumHolding>

@@ -15,7 +15,7 @@ public class HoldingStateCharacter : BaseStateCharacter<EnumStateCharacter>
 
         _subStateMachine = new HoldingStateMachine();
         _subStateMachine.InitStateMachine((ACharacter)character);
-        _subStateMachine.InitState(_subStateMachine.States[EnumHolding.IdleHolding]);
+        _subStateMachine.InitState(_subStateMachine.States[EnumHolding.StandBy]);
         _character.Animator.ResetTrigger(_subStateMachine.AnimationMap[EnumHolding.IdleHolding]);
     }
 
@@ -42,7 +42,7 @@ public class HoldingStateCharacter : BaseStateCharacter<EnumStateCharacter>
 
         chara.SetHoldingObject(null);
         chara.InputManager.OnInteract -= OnInteractEnd;
-        _subStateMachine.ChangeState(_subStateMachine.States[EnumHolding.IdleHolding]);
+        _subStateMachine.ChangeState(_subStateMachine.States[EnumHolding.StandBy]);
         chara.InvokeHoldingEnd();
 
         _character.InputManager.EnableGameplayMoveControls();

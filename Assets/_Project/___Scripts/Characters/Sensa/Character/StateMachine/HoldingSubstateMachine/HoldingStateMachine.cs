@@ -3,6 +3,7 @@ public class HoldingStateMachine : BaseStateMachine<EnumHolding, HoldingBaseStat
     private const string IDLEHOLDING_NAME = "IdleHolding";
     private const string MOVE_NAME = "MoveHolding";
     private const string ROTATE_NAME = "Rotate";
+    private const string STANDBY_NAME = "StandByHolding";
 
     public HoldingStateMachine()
     {
@@ -26,6 +27,10 @@ public class HoldingStateMachine : BaseStateMachine<EnumHolding, HoldingBaseStat
         States[EnumHolding.Rotate] = new RotateStateHolding();
         States[EnumHolding.Rotate].InitState(this, EnumHolding.Rotate, character);
         _animationMap[EnumHolding.Rotate] = ROTATE_NAME;
+
+        States[EnumHolding.StandBy] = new StandByHoldingState();
+        States[EnumHolding.StandBy].InitState(this, EnumHolding.StandBy, character);
+        _animationMap[EnumHolding.StandBy] = STANDBY_NAME;
 
     }
 }

@@ -35,13 +35,15 @@ public class BlackScreen : MonoBehaviour
 
     public void FadeIn(float transparancy, float time)
     {
-        if (_currentCoroutine != null) StopCoroutine(_currentCoroutine);
+        if (_currentCoroutine != null) 
+            StopCoroutine(_currentCoroutine);
         _currentCoroutine = StartCoroutine(Fade(0, transparancy, time, true));
     }
 
     public void FadeOut(float time)
     {
-        if (_currentCoroutine != null) StopCoroutine(_currentCoroutine);
+        if (_currentCoroutine != null) 
+            StopCoroutine(_currentCoroutine);
         _currentCoroutine = StartCoroutine(Fade(_canvasGroup.alpha, 0, time, false));
     }
 
@@ -67,13 +69,13 @@ public class BlackScreen : MonoBehaviour
     public void SetCercle(Vector3 position, float size)
     {
         Vector2 localPoint;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            _circleRect.parent as RectTransform,
-            position,
-            null,
-            out localPoint
-        );
-        _circleRect.localPosition = new Vector3(localPoint.x, localPoint.y, _circleRect.localPosition.z); ;
+        if(RectTransformUtility.ScreenPointToLocalPointInRectangle(_circleRect.parent as RectTransform,position,null,out localPoint))
+        {
+            localPoint.x += (_circleRect.pivot.x - 0.5f) * _circleRect.rect.width;
+            localPoint.y += (_circleRect.pivot.y - 0.5f) * _circleRect.rect.height;
+
+            _circleRect.localPosition = new Vector3(localPoint.x, localPoint.y, _circleRect.localPosition.z);
+        }
 
         _circleRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, size);
         _circleRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, size);

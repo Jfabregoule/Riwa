@@ -27,8 +27,8 @@ public class InputManager : Singleton<InputManager>
     public delegate void MoveEvent(Vector2 position);
     public delegate void Lock(bool isRight);
     public event PressEvent OnInteract;
-    public event MoveEvent OnMove;
-    public event PressEvent OnMoveEnd;
+    public event MoveEvent OnPressMove;
+    public event PressEvent OnPressMoveEnd;
     public event PressEvent OnChangeTime;
     public event PressEvent OnOpenOptions;
     public event PressEvent OnAdvanceDialogue;
@@ -39,6 +39,7 @@ public class InputManager : Singleton<InputManager>
     public event PressEvent OnPull;
     public event PressEvent OnRotateRight;
     public event PressEvent OnRotateLeft;
+    public event PressEvent OnMove;
 
     #endregion
 
@@ -132,7 +133,7 @@ public class InputManager : Singleton<InputManager>
         _rotateEnabled = false;
         _pushEnabled = false;
         _pullEnabled = false;
-        OnMoveEnd?.Invoke();
+        OnPressMoveEnd?.Invoke();
         UnbindGameplayEvents();
 
         _controls.Gameplay.Disable();
@@ -146,7 +147,7 @@ public class InputManager : Singleton<InputManager>
 
     public void DisableGameplayMoveControls()
     {
-        OnMoveEnd?.Invoke();
+        OnPressMoveEnd?.Invoke();
         _controls.Gameplay.Touch.Disable();
         _controls.Gameplay.Move.Disable();
     }
@@ -184,6 +185,7 @@ public class InputManager : Singleton<InputManager>
     public void EnableGameplayRotateControls()
     {
         _rotateEnabled = true;
+        _controls.Gameplay.Displacement.Enable();
     }
     public void DisableGameplayRotateControls()
     {
@@ -192,6 +194,7 @@ public class InputManager : Singleton<InputManager>
     public void EnableGameplayPushControls()
     {
         _pushEnabled = true;
+        _controls.Gameplay.Displacement.Enable();
     }
     public void DisableGameplayPushControls()
     {
@@ -200,10 +203,26 @@ public class InputManager : Singleton<InputManager>
     public void EnableGameplayPullControls()
     {
         _pullEnabled = true;
+        _controls.Gameplay.Displacement.Enable();
     }
     public void DisableGameplayPullControls()
     {
         _pullEnabled = false;
+    }
+
+    public void EnableGameplayDisplacementControls()
+    {
+        _pullEnabled = true;
+        _pushEnabled = true;
+        _rotateEnabled = true;
+        _controls.Gameplay.Displacement.Enable();
+    }
+    public void DisableGameplayDisplacementControls()
+    {
+        _pullEnabled = false;
+        _pushEnabled = false;
+        _rotateEnabled = false;
+        _controls.Gameplay.Displacement.Disable();
     }
 
     public void EnableDialogueControls()
@@ -264,6 +283,8 @@ public class InputManager : Singleton<InputManager>
         _controls.Gameplay.Touch.performed += ctx => TouchPerfomed();
         _controls.Gameplay.Touch.canceled += ctx => TouchCanceled();
 
+        _controls.Gameplay.Move.performed += ctx => MovePerfomed();
+
         _controls.Gameplay.ChangeTime.performed += ctx => ChangeTimePerfomed();
         _controls.Gameplay.Interact.performed += ctx => InteractPerfomed();
 
@@ -275,6 +296,8 @@ public class InputManager : Singleton<InputManager>
     {
         _controls.Gameplay.Touch.performed -= ctx => TouchPerfomed();
         _controls.Gameplay.Touch.canceled -= ctx => TouchCanceled();
+
+        _controls.Gameplay.Move.performed -= ctx => MovePerfomed();
 
         _controls.Gameplay.ChangeTime.performed -= ctx => ChangeTimePerfomed();
         _controls.Gameplay.Interact.performed -= ctx => InteractPerfomed();
@@ -318,13 +341,18 @@ public class InputManager : Singleton<InputManager>
         {
             if (IsTouchOverUI(pos, 0)) return;
 
-            OnMove?.Invoke(pos);
+            OnPressMove?.Invoke(pos);
         }
     }
 
     private void TouchCanceled()
     {
-        OnMoveEnd?.Invoke();
+        OnPressMoveEnd?.Invoke();
+    }
+
+    private void MovePerfomed()
+    {
+        OnMove?.Invoke();
     }
 
     private void InteractPerfomed()

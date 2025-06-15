@@ -18,10 +18,13 @@ public class HighlightEffect : MonoBehaviour
     public void StartHighlight()
     {
         RectTransform transform = gameObject.GetComponent<RectTransform>();
-        _blackScreen.SetCercle(RectTransformUtility.WorldToScreenPoint(null, transform.position), _size);
-        Canvas.ForceUpdateCanvases();
+        Vector3 transformWorldPivotPos = transform.TransformPoint(new Vector3(
+            (0.5f - transform.pivot.x) * transform.rect.width,
+            (0.5f - transform.pivot.y) * transform.rect.height,
+            0f
+        ));
+        _blackScreen.SetCercle(RectTransformUtility.WorldToScreenPoint(null, transformWorldPivotPos), _size);
         _blackScreen.FadeIn(_transparancy, _speed);
-        Canvas.ForceUpdateCanvases();
     }
 
     public void StopHighlight()

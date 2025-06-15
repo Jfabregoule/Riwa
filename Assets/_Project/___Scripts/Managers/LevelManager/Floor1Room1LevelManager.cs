@@ -19,6 +19,7 @@ public struct CinematicRoom1
     public EnumAdvancementRoom1 ID;
     public DialogueAsset Dialogue;
     public Sequencer[] Sequencers;
+    public PlacementZone[] Zones;
 }
 
 public class Floor1Room1LevelManager : BaseLevelManager
@@ -43,7 +44,6 @@ public class Floor1Room1LevelManager : BaseLevelManager
     [SerializeField] private Renderer _aroundDoor;
 
     [SerializeField] private CinematicRoom1[] _cinematics;
-    [SerializeField] private PlacementZone[] _zones;
     private int _currentZone;
 
     [Header("Event Sequencer")]
@@ -80,15 +80,6 @@ public class Floor1Room1LevelManager : BaseLevelManager
     {
         SaveSystem.Instance.OnLoadProgress -= LoadData;
         SaveSystem.Instance.SaveElement<int>("Room1Progress", (int)CurrentAdvancement);
-
-        //foreach(PlacementZone zone in _zones)
-        //{
-        //    zone.OnPlace -= WaitPlayerInZone;
-        //}
-        _zones[0].OnPlace -= PlayerInZone;
-
-        if (GameManager.Instance)
-            GameManager.Instance.OnTimeChangeEnded -= OnTimeChangeEndedHandler;
     }
 
     private void LoadData()
@@ -99,16 +90,20 @@ public class Floor1Room1LevelManager : BaseLevelManager
     public override void Start()
     {
         base.Start();
+
         
         if (CurrentAdvancement == EnumAdvancementRoom1.Start)
         {
             OnLevelEnter += BeginDialogue;
             _currentZone = 0;
+            GameManager.Instance.UIManager.Hide(UIElementEnum.Interact);
         }
 
         if (CurrentAdvancement >= EnumAdvancementRoom1.Room0)
         {
-            GameManager.Instance.UnlockChangeTime();
+            GameManager.Instance.UIManager.Display(UIElementEnum.Interact);
+            GameManager.Instance.UIManager.Display(UIElementEnum.ChangeTime);
+            //GameManager.Instance.UnlockChangeTime();
         }
         DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.ChangeTime, OnChangeTime);
 
@@ -118,13 +113,6 @@ public class Floor1Room1LevelManager : BaseLevelManager
         }
 
         _character.InputManager.OnChangeTime += CheckCrateEnigma;
-        _character.InputManager.OnChangeTime += InvokeChangeTime;
-
-        _character.InputManager.OnMove += InvokeMove;
-        //_character.InputManager.OnInteract += InvokeInteract;
-        //_character.InputManager.OnInteract += InvokeEndInteract;
-        //_character.InputManager.OnPull += InvokePull;
-        //_character.InputManager.OnPush += InvokePush;
 
         _brain = Helpers.Camera.GetComponent<CinemachineBrain>();
         _defaultBlend = _brain.m_DefaultBlend;
@@ -141,6 +129,14 @@ public class Floor1Room1LevelManager : BaseLevelManager
         _character.InputManager.OnInteract -= InvokeEndInteract;
         _character.InputManager.OnPull -= InvokePull;
         _character.InputManager.OnPush -= InvokePush;
+
+        PlacementZone zone = GetCurrentZone();
+        if (zone != null)
+        {
+            GetCurrentZone().OnPlace -= BoxInZone;
+            GetCurrentZone().OnPlace -= PlayerInZone;
+        }
+
         OnLevelEnter -= BeginDialogue;
         if (DialogueSystem.Instance)
             DialogueSystem.Instance.OnDialogueEvent -= EventDispatcher;
@@ -159,7 +155,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
         {
             GameManager.Instance.Character.StateMachine.GoToIdle();
             UpdateAdvancement(EnumAdvancementRoom1.Liana);
-            DialogueSystem.Instance.BeginDialogue(_cinematics[(int)CurrentAdvancement].Dialogue);
+            //DialogueSystem.Instance.BeginDialogue(_cinematics[(int)CurrentAdvancement].Dialogue);
             _cinematics[(int)EnumAdvancementRoom1.Liana].Sequencers[0].InitializeSequence();
         }
 
@@ -168,62 +164,65 @@ public class Floor1Room1LevelManager : BaseLevelManager
 
     public void InvokeChangeTime() {
         if (!_character.CanChangeTime) return;
-        DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.ChangeTime);
+        InputManager.Instance.EnableGameplayControls();
+        GameManager.Instance.UIManager.StopHighlight(UIElementEnum.ChangeTime);
         _character.InputManager.OnChangeTime -= InvokeChangeTime;
+        DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.ChangeTime);
     }
 
-    public void InvokeMove(Vector2 position)
+    public void InvokeMove()
     {
-        DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.Move);
         GameManager.Instance.UIManager.StopHighlight(UIElementEnum.Joystick);
         InputManager.Instance.UnlockJoystick();
         _character.InputManager.OnMove -= InvokeMove;
-        _zones[_currentZone].gameObject.SetActive(true);
-        _zones[_currentZone].OnPlace += PlayerInZone;
+        GetCurrentZone().gameObject.SetActive(true);
+        GetCurrentZone().OnPlace += PlayerInZone;
         DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.PlayerInZone, OnPlayerInzone);
+        DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.Move);
     }
 
     private void InvokeInteract()
     {
-        DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.Interact);
         GameManager.Instance.UIManager.StopHighlight(UIElementEnum.Interact);
         _character.InputManager.OnInteract -= InvokeInteract;
+        DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.Interact);
     }
 
     private void InvokeEndInteract()
     {
-        DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.EndInteract);
         GameManager.Instance.UIManager.StopHighlight(UIElementEnum.Interact);
         _character.InputManager.OnInteract -= InvokeEndInteract;
+        DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.EndInteract);
     }
 
     private void InvokePull()
     {
-        DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.Pull);
         GameManager.Instance.UIManager.StopHighlight(UIElementEnum.Pull);
         _character.InputManager.OnPull -= InvokePull;
+        DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.Pull);
     }
 
     private void InvokePush()
     {
         InputManager.Instance.EnableGameplayControls();
-        DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.Push);
         GameManager.Instance.UIManager.StopHighlight(UIElementEnum.Push);
         _character.InputManager.OnPush -= InvokePush;
+        DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.Push); 
     }
 
     private void PlayerInZone(GameObject go)
     {
         if (go.TryGetComponent(out ACharacter charcter))
         {
-            _zones[_currentZone].OnPlace -= PlayerInZone;
-            _zones[_currentZone].gameObject.SetActive(false);
+
+            GetCurrentZone().OnPlace -= PlayerInZone;
+            GetCurrentZone().gameObject.SetActive(false);
             DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.PlayerInZone);
             _currentZone += 1;
-            if (_currentZone < _zones.Length)
+            if (_currentZone < _cinematics[(int)CurrentAdvancement].Zones.Length)
             {
-                _zones[_currentZone].gameObject.SetActive(true);
-                _zones[_currentZone].OnPlace += BoxInZone;
+                GetCurrentZone().gameObject.SetActive(true);
+                GetCurrentZone().OnPlace += BoxInZone;
                 DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.BoxInZone, OnBoxInzone);
             }
         }
@@ -233,14 +232,14 @@ public class Floor1Room1LevelManager : BaseLevelManager
     {
         if (go.TryGetComponent(out Crate box))
         {
-            _zones[_currentZone].OnPlace -= BoxInZone;
-            _zones[_currentZone].gameObject.SetActive(false);
+            GetCurrentZone().OnPlace -= BoxInZone;
+            GetCurrentZone().gameObject.SetActive(false);
             DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.BoxInZone);
             _currentZone += 1;
-            if(_currentZone < _zones.Length)
+            if(_currentZone < _cinematics[(int)CurrentAdvancement].Zones.Length)
             {
-                _zones[_currentZone].gameObject.SetActive(true);
-                _zones[_currentZone].OnPlace += PlayerInZone;
+                GetCurrentZone().gameObject.SetActive(true);
+                GetCurrentZone().OnPlace += PlayerInZone;
                 DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.PlayerInZone, OnPlayerInzone);
             }
         }
@@ -256,10 +255,14 @@ public class Floor1Room1LevelManager : BaseLevelManager
             case DialogueEventType.ResetCamRoom1:
                 StartCoroutine(BlendingCamera(CameraDictionnary[EnumCameraRoom.Main]));
                 break;
-            case DialogueEventType.UnlockChangeTime:
-                GameManager.Instance.UnlockChangeTime();
-                GameManager.Instance.UIManager.StartPulse(UIElementEnum.ChangeTime);
-                GameManager.Instance.OnTimeChangeEnded += OnTimeChangeEndedHandler;
+            case DialogueEventType.DisplayChangeTime:
+                //GameManager.Instance.UnlockChangeTime();
+                InputManager.Instance.DisableGameplayControls();
+                InputManager.Instance.EnableGameplayChangeTimeControls();
+                DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.ChangeTime, OnChangeTime);
+                GameManager.Instance.UIManager.StartHighlight(UIElementEnum.ChangeTime);
+                GameManager.Instance.UIManager.Display(UIElementEnum.ChangeTime);
+                _character.InputManager.OnChangeTime += InvokeChangeTime;
                 break;
             case DialogueEventType.DisplayJoystick:
                 InputManager.Instance.EnableGameplayMoveControls();
@@ -267,6 +270,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
                 DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.Move, OnMove);
                 GameManager.Instance.UIManager.StartHighlight(UIElementEnum.Joystick);
                 GameManager.Instance.UIManager.Display(UIElementEnum.Joystick);
+                _character.InputManager.OnMove += InvokeMove;
                 break;
             case DialogueEventType.DisplayInteract:
                 InputManager.Instance.DisableGameplayMoveControls();
@@ -285,6 +289,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
                 _character.InputManager.OnPull += InvokePull;
                 break;
             case DialogueEventType.DisplayPush:
+                InputManager.Instance.DisableGameplayInteractControls();
                 InputManager.Instance.EnableGameplayPushControls();
                 DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.Push, OnPush);
                 GameManager.Instance.UIManager.StartHighlight(UIElementEnum.Push);
@@ -299,13 +304,23 @@ public class Floor1Room1LevelManager : BaseLevelManager
                 GameManager.Instance.UIManager.Display(UIElementEnum.Interact);
                 _character.InputManager.OnInteract += InvokeEndInteract;
                 break;
+            case DialogueEventType.WaitInteract:
+                _character.InputManager.OnInteract += InvokeInteract;
+                break;
+            case DialogueEventType.ValidateTuto1Room1:
+                GameManager.Instance.Character.StateMachine.GoToIdle();
+                InputManager.Instance.DisableGameplayControls();
+                break;
+            case DialogueEventType.ShowGhost:
+                break;
+            case DialogueEventType.HideGhost:
+                GameManager.Instance.Character.StateMachine.GoToIdle();
+                EventDispatcher(DialogueEventType.DisplayChangeTime);
+                break;
+            case DialogueEventType.DisableInput:
+                InputManager.Instance.DisableGameplayControls();
+                break;
         }
-    }
-
-    private void OnTimeChangeEndedHandler(EnumTemporality temporality)
-    {
-        GameManager.Instance.UIManager.StopPulse(UIElementEnum.ChangeTime);
-        GameManager.Instance.OnTimeChangeEnded -= OnTimeChangeEndedHandler;
     }
 
     public IEnumerator BlendingCamera(CinemachineVirtualCamera cam)
@@ -326,13 +341,13 @@ public class Floor1Room1LevelManager : BaseLevelManager
         _brain.m_DefaultBlend = _defaultBlend;
     }
 
-    public IEnumerator WaitForPulse()
-    {
-        yield return new WaitForSeconds(1.5f);
-        GameManager.Instance.UIManager.StartPulse(UIElementEnum.ChangeTime);
-        GameManager.Instance.OnTimeChangeEnded += OnTimeChangeEndedHandler;
-        InputManager.Instance.EnableGameplayChangeTimeControls();
-    }
+    //public IEnumerator WaitForPulse()
+    //{
+    //    yield return new WaitForSeconds(1.5f);
+    //    GameManager.Instance.UIManager.StartPulse(UIElementEnum.ChangeTime);
+    //    GameManager.Instance.OnTimeChangeEnded += OnTimeChangeEndedHandler;
+    //    InputManager.Instance.EnableGameplayChangeTimeControls();
+    //}
 
     private void BeginDialogue()
     {
@@ -343,9 +358,14 @@ public class Floor1Room1LevelManager : BaseLevelManager
     {
         if(CurrentAdvancement == EnumAdvancementRoom1.Start)
         {
+            GameManager.Instance.UIManager.Display(UIElementEnum.Interact);
             UpdateAdvancement(EnumAdvancementRoom1.Room0);
+            _currentZone = 0;
+            GetCurrentZone().gameObject.SetActive(true);
+            GetCurrentZone().OnPlace += PlayerInZone;
+            DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.PlayerInZone, OnPlayerInzone);
             //OnLevelEnter += BeginDialogue;
-            _cinematics[(int)EnumAdvancementRoom1.Room0].Sequencers[0].InitializeSequence();
+            //_cinematics[(int)EnumAdvancementRoom1.Room0].Sequencers[0].InitializeSequence();
 
         }
     }
@@ -372,4 +392,12 @@ public class Floor1Room1LevelManager : BaseLevelManager
         }
     }
 
+    private PlacementZone GetCurrentZone(){
+        if (_currentZone < _cinematics[(int)CurrentAdvancement].Zones.Length)
+        {
+            return _cinematics[(int)CurrentAdvancement].Zones[_currentZone];
+        }
+        return null;
+    }
+    
 }

@@ -51,8 +51,8 @@ public class VariableDynamicJoystick : MonoBehaviour
     {
         if(_inputManager != null)
         {
-            _inputManager.OnMove -= OnTouchStarted;
-            _inputManager.OnMoveEnd -= OnTouchEnded;
+            _inputManager.OnPressMove -= OnTouchStarted;
+            _inputManager.OnPressMoveEnd -= OnTouchEnded;
             _inputManager.OnLockJoystick -= LockJoystick;
             _inputManager.OnUnlockJoystick -= UnlockJoystick;
         }
@@ -122,7 +122,7 @@ public class VariableDynamicJoystick : MonoBehaviour
     private void UnlockJoystick(bool isRight)
     {
         _isLocked = false;
-        Helpers.DisabledCanvasGroup(_canvasGroup);
+        //Helpers.DisabledCanvasGroup(_canvasGroup);
     }
 
     private void SubscribeToInputManager(InputManager script)
@@ -130,8 +130,8 @@ public class VariableDynamicJoystick : MonoBehaviour
         if (script != null)
         {
             _inputManager = script;
-            script.OnMove += OnTouchStarted;
-            script.OnMoveEnd += OnTouchEnded;
+            script.OnPressMove += OnTouchStarted;
+            script.OnPressMoveEnd += OnTouchEnded;
             script.OnLockJoystick += LockJoystick;
             script.OnUnlockJoystick += UnlockJoystick;
         }

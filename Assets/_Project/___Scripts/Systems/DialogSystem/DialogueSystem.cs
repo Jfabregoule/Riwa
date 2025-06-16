@@ -153,6 +153,7 @@ public class DialogueSystem : Singleton<DialogueSystem>
         if (_currentDialogueUI != section.UIType)
         {
             _transiUISequencer.InitializeSequence();
+            InputManager.Instance?.DisableDialogueControls();
             return;
         }
 

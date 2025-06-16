@@ -46,6 +46,8 @@ public class Floor1Room1LevelManager : BaseLevelManager
     [SerializeField] private Renderer _aroundDoor;
 
     [SerializeField] private CinematicRoom1[] _cinematics;
+    [SerializeField] private TutoGhost _ghost;
+
 
     [SerializeField] private EndGameCinematic _endGameCinematic;
     
@@ -97,7 +99,8 @@ public class Floor1Room1LevelManager : BaseLevelManager
     {
         base.Start();
 
-        
+        _ghost.gameObject.SetActive(false);
+
         if (CurrentAdvancement == EnumAdvancementRoom1.Start)
         {
             OnLevelEnter += BeginDialogue;
@@ -279,20 +282,11 @@ public class Floor1Room1LevelManager : BaseLevelManager
                 break;
             case DialogueEventType.DisplayChangeTime:
                 //GameManager.Instance.UnlockChangeTime();
-                InputManager.Instance.DisableGameplayControls();
-                InputManager.Instance.EnableGameplayChangeTimeControls();
-                DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.ChangeTime, OnChangeTime);
-                GameManager.Instance.UIManager.StartHighlight(UIElementEnum.ChangeTime);
-                GameManager.Instance.UIManager.Display(UIElementEnum.ChangeTime);
-                _character.InputManager.OnChangeTime += InvokeChangeTime;
+                StartCoroutine(DisplayChangeTime());
+
                 break;
             case DialogueEventType.DisplayJoystick:
-                InputManager.Instance.EnableGameplayMoveControls();
-                InputManager.Instance.LockJoystick();
-                DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.Move, OnMove);
-                GameManager.Instance.UIManager.StartHighlight(UIElementEnum.Joystick);
-                GameManager.Instance.UIManager.Display(UIElementEnum.Joystick);
-                _character.InputManager.OnMove += InvokeMove;
+                StartCoroutine(DisplayJoystick());
                 break;
             case DialogueEventType.DisplayInteract:
                 InputManager.Instance.DisableGameplayMoveControls();
@@ -334,8 +328,10 @@ public class Floor1Room1LevelManager : BaseLevelManager
                 InputManager.Instance.DisableGameplayControls();
                 break;
             case DialogueEventType.ShowGhost:
+                _ghost.gameObject.SetActive(true);
                 break;
             case DialogueEventType.HideGhost:
+                _ghost.gameObject.SetActive(false);
                 GameManager.Instance.Character.StateMachine.GoToIdle();
                 EventDispatcher(DialogueEventType.DisplayChangeTime);
                 break;
@@ -348,6 +344,30 @@ public class Floor1Room1LevelManager : BaseLevelManager
                 StartCoroutine(BlendingCamera(_cinematicEndCamera));
                 break;
         }
+    }
+
+    private IEnumerator DisplayJoystick()
+    {
+        yield return Helpers.GetWait(1f);
+        InputManager.Instance.EnableGameplayMoveControls();
+        InputManager.Instance.LockJoystick();
+        DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.Move, OnMove);
+        GameManager.Instance.UIManager.StartHighlight(UIElementEnum.Joystick);
+        GameManager.Instance.UIManager.Display(UIElementEnum.Joystick);
+        _character.InputManager.OnMove += InvokeMove;
+
+    }
+
+    private IEnumerator DisplayChangeTime()
+    {
+        yield return Helpers.GetWait(1f); 
+        InputManager.Instance.DisableGameplayControls();
+        InputManager.Instance.EnableGameplayChangeTimeControls();
+        DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.ChangeTime, OnChangeTime);
+        GameManager.Instance.UIManager.StartHighlight(UIElementEnum.ChangeTime);
+        GameManager.Instance.UIManager.Display(UIElementEnum.ChangeTime);
+        _character.InputManager.OnChangeTime += InvokeChangeTime;
+
     }
 
     public IEnumerator BlendingCamera(CinemachineVirtualCamera cam)

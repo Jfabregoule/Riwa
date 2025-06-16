@@ -10,6 +10,7 @@ public enum EnumAdvancementRoom1
     Room0,
     Liana,
     Room4,
+    EndCinematic,
     End
 }
 
@@ -37,6 +38,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
     [SerializeField] private CinemachineVirtualCamera _endGameCamera;
     [SerializeField] private CinemachineVirtualCamera _lianaCamera;
     [SerializeField] private CinemachineVirtualCamera _crateCamera;
+    [SerializeField] private CinemachineVirtualCamera _cinematicEndCamera;
     [SerializeField] private GameObject _evelator;
 
     [SerializeField] private Door _backTrakingDoor;
@@ -44,6 +46,9 @@ public class Floor1Room1LevelManager : BaseLevelManager
     [SerializeField] private Renderer _aroundDoor;
 
     [SerializeField] private CinematicRoom1[] _cinematics;
+
+    [SerializeField] private EndGameCinematic _endGameCinematic;
+    
     private int _currentZone;
 
     [Header("Event Sequencer")]
@@ -62,6 +67,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
     private bool _isCrateWellPlaced;
 
     public Sequencer EndGameSequencer { get => _cinematics[(int)EnumAdvancementRoom1.End].Sequencers[0]; }
+    public EndGameCinematic EndGameCinematic { get => _endGameCinematic; }
     public GameObject RiwaHeart { get => _riwaHeart; }
     public CinemachineVirtualCamera EndGameCamera { get => _endGameCamera; }
     public CinemachineVirtualCamera LianaCamera { get => _lianaCamera; }
@@ -105,6 +111,22 @@ public class Floor1Room1LevelManager : BaseLevelManager
             GameManager.Instance.UIManager.Display(UIElementEnum.ChangeTime);
             //GameManager.Instance.UnlockChangeTime();
         }
+
+        if (CurrentAdvancement == EnumAdvancementRoom1.Room4)
+            OnLevelEnter += BeginDialogue;
+
+        if (CurrentAdvancement == EnumAdvancementRoom1.EndCinematic)
+        {
+            CurrentAdvancement -= 1;
+            OnLevelEnter += BeginDialogue;
+        }
+
+        if (CurrentAdvancement == EnumAdvancementRoom1.End)
+        {
+            CurrentAdvancement -= 2;
+            OnLevelEnter += BeginDialogue;
+        }
+        
         DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.ChangeTime, OnChangeTime);
 
         foreach (var cam in _cameras)
@@ -319,6 +341,11 @@ public class Floor1Room1LevelManager : BaseLevelManager
                 break;
             case DialogueEventType.DisableInput:
                 InputManager.Instance.DisableGameplayControls();
+                break;
+            case DialogueEventType.OnFinish:
+                UpdateAdvancement(EnumAdvancementRoom1.EndCinematic);
+                _cinematics[(int)CurrentAdvancement].Sequencers[0].InitializeSequence();
+                StartCoroutine(BlendingCamera(_cinematicEndCamera));
                 break;
         }
     }

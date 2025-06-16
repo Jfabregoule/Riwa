@@ -15,7 +15,6 @@ public class SequenceActionSensaLookHeart : SequencerAction
 
     public override IEnumerator StartSequence(Sequencer context)
     {
-        _instance.EndGameCamera.Priority = 30;
         Vector3 lookDirection = _instance.RiwaHeart.transform.position - GameManager.Instance.Character.transform.position;
         lookDirection.y = 0f;
 

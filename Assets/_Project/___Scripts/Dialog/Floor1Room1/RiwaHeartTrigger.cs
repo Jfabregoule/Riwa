@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class RiwaEndGame : MonoBehaviour
+public class RiwaHeartTrigger : MonoBehaviour
 {
 
     private Floor1Room1LevelManager _instance;

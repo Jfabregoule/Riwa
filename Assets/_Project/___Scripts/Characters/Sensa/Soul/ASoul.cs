@@ -72,7 +72,7 @@ public class ASoul : APawn<EnumStateSoul>
         StateMachine = new StateMachineSoul();
 
 
-        _cameraHandler = GameManager.Instance.CameraHandler; //Il faut appeler ça après le load des 3C dans gameManager
+        _cameraHandler = GameManager.Instance.CameraHandler; //Il faut appeler Ã§a aprÃ¨s le load des 3C dans gameManager
     }
 
     private void OnEnable()

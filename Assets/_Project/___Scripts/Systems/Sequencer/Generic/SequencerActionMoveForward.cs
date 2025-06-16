@@ -48,8 +48,6 @@ public class SequencerActionMoveForward : SequencerAction
         }
 
         _chara.OnMoveToFinished -= FinishMoveto;
-
-        yield break;
     }
 
     public void FinishMoveto() {

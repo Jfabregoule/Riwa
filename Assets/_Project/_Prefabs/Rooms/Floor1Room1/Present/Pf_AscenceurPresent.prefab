@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7087063044549397334}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Pf_AscenceurPresent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,10 +40,15 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7087063044549397334}
     m_Modifications:
+    - target: {fileID: -9070748969904699067, guid: 03fc4b88a2a25d842ae9b95b42b9ee9e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 03fc4b88a2a25d842ae9b95b42b9ee9e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.413854
+      value: -6.51
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 03fc4b88a2a25d842ae9b95b42b9ee9e,
         type: 3}
@@ -53,7 +58,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 03fc4b88a2a25d842ae9b95b42b9ee9e,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -9.390056
+      value: -9.39
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 03fc4b88a2a25d842ae9b95b42b9ee9e,
         type: 3}
@@ -90,6 +95,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -3701063739074601161, guid: 03fc4b88a2a25d842ae9b95b42b9ee9e,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.23
+      objectReference: {fileID: 0}
+    - target: {fileID: -3701063739074601161, guid: 03fc4b88a2a25d842ae9b95b42b9ee9e,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.48
+      objectReference: {fileID: 0}
+    - target: {fileID: -3701063739074601161, guid: 03fc4b88a2a25d842ae9b95b42b9ee9e,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.504
+      objectReference: {fileID: 0}
     - target: {fileID: -1468662180276524799, guid: 03fc4b88a2a25d842ae9b95b42b9ee9e,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -100,6 +120,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: ascenceur_present 1
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 03fc4b88a2a25d842ae9b95b42b9ee9e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2903893172859080141, guid: 03fc4b88a2a25d842ae9b95b42b9ee9e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 4953232840523182856, guid: 03fc4b88a2a25d842ae9b95b42b9ee9e,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -108,7 +138,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2903893172859080141, guid: 03fc4b88a2a25d842ae9b95b42b9ee9e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7051061694577657162}
   m_SourcePrefab: {fileID: 100100000, guid: 03fc4b88a2a25d842ae9b95b42b9ee9e, type: 3}
 --- !u!4 &5839801338622587036 stripped
 Transform:
@@ -116,3 +150,30 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 6233436107234498423}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &9137010249863846586 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2903893172859080141, guid: 03fc4b88a2a25d842ae9b95b42b9ee9e,
+    type: 3}
+  m_PrefabInstance: {fileID: 6233436107234498423}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &7051061694577657162
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9137010249863846586}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.3788211, y: 0.12108764, z: 2.3919234}
+  m_Center: {x: -0.013139722, y: 0.0000005867332, z: -0.0000001788139}

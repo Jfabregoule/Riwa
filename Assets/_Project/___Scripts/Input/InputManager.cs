@@ -303,7 +303,7 @@ public class InputManager : Singleton<InputManager>
         _controls.Gameplay.Interact.performed -= ctx => InteractPerfomed();
 
         _controls.Gameplay.Displacement.performed -= ctx => DisplacementPerfomed();
-        _controls.Gameplay.Displacement.canceled += ctx => DisplacementCanceled();
+        _controls.Gameplay.Displacement.canceled -= ctx => DisplacementCanceled();
     }
 
     private void BindDialogueEvents()
@@ -396,8 +396,10 @@ public class InputManager : Singleton<InputManager>
                 OnRotateLeft?.Invoke();
             else if (_currentDisplacement == Vector2.right && _rotateEnabled)
                 OnRotateRight?.Invoke();
+            else
+                DisplacementCanceled();
 
-            yield return null;
+                yield return null;
             //yield return new WaitForSeconds(_repeatDisplacementRate);
         }
     }

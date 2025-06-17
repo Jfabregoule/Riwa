@@ -89,6 +89,7 @@ public class SaveSystem : Singleton<SaveSystem>
         {"Room1Progress",EnumAdvancementRoom1.Start },
         {"DialogRoom0", false },
         {"Room2FirstDialog", false },
+        {"Room2TutoMirror", false },
     };
 
     /// <summary>

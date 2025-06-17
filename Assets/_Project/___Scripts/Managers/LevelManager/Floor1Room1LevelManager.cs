@@ -106,6 +106,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
             OnLevelEnter += BeginDialogue;
             _currentZone = 0;
             GameManager.Instance.UIManager.Hide(UIElementEnum.Interact);
+            GameManager.Instance.UIManager.Hide(UIElementEnum.Push);
         }
 
         if (CurrentAdvancement >= EnumAdvancementRoom1.Room0)
@@ -406,6 +407,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
         if(CurrentAdvancement == EnumAdvancementRoom1.Start)
         {
             GameManager.Instance.UIManager.Display(UIElementEnum.Interact);
+            GameManager.Instance.UIManager.Display(UIElementEnum.Push);
             UpdateAdvancement(EnumAdvancementRoom1.Room0);
             _currentZone = 0;
             GetCurrentZone().gameObject.SetActive(true);

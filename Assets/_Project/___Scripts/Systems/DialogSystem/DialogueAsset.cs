@@ -90,6 +90,8 @@ public enum DialogueEventType
     ShowGhost,
     HideGhost,
     DisableInput,
+    CrateCameraFloor1Room2,
+    DisplayRotate,
 }
 
 public enum WaitDialogueEventType
@@ -113,4 +115,5 @@ public enum WaitDialogueEventType
     Pull,
     EndInteract,
     Push,
+    Rotate,
 }

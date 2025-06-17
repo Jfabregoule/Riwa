@@ -52,7 +52,7 @@ public class PressurePlate : MonoBehaviour, IActivable
             if (_validColliders.Count == 0 && _isTrigger)
             {
                 _isTrigger = false;
-                Deactivate();
+                Desactivate();
             }
         }
     }
@@ -64,7 +64,7 @@ public class PressurePlate : MonoBehaviour, IActivable
         StartCoroutine(LerpPressed(true));
     }
 
-    public void Deactivate()
+    public void Desactivate()
     {
         _initialPosition = transform.position;
         _destination = _initialPosition - _offset;

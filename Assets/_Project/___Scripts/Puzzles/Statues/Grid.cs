@@ -467,7 +467,7 @@ public class Grid : MonoBehaviour, IActivable
         OnActivated?.Invoke();
     }
 
-    public void Deactivate()
+    public void Desactivate()
     {
         OnDesactivated?.Invoke();
     }

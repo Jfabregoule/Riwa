@@ -16,6 +16,11 @@ public class MirrorTuto : MonoBehaviour
     [SerializeField] private PlacementZone _zone;
 
     [SerializeField] private MonoBehaviour[] _activables;
+
+    [SerializeField] private MonoBehaviour _activableGhost;
+    [SerializeField] private MonoBehaviour _desactivableGhost;
+
+    [SerializeField] private TutoGhostChangeTime[] _ghosts;
     private int CurrentActive;
     private bool _done;
 
@@ -45,6 +50,20 @@ public class MirrorTuto : MonoBehaviour
             }
         }
 
+        if(_activableGhost.TryGetComponent(out IActivable acti))
+        {
+            acti.OnActivated += ActiveGhost;
+            acti.OnDesactivated += DesactiveGhost;
+        }
+
+        if (_desactivableGhost.TryGetComponent(out IActivable ac))
+        {
+            ac.OnActivated += DesactiveGhost;
+            ac.OnDesactivated += ActiveGhost;
+        }
+
+        DesactiveGhost();
+
         GameManager.Instance.UIManager.Hide(UIElementEnum.Rotate);
     }
 
@@ -64,6 +83,22 @@ public class MirrorTuto : MonoBehaviour
 
         SaveSystem.Instance.OnLoadProgress -= LoadData;
         SaveSystem.Instance.SaveElement<bool>("Room2TutoMirror", _done);
+    }
+
+    private void ActiveGhost()
+    {
+        foreach (var ghost in _ghosts)
+        {
+            ghost.gameObject.SetActive(true);
+        }
+    }
+
+    private void DesactiveGhost()
+    {
+        foreach (var ghost in _ghosts)
+        {
+            ghost.gameObject.SetActive(false);
+        }
     }
 
     private void InvokeRotate()
@@ -108,6 +143,7 @@ public class MirrorTuto : MonoBehaviour
                 break;
 
             case DialogueEventType.OnFinish:
+                GameManager.Instance.Character.StateMachine.GoToIdle();
                 InputManager.Instance.EnableGameplayControls();
                 _zone.gameObject.SetActive(true);
                 _zone.OnPlace += PlayerInZone;

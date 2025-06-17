@@ -20,7 +20,7 @@ public class RecepterLaser : MonoBehaviour, IActivable
     {
         if (!_isHitThisFrame && _isActive)
         {
-            Deactivate();
+            Desactivate();
         }
 
         _isHitThisFrame = false;
@@ -48,7 +48,7 @@ public class RecepterLaser : MonoBehaviour, IActivable
         OnActivated?.Invoke();
     }
 
-    public void Deactivate()
+    public void Desactivate()
     {
         _isActive = false;
         foreach (Renderer renderer in _renderers)

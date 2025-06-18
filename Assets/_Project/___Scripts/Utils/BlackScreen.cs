@@ -47,6 +47,11 @@ public class BlackScreen : MonoBehaviour
         _currentCoroutine = StartCoroutine(Fade(_canvasGroup.alpha, 0, time, false));
     }
 
+    public void SetAlpha(float alpha)
+    {
+        _canvasGroup.alpha = alpha;
+    }
+
     public IEnumerator Fade(float start, float end, float duration,bool isEnable)
     {
 

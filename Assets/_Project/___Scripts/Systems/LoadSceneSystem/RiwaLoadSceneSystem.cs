@@ -19,7 +19,6 @@ public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
     private int _currentFloorNum = 0;
     private int _currentRoomNum = 0;
 
-    [SerializeField] private float _spawnOffset;
     private int _nextDoorID;
     private DoorDirection _nextDoorDirection = DoorDirection.North;
 
@@ -36,6 +35,7 @@ public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
     public IEnumerator LoadFirstSceneCoroutine()
     {
         LoadSceneData();
+        GameManager.Instance.UIManager.BlackScreen.SetAlpha(1);
         yield return StartCoroutine(ChangeScene(new[] { new SceneData("MainMenu")}, new[] { new SceneData(GetCurrentRoomSceneName())}));
         SpawnPlayerToDoor();
     }
@@ -74,6 +74,7 @@ public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
 
         if (!string.IsNullOrEmpty(currentRoomName))
         {
+            GameManager.Instance.UIManager.BlackScreen.SetAlpha(1);
             yield return StartCoroutine(ChangeScene(new[] { new SceneData(currentRoomName) }, new[] { new SceneData(newRoomName) }));
             SpawnPlayerToDoor();
         }

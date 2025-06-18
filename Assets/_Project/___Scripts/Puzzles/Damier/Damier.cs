@@ -385,6 +385,9 @@ public class Damier : MonoBehaviour
         Vector3 initialDir = (worldPoints[1] - worldPoints[0]).normalized;
         _riwa.transform.rotation = Quaternion.LookRotation(new Vector3(initialDir.x, 0, initialDir.z));
 
+        if (_damier.TryGetValue(path[0], out DamierDatas firstData))
+            StartCoroutine(FadeCellAlpha(firstData.cell.transform.parent.gameObject, 0f, 1f, 1.2f));
+
         for (int i = 0; i < worldPoints.Count - 1; i++)
         {
             Vector3 p0 = i == 0 ? worldPoints[i] : worldPoints[i - 1];

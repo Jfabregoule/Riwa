@@ -24,7 +24,6 @@ public class Collectible : MonoBehaviour
 
     private void OnDisable()
     {
-        SaveSystem.Instance.SaveElement<bool>(_roomPrefix + "CollectiblePickUp", _taken);
         SaveSystem.Instance.OnLoadProgress -= LoadData;
     }
 
@@ -41,6 +40,7 @@ public class Collectible : MonoBehaviour
             DialogueSystem.Instance.BeginDialogue(_collectibleDialogue);
             GameManager.Instance.CollectibleManager.AddCollectible(1);
             _taken = true;
+            SaveSystem.Instance.SaveElement<bool>(_roomPrefix + "CollectiblePickUp", _taken);
             Destroy(gameObject);
         }
     }

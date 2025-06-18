@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -9,10 +8,21 @@ public class CollectibleUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI _textAddCollectible;
     [SerializeField] TextMeshProUGUI _textAllCollectible;
     [SerializeField] float _timeToShow;
+
+    private int _collectiblesCount = 0;
+    
     private void OnEnable()
     {
         StartCoroutine(Helpers.WaitMonoBeheviour(() => GameManager.Instance.CollectibleManager, SubscribeToCollectibleManager));
+        LoadData();
+        SaveSystem.Instance.OnLoadProgress += LoadData;
     }
+
+    private void LoadData()
+    {
+        _collectiblesCount = SaveSystem.Instance.LoadElement<int>("Collectibles");
+    }
+    
     private void OnDisable()
     {
         if (GameManager.Instance != null)
@@ -21,10 +31,12 @@ public class CollectibleUI : MonoBehaviour
             GameManager.Instance.CollectibleManager.OnCollectAdd -= UpdateTextAdd;
             GameManager.Instance.CollectibleManager.OnCollectAll -= UpdateTextAll;
         }
+
+        SaveSystem.Instance.OnLoadProgress -= LoadData;
     }
     void Start()
     {
-        UpdateTextAll(0);
+        UpdateTextAll(_collectiblesCount);
     }
 
     private void DisplayCollectibleCanvas()

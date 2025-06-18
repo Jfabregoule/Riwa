@@ -15,41 +15,26 @@ public class CinematicRoom0Manager : MonoBehaviour
     private Floor1Room0LevelManager _instance;
     private bool _isTrigger;
 
+    public delegate void DialogueEnd();
+
+    public event DialogueEnd OnDialogueEnd;
+
     private System.Action OnFinishSpeak;
 
     public DialogueAsset Room0Dialogue { get => _dialogueAsset; }
     public DialogueAsset Room0CollectibleDialogue { get => _collectibleAsset; }
     public DialogueAsset Room0CloseDialogue { get => _closeAsset; }
     public Transform CollectibleLandingPosition { get => _collectibleLandingPosition; }
-    private void OnEnable()
-    {
-        LoadData();
-        SaveSystem.Instance.OnLoadProgress += LoadData;
-    }
-
-    private void OnDisable()
-    {
-        SaveSystem.Instance.OnLoadProgress -= LoadData;
-        SaveSystem.Instance.SaveElement<bool>("DialogRoom0", _isTrigger);
-    }
-
-    private void LoadData()
-    {
-        _isTrigger = SaveSystem.Instance.LoadElement<bool>("DialogRoom0");
-    }
 
     private void Start()
     {
         _instance = (Floor1Room0LevelManager)Floor1Room0LevelManager.Instance;
         _instance.OnLevelEnter += Init;
-        //_sequencerEntry.Init();
-        //DialogueSystem.Instance.OnDialogueEvent += DispatchEventOnDialogueEvent;
-        //DialogueSystem.Instance.BeginDialogue(_dialogueAsset);
     }
 
     private void Init()
     {
-        if (!_isTrigger)
+        if (_instance.IsCinematicDone == false)
         {
             _sequencerEntry.Init();
             _collectibleSequencer.Init();
@@ -58,8 +43,6 @@ public class CinematicRoom0Manager : MonoBehaviour
             DialogueSystem.Instance.OnDialogueEvent += DispatchEventOnDialogueEvent;
             
             _sequencerEntry.InitializeSequence();
-            
-            _isTrigger = true;
         }
     }
 
@@ -67,6 +50,9 @@ public class CinematicRoom0Manager : MonoBehaviour
     {
         switch(dialogueEvent)
         {
+            case DialogueEventType.Room0CollectibleTaken:
+                OnDialogueEnd?.Invoke();
+                break;
             case DialogueEventType.Room0CollectibleDialogueEnd:
                 _closeSequencer.InitializeSequence();
                 break;
@@ -84,7 +70,6 @@ public class CinematicRoom0Manager : MonoBehaviour
                 GameManager.Instance.Character.TriggerChangeTempoWithouCooldown();
                 break;
             case DialogueEventType.AntreRiwaCinematicEnd:
-                _instance.IsCinematicDone = true;
                 _instance.RiwaSensaCamera.Priority = 0;
                 break;
             case DialogueEventType.SensaSpeaking:

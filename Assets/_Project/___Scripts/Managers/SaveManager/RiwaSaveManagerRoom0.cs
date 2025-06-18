@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class RiwaSaveManagerRoom0 : SaveManager<RiwaSaveManagerRoom0>
 {
-
+    
 }

@@ -36,25 +36,29 @@ public class Floor1Room0LevelManager : BaseLevelManager
         base.OnEnable();
         LoadData();
         SaveSystem.Instance.OnLoadProgress += LoadData;
+        _cinematicManager.OnDialogueEnd += SaveDialogueState;
     }
 
     private void OnDisable()
     {
         SaveSystem.Instance.OnLoadProgress -= LoadData;
-    }
-
-    public override void Start()
-    {
-        base.Start();
-        
+        _cinematicManager.OnDialogueEnd -= SaveDialogueState;
     }
 
     private void LoadData()
     {
+        _isCinematicDone = SaveSystem.Instance.LoadElement<bool>("DialogRoom0");
+
         if((EnumAdvancementRoom1)SaveSystem.Instance.LoadElement<int>("Room1Progress") >= EnumAdvancementRoom1.Room0)
         {
             GameManager.Instance.UnlockChangeTime();
         }
+    }
+
+    private void SaveDialogueState()
+    {
+        _isCinematicDone = true;
+        SaveSystem.Instance.SaveElement<bool>("DialogRoom0", _isCinematicDone);
     }
 
 }

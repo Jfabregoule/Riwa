@@ -92,6 +92,7 @@ public enum DialogueEventType
     DisableInput,
     CrateCameraFloor1Room2,
     DisplayRotate,
+    Room0CollectibleTaken,
 }
 
 public enum WaitDialogueEventType

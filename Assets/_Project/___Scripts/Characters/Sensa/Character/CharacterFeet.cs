@@ -33,7 +33,7 @@ public class CharacterFeet : MonoBehaviour, IRespawnable
         //GameManager.Instance.OnTimeChangeStarted += ClearListOnChangeTempo;
 
         _currentTreshold = _fallTreshold;
-        _radius = _character.GetComponent<CapsuleCollider>().radius * _character.transform.localScale.x;
+        _radius = _character.GetComponent<CapsuleCollider>().radius * _character.transform.localScale.x * 1.1f;
 
         int playerLayer = LayerMask.NameToLayer("whatIsPlayer");
         _playerMask = ~(1 << playerLayer);

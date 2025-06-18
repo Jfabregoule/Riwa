@@ -62,6 +62,7 @@ public class Floor1Room4LevelManager : BaseLevelManager
     {
         SaveSystem.Instance.OnLoadProgress -= LoadData;
         SaveSystem.Instance.SaveElement<bool>("Room4TutorialDone", _isTutorialDone);
+        SaveSystem.Instance.SaveProgressData();
         _rootCollider.OnGrowthPercentageReached -= PlayerCanInteractWithSocle;
         _rootCollider.OnGrowthPercentageUnreached -= PlayerCannotInteractWithSocle;
     }
@@ -106,8 +107,6 @@ public class Floor1Room4LevelManager : BaseLevelManager
             MuralPiece presentPiece = piece.gameObject.GetComponent<TemporalItem>().PresentItem.GetComponent<MuralPiece>();
             StartCoroutine(presentPiece.PlacePieceOnFresque());
             ChangeFresqueCompletionData(presentPiece, EnumTemporality.Present);
-            _isTutorialDone = true;
-            SaveSystem.Instance.SaveElement<bool>("Room4TutorialDone", true);
         }
 
         foreach (var entry in _fresqueCompletion)

@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
-
 public enum EnumAdvancementRoom1
 {
     Start,
@@ -265,8 +263,16 @@ public class Floor1Room1LevelManager : BaseLevelManager
             if(_currentZone < _cinematics[(int)CurrentAdvancement].Zones.Length)
             {
                 GetCurrentZone().gameObject.SetActive(true);
-                GetCurrentZone().OnPlace += PlayerInZone;
-                DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.PlayerInZone, OnPlayerInzone);
+                if(CurrentAdvancement == EnumAdvancementRoom1.Start)
+                {
+                    GetCurrentZone().OnPlace += PlayerInZone;
+                    DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.PlayerInZone, OnPlayerInzone);
+                }
+                else
+                {
+                    GetCurrentZone().OnPlace += BoxInZone;
+                    DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.BoxInZone, OnBoxInzone);
+                }
             }
         }
     }
@@ -337,6 +343,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
                 EventDispatcher(DialogueEventType.DisplayChangeTime);
                 break;
             case DialogueEventType.DisableInput:
+                GameManager.Instance.Character.StateMachine.GoToIdle();
                 InputManager.Instance.DisableGameplayControls();
                 break;
             case DialogueEventType.OnFinish:
@@ -411,8 +418,8 @@ public class Floor1Room1LevelManager : BaseLevelManager
             UpdateAdvancement(EnumAdvancementRoom1.Room0);
             _currentZone = 0;
             GetCurrentZone().gameObject.SetActive(true);
-            GetCurrentZone().OnPlace += PlayerInZone;
-            DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.PlayerInZone, OnPlayerInzone);
+            GetCurrentZone().OnPlace += BoxInZone;
+            DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.BoxInZone, OnBoxInzone);
             //OnLevelEnter += BeginDialogue;
             //_cinematics[(int)EnumAdvancementRoom1.Room0].Sequencers[0].InitializeSequence();
 

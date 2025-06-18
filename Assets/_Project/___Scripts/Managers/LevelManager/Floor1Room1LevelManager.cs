@@ -421,11 +421,8 @@ public class Floor1Room1LevelManager : BaseLevelManager
 
     public void EnterFromRoom4()
     {
-        if (CurrentAdvancement == EnumAdvancementRoom1.Liana)
-        {
-            UpdateAdvancement(EnumAdvancementRoom1.Room4);
-            OnLevelEnter += BeginDialogue;
-        }
+        UpdateAdvancement(EnumAdvancementRoom1.Room4);
+        OnLevelEnter += BeginDialogue;
         _backTrakingDoor.EnableDoor();
         _blockDoor.SetActive(false);
         if (_aroundDoor.material.HasProperty("_IsActivated"))

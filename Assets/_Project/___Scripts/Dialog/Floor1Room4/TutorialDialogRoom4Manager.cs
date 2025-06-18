@@ -40,6 +40,7 @@ public class TutorialDialogRoom4Manager : MonoBehaviour
 
     private void OnTutorialMuralPiecePickup(MuralPiece piece)
     {
+        GameManager.Instance.UIManager.StopPulse(UIElementEnum.Interact);
         _instance.IsTutorialDone = true;
         _dialogueSystem.EventRegistery.Invoke(WaitDialogueEventType.WaitPlayerToInteract);
         _sequencerCinematics[1].InitializeSequence();

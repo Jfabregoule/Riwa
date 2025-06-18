@@ -13,8 +13,6 @@ GameObject:
   - component: {fileID: 8151919258272006346}
   - component: {fileID: 5394181317867123251}
   - component: {fileID: 4474911517185176335}
-  - component: {fileID: 3937060200015019912}
-  - component: {fileID: 9094543587949275887}
   m_Layer: 7
   m_Name: DoorWest
   m_TagString: Untagged
@@ -31,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 5631987544733841}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -14.399, y: 3.115, z: -8.36}
+  m_LocalPosition: {x: -14.485, y: 3.115, z: -8.36}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -56,8 +54,8 @@ MonoBehaviour:
   _nextDoorDirection: 4
   _nextDoorID: 0
   _animationExit: 1
-  _enterDoorSequencer: {fileID: 3937060200015019912}
-  _exitDoorSequencer: {fileID: 9094543587949275887}
+  _enterDoorSequencer: {fileID: 5394181317867123251}
+  _exitDoorSequencer: {fileID: 4474911517185176335}
 --- !u!65 &8151919258272006346
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -97,42 +95,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 406ef1089baeeeb419f0466ac46a9035, type: 2}
   - {fileID: 11400000, guid: f7389e2a053890940b80ab28e7d5bfb6, type: 2}
 --- !u!114 &4474911517185176335
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5631987544733841}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e5d8709be7c39548b08fbe3b0d835c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SequenceActions:
-  - {fileID: 11400000, guid: bcd6018c190657e44a5ab09e769e5b49, type: 2}
-  - {fileID: 11400000, guid: 18424c2db6b653f44868825aad5a8948, type: 2}
-  - {fileID: 11400000, guid: cc42e50e97f6f9d4d8c14255e2dd9758, type: 2}
-  - {fileID: 11400000, guid: 88fa570a6a9065d4ab5d8609cccc0d9b, type: 2}
-  - {fileID: 11400000, guid: 684c0904c22f05c428b2a7f46e66eadc, type: 2}
-  - {fileID: 11400000, guid: 9181a0364f4eee24ebd2c96c1221e932, type: 2}
---- !u!114 &3937060200015019912
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5631987544733841}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e5d8709be7c39548b08fbe3b0d835c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SequenceActions:
-  - {fileID: 11400000, guid: bcd6018c190657e44a5ab09e769e5b49, type: 2}
-  - {fileID: 11400000, guid: 40233cf5b27c1894ab4e4f03ecdb5309, type: 2}
-  - {fileID: 11400000, guid: 406ef1089baeeeb419f0466ac46a9035, type: 2}
-  - {fileID: 11400000, guid: f7389e2a053890940b80ab28e7d5bfb6, type: 2}
---- !u!114 &9094543587949275887
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -196,6 +196,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
 
     public void InvokeMove()
     {
+        InputManager.Instance.EnableOptionsControls();
         GameManager.Instance.UIManager.StopHighlight(UIElementEnum.Joystick);
         InputManager.Instance.UnlockJoystick();
         _character.InputManager.OnMove -= InvokeMove;
@@ -357,6 +358,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
     private IEnumerator DisplayJoystick()
     {
         yield return Helpers.GetWait(1f);
+        InputManager.Instance.DisableOptionsControls();
         InputManager.Instance.EnableGameplayMoveControls();
         InputManager.Instance.LockJoystick();
         DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.Move, OnMove);

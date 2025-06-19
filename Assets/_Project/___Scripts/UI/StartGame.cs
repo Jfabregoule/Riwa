@@ -29,7 +29,7 @@ public class StartGame : MonoBehaviour
     public void LoadGameScene()
     {
         RiwaSoundMixerManager.Instance.BlendToTemporality(EnumTemporality.Present);
-        _navbar.CloseOption();
+        //_navbar.CloseOption();
         RiwaLoadSceneSystem.Instance.LoadFirstScene();
         _button.interactable = false;
     }

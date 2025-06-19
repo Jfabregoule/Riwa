@@ -35,7 +35,7 @@ public class RiwaLoadSceneSystem : LoadSceneSystem<RiwaLoadSceneSystem>
     public IEnumerator LoadFirstSceneCoroutine()
     {
         LoadSceneData();
-        GameManager.Instance.UIManager.BlackScreen.SetAlpha(1);
+        //GameManager.Instance.UIManager.BlackScreen.SetAlpha(1);
         yield return StartCoroutine(ChangeScene(new[] { new SceneData("MainMenu")}, new[] { new SceneData(GetCurrentRoomSceneName())}));
         SpawnPlayerToDoor();
     }

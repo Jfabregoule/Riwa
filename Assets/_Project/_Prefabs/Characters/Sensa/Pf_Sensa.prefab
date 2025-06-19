@@ -111,6 +111,7 @@ MonoBehaviour:
   _speed: 4
   _walkSpeed: 0.5
   interactRadius: 5
+  _stepHeight: 0.1
   _pastLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -285,8 +286,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _audioClip: {fileID: 8300000, guid: 355076eb071bf754590bf483fb2ee9b5, type: 3}
-  minPitch: 0.8
-  maxPitch: 1.2
+  _minPitch: 0.85
+  _maxPitch: 1.15
+  _minVolume: 0.75
+  _maxVolume: 1
 --- !u!1 &5276366881704650131
 GameObject:
   m_ObjectHideFlags: 0
@@ -339,6 +342,7 @@ MonoBehaviour:
   _speed: 4.5
   _walkSpeed: 2
   interactRadius: 5
+  _stepHeight: 0.3
   _pastLayer:
     serializedVersion: 2
     m_Bits: 64

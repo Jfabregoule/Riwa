@@ -17,8 +17,8 @@ Universal Render Pipeline (URP) – For beautiful, optimized mobile graphics.
 New Input System – For smooth and customizable mobile controls.
 
 🌍 Play the Game
-[Link to Game Download or Play Store]
-Download [Riwa] from Google Play and dive into the action today!
+[[Link to Game Download on Itch.io]](https://jfabregoule.itch.io/riwa)
+Download [Riwa] from Itch.io and dive into the action today!
 
 ✨ License
 This project is licensed under the ....

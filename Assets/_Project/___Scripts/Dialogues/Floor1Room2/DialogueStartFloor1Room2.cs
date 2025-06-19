@@ -1,10 +1,7 @@
 using Cinemachine;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 
 public class DialogueStartFloor1Room2 : MonoBehaviour
 {
@@ -58,6 +55,8 @@ public class DialogueStartFloor1Room2 : MonoBehaviour
     public void InvokeChangeTime()
     {
         if (!GameManager.Instance.Character.CanChangeTime) return;
+        InputManager.Instance.EnableOptionsControls();
+        InputManager.Instance.DisableGameplayChangeTimeControls();
         GameManager.Instance.UIManager.StopHighlight(UIElementEnum.ChangeTime);
         GameManager.Instance.Character.InputManager.OnChangeTime -= InvokeChangeTime;
         DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.ChangeTime);
@@ -80,13 +79,20 @@ public class DialogueStartFloor1Room2 : MonoBehaviour
                 break;
 
             case DialogueEventType.DisplayChangeTime:
-                InputManager.Instance.DisableGameplayControls();
-                InputManager.Instance.EnableGameplayChangeTimeControls();
-                DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.ChangeTime, ChangeTime);
-                GameManager.Instance.UIManager.StartHighlight(UIElementEnum.ChangeTime);
-                InputManager.Instance.OnChangeTime += InvokeChangeTime;
+                StartCoroutine(DisplayChangeTime());
                 break;
         }
+    }
+
+    private IEnumerator DisplayChangeTime()
+    {
+        yield return Helpers.GetWait(1.5f);
+        InputManager.Instance.DisableOptionsControls();
+        InputManager.Instance.DisableGameplayControls();
+        InputManager.Instance.EnableGameplayChangeTimeControls();
+        DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.ChangeTime, ChangeTime);
+        GameManager.Instance.UIManager.StartHighlight(UIElementEnum.ChangeTime);
+        InputManager.Instance.OnChangeTime += InvokeChangeTime;
     }
 
     private void SubscribeToDialogueSystem(DialogueSystem script)

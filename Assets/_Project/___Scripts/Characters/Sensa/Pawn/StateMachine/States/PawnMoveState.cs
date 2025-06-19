@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
+using static UnityEngine.UI.Image;
 
 public class PawnMoveState<TStateEnum> : BaseStatePawn<TStateEnum>
     where TStateEnum : Enum
@@ -18,9 +19,13 @@ public class PawnMoveState<TStateEnum> : BaseStatePawn<TStateEnum>
     protected float _clock;
     protected float _acceleration = 0.5f;
 
+    protected float _checkStepDistance;
+
     public override void InitState(StateMachinePawn<TStateEnum, BaseStatePawn<TStateEnum>> stateMachine, TStateEnum enumValue, APawn<TStateEnum> character)
     {
         base.InitState(stateMachine, enumValue, character);
+        
+        _checkStepDistance = _character.GetComponent<CapsuleCollider>().radius * _character.transform.localScale.x * 1.2f;
     }
 
     public override void EnterState()
@@ -54,6 +59,7 @@ public class PawnMoveState<TStateEnum> : BaseStatePawn<TStateEnum>
     {
         base.UpdateState();
 
+        
         Vector2 direction = _character.InputManager.GetMoveDirection();
 
         Vector3 camForward = _cam.transform.forward;
@@ -75,6 +81,20 @@ public class PawnMoveState<TStateEnum> : BaseStatePawn<TStateEnum>
             _targetDirection.y = 0;
             _animClock = 0;
 
+        }
+
+        Vector3 lowerRayOrigin = _character.transform.position + Vector3.up * 0.1f;
+        Vector3 upperRayOrigin = _character.transform.position + Vector3.up * (_character.StepHeight + 0.1f);
+
+        bool lowerHit = Physics.Raycast(lowerRayOrigin, _moveDirection, out RaycastHit lowerHitInfo, _checkStepDistance);
+        bool upperHit = Physics.Raycast(upperRayOrigin, _moveDirection, _checkStepDistance);
+
+        Debug.DrawRay(lowerRayOrigin, _moveDirection * _checkStepDistance, Color.red);
+        Debug.DrawRay(upperRayOrigin, _moveDirection * _checkStepDistance, Color.cyan);
+
+        if (lowerHit && !upperHit)
+        {
+                _character.Rb.position += Vector3.up * _character.StepHeight;
         }
 
         _animClock += Time.deltaTime * 20;

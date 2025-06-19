@@ -188,7 +188,8 @@ public class Floor1Room1LevelManager : BaseLevelManager
 
     public void InvokeChangeTime() {
         if (!_character.CanChangeTime) return;
-        InputManager.Instance.EnableGameplayControls();
+        InputManager.Instance.EnableOptionsControls();
+        InputManager.Instance.DisableGameplayChangeTimeControls();
         GameManager.Instance.UIManager.StopHighlight(UIElementEnum.ChangeTime);
         _character.InputManager.OnChangeTime -= InvokeChangeTime;
         DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.ChangeTime);
@@ -208,6 +209,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
 
     private void InvokeInteract()
     {
+        InputManager.Instance.EnableOptionsControls();
         GameManager.Instance.UIManager.StopHighlight(UIElementEnum.Interact);
         _character.InputManager.OnInteract -= InvokeInteract;
         DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.Interact);
@@ -215,6 +217,8 @@ public class Floor1Room1LevelManager : BaseLevelManager
 
     private void InvokeEndInteract()
     {
+        InputManager.Instance.EnableOptionsControls();
+        InputManager.Instance.EnableGameplayControls();
         GameManager.Instance.UIManager.StopHighlight(UIElementEnum.Interact);
         _character.InputManager.OnInteract -= InvokeEndInteract;
         DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.EndInteract);
@@ -222,6 +226,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
 
     private void InvokePull()
     {
+        InputManager.Instance.EnableOptionsControls();
         GameManager.Instance.UIManager.StopHighlight(UIElementEnum.Pull);
         _character.InputManager.OnPull -= InvokePull;
         DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.Pull);
@@ -229,6 +234,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
 
     private void InvokePush()
     {
+        InputManager.Instance.EnableOptionsControls();
         InputManager.Instance.EnableGameplayControls();
         GameManager.Instance.UIManager.StopHighlight(UIElementEnum.Push);
         _character.InputManager.OnPush -= InvokePush;
@@ -297,6 +303,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
                 StartCoroutine(DisplayJoystick());
                 break;
             case DialogueEventType.DisplayInteract:
+                InputManager.Instance.DisableOptionsControls();
                 InputManager.Instance.DisableGameplayMoveControls();
                 InputManager.Instance.EnableGameplayInteractControls();
                 DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.Interact, OnInteract);
@@ -305,6 +312,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
                 _character.InputManager.OnInteract += InvokeInteract;
                 break;
             case DialogueEventType.DisplayPull:
+                InputManager.Instance.DisableOptionsControls();
                 InputManager.Instance.DisableGameplayInteractControls();
                 InputManager.Instance.EnableGameplayPullControls();
                 DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.Pull, OnPull);
@@ -313,7 +321,8 @@ public class Floor1Room1LevelManager : BaseLevelManager
                 _character.InputManager.OnPull += InvokePull;
                 break;
             case DialogueEventType.DisplayPush:
-                InputManager.Instance.DisableGameplayInteractControls();
+                InputManager.Instance.DisableOptionsControls();
+                InputManager.Instance.DisableGameplayControls();
                 InputManager.Instance.EnableGameplayPushControls();
                 DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.Push, OnPush);
                 GameManager.Instance.UIManager.StartHighlight(UIElementEnum.Push);
@@ -321,6 +330,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
                 _character.InputManager.OnPush += InvokePush;
                 break;
             case DialogueEventType.TutoEndInteract:
+                InputManager.Instance.DisableOptionsControls();
                 InputManager.Instance.DisableGameplayPullControls();
                 InputManager.Instance.EnableGameplayInteractControls();
                 DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.EndInteract, OnEndInteract);
@@ -336,6 +346,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
                 InputManager.Instance.DisableGameplayControls();
                 break;
             case DialogueEventType.ShowGhost:
+                InputManager.Instance.EnableGameplayControls();
                 _ghost.gameObject.SetActive(true);
                 break;
             case DialogueEventType.HideGhost:
@@ -370,7 +381,8 @@ public class Floor1Room1LevelManager : BaseLevelManager
 
     private IEnumerator DisplayChangeTime()
     {
-        yield return Helpers.GetWait(1f); 
+        yield return Helpers.GetWait(1f);
+        InputManager.Instance.DisableOptionsControls();
         InputManager.Instance.DisableGameplayControls();
         InputManager.Instance.EnableGameplayChangeTimeControls();
         DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.ChangeTime, OnChangeTime);

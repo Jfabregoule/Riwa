@@ -4524,6 +4524,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2978388730110576360, guid: ce55b5b8729e5d0499cf4f840582cb3a,
         type: 3}
+      propertyPath: objectsToFade.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2978388730110576360, guid: ce55b5b8729e5d0499cf4f840582cb3a,
+        type: 3}
       propertyPath: objectsToFade.Array.data[0]
       value: 
       objectReference: {fileID: 521262253}
@@ -4532,6 +4537,16 @@ PrefabInstance:
       propertyPath: objectsToFade.Array.data[1]
       value: 
       objectReference: {fileID: 8975186552574242667}
+    - target: {fileID: 2978388730110576360, guid: ce55b5b8729e5d0499cf4f840582cb3a,
+        type: 3}
+      propertyPath: objectsToFade.Array.data[2]
+      value: 
+      objectReference: {fileID: 8975186552574242668}
+    - target: {fileID: 2978388730110576360, guid: ce55b5b8729e5d0499cf4f840582cb3a,
+        type: 3}
+      propertyPath: objectsToFade.Array.data[3]
+      value: 
+      objectReference: {fileID: 1718172374}
     - target: {fileID: 5975800709670614899, guid: ce55b5b8729e5d0499cf4f840582cb3a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8846,6 +8861,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fadeDuration: 1.5
   _colorPropertyName: _Color
+  _emissiveColorPropertyName: _EmissionColor
   _targetObstructedAlpha: 0.15
 --- !u!108 &141954635454245892
 Light:
@@ -10889,6 +10905,12 @@ ParticleSystem:
 --- !u!1 &8975186552574242667 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1376377817131619919, guid: 1fc259eea2717de41a048c6d4085e585,
+    type: 3}
+  m_PrefabInstance: {fileID: 8975186552574242663}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8975186552574242668 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8110417915091577369, guid: 1fc259eea2717de41a048c6d4085e585,
     type: 3}
   m_PrefabInstance: {fileID: 8975186552574242663}
   m_PrefabAsset: {fileID: 0}

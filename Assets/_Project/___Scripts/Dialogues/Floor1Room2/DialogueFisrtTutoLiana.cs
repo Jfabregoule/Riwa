@@ -75,7 +75,7 @@ public class DialogueFisrtTutoLiana : MonoBehaviour
 
     private void InvokeInteract()
     {
-        InputManager.Instance.EnableGameplayMoveControls();
+        InputManager.Instance.EnableOptionsControls();
         GameManager.Instance.UIManager.StopHighlight(UIElementEnum.Interact);
         InputManager.Instance.OnInteract -= InvokeInteract;
         DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.Interact);
@@ -91,7 +91,8 @@ public class DialogueFisrtTutoLiana : MonoBehaviour
                 DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.PlayerInZone, OnPlayerInZone);
                 break;
             case DialogueEventType.DisplayInteract:
-                InputManager.Instance.DisableGameplayMoveControls();
+                InputManager.Instance.DisableOptionsControls();
+                InputManager.Instance.DisableGameplayControls();
                 InputManager.Instance.EnableGameplayInteractControls();
                 DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.Interact, OnInteract);
                 GameManager.Instance.UIManager.StartHighlight(UIElementEnum.Interact);
@@ -108,7 +109,11 @@ public class DialogueFisrtTutoLiana : MonoBehaviour
                 ((Floor1Room2LevelManager)Floor1Room2LevelManager.Instance).RiwaFloor1Room2.MoveToSensa();
                 break;
             case DialogueEventType.EnablePlantRoom2:
+                InputManager.Instance.EnableGameplayControls();
                 ((Floor1Room2LevelManager)Floor1Room2LevelManager.Instance).BridgeVineScript.CanInteract = true;
+                break;
+            case DialogueEventType.ShowInput:
+                InputManager.Instance.DisableGameplayControls();
                 break;
         }
     }

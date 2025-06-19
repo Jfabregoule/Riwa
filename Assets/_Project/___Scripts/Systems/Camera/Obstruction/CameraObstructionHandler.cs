@@ -9,8 +9,7 @@ public class CameraObstructionHandler : MonoBehaviour
     [SerializeField] private string _colorPropertyName = "_Color";
     [SerializeField] private string _emissiveColorPropertyName = "_EmissionColor";
 
-    [Range(0f, 1f)]
-    [SerializeField] private float _targetObstructedAlpha = 0.0f;
+    private float _targetObstructedAlpha = 0.15f;
 
     private Transform _soul;
 
@@ -44,7 +43,10 @@ public class CameraObstructionHandler : MonoBehaviour
         foreach (RaycastHit hit in hits)
         {
             ObstructionGroup group = hit.collider.GetComponentInParent<ObstructionGroup>();
+
             if (group == null) continue;
+
+            _targetObstructedAlpha = group._targetObstructedAlpha;
 
             foreach (GameObject obj in group.objectsToFade)
             {

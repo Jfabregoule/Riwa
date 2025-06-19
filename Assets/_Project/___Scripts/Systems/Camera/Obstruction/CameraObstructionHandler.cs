@@ -121,39 +121,41 @@ public class CameraObstructionHandler : MonoBehaviour
         if (!_originalColors.ContainsKey(rend)) yield break;
         if (!_originalEmissiveColors.ContainsKey(rend)) yield break;
 
-        int materialCount = rend.sharedMaterials.Length;
+        int materialCount = rend.materials.Length;
         Color[] startColors = new Color[materialCount];
         Color[] startEColors = new Color[materialCount];
 
-        Material[] materials = rend.materials; 
-
-        for (int i = 0; i < materialCount; i++)
-        {
-            startColors[i] = _originalColors[rend][i];
-            startEColors[i] = _originalEmissiveColors[rend][i];
-
-           
-            if (!materials[i].IsKeywordEnabled("_EMISSION"))
-            {
-                materials[i].EnableKeyword("_EMISSION");
-            }
-        }
+        Material[] materials = rend.materials;
 
         for (int i = 0; i < materialCount; i++)
         {
             rend.GetPropertyBlock(_propBlock, i);
-            Color col = _propBlock.GetColor(_colorPropertyName);
-            Color eCol = _propBlock.GetColor(_emissiveColorPropertyName);
-            if (col == default)
-            {
-                col = rend.sharedMaterials[i].GetColor(_colorPropertyName);
-                eCol = rend.sharedMaterials[i].GetColor(_emissiveColorPropertyName);
-            }
-            startColors[i] = col;
-            startEColors[i] = eCol;
+            Color currentColor = _propBlock.GetColor(_colorPropertyName);
+            if (currentColor == default)
+                currentColor = materials[i].GetColor(_colorPropertyName);
+            startColors[i] = currentColor;
+
+            Color currentEColor = materials[i].GetColor(_emissiveColorPropertyName);
+            startEColors[i] = currentEColor;
+
+            // Activer l’émission si besoin
+            if (!materials[i].IsKeywordEnabled("_EMISSION"))
+                materials[i].EnableKeyword("_EMISSION");
         }
 
+        // Déterminer les couleurs cibles
+        Color[] targetColors = new Color[materialCount];
+        Color[] targetEColors = new Color[materialCount];
 
+        for (int i = 0; i < materialCount; i++)
+        {
+            targetColors[i] = _originalColors[rend][i];
+            targetColors[i].a = targetAlpha;
+
+            targetEColors[i] = targetAlpha < 1f
+                ? Color.black // Fade out : vers noir
+                : _originalEmissiveColors[rend][i]; // Fade in : vers couleur originale
+        }
 
         float timer = 0f;
         while (timer < _fadeDuration)
@@ -161,27 +163,24 @@ public class CameraObstructionHandler : MonoBehaviour
             float t = timer / _fadeDuration;
             for (int i = 0; i < materialCount; i++)
             {
-                Color c = startColors[i];
-                Color eC = startEColors[i];
-                c.a = Mathf.Lerp(startColors[i].a, targetAlpha, t);
-                eC = Color.Lerp(startEColors[i], new Color(0,0,0,0), t);
-                _propBlock.SetColor(_colorPropertyName, c);
+                Color col = Color.Lerp(startColors[i], targetColors[i], t);
+                Color eCol = Color.Lerp(startEColors[i], targetEColors[i], t);
+
+                _propBlock.SetColor(_colorPropertyName, col);
                 rend.SetPropertyBlock(_propBlock, i);
-                Color emissive = Color.Lerp(startEColors[i], Color.black, t);
-                materials[i].SetColor(_emissiveColorPropertyName, emissive);
+
+                materials[i].SetColor(_emissiveColorPropertyName, eCol);
             }
+
             timer += Time.deltaTime;
             yield return null;
         }
 
         for (int i = 0; i < materialCount; i++)
         {
-            Color finalColor = startColors[i];
-            finalColor.a = targetAlpha;
-            _propBlock.SetColor(_colorPropertyName, finalColor);
+            _propBlock.SetColor(_colorPropertyName, targetColors[i]);
             rend.SetPropertyBlock(_propBlock, i);
-
-            materials[i].SetColor(_emissiveColorPropertyName, Color.Lerp(startEColors[i], Color.black, 1f));
+            materials[i].SetColor(_emissiveColorPropertyName, targetEColors[i]);
         }
 
         _activeFades.Remove(rend);

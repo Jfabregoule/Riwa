@@ -98,15 +98,14 @@ public class Floor1Room1LevelManager : BaseLevelManager
         base.Start();
 
         _ghost.gameObject.SetActive(false);
-        
-        GameManager.Instance.UIManager.Hide(UIElementEnum.Interact);
-        GameManager.Instance.UIManager.Hide(UIElementEnum.Push);
 
-        // if (CurrentAdvancement == EnumAdvancementRoom1.Start)
-        // {
-        //     OnLevelEnter += BeginDialogue;
-        //     _currentZone = 0;
-        // }
+        if (CurrentAdvancement == EnumAdvancementRoom1.Start)
+        {
+            OnLevelEnter += BeginDialogue;
+            GameManager.Instance.UIManager.Hide(UIElementEnum.Interact);
+            GameManager.Instance.UIManager.Hide(UIElementEnum.Push);
+            _currentZone = 0;
+        }
 
         if (CurrentAdvancement >= EnumAdvancementRoom1.Room0)
         {

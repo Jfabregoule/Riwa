@@ -21,9 +21,6 @@ public class ScreenshotFromCamera : MonoBehaviour
 
     void Update()
     {
-
-        if (Keyboard.current[Key.M].wasPressedThisFrame)
-            Time.timeScale = 0.2f;
         
         if (Keyboard.current[ScreenshotKey].wasPressedThisFrame)
         {

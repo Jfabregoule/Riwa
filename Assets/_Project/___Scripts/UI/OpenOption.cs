@@ -12,6 +12,7 @@ public class OpenOption : MonoBehaviour
     [SerializeField] private float _movingTime;
     private InputManager _inputManager;
     private CanvasGroup _optionsButtonCanvasGroup;
+    private UiSoundPlayer _soundPlayer;
     private RectTransform _navbarRectTransform;
     private Vector3 _initialPos;
 
@@ -21,6 +22,7 @@ public class OpenOption : MonoBehaviour
         _optionsButtonCanvasGroup = GetComponent<CanvasGroup>();
         _navbarRectTransform = _navBarCanvasGroup.gameObject.GetComponent<RectTransform>();
         _initialPos = _navbarRectTransform.localPosition;
+        _soundPlayer = GetComponent<UiSoundPlayer>();
     }
 
     void OnDisable()
@@ -36,6 +38,7 @@ public class OpenOption : MonoBehaviour
         Helpers.DisabledCanvasGroup(_optionsButtonCanvasGroup);
         _inputManager.DisableGameplayControls();
         //_inputManager.DisableDialogueControls();
+        _soundPlayer.PlaySound();
         StartCoroutine(MoveNavbarUp());
     }
 

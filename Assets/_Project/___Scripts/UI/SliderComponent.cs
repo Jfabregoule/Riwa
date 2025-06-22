@@ -10,7 +10,8 @@ public class SliderComponent : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _valueText;
 
     private Slider _slider;
-
+    private UiSoundPlayer _soundPlayer;
+    private bool _isInitializing;
     private void OnEnable()
     {
         SaveSystem.Instance.OnLoadSettings += LoadingSlider;
@@ -18,8 +19,13 @@ public class SliderComponent : MonoBehaviour
     }
     void Start()
     {
+        _isInitializing = true;
         _slider = GetComponent<Slider>();
         _slider.value = SaveSystem.Instance.LoadElement<float>(_name, true);
+        _soundPlayer = GetComponent<UiSoundPlayer>();
+        _isInitializing = false;
+
+        _slider.onValueChanged.AddListener(OnVolumeChanged);
         UpdateText(_slider.value);
     }
 
@@ -42,5 +48,10 @@ public class SliderComponent : MonoBehaviour
     public void UpdateText(float value)
     {
         _valueText.text = value.ToString();
+    }
+
+    private void OnVolumeChanged(float value) 
+    {
+        _soundPlayer.PlaySound();
     }
 }

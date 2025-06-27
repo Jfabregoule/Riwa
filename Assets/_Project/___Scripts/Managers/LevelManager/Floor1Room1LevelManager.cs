@@ -8,7 +8,6 @@ public enum EnumAdvancementRoom1
     Room0,
     Liana,
     Room4,
-    EndCinematic,
     End
 }
 
@@ -116,18 +115,6 @@ public class Floor1Room1LevelManager : BaseLevelManager
 
         if (CurrentAdvancement == EnumAdvancementRoom1.Room4)
             OnLevelEnter += BeginDialogue;
-
-        if (CurrentAdvancement == EnumAdvancementRoom1.EndCinematic)
-        {
-            CurrentAdvancement -= 1;
-            OnLevelEnter += BeginDialogue;
-        }
-
-        if (CurrentAdvancement == EnumAdvancementRoom1.End)
-        {
-            CurrentAdvancement -= 2;
-            OnLevelEnter += BeginDialogue;
-        }
         
         DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.ChangeTime, OnChangeTime);
 
@@ -359,7 +346,6 @@ public class Floor1Room1LevelManager : BaseLevelManager
                 InputManager.Instance.DisableGameplayControls();
                 break;
             case DialogueEventType.OnFinish:
-                UpdateAdvancement(EnumAdvancementRoom1.EndCinematic);
                 _cinematics[(int)CurrentAdvancement].Sequencers[0].InitializeSequence();
                 StartCoroutine(BlendingCamera(_cinematicEndCamera));
                 break;

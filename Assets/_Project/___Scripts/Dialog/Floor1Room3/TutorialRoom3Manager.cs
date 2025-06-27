@@ -14,12 +14,11 @@ public class TutorialRoom3Manager : MonoBehaviour
     private Floor1Room3LevelManager _instance;
     private bool _chawaAlreadySpawned = false;
     private Vector3 _damierDiscussionPosition;
-    private int currentIndex = 0;
-    private int previousIndex = -1;
+    private int _currentIndex = 0;
+    private int _previousIndex = -1;
 
     public Vector3 DamierDiscussionPosition { get => _damierDiscussionPosition; set => _damierDiscussionPosition = value; }
     public List<DialogueAsset> Room3Dialogue { get => _damierDialogue; }
-    public DialogueAsset LianaDialogue { get => _lianaDialogue; }
 
     #region Events
 
@@ -70,8 +69,8 @@ public class TutorialRoom3Manager : MonoBehaviour
 
     private void SwitchToCamera(int index)
     {
-        if(previousIndex >= 0 && previousIndex < _instance.VinesCameras.Count)
-            _instance.VinesCameras[previousIndex].Priority = 0;
+        if(_previousIndex >= 0 && _previousIndex < _instance.VinesCameras.Count)
+            _instance.VinesCameras[_previousIndex].Priority = 0;
 
         _instance.VinesCameras[index].Priority = 20;
     }
@@ -164,15 +163,15 @@ public class TutorialRoom3Manager : MonoBehaviour
     {
         _instance.RiwaSensaCamera[1].Priority = 0;
 
-        while (currentIndex < _instance.VinesCameras.Count)
+        while (_currentIndex < _instance.VinesCameras.Count)
         {
-            SwitchToCamera(currentIndex);
-            previousIndex = currentIndex;
-            currentIndex++;
+            SwitchToCamera(_currentIndex);
+            _previousIndex = _currentIndex;
+            _currentIndex++;
             yield return new WaitForSeconds(2.5f);
         }
 
-        _instance.VinesCameras[previousIndex].Priority = 0;
+        _instance.VinesCameras[_previousIndex].Priority = 0;
         DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.WaitEndOfLianaPathTravel);
         _instance.RiwaSensaCamera[1].Priority = 20;
         yield return new WaitForSeconds(1.5f);

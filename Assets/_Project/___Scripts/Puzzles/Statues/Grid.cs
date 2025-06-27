@@ -227,6 +227,9 @@ public class Grid : MonoBehaviour, IActivable
 
     private void LoadData()
     {
+
+        _isGridActivated = SaveSystem.Instance.LoadElement<bool>("GridActivated");
+
         if (!SaveSystem.Instance.ContainsElements("StatuePosition0"))
         {
             return;
@@ -300,6 +303,7 @@ public class Grid : MonoBehaviour, IActivable
                     {
                         GameObject st = Instantiate(_defaultTile, position, Quaternion.identity);
                         st.name = "Tile Statue: " + solution.Value.id;
+                        st.isStatic = true;
                         st.transform.SetParent(transform);
                         grid[new CellPos(solution.Key.x, solution.Key.y)] = solution.Value;
                         break;
@@ -309,6 +313,7 @@ public class Grid : MonoBehaviour, IActivable
                 if (grid.ContainsKey(new CellPos(x, y)) && grid[new CellPos(x, y)] != null) continue;
                 GameObject tile = Instantiate(_defaultTile, position, Quaternion.identity);
                 tile.name = "Tile " + x + ", " + y;
+                tile.isStatic = true;
                 tile.transform.SetParent(transform);
                 grid[new CellPos(x, y)] = null;
             }
@@ -385,14 +390,12 @@ public class Grid : MonoBehaviour, IActivable
 
         if (isGridComplete)
         {
-            //SaveSystem.Instance.SaveElement<bool>("GridActivated", true);
-            _isGridActivated = true;
             foreach (Statue statues in _statues)
             {
                 statues.Validate = true;
             }
             GameManager.Instance.Character.StateMachine.GoToIdle();
-            StartCoroutine(ActiveElevator());
+            if(_isGridActivated == false) StartCoroutine(ActiveElevator());
             if (_showDebug == true) Debug.Log("Grille complétée avec succès !");
         }
         else
@@ -404,7 +407,8 @@ public class Grid : MonoBehaviour, IActivable
 
     private IEnumerator ActiveElevator()
     {
-
+        SaveSystem.Instance.SaveElement<bool>("GridActivated", true);
+        _isGridActivated = true;
         yield return new WaitForSeconds(2.5f);
 
         _room4LevelManager.ElevatorCamera.Priority = 20;

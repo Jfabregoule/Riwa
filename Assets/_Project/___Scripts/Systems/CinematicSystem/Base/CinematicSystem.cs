@@ -64,6 +64,7 @@ public class CinematicSystem<T> : Singleton<T> where T : CinematicSystem<T>
         if (audioSource == null)
         {
             audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.playOnAwake = false;
             _videoPlayer.SetTargetAudioSource(0, audioSource);
         }
         audioSource.outputAudioMixerGroup = _audioMixerGroup; 

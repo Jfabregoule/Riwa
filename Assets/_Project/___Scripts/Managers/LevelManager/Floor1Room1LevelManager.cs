@@ -32,7 +32,6 @@ public class Floor1Room1LevelManager : BaseLevelManager
     private CinemachineBlendDefinition _defaultBlend;
     [SerializeField] private GameObject _riwaHeart;
     [SerializeField] private List<ParticleSystem> _riwaHeartPS;
-    [SerializeField] private CinemachineVirtualCamera _endGameCamera;
     [SerializeField] private CinemachineVirtualCamera _lianaCamera;
     [SerializeField] private CinemachineVirtualCamera _crateCamera;
     [SerializeField] private CinemachineVirtualCamera _cinematicEndCamera;
@@ -67,7 +66,6 @@ public class Floor1Room1LevelManager : BaseLevelManager
 
     public EndGameCinematic EndGameCinematic { get => _endGameCinematic; }
     public GameObject RiwaHeart { get => _riwaHeart; }
-    public CinemachineVirtualCamera EndGameCamera { get => _endGameCamera; }
     public CinemachineVirtualCamera LianaCamera { get => _lianaCamera; }
     public CinemachineVirtualCamera CrateCamera { get => _crateCamera; }
     public List<ParticleSystem> RiwaHeartPS { get => _riwaHeartPS; }
@@ -438,6 +436,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
     public void UpdateAdvancement(EnumAdvancementRoom1 advancement)
     {
         CurrentAdvancement = advancement;
+        if (CurrentAdvancement == EnumAdvancementRoom1.End) return;
         foreach (Sequencer sequencer in _cinematics[(int)CurrentAdvancement].Sequencers)
         {
             sequencer.Init();

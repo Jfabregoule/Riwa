@@ -14,7 +14,7 @@ public class SequenceActionUpdateAvancement : SequencerAction
 
     public override IEnumerator StartSequence(Sequencer context)
     {
-        _levelManager.CurrentAdvancement = EnumAdvancementRoom1.End;
+        _levelManager.UpdateAdvancement(EnumAdvancementRoom1.End);
         yield return null;
     }
 }

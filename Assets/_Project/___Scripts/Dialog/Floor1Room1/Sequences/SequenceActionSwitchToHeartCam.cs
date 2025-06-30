@@ -15,7 +15,7 @@ public class SequenceActionSwitchToHeartCam : SequencerAction
 
     public override IEnumerator StartSequence(Sequencer context)
     {
-        _instance.EndGameCamera.Priority = 30;
+        _instance.CameraDictionnary[EnumCameraRoom.LastCameraRoom1].Priority = 30;
         yield return null;
     }
 }

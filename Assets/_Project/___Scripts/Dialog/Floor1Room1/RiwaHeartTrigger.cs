@@ -3,12 +3,14 @@ using UnityEngine;
 public class RiwaHeartTrigger : MonoBehaviour
 {
 
+    [SerializeField] private Sequencer _sequencer;
     private Floor1Room1LevelManager _instance;
     private bool _gameEndTriggered = false;
 
     private void Start()
     {
         _instance = (Floor1Room1LevelManager)Floor1Room1LevelManager.Instance;
+        _sequencer.Init();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -17,8 +19,7 @@ public class RiwaHeartTrigger : MonoBehaviour
         {
             _gameEndTriggered = true;
             GameManager.Instance.Character.InputManager.DisableGameplayControls();
-            _instance.UpdateAdvancement(EnumAdvancementRoom1.End);
-            _instance.EndGameSequencer.InitializeSequence();
+            _sequencer.InitializeSequence();
         }
     }
 

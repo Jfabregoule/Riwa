@@ -20,7 +20,6 @@ public class SequenceActionSensaMoveTo : SequencerAction
 
     public override IEnumerator StartSequence(Sequencer context)
     {
-        Debug.Log("Appel de SO : " + name);
         _isMoving = true;
         _chara.OnMoveToFinished += FinishMoveTo;
         _chara.WalkSpeed = 1f;

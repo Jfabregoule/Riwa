@@ -1,39 +1,39 @@
 using System;
 
 /// <summary>
-/// Représente les données associées à une scène à charger ou décharger.
-/// Contient le nom de la scène, sa priorité dans la file de chargement, et des callbacks à exécuter.
+/// ReprÃ©sente les donnÃ©es associÃ©es Ã  une scÃ¨ne Ã  charger ou dÃ©charger.
+/// Contient le nom de la scÃ¨ne, sa prioritÃ© dans la file de chargement, et des callbacks Ã  exÃ©cuter.
 /// </summary>
 [Serializable]
 public class SceneData
 {
     /// <summary>
-    /// Nom exact de la scène tel qu’indiqué dans les Build Settings de Unity.
+    /// Nom exact de la scÃ¨ne tel quâ€™indiquÃ© dans les Build Settings de Unity.
     /// </summary>
     public string Name;
 
     /// <summary>
-    /// Priorité de chargement : plus la valeur est basse, plus la scène sera chargée tôt.
+    /// PrioritÃ© de chargement : plus la valeur est basse, plus la scÃ¨ne sera chargÃ©e tÃ´t.
     /// </summary>
     public int Priority = 0;
 
     /// <summary>
-    /// Callback exécuté lorsque la scène a été entièrement chargée.
+    /// Callback exÃ©cutÃ© lorsque la scÃ¨ne a Ã©tÃ© entiÃ¨rement chargÃ©e.
     /// </summary>
     public Action[] OnLoaded;
 
     /// <summary>
-    /// Callback exécuté lorsque la scène a été entièrement déchargée.
+    /// Callback exÃ©cutÃ© lorsque la scÃ¨ne a Ã©tÃ© entiÃ¨rement dÃ©chargÃ©e.
     /// </summary>
     public Action[] OnUnloaded;
 
     /// <summary>
-    /// Constructeur complet de la scène.
+    /// Constructeur complet de la scÃ¨ne.
     /// </summary>
-    /// <param name="name">Nom de la scène</param>
-    /// <param name="priority">Priorité dans la file de chargement</param>
-    /// <param name="onLoaded">Action à exécuter après chargement</param>
-    /// <param name="onUnloaded">Action à exécuter après déchargement</param>
+    /// <param name="name">Nom de la scÃ¨ne</param>
+    /// <param name="priority">PrioritÃ© dans la file de chargement</param>
+    /// <param name="onLoaded">Action Ã  exÃ©cuter aprÃ¨s chargement</param>
+    /// <param name="onUnloaded">Action Ã  exÃ©cuter aprÃ¨s dÃ©chargement</param>
     public SceneData(string name, int priority = 0, Action[] onLoaded = null, Action[] onUnloaded = null)
     {
         Name = name;

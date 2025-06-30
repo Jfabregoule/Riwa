@@ -65,7 +65,6 @@ public class Floor1Room1LevelManager : BaseLevelManager
 
     private bool _isCrateWellPlaced;
 
-    public Sequencer EndGameSequencer { get => _cinematics[(int)EnumAdvancementRoom1.End].Sequencers[0]; }
     public EndGameCinematic EndGameCinematic { get => _endGameCinematic; }
     public GameObject RiwaHeart { get => _riwaHeart; }
     public CinemachineVirtualCamera EndGameCamera { get => _endGameCamera; }
@@ -112,9 +111,6 @@ public class Floor1Room1LevelManager : BaseLevelManager
             GameManager.Instance.UIManager.Display(UIElementEnum.ChangeTime);
             //GameManager.Instance.UnlockChangeTime();
         }
-
-        if (CurrentAdvancement == EnumAdvancementRoom1.Room4)
-            OnLevelEnter += BeginDialogue;
         
         DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.ChangeTime, OnChangeTime);
 
@@ -345,7 +341,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
                 GameManager.Instance.Character.StateMachine.GoToIdle();
                 InputManager.Instance.DisableGameplayControls();
                 break;
-            case DialogueEventType.OnFinish:
+            case DialogueEventType.OnFinishEndDialogue:
                 _cinematics[(int)CurrentAdvancement].Sequencers[0].InitializeSequence();
                 StartCoroutine(BlendingCamera(_cinematicEndCamera));
                 break;
@@ -428,8 +424,11 @@ public class Floor1Room1LevelManager : BaseLevelManager
 
     public void EnterFromRoom4()
     {
-        UpdateAdvancement(EnumAdvancementRoom1.Room4);
-        OnLevelEnter += BeginDialogue;
+        if (CurrentAdvancement != EnumAdvancementRoom1.End)
+        {
+            UpdateAdvancement(EnumAdvancementRoom1.Room4);
+            OnLevelEnter += BeginDialogue;
+        }
         _backTrakingDoor.EnableDoor();
         _blockDoor.SetActive(false);
         if (_aroundDoor.material.HasProperty("_IsActivated"))

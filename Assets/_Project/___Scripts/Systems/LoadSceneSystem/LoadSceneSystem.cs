@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /// <summary>
-/// Système de chargement de scènes avec file d'attente, gestion de la priorité, progression, et écran de chargement optionnel.
+/// SystÃ¨me de chargement de scÃ¨nes avec file d'attente, gestion de la prioritÃ©, progression, et Ã©cran de chargement optionnel.
 /// </summary>
 public class LoadSceneSystem<T> : Singleton<T> where T : LoadSceneSystem<T>
 {
@@ -22,11 +22,11 @@ public class LoadSceneSystem<T> : Singleton<T> where T : LoadSceneSystem<T>
     #region Public API
 
     /// <summary>
-    /// Ajoute plusieurs scènes à charger à la file, triées par priorité.
-    /// Démarre le chargement si aucun n’est en cours.
+    /// Ajoute plusieurs scÃ¨nes Ã  charger Ã  la file, triÃ©es par prioritÃ©.
+    /// DÃ©marre le chargement si aucun nâ€™est en cours.
     /// </summary>
-    /// <param name="scenes">Les scènes à charger</param>
-    /// <param name="useLoadingScreen">Utiliser la scène de chargement ?</param>
+    /// <param name="scenes">Les scÃ¨nes Ã  charger</param>
+    /// <param name="useLoadingScreen">Utiliser la scÃ¨ne de chargement ?</param>
     public void EnqueueScenes(IEnumerable<SceneData> scenes, bool useLoadingScreen = true)
     {
         foreach (var scene in scenes.OrderBy(s => s.Priority))
@@ -47,17 +47,17 @@ public class LoadSceneSystem<T> : Singleton<T> where T : LoadSceneSystem<T>
     }
 
     /// <summary>
-    /// Ajoute une seule scène à la file de chargement.
+    /// Ajoute une seule scÃ¨ne Ã  la file de chargement.
     /// </summary>
-    /// <param name="scene">La scène à charger</param>
-    /// <param name="useLoadingScreen">Utiliser la scène de chargement ?</param>
+    /// <param name="scene">La scÃ¨ne Ã  charger</param>
+    /// <param name="useLoadingScreen">Utiliser la scÃ¨ne de chargement ?</param>
     public void EnqueueScene(SceneData scene, bool useLoadingScreen = true)
     {
         EnqueueScenes(new[] { scene }, useLoadingScreen);
     }
 
     /// <summary>
-    /// Vérifie si toutes les scènes données peuvent être chargées.
+    /// VÃ©rifie si toutes les scÃ¨nes donnÃ©es peuvent Ãªtre chargÃ©es.
     /// </summary>
     public bool ValidateScenes(IEnumerable<SceneData> scenes)
     {
@@ -65,7 +65,7 @@ public class LoadSceneSystem<T> : Singleton<T> where T : LoadSceneSystem<T>
     }
 
     /// <summary>
-    /// Décharge les scènes spécifiées de manière asynchrone.
+    /// DÃ©charge les scÃ¨nes spÃ©cifiÃ©es de maniÃ¨re asynchrone.
     /// </summary>
     public IEnumerator UnloadScenes(IEnumerable<SceneData> scenes)
     {
@@ -90,7 +90,7 @@ public class LoadSceneSystem<T> : Singleton<T> where T : LoadSceneSystem<T>
     }
 
     /// <summary>
-    /// Décharge la scène spécifiée de manière asynchrone.
+    /// DÃ©charge la scÃ¨ne spÃ©cifiÃ©e de maniÃ¨re asynchrone.
     /// </summary>
     public IEnumerator UnloadScene(SceneData scene)
     {
@@ -108,13 +108,13 @@ public class LoadSceneSystem<T> : Singleton<T> where T : LoadSceneSystem<T>
     }
 
     /// <summary>
-    /// Change la scène en déchargeant les scènes données, en chargeant les nouvelles scènes, et en affichant l'écran de chargement.
+    /// Change la scÃ¨ne en dÃ©chargeant les scÃ¨nes donnÃ©es, en chargeant les nouvelles scÃ¨nes, et en affichant l'Ã©cran de chargement.
     /// </summary>
-    /// <param name="scenesToUnload">Les scènes à décharger</param>
-    /// <param name="scenesToLoad">Les scènes à charger</param>
+    /// <param name="scenesToUnload">Les scÃ¨nes Ã  dÃ©charger</param>
+    /// <param name="scenesToLoad">Les scÃ¨nes Ã  charger</param>
     public IEnumerator ChangeScene(IEnumerable<SceneData> scenesToUnload, IEnumerable<SceneData> scenesToLoad)
     {
-        // Démarrer l'écran de chargement
+        // DÃ©marrer l'Ã©cran de chargement
         yield return StartCoroutine(ChangeSceneCoroutine(scenesToUnload, scenesToLoad));
     }
 
@@ -123,7 +123,7 @@ public class LoadSceneSystem<T> : Singleton<T> where T : LoadSceneSystem<T>
     #region Internals
 
     /// <summary>
-    /// Charge la scène du LoadingScreen, puis traite la file de chargement, et la décharge ensuite.
+    /// Charge la scÃ¨ne du LoadingScreen, puis traite la file de chargement, et la dÃ©charge ensuite.
     /// </summary>
     private IEnumerator ProcessQueueWithLoadingScreen()
     {
@@ -134,7 +134,7 @@ public class LoadSceneSystem<T> : Singleton<T> where T : LoadSceneSystem<T>
         _loadingScreen = GameObject.FindGameObjectWithTag("LoadingScreen")?.GetComponent<ILoadingScreen>();
 
         if (_loadingScreen == null)
-            Debug.LogWarning("LoadingScreen GameObject not trouvé dans la scène 'LoadingScreen'.");
+            Debug.LogWarning("LoadingScreen GameObject not trouvÃ© dans la scÃ¨ne 'LoadingScreen'.");
 
         yield return StartCoroutine(ProcessQueue());
 
@@ -145,7 +145,7 @@ public class LoadSceneSystem<T> : Singleton<T> where T : LoadSceneSystem<T>
     }
 
     /// <summary>
-    /// Traite la file de scènes à charger avec suivi de progression.
+    /// Traite la file de scÃ¨nes Ã  charger avec suivi de progression.
     /// </summary>
     private IEnumerator ProcessQueue()
     {
@@ -215,7 +215,7 @@ public class LoadSceneSystem<T> : Singleton<T> where T : LoadSceneSystem<T>
     }
 
     /// <summary>
-    /// Vérifie si une scène est déjà chargée.
+    /// VÃ©rifie si une scÃ¨ne est dÃ©jÃ  chargÃ©e.
     /// </summary>
     private bool IsSceneAlreadyLoaded(string sceneName)
     {
@@ -230,7 +230,7 @@ public class LoadSceneSystem<T> : Singleton<T> where T : LoadSceneSystem<T>
     }
 
     /// <summary>
-    /// Coroutine qui gère le changement de scène : déchargement, chargement et écran de chargement.
+    /// Coroutine qui gÃ¨re le changement de scÃ¨ne : dÃ©chargement, chargement et Ã©cran de chargement.
     /// </summary>
     private IEnumerator ChangeSceneCoroutine(IEnumerable<SceneData> scenesToUnload, IEnumerable<SceneData> scenesToLoad)
     {
@@ -239,7 +239,7 @@ public class LoadSceneSystem<T> : Singleton<T> where T : LoadSceneSystem<T>
         _loadingScreen = GameObject.FindGameObjectWithTag("LoadingScreen")?.GetComponent<ILoadingScreen>();
 
         if (_loadingScreen == null)
-            Debug.LogWarning("LoadingScreen GameObject not trouvé dans la scène 'LoadingScreen'.");
+            Debug.LogWarning("LoadingScreen GameObject not trouvÃ© dans la scÃ¨ne 'LoadingScreen'.");
 
         _loadingScreen?.Show();
 

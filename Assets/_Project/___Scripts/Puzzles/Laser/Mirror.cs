@@ -25,7 +25,7 @@ public class Mirror : MonoBehaviour, IRotatable
     private void Desactivate()
     {
         _activable.GetComponent<IActivable>().OnActivated -= Desactivate;
-        CanInteract = false;
+        //CanInteract = false;
     }
 
     public event IRotatable.RotatableEvent OnRotateFinished;

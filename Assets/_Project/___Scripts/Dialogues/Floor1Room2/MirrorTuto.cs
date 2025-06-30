@@ -103,6 +103,7 @@ public class MirrorTuto : MonoBehaviour
 
     private void InvokeRotate()
     {
+        InputManager.Instance.DisableGameplayRotateControls();
         InputManager.Instance.EnableOptionsControls();
         InputManager.Instance.EnableGameplayControls();
         GameManager.Instance.UIManager.StopHighlight(UIElementEnum.Rotate);

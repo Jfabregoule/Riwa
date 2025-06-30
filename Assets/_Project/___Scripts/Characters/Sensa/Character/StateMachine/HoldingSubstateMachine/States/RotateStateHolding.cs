@@ -29,12 +29,6 @@ public class RotateStateHolding : HoldingBaseState
         _character.Animator.SetFloat("RotationSpeed", _rotatable.RotateSpeed);
 
         _character.OnRotate += LaunchRotate;
-
-        _character.InputManager.OnRotateLeft += OnRotateLeft;
-        _character.InputManager.OnRotateRight += OnRotateRight;
-        _character.InputManager.OnPush += OnPush;
-        _character.InputManager.OnPull += OnPull;
-
     }
 
     private void LaunchRotate()
@@ -45,7 +39,6 @@ public class RotateStateHolding : HoldingBaseState
             rotatable.Rotate(Sens);
             rotatable.OnRotateFinished += Finish;
         }
-
     }
 
     public override void ExitState()
@@ -65,20 +58,11 @@ public class RotateStateHolding : HoldingBaseState
     public override void UpdateState()
     {
         base.UpdateState();
-
-        //Security car je trigger le rotate par l'animation donc si pb avec anim on peut sortir du state
-        //_clock += Time.deltaTime;
-        //if( _clock > 1.5 )
-        //{
-        //    LaunchRotate();
-        //}
-
     }
 
     public override void CheckChangeState()
     {
         base.CheckChangeState();
-
     }
 
     private void Finish()
@@ -90,6 +74,11 @@ public class RotateStateHolding : HoldingBaseState
             _stateMachine.ChangeState(_stateMachine.States[EnumHolding.IdleHolding]);
             return;
         }
+
+        _character.InputManager.OnRotateLeft += OnRotateLeft;
+        _character.InputManager.OnRotateRight += OnRotateRight;
+        _character.InputManager.OnPush += OnPush;
+        _character.InputManager.OnPull += OnPull;
     }
 
     public override void DestroyState()

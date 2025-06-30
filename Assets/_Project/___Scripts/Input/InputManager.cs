@@ -115,6 +115,8 @@ public class InputManager : Singleton<InputManager>
     public void EnableGameplayControls()
     {
         if (_gameplayEnabled) return;
+        UnbindGameplayEvents();
+
         _gameplayEnabled = true;
 
         _rotateEnabled = true;
@@ -190,6 +192,7 @@ public class InputManager : Singleton<InputManager>
     public void DisableGameplayRotateControls()
     {
         _rotateEnabled = false;
+        _controls.Gameplay.Displacement.Disable();
     }
     public void EnableGameplayPushControls()
     {
@@ -288,6 +291,7 @@ public class InputManager : Singleton<InputManager>
         _controls.Gameplay.ChangeTime.performed += ctx => ChangeTimePerfomed();
         _controls.Gameplay.Interact.performed += ctx => InteractPerfomed();
 
+        Debug.Log("Abonné");
         _controls.Gameplay.Displacement.performed += ctx => DisplacementPerfomed();
         _controls.Gameplay.Displacement.canceled += ctx => DisplacementCanceled();
     }
@@ -304,6 +308,7 @@ public class InputManager : Singleton<InputManager>
 
         _controls.Gameplay.Displacement.performed -= ctx => DisplacementPerfomed();
         _controls.Gameplay.Displacement.canceled -= ctx => DisplacementCanceled();
+        Debug.Log("Désabonné");
     }
 
     private void BindDialogueEvents()
@@ -327,6 +332,18 @@ public class InputManager : Singleton<InputManager>
         _controls.Options.Open.performed -= ctx => OptionsPerfomed();
         _controls.Options.Touch.performed -= ctx => TouchScreenPerformed();
 
+    }
+
+    private void BindRotateEvents()
+    {
+        _controls.Gameplay.Displacement.performed += ctx => DisplacementPerfomed();
+        _controls.Gameplay.Displacement.canceled += ctx => DisplacementCanceled();
+    }
+
+    private void UnbindRotateEvents()
+    {
+        _controls.Gameplay.Displacement.performed -= ctx => DisplacementPerfomed();
+        _controls.Gameplay.Displacement.canceled -= ctx => DisplacementCanceled();
     }
     #endregion
 
@@ -393,9 +410,13 @@ public class InputManager : Singleton<InputManager>
             else if (_currentDisplacement == Vector2.down && _pullEnabled)
                 OnPull?.Invoke();
             else if (_currentDisplacement == Vector2.left && _rotateEnabled)
+            {
                 OnRotateLeft?.Invoke();
+            }
             else if (_currentDisplacement == Vector2.right && _rotateEnabled)
+            {
                 OnRotateRight?.Invoke();
+            }
             else
                 DisplacementCanceled();
 

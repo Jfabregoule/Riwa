@@ -93,7 +93,8 @@ public enum DialogueEventType
     CrateCameraFloor1Room2,
     DisplayRotate,
     Room0CollectibleTaken,
-    StartTutoLiana
+    StartTutoLiana,
+    OnFinishEndDialogue
 }
 
 public enum WaitDialogueEventType

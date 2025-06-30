@@ -341,7 +341,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
                 GameManager.Instance.Character.StateMachine.GoToIdle();
                 InputManager.Instance.DisableGameplayControls();
                 break;
-            case DialogueEventType.OnFinish:
+            case DialogueEventType.OnFinishEndDialogue:
                 _cinematics[(int)CurrentAdvancement].Sequencers[0].InitializeSequence();
                 StartCoroutine(BlendingCamera(_cinematicEndCamera));
                 break;

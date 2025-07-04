@@ -56,8 +56,13 @@ public class RiwaSaveManagerRoom2 : SaveManager<RiwaSaveManagerRoom2>
 
         for (int i = 0; i < _mirrors.Count; i++)
         {
-            mirrorRotation = new SerializableVector3(_mirrors[i].rotation.eulerAngles);
-            SaveSystem.Instance.SaveElement<SerializableVector3>(_roomPrefix + $"MirrorRotation{i}", mirrorRotation);
+            Mirror currentMirror = _mirrors[i].GetComponent<Mirror>();
+            float currentRotation = _mirrors[i].rotation.eulerAngles.y;
+            if (Mathf.Approximately(currentRotation % currentMirror.Angle, 0f))
+            {
+                mirrorRotation = new SerializableVector3(_mirrors[i].rotation.eulerAngles);
+                SaveSystem.Instance.SaveElement<SerializableVector3>(_roomPrefix + $"MirrorRotation{i}", mirrorRotation);
+            }
         }
     }
 }

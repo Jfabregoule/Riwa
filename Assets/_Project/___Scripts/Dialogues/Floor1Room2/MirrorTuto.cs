@@ -24,6 +24,8 @@ public class MirrorTuto : MonoBehaviour
     private int CurrentActive;
     private bool _done;
 
+    private bool _interactedWithMirror = false;
+    
     private System.Action OnRotate;
     private System.Action OnPlayerInZone;
     private System.Action CameraFinish;
@@ -38,6 +40,7 @@ public class MirrorTuto : MonoBehaviour
     private void LoadData()
     {
         _done = SaveSystem.Instance.LoadElement<bool>("Room2TutoMirror");
+        _interactedWithMirror = SaveSystem.Instance.LoadElement<bool>("Room2TutoMirrorInteracted");
     }
     void Start()
     {
@@ -63,8 +66,11 @@ public class MirrorTuto : MonoBehaviour
         }
 
         DesactiveGhost();
-
-        GameManager.Instance.UIManager.Hide(UIElementEnum.Rotate);
+        
+        if(_interactedWithMirror == false)
+            GameManager.Instance.UIManager.Hide(UIElementEnum.Rotate);
+        else
+            GameManager.Instance.UIManager.Display(UIElementEnum.Rotate);
     }
 
     private void OnDisable()
@@ -142,6 +148,8 @@ public class MirrorTuto : MonoBehaviour
                 DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.Rotate, OnRotate);
                 GameManager.Instance.UIManager.StartHighlight(UIElementEnum.Rotate);
                 GameManager.Instance.UIManager.Display(UIElementEnum.Rotate);
+                GameManager.Instance.UIManager.RotationUnlocked = true;
+                SaveSystem.Instance.SaveElement<bool>("RotationUnlocked", true);
                 InputManager.Instance.OnRotateLeft += InvokeRotate;
                 InputManager.Instance.OnRotateRight += InvokeRotate;
                 break;

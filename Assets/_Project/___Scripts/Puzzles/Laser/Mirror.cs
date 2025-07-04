@@ -10,6 +10,8 @@ public class Mirror : MonoBehaviour, IRotatable
     public float OffsetRadius { get; set; }
     public bool CanInteract { get; set; }
     public int Priority { get; set; }
+    
+    public float Angle { get => _angle; }
 
     public float RotateSpeed { get => _rotateSpeed; set => _rotateSpeed = value; }
 

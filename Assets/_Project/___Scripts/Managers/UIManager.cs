@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -38,7 +39,9 @@ public class UIManager : MonoBehaviour
     public BlackScreen BlackScreen { get { return _blackScreen; } }
     public DialogueUIDispacher DialogueUIDispacher { get { return _dialogueUIDispacher; } }
 
-    public Navbar Navbar { get { return _navbar; } } 
+    public Navbar Navbar { get { return _navbar; } }
+
+    public bool RotationUnlocked { get; set; }
 
     private void Awake()
     {
@@ -49,6 +52,29 @@ public class UIManager : MonoBehaviour
                 g => g.ToDictionary(e => e.IsRight, e => e.Element)
         );
 
+    }
+
+    private void OnEnable()
+    {
+        LoadData();
+        SaveSystem.Instance.OnLoadProgress += LoadData;
+    }
+
+    private void LoadData()
+    {
+        RotationUnlocked = SaveSystem.Instance.LoadElement<bool>("RotationUnlocked");
+    }
+
+    private void OnDisable()
+    {
+        SaveSystem.Instance.OnLoadProgress -= LoadData;
+        SaveSystem.Instance.SaveElement<bool>("RotationUnlocked", RotationUnlocked);
+    }
+
+    private void Start()
+    {
+        if(RotationUnlocked == true)
+            Display(UIElementEnum.Rotate);
     }
 
     public void StartPulse(UIElementEnum uiElementEnum)

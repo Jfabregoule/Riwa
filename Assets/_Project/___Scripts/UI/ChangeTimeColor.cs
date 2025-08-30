@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,11 +19,27 @@ public class ChangeTimeColor : MonoBehaviour
     {
         _isPresent = true;
         _image = GetComponent<Image>();
+
+        GameManager.Instance.OnResetSave += AwakeningColor;
+    }
+
+    private void OnDisable()
+    {
+        if(GameManager.Instance != null)
+        {
+            GameManager.Instance.OnResetSave -= AwakeningColor;
+        }
+    }
+
+    private void AwakeningColor()
+    {
+        SetColor(GameManager.Instance.CurrentTemporality);
     }
 
     private void SetColor(EnumTemporality temporality)
     {
         _isPresent = !_isPresent;
+        _isPresent = temporality == EnumTemporality.Present;
 
         if (_colorCoroutine != null)
             StopCoroutine(_colorCoroutine);

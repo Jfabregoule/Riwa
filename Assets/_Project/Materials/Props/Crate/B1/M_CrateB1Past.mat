@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: M_CrateB1Past
-  m_Shader: {fileID: -6465566751694194690, guid: b54d96ce1b8eaaf4ca2d26782caf1e84,
+  m_Shader: {fileID: -6465566751694194690, guid: 1de8b5552cd848d49aeaedf1f62fbb90,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -25,8 +25,16 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _AmbiantOcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _AmbianteOcclusion:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BaseColorMap:
+        m_Texture: {fileID: 2800000, guid: f84660632d88fc54a866b88e0be22b03, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseColorText:
@@ -61,8 +69,16 @@ Material:
         m_Texture: {fileID: 2800000, guid: 6b1ec545cfacced43bcd376dade68a1b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _EmissiveMap:
+        m_Texture: {fileID: 2800000, guid: 1c90cd787dbf314468d714e1fe045f09, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _HeightMap:
         m_Texture: {fileID: 2800000, guid: b85f2f07633fc3946a70d94c419eb450, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _HighLightMap:
+        m_Texture: {fileID: 2800000, guid: 1c90cd787dbf314468d714e1fe045f09, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -81,6 +97,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 56ce5ddcb6a16f84283a7fb5f68bef89, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 2800000, guid: abba586f5a31c804f8cd9495563e0950, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _NormalText:
         m_Texture: {fileID: 2800000, guid: abba586f5a31c804f8cd9495563e0950, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -97,8 +117,16 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _RoughnessMap:
+        m_Texture: {fileID: 2800000, guid: 1c90cd787dbf314468d714e1fe045f09, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Triplanar_98bd49e55a2e4e4ba995a150527cef5b_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: a2e9c7c55809d604096b3e7af938ce8c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -129,7 +157,7 @@ Material:
     - _DitherSize: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
-    - _EdgeWidth: 0.09
+    - _EdgeWidth: 0.02
     - _EdgetStrength: 1
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
@@ -139,16 +167,18 @@ Material:
     - _Metallic: 0
     - _MetallicStrength: 0
     - _MoveSpeed: 1
-    - _NoiseScale: 1
-    - _NoiseStrength: 1
+    - _NoiseMovementSpeed: 1
+    - _NoiseScale: 1.12
+    - _NoiseStrength: 0.1
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _PastEnum: 1
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _RadiusNoiseCutOff: 0.07
+    - _RadiusNoiseCutOff: 0.03
     - _RadiusNoiseOffset: 0.01
     - _ReceiveShadows: 1
+    - _RoughnessIntensity: 0.5
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -162,8 +192,11 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EdgeColor: {r: 1, g: 1, b: 1, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissiveEdgeColor: {r: 0.4175863, g: 1.131006, b: 1.735849, a: 1}
+    - _HighLightColor: {r: 1, g: 1, b: 1, a: 1}
     - _OutLineColor: {r: 0.2634389, g: 1.11677, b: 1.509434, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _TextureTiling: {r: 1, g: 1, b: 0, a: 0}
     - _Tiling: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

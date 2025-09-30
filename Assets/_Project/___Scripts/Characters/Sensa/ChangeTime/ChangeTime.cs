@@ -2,6 +2,8 @@ using System.Collections;
 using UnityEngine;
 using Cinemachine;
 
+[ExecuteInEditMode]
+
 public class ChangeTime : MonoBehaviour
 {
     #region Fields

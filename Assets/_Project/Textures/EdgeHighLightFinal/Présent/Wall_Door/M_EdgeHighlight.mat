@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: M_EdgeHighlight
-  m_Shader: {fileID: -6465566751694194690, guid: 3946a4c3da9e3f148950776172cf1e6b,
+  m_Shader: {fileID: -6465566751694194690, guid: 3ee9d3d5ba145c74b9201b1524869980,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -27,6 +27,14 @@ Material:
     m_TexEnvs:
     - _AmbiantOcclusion:
         m_Texture: {fileID: 2800000, guid: b2a6b695071b711409b1dfb13faa45b0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _AmbiantOcclusionMap:
+        m_Texture: {fileID: 2800000, guid: b2a6b695071b711409b1dfb13faa45b0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BaseColorMap:
+        m_Texture: {fileID: 2800000, guid: 8d15d2bf256fe754fabfba86cf80435c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseColorText:
@@ -57,12 +65,20 @@ Material:
         m_Texture: {fileID: 2800000, guid: 6b1ec545cfacced43bcd376dade68a1b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _EmissiveMap:
+        m_Texture: {fileID: 2800000, guid: 1c90cd787dbf314468d714e1fe045f09, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _HeightMap:
         m_Texture: {fileID: 2800000, guid: dc548539222b6fb468dc828fb41e4dbb, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _HighLight:
         m_Texture: {fileID: 2800000, guid: 8b55c52dc0c83614ab11ffaebd745a5a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _HighLightMap:
+        m_Texture: {fileID: 2800000, guid: 1c90cd787dbf314468d714e1fe045f09, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -77,8 +93,16 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _MetallicMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _NoiseTexture:
         m_Texture: {fileID: 2800000, guid: 56ce5ddcb6a16f84283a7fb5f68bef89, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 2800000, guid: 51b907ba7e678924eab0f02b4b939227, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalText:
@@ -97,8 +121,16 @@ Material:
         m_Texture: {fileID: 2800000, guid: 8d8d2b4f8febff548b062f6baecf2f05, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _RoughnessMap:
+        m_Texture: {fileID: 2800000, guid: 8d8d2b4f8febff548b062f6baecf2f05, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Triplanar_98bd49e55a2e4e4ba995a150527cef5b_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: a2e9c7c55809d604096b3e7af938ce8c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -129,7 +161,7 @@ Material:
     - _DitherSize: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
-    - _EdgeWidth: 0.09
+    - _EdgeWidth: 0.02
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
@@ -138,14 +170,15 @@ Material:
     - _Metallic: 0
     - _MetallicStrength: 0
     - _MoveSpeed: 1
-    - _NoiseScale: 0
-    - _NoiseStrength: 1
+    - _NoiseMovementSpeed: 1
+    - _NoiseScale: 1.12
+    - _NoiseStrength: 0.1
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _PresentEnum: 1
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _RadiusNoiseCutOff: 0.07
+    - _RadiusNoiseCutOff: 0.03
     - _RadiusNoiseOffset: 0.01
     - _ReceiveShadows: 1
     - _RoughnessIntensity: 0.5
@@ -161,9 +194,12 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissiveEdgeColor: {r: 0.4175863, g: 1.131006, b: 1.735849, a: 1}
     - _HighLightColor: {r: 1, g: 1, b: 1, a: 0}
     - _OutLineColor: {r: 0.2634389, g: 1.11677, b: 1.509434, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _TextureTiling: {r: 3, g: 3, b: 0, a: 0}
     - _Tiling: {r: 3, g: 3, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

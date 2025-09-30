@@ -13,13 +13,15 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 2
+  m_InvalidKeywords:
+  - _EMISSION
+  m_LightmapFlags: 6
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
-  disabledShaderPasses: []
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -58,11 +60,13 @@ Material:
     m_Colors:
     - _BalayageColor: {r: 0.7490196, g: 0.7490196, b: 0.7490196, a: 1}
     - _Color: {r: 0.3504806, g: 0.41201746, b: 0.41509432, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
     - _EmissiveColor: {r: 0.43173727, g: 0.5947042, b: 0.6226415, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 0}
     - _TillingDir: {r: 0, g: 0.5, b: 0, a: 0}
     - _TillingTest: {r: 1, g: 2, b: 0, a: 0}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!114 &253247314761822833
 MonoBehaviour:
   m_ObjectHideFlags: 11
@@ -75,4 +79,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 7
+  version: 10

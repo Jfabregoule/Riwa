@@ -58,7 +58,7 @@ public class Cell : MonoBehaviour
         if (_playerOnTile)
         {
             ACharacter chara = GameManager.Instance.Character;
-            chara.Rb.velocity = Vector3.zero;
+            chara.Rb.linearVelocity = Vector3.zero;
             chara.StateMachine.ChangeState(chara.StateMachine.States[EnumStateCharacter.Fall]);
         }
 

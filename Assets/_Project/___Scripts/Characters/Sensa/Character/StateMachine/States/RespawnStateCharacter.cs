@@ -13,7 +13,7 @@ public class RespawnStateCharacter : BaseStateCharacter<EnumStateCharacter>
 
         ACharacter chara = (ACharacter)_character;
 
-        _character.Rb.velocity = Vector3.zero;
+        _character.Rb.linearVelocity = Vector3.zero;
 
         _character.transform.position = chara.RespawnPosition;
         _character.transform.localEulerAngles = chara.RespawnRotation;

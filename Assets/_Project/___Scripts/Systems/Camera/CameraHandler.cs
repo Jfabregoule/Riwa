@@ -87,7 +87,7 @@ public class CameraHandler : MonoBehaviour
                 _setups[i]._triggerCamera.Id = i;
             }
 
-            //Va définir le collider dans lequel la camera va se déplacer
+            //Va dï¿½finir le collider dans lequel la camera va se dï¿½placer
             _confinerCamera.enabled = true;
             _confinerCamera.m_BoundingVolume = _setups[0]._colliderContain;
 
@@ -149,10 +149,10 @@ public class CameraHandler : MonoBehaviour
 
     public void MoveCameraOffset()
     {
-        //(ptet pas opti de faire lerp dans update mais vu qu'il se fait quasi tout le temps à voir)
+        //(ptet pas opti de faire lerp dans update mais vu qu'il se fait quasi tout le temps ï¿½ voir)
         //C'est pour avoir un leger offset smooth vers la ou on se dirige
 
-        Vector3 playerMovement = GameManager.Instance.Character.Rb.velocity;
+        Vector3 playerMovement = GameManager.Instance.Character.Rb.linearVelocity;
 
         if (playerMovement != _lastJoystick/* && GameManager.Instance.Character.Rb.velocity != Vector3.zero*/)  
         {

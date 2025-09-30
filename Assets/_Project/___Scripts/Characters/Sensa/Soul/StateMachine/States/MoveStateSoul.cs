@@ -33,12 +33,12 @@ public class MoveStateSoul : PawnMoveState<EnumStateSoul>
         Vector3 toPlayer = GameManager.Instance.Character.transform.position - targetPosition;  
         float distanceToPlayer = toPlayer.magnitude;
 
-        _character.Rb.velocity = Vector3.Scale(_character.Rb.velocity, new Vector3(1, 0, 1));
+        _character.Rb.linearVelocity = Vector3.Scale(_character.Rb.linearVelocity, new Vector3(1, 0, 1));
         
         if (distanceToPlayer > soul.LinkMaxDistance)
         {
             Vector3 pullForce = toPlayer.normalized * (distanceToPlayer - soul.LinkMaxDistance) * soul.LinkElasticity;
-            _character.Rb.velocity += pullForce * Time.fixedDeltaTime;
+            _character.Rb.linearVelocity += pullForce * Time.fixedDeltaTime;
         }
     }
 

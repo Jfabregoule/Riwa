@@ -50,10 +50,10 @@ public class IdleStateSoul : PawnIdleState<EnumStateSoul>
         if (distanceToPlayer > soul.LinkMaxDistance)
         {
             Vector3 pullForce = toPlayer.normalized * (distanceToPlayer - soul.LinkMaxDistance) * soul.LinkElasticity;
-            _character.Rb.velocity += pullForce * Time.fixedDeltaTime;
+            _character.Rb.linearVelocity += pullForce * Time.fixedDeltaTime;
         }
 
-        _character.Rb.velocity = Vector3.Lerp(_character.Rb.velocity, movement * _character.Speed, Time.fixedDeltaTime * 10f);
+        _character.Rb.linearVelocity = Vector3.Lerp(_character.Rb.linearVelocity, movement * _character.Speed, Time.fixedDeltaTime * 10f);
 
     }
 

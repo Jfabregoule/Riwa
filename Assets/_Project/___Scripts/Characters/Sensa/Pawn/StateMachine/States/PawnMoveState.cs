@@ -105,7 +105,7 @@ public class PawnMoveState<TStateEnum> : BaseStatePawn<TStateEnum>
     {
         base.FixedUpdateState();
 
-        _character.Rb.velocity = _moveDirection * _currentSpeed + Vector3.Scale(_character.Rb.velocity, Vector3.up);
+        _character.Rb.linearVelocity = _moveDirection * _currentSpeed + Vector3.Scale(_character.Rb.linearVelocity, Vector3.up);
 
     }
 

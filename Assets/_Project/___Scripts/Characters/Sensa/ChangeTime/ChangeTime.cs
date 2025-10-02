@@ -8,7 +8,7 @@ public class ChangeTime : MonoBehaviour
 {
     #region Fields
 
-    private float _radius;
+    [SerializeField]private float _radius;
     private float _alpha;
     private bool _particleActivated;
     private int _past;
@@ -64,6 +64,8 @@ public class ChangeTime : MonoBehaviour
 
         _present = Shader.GetGlobalInt("_PresentEnum");
         _past = Shader.GetGlobalInt("_PastEnum");
+        Debug.Log("PastEnum :" + _past);
+        Debug.Log("PresentEnum :" + _present);
     }
 
     public void AbortChangeTime()
@@ -172,7 +174,16 @@ public class ChangeTime : MonoBehaviour
         Shader.SetGlobalFloat("_Radius", _radius);
         _particleActivated = false;
         _alpha = 0;
+        
 
+    }
+
+    private void Update()
+    {
+        Shader.SetGlobalVector("_Position", transform.position);
+        Debug.Log("PresentEnum : " + _present);
+        Debug.Log("PastEnum : " + _past);
+        Debug.Log("Radius : " + _radius);
     }
 
     #endregion

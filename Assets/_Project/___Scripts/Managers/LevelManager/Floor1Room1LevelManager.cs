@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 public enum EnumAdvancementRoom1
 {
@@ -94,6 +95,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
         base.Start();
 
         _ghost.gameObject.SetActive(false);
+        _backTrakingDoor.DisableDoor();
 
         if (CurrentAdvancement == EnumAdvancementRoom1.Start)
         {
@@ -427,6 +429,11 @@ public class Floor1Room1LevelManager : BaseLevelManager
             UpdateAdvancement(EnumAdvancementRoom1.Room4);
             OnLevelEnter += BeginDialogue;
         }
+        EnableBacktracking();
+    }
+
+    public void EnableBacktracking()
+    {
         _backTrakingDoor.EnableDoor();
         _blockDoor.SetActive(false);
         if (_aroundDoor.material.HasProperty("_IsActivated"))

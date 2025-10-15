@@ -80,5 +80,6 @@ public class BaseLevelManager : Singleton<BaseLevelManager>
     public virtual void LevelEnter()
     {
         OnLevelEnter?.Invoke();
+        SaveSystem.Instance.SaveElement<EnumTemporality>("Temporality", GameManager.Instance.CurrentTemporality);
     }
 }

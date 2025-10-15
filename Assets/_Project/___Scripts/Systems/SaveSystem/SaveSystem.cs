@@ -90,6 +90,7 @@ public class SaveSystem : Singleton<SaveSystem>
         {"DialogRoom0", false },
         {"Room2FirstDialog", false },
         {"Room2TutoMirror", false },
+        {"Temporality", EnumTemporality.Present},
     };
 
     /// <summary>

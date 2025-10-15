@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using static Statue;
@@ -31,7 +32,7 @@ public class GameManager : Singleton<GameManager>
     private CameraHandler _cameraHandler;
     private ACharacter _character;
     private VariableJoystick _joystick;
-    private EnumTemporality _currentTemporality;
+    private EnumTemporality _currentTemporality = EnumTemporality.Present;
     private BaseLevelManager _currentLevelManager;
 
     public delegate void ShowInput();
@@ -70,7 +71,11 @@ public class GameManager : Singleton<GameManager>
         TranslateSystem = GameObject.FindGameObjectWithTag(TRANSLATE_TAG).GetComponent<TranslateSystem>();
         //UIManager = GameObject.FindGameObjectWithTag(UIMANAGER_TAG).GetComponent<UIManager>();
         StartCoroutine(Helpers.WaitMonoBeheviour(() => GameObject.FindGameObjectWithTag(UIMANAGER_TAG), WaitUIManager));
-        CurrentTemporality = EnumTemporality.Present;
+        
+        if (SaveSystem.Instance.ContainsElements("Temporality"))
+        {
+            CurrentTemporality = SaveSystem.Instance.LoadElement<EnumTemporality>("Temporality");
+        }
         ChangeTimeUnlock = false;
     }
 
@@ -142,7 +147,8 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    private void OnDisable()
-    {
-    }
+    //private void OnDisable()
+    //{
+    //    SaveSystem.Instance.SaveElement<EnumTemporality>("Temporality", CurrentTemporality);
+    //}
 }

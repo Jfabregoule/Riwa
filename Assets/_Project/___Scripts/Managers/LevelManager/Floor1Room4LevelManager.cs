@@ -76,7 +76,7 @@ public class Floor1Room4LevelManager : BaseLevelManager
     {
         base.Start();
         GameManager.Instance.UnlockChangeTime();
-        GameManager.Instance.UIManager.RotationUnlocked = true;
+        GameManager.Instance.UIManager.Display(UIElementEnum.Rotate);
     }
 
     public void FillMuralPieceDictionary()

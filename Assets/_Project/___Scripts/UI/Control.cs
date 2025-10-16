@@ -52,7 +52,7 @@ public class Control : MonoBehaviour
     public void UpdateControl()
     {
         _binaryChoice.InvokeEvent(!_isRightHanded);
-        ToggleControlInvert(!_isRightHanded);
+        //ToggleControlInvert(!_isRightHanded);
        
     }
     private void UpdateBinaryChoice()
@@ -63,7 +63,7 @@ public class Control : MonoBehaviour
             LeftHanded();
 
         ToggleControlInvert(!_isRightHanded);
-        InvertControlUI();
+        //InvertControlUI();
     }
 
     private void RightHanded()
@@ -94,7 +94,6 @@ public class Control : MonoBehaviour
     {
         InputManager.Instance.ToggleControlInversion(isInvert);
         GameManager.Instance.UIManager.SetHanded(!isInvert);
-
     }
 
     public void InvertControlUI()
@@ -187,7 +186,7 @@ public class Control : MonoBehaviour
     {
         _isRightHanded = SaveSystem.Instance.LoadElement<bool>("_isRightHanded", true);
         UpdateBinaryChoice();
-        InvertControlUI();
+        //InvertControlUI();
     }
 
     public void LoadingControl()

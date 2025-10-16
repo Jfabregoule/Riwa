@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 public enum EnumAdvancementRoom1
 {
     Start,
@@ -97,15 +98,16 @@ public class Floor1Room1LevelManager : BaseLevelManager
         _ghost.gameObject.SetActive(false);
         _backTrakingDoor.DisableDoor();
 
-        if (CurrentAdvancement == EnumAdvancementRoom1.Start)
+        if (CurrentAdvancement <= EnumAdvancementRoom1.Room0)
         {
             OnLevelEnter += BeginDialogue;
             _currentZone = 0;
             GameManager.Instance.UIManager.Hide(UIElementEnum.Interact);
             GameManager.Instance.UIManager.Hide(UIElementEnum.Push);
+            RiwaSaveManagerRoom1.Instance.Save = false;
         }
 
-        if (CurrentAdvancement >= EnumAdvancementRoom1.Room0)
+        if (CurrentAdvancement > EnumAdvancementRoom1.Room0)
         {
             GameManager.Instance.UIManager.Display(UIElementEnum.Interact);
             GameManager.Instance.UIManager.Display(UIElementEnum.ChangeTime);
@@ -162,6 +164,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
         {
             GameManager.Instance.Character.StateMachine.GoToIdle();
             UpdateAdvancement(EnumAdvancementRoom1.Liana);
+            RiwaSaveManagerRoom1.Instance.Save = true;
             //DialogueSystem.Instance.BeginDialogue(_cinematics[(int)CurrentAdvancement].Dialogue);
             _cinematics[(int)EnumAdvancementRoom1.Liana].Sequencers[0].InitializeSequence();
         }
@@ -350,7 +353,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
 
     private IEnumerator DisplayJoystick()
     {
-        yield return Helpers.GetWait(1f);
+        yield return Helpers.GetWait(2f);
         InputManager.Instance.DisableOptionsControls();
         InputManager.Instance.EnableGameplayMoveControls();
         InputManager.Instance.LockJoystick();
@@ -407,19 +410,24 @@ public class Floor1Room1LevelManager : BaseLevelManager
 
     public void EnterFromRoom0()
     {
-        if(CurrentAdvancement == EnumAdvancementRoom1.Start)
+        if(CurrentAdvancement <= EnumAdvancementRoom1.Room0)
         {
             GameManager.Instance.UIManager.Display(UIElementEnum.Interact);
             GameManager.Instance.UIManager.Display(UIElementEnum.Push);
             UpdateAdvancement(EnumAdvancementRoom1.Room0);
             _currentZone = 0;
             GetCurrentZone().gameObject.SetActive(true);
-            GetCurrentZone().OnPlace += BoxInZone;
-            DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.BoxInZone, OnBoxInzone);
+            GetCurrentZone().OnPlace += PlayerInZone;
+            DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.PlayerInZone, OnPlayerInzone);
             //OnLevelEnter += BeginDialogue;
             //_cinematics[(int)EnumAdvancementRoom1.Room0].Sequencers[0].InitializeSequence();
 
         }
+    }
+
+    public void ExitFromRoom0()
+    {
+        RiwaSaveManagerRoom1.Instance.Save = true;
     }
 
     public void EnterFromRoom4()
@@ -443,6 +451,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
     public void UpdateAdvancement(EnumAdvancementRoom1 advancement)
     {
         CurrentAdvancement = advancement;
+        SaveSystem.Instance.SaveElement<int>("Room1Progress", (int)CurrentAdvancement);
         if (CurrentAdvancement == EnumAdvancementRoom1.End) return;
         foreach (Sequencer sequencer in _cinematics[(int)CurrentAdvancement].Sequencers)
         {

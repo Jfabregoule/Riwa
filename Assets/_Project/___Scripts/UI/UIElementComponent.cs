@@ -5,6 +5,11 @@ public class UIElementComponent : MonoBehaviour
     private PulseEffect _pulseEffect;
     private HighlightEffect _highlightEffect;
     private CanvasGroup _canvasGroup;
+
+    public bool IsPulse;
+    public bool IsHighlight;
+    public bool IsShow;
+
     void Start()
     {
         TryGetComponent(out _pulseEffect);

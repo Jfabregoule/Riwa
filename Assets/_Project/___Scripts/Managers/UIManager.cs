@@ -80,31 +80,89 @@ public class UIManager : MonoBehaviour
     public void StartPulse(UIElementEnum uiElementEnum)
     {
         _uiElements[uiElementEnum][IsRightHanded].StartPulsing();
+
+        _uiElements[uiElementEnum][true].IsPulse = true;
+        _uiElements[uiElementEnum][false].IsPulse = true;
     }
     public void StopPulse(UIElementEnum uiElementEnum)
     {
         _uiElements[uiElementEnum][IsRightHanded].StopPulsing();
+
+        _uiElements[uiElementEnum][true].IsPulse = false;
+        _uiElements[uiElementEnum][false].IsPulse = false;
     }
 
     public void StartHighlight(UIElementEnum uiElementEnum)
     {
         _uiElements[uiElementEnum][IsRightHanded].StartHighlight();
+
+        _uiElements[uiElementEnum][true].IsHighlight = true;
+        _uiElements[uiElementEnum][false].IsHighlight = true;
     }
 
     public void StopHighlight(UIElementEnum uiElementEnum)
     {
         _uiElements[uiElementEnum][IsRightHanded].StopHighlight();
+
+        _uiElements[uiElementEnum][true].IsHighlight = false;
+        _uiElements[uiElementEnum][false].IsHighlight = false;
     }
 
     public void Display(UIElementEnum uiElementEnum)
     {
         _uiElements[uiElementEnum][IsRightHanded].Display();
+
+        _uiElements[uiElementEnum][true].IsShow = true;
+        _uiElements[uiElementEnum][false].IsShow = true;
     }
 
     public void Hide(UIElementEnum uiElementEnum)
     {
         _uiElements[uiElementEnum][IsRightHanded].Hide();
+
+        _uiElements[uiElementEnum][true].IsShow = false;
+        _uiElements[uiElementEnum][false].IsShow = false;
     }
 
-    public void SetHanded(bool handed) => IsRightHanded = handed;
+    public void SetHanded(bool handed) {
+        IsRightHanded = handed;
+        foreach(UIElement element in _uiElementsList)
+        {
+            if (element.Element.IsShow)
+            {
+                if(element.IsRight == IsRightHanded)
+                {
+                    element.Element.Display();
+                }
+                else
+                {
+                    element.Element.Hide();
+                }
+            }
+
+            if(element.Element.IsHighlight)
+            {
+                if(element.IsRight == IsRightHanded)
+                {
+                    element.Element.StartHighlight();
+                }
+                else
+                {
+                    element.Element.StopHighlight();
+                }
+            }
+
+            if (element.Element.IsPulse)
+            {
+                if(element.IsRight == IsRightHanded)
+                {
+                    element.Element.StartPulsing();
+                }
+                else
+                {
+                    element.Element.StopPulsing();
+                }
+            }
+        }
+    } 
 }

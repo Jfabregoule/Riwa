@@ -22,7 +22,7 @@ public class InteractStateSoul : PawnInteractState<EnumStateSoul>
         base.ExitState();
         _subStateMachine.ChangeState(_subStateMachine.States[EnumInteract.StandBy]);
     }
-
+    
     public override void UpdateState()
     {
         base.UpdateState();

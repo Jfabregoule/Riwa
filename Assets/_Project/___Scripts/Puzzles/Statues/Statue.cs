@@ -12,7 +12,6 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
     private float _lerpTime = 1.5f;
     private float _unitGridSize;
     private float _angle = 45f;
-    private float _blend;
     private CellPos _pos;
     private CellContent _content;
     private bool _validate;
@@ -51,7 +50,6 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
         OffsetRadius = 0.8f;
         MoveSpeed = 2f;
         MoveDistance = _unitGridSize;
-        _blend = 0f;
         _animator = GetComponent<Animator>();
     }
 

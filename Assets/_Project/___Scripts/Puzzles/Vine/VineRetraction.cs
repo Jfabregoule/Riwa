@@ -19,8 +19,7 @@ public class VineRetraction : MonoBehaviour
     [SerializeField] private float _thresholdToTrigger = 0.7f;
     [SerializeField] private float _minGrowCap = 0f;
     [SerializeField] private bool _isPivotBroken = false;
-
-    private bool _thresholdReached = false;
+    
     private float _growPercentage = 1f;
 
     public delegate void GrowthPercentageReached();
@@ -41,15 +40,12 @@ public class VineRetraction : MonoBehaviour
         _mat = renderer.material;
         _originalHeight = _collider.size.z;
         _originalCenter = _collider.center;
-        Debug.Log("Original height " + _originalHeight);
-        Debug.Log("Original center " + _originalCenter);
     }
 
     private void OnTriggerStay(Collider other)
     {
         if (other.TryGetComponent<Crate>(out Crate crate))
         {
-            Debug.Log(crate.name + " is in the vine retraction zone");
             Vector3 localEntryPos;
             if(_isPivotBroken == false)
                 localEntryPos = _vine.transform.InverseTransformPoint(other.transform.position);
@@ -59,7 +55,6 @@ public class VineRetraction : MonoBehaviour
             float zMin = _originalCenter.z - _originalHeight * 0.5f;
             float zMax = _originalCenter.z + _originalHeight * 0.5f;
             _growPercentage = Mathf.Clamp01(Mathf.InverseLerp(zMin, zMax, zLocal));
-            Debug.Log("Percentage " + _growPercentage);
 
             float growValue = Mathf.Lerp(_minGrowCap, 1f, _growPercentage);
             float height = Mathf.Lerp(1f, _maxHeight, _growPercentage);

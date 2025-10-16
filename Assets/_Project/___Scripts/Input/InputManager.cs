@@ -290,8 +290,7 @@ public class InputManager : Singleton<InputManager>
 
         _controls.Gameplay.ChangeTime.performed += ctx => ChangeTimePerfomed();
         _controls.Gameplay.Interact.performed += ctx => InteractPerfomed();
-
-        Debug.Log("Abonné");
+        
         _controls.Gameplay.Displacement.performed += ctx => DisplacementPerfomed();
         _controls.Gameplay.Displacement.canceled += ctx => DisplacementCanceled();
     }
@@ -308,7 +307,6 @@ public class InputManager : Singleton<InputManager>
 
         _controls.Gameplay.Displacement.performed -= ctx => DisplacementPerfomed();
         _controls.Gameplay.Displacement.canceled -= ctx => DisplacementCanceled();
-        Debug.Log("Désabonné");
     }
 
     private void BindDialogueEvents()

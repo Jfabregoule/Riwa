@@ -14,9 +14,7 @@ public class BridgeVineScript : MonoBehaviour, IInteractableSoul
     public float OffsetRadius { get => -1; set => throw new NotImplementedException(); }
     public bool CanInteract { get; set; }
     public int Priority { get ; set; }
-
-    [SerializeField, Range(0, 1)]
-    private float _minGrow = 0.2f;
+    
     [SerializeField, Range(0, 1)]
     private float _maxGrow = 0.97f;
 

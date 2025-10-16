@@ -33,8 +33,6 @@ public class CinematicSystem<T> : Singleton<T> where T : CinematicSystem<T>
     private CanvasGroup _skipCanvasGroup;
     private HoldButton _holdButton;
 
-    private float _appearTimer = 2.0f;
-
     protected override void Awake()
     {
         base.Awake();

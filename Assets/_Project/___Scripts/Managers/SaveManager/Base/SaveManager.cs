@@ -11,8 +11,9 @@ public class SaveManager<T> : Singleton<T> where T : SaveManager<T>
         LoadProgess();
     }
 
-    private void OnApplicationQuit()
+    protected override void OnApplicationQuit()
     {
+        base.OnApplicationQuit();
         SaveProgress();
     }
 

@@ -1,20 +1,17 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
-using static UnityEngine.UI.Image;
 
 public class CharacterFeet : MonoBehaviour, IRespawnable
 {
-    [SerializeField] private float _fallTreshold = 2;
-    private float _currentTreshold;
+    [SerializeField] private float _fallThreshold = 0.25f;
+    private float _currentThreshold;
 
     public bool IsGround;
     private ACharacter _character;
     private float _radius;
 
-    int _playerMask;
+    private int _playerMask;
 
     public System.Action OnFall;
     public System.Action OnGround;
@@ -29,10 +26,9 @@ public class CharacterFeet : MonoBehaviour, IRespawnable
     public void Start()
     {
         _character = GameManager.Instance.Character;
-        _fallTreshold *= _character.transform.localScale.y;
-        //GameManager.Instance.OnTimeChangeStarted += ClearListOnChangeTempo;
+        _fallThreshold *= _character.transform.localScale.y;
 
-        _currentTreshold = _fallTreshold;
+        _currentThreshold = _fallThreshold;
         _radius = _character.GetComponent<CapsuleCollider>().radius * _character.transform.localScale.x * 1.1f;
 
         int playerLayer = LayerMask.NameToLayer("whatIsPlayer");
@@ -40,62 +36,16 @@ public class CharacterFeet : MonoBehaviour, IRespawnable
 
     }
 
-    public void OnDestroy()
-    {
-        //if (GameManager.Instance)
-            //GameManager.Instance.OnTimeChangeStarted -= ClearListOnChangeTempo;
-    }
-
     public void Update()
     {
         LayerMask mask = GameManager.Instance.CurrentTemporality == EnumTemporality.Past ? _character.PastLayer : _character.PresentLayer;
 
-        //LayerMask finalMask = mask & _playerMask;
-
-        //if (Physics.SphereCast(transform.position + Vector3.up * 0.5f, _radius, -Vector3.up, out RaycastHit hit, mask))
-        //{
-        //    Debug.Log(hit.collider.gameObject.name);
-        //    IsGround = true;
-        //    Debug.DrawRay(transform.position + Vector3.up * 0.5f, -Vector3.up * hit.distance, Color.red); // touché
-        //}
-        //else
-        //{
-        //    IsGround = false;
-        //    Debug.DrawRay(transform.position + Vector3.up * 0.5f, -Vector3.up * _currentTreshold, Color.green); // rien touché
-        //}
-
-        IsGround = Physics.CheckCapsule(transform.position, transform.position - Vector3.up * _currentTreshold, _radius, mask, QueryTriggerInteraction.Ignore);
+        IsGround = Physics.CheckCapsule(transform.position, transform.position - Vector3.up * _currentThreshold, _radius, mask, QueryTriggerInteraction.Ignore);
         
         Color color = IsGround ? Color.green : Color.red;
-        Debug.DrawLine(transform.position, transform.position - Vector3.up * _currentTreshold, color);
+        Debug.DrawLine(transform.position, transform.position - Vector3.up * _currentThreshold, color);
         Debug.DrawLine(transform.position, transform.position + Vector3.right * _radius, color);
     }
-
-    //public void OnTriggerEnter(Collider other)
-    //{
-    //    if (IsValidObject(other, GameManager.Instance.CurrentTemporality))
-    //    {
-    //        _colliders.Add(other);
-    //        if (_colliders.Count == 1)
-    //        {
-    //            IsGround = true;
-    //            //OnGround?.Invoke();
-    //        }
-    //    }
-    //}
-
-    //public void OnTriggerExit(Collider other)
-    //{
-    //    if (IsValidObject(other, GameManager.Instance.CurrentTemporality))
-    //    {
-    //        _colliders.Remove(other);
-    //        if (_colliders.Count == 0)
-    //        {
-    //            IsGround = false;
-    //            //OnFall?.Invoke();
-    //        }
-    //    }
-    //}
 
     private bool IsValidObject(Collider collider, EnumTemporality currentTempo)
     {
@@ -129,6 +79,6 @@ public class CharacterFeet : MonoBehaviour, IRespawnable
 
     public void Respawn()
     {
-        
+        OnRespawn?.Invoke();
     }
 }

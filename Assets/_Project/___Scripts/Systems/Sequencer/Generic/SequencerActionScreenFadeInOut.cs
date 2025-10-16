@@ -7,8 +7,7 @@ public class SequencerActionScreenFadeInOut : SequencerAction
 {
     [SerializeField] private float _fadeSpeed = 1f;
     [SerializeField] private bool _fadeIn = true;
-
-    private bool _isFading;
+    
     private BlackScreen _blackScreen;
 
     public override void Initialize(GameObject obj)
@@ -27,10 +26,4 @@ public class SequencerActionScreenFadeInOut : SequencerAction
 
         yield return new WaitForSeconds(_fadeSpeed);
     }
-
-    public void Finish()
-    {
-        _isFading = false;
-    }
-
 }

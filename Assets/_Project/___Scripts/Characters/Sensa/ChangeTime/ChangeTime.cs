@@ -64,8 +64,6 @@ public class ChangeTime : MonoBehaviour
 
         _present = Shader.GetGlobalInt("_PresentEnum");
         _past = Shader.GetGlobalInt("_PastEnum");
-        Debug.Log("PastEnum :" + _past);
-        Debug.Log("PresentEnum :" + _present);
     }
 
     public void AbortChangeTime()

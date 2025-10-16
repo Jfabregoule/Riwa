@@ -79,14 +79,6 @@ public class Platform : MonoBehaviour, IRespawnable
                 _rb.useGravity = true;
                 _rb.isKinematic = false;
                 _isFalling = true;
-                //if (_triggerVines.Count > 0)
-                //{
-                //    //_currentVine = _triggerVines[_triggerVines.Count - 1];
-                //    //SetPosition(_currentVine);
-                //    _rb.constraints |= RigidbodyConstraints.FreezePositionY;
-                //    _rb.useGravity = false;
-                //    _rb.isKinematic = true;
-                //}
             }
 
             if (_triggerVines.Count > 0) return;
@@ -153,6 +145,8 @@ public class Platform : MonoBehaviour, IRespawnable
         _previousVine = null;
         _tree.CanInteract = true;
         _isFalling = false;
+        
+        OnRespawn?.Invoke();
     }
 
 }

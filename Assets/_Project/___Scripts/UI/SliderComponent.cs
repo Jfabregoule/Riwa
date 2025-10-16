@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,36 +12,28 @@ public class SliderComponent : MonoBehaviour
 
     private Slider _slider;
     private UiSoundPlayer _soundPlayer;
-    private bool _isInitializing;
     private void OnEnable()
     {
         SaveSystem.Instance.OnLoadSettings += LoadingSlider;
         SaveSystem.Instance.OnSaveSettings += SaveSlider;
     }
-    void Start()
+
+    private void Start()
     {
-        _isInitializing = true;
         _slider = GetComponent<Slider>();
         _slider.value = SaveSystem.Instance.LoadElement<float>(_name, true);
         _soundPlayer = GetComponent<UiSoundPlayer>();
-        _isInitializing = false;
 
         _slider.onValueChanged.AddListener(OnVolumeChanged);
         UpdateText(_slider.value);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    public void LoadingSlider()
+    private void LoadingSlider()
     {
         _slider.value = SaveSystem.Instance.LoadElement<float>(_name, true);
     }
 
-    public void SaveSlider()
+    private void SaveSlider()
     {
         SaveSystem.Instance.SaveElement(_name, _slider.value, true);
     }

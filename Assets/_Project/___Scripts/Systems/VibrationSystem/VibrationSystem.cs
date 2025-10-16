@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class VibrationSystem : PersistentSingleton<VibrationSystem>
+public class VibrationSystem : Singleton<VibrationSystem>
 {
     private bool _vibrationEnabled = true; // Vibrations actives ou non.
 
@@ -15,10 +15,10 @@ public class VibrationSystem : PersistentSingleton<VibrationSystem>
     }
 
     /// <summary>
-    /// Déclenche des vibrations.
+    /// Dï¿½clenche des vibrations.
     /// </summary>
     /// <param name="strength">Force de la vibration.</param>
-    /// <param name="duration">Durée de la vibration.</param>
+    /// <param name="duration">Durï¿½e de la vibration.</param>
     public void TriggerVibration(float strength, float duration)
     {
         if (!_vibrationEnabled) return;
@@ -30,10 +30,10 @@ public class VibrationSystem : PersistentSingleton<VibrationSystem>
     }
 
     /// <summary>
-    /// Déclenche des vibrations sur Android.
+    /// Dï¿½clenche des vibrations sur Android.
     /// </summary>
     /// <param name="strength">Force de la vibration.</param>
-    /// <param name="duration">Durée de la vibration.</param>
+    /// <param name="duration">Durï¿½e de la vibration.</param>
     private void AndroidVibrate(float strength, float duration)
     {
         if (Application.platform == RuntimePlatform.Android)
@@ -58,7 +58,7 @@ public class VibrationSystem : PersistentSingleton<VibrationSystem>
     }
 
     /// <summary>
-    /// Déclenche des vibrations sur iOS.
+    /// Dï¿½clenche des vibrations sur iOS.
     /// </summary>
     /// <param name="strength">Force de la vibration.</param>
     private void iOSVibrate(float strength)

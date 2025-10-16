@@ -6,9 +6,9 @@ public interface IMovable : IHoldable
     float MoveSpeed { get; set;}
     float MoveDistance { get; set;}
 
-    ////Sert pour les mouvements cramptés
-    ////Si on stock pas le surplus de temps à chaque lerp, si on fait des mouvements 
-    ////continus l'objet ne bougera pas de manière constante, sur une certaines distance Sensa sera décalée
+    ////Sert pour les mouvements cramptï¿½s
+    ////Si on stock pas le surplus de temps ï¿½ chaque lerp, si on fait des mouvements 
+    ////continus l'objet ne bougera pas de maniï¿½re constante, sur une certaines distance Sensa sera dï¿½calï¿½e
     //float TimeOverflow { get; set;} 
 
     bool Move(Vector3 direction);

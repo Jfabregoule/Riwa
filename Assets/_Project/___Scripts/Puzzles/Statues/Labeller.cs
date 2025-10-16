@@ -10,7 +10,7 @@ public class Labeller : MonoBehaviour
 
     private void Awake()
     {
-        gridManager = FindObjectOfType<Grid>();
+        gridManager = FindFirstObjectByType<Grid>();
         label = GetComponentInChildren<TMP_Text>();
 
         DisplayCords();

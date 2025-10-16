@@ -11,8 +11,6 @@ public class Door : MonoBehaviour
     [SerializeField] private DoorDirection _nextDoorDirection;
     [SerializeField] private int _nextDoorID = 0;
 
-    [SerializeField] bool _animationExit = false;
-
     [SerializeField] Sequencer _enterDoorSequencer;
     [SerializeField] Sequencer _exitDoorSequencer;
 

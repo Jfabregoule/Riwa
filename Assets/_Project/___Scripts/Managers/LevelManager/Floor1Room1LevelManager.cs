@@ -1,13 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering;
 public enum EnumAdvancementRoom1
 {
     Start,
     Room0,
+    ChangeTime,
     Liana,
     Room4,
     End
@@ -98,7 +97,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
         _ghost.gameObject.SetActive(false);
         _backTrakingDoor.DisableDoor();
 
-        if (CurrentAdvancement <= EnumAdvancementRoom1.Room0)
+        if (CurrentAdvancement <= EnumAdvancementRoom1.ChangeTime)
         {
             OnLevelEnter += BeginDialogue;
             _currentZone = 0;
@@ -109,6 +108,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
 
         if (CurrentAdvancement > EnumAdvancementRoom1.Room0)
         {
+            GameManager.Instance.UIManager.Display(UIElementEnum.Push);
             GameManager.Instance.UIManager.Display(UIElementEnum.Interact);
             GameManager.Instance.UIManager.Display(UIElementEnum.ChangeTime);
             //GameManager.Instance.UnlockChangeTime();
@@ -160,7 +160,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
     {
         if (!_isCrateWellPlaced || !_character.CanChangeTime || GameManager.Instance.CurrentTemporality == EnumTemporality.Present) { return; }
         
-        if (CurrentAdvancement == EnumAdvancementRoom1.Room0)
+        if (CurrentAdvancement == EnumAdvancementRoom1.ChangeTime)
         {
             GameManager.Instance.Character.StateMachine.GoToIdle();
             UpdateAdvancement(EnumAdvancementRoom1.Liana);
@@ -348,6 +348,14 @@ public class Floor1Room1LevelManager : BaseLevelManager
                 _cinematics[(int)CurrentAdvancement].Sequencers[0].InitializeSequence();
                 StartCoroutine(BlendingCamera(_cinematicEndCamera));
                 break;
+            case DialogueEventType.StartOtherTuto:
+                UpdateAdvancement(EnumAdvancementRoom1.ChangeTime);
+                BeginDialogue();
+                _currentZone = 0;
+                GetCurrentZone().gameObject.SetActive(true);
+                GetCurrentZone().OnPlace += BoxInZone;
+                DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.BoxInZone, OnBoxInzone);
+                break;
         }
     }
 
@@ -410,7 +418,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
 
     public void EnterFromRoom0()
     {
-        if(CurrentAdvancement <= EnumAdvancementRoom1.Room0)
+        if (CurrentAdvancement <= EnumAdvancementRoom1.Room0)
         {
             GameManager.Instance.UIManager.Display(UIElementEnum.Interact);
             GameManager.Instance.UIManager.Display(UIElementEnum.Push);
@@ -422,6 +430,13 @@ public class Floor1Room1LevelManager : BaseLevelManager
             //OnLevelEnter += BeginDialogue;
             //_cinematics[(int)EnumAdvancementRoom1.Room0].Sequencers[0].InitializeSequence();
 
+        }
+        else if (CurrentAdvancement == EnumAdvancementRoom1.ChangeTime)
+        {
+            _currentZone = 0;
+            GetCurrentZone().gameObject.SetActive(true);
+            GetCurrentZone().OnPlace += BoxInZone;
+            DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.BoxInZone, OnBoxInzone);
         }
     }
 

@@ -94,7 +94,8 @@ public enum DialogueEventType
     DisplayRotate,
     Room0CollectibleTaken,
     StartTutoLiana,
-    OnFinishEndDialogue
+    OnFinishEndDialogue,
+    StartOtherTuto
 }
 
 public enum WaitDialogueEventType

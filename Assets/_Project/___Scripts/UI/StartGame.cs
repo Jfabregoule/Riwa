@@ -11,7 +11,28 @@ public class StartGame : MonoBehaviour
     [SerializeField] private CanvasGroup _mainMenuTitleCanvasGroup;
     [SerializeField] private Button _button;
     private Navbar _navbar;
-    //private Canvas
+
+
+    private void Awake()
+    {
+        if (SceneManager.GetActiveScene().name != "Systems") return;
+
+        if (_mainMenuTitleCanvasGroup == null)
+        {
+            _mainMenuTitleCanvasGroup = GameObject.Find("Title")?.GetComponent<CanvasGroup>();
+        }
+        if (_button == null)
+            _button = GameObject.Find("Button")?.GetComponent<Button>();
+    }
+
+    private void OnDisable()
+    {
+        if (_navbar != null)
+        {
+            _navbar.OnMainParamOpen -= DisableMainMenuTitle;
+            _navbar.OnMainParamClose -= EnableMainMenuTitle;
+        }
+    }
     private void Start()
     {
         StartCoroutine(Helpers.WaitMonoBeheviour(() => GameManager.Instance.UIManager, SubscribeToNavbar));
@@ -44,4 +65,6 @@ public class StartGame : MonoBehaviour
         if (SceneManager.GetActiveScene().name != "Systems") return;
         Helpers.EnabledCanvasGroup(_mainMenuTitleCanvasGroup);
     }
+
+
 }

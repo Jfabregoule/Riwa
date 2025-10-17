@@ -12,7 +12,9 @@ public enum UIElementEnum
     Joystick,
     Pull,
     Push,
-    Rotate
+    Rotate,
+    Moveable,
+    Rotatable
 }
 
 [System.Serializable]

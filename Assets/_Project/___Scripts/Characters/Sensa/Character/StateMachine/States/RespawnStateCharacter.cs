@@ -36,7 +36,7 @@ public class RespawnStateCharacter : BaseStateCharacter<EnumStateCharacter>
     {
         base.CheckChangeState();
 
-        //_character.Animator.SetBool("Land", true);
-        //_stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Idle]);
+        _character.Animator.SetBool("Fall", false);
+        _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Idle]);
     }
 }

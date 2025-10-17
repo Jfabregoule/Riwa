@@ -50,6 +50,11 @@ public class MirrorTuto : MonoBehaviour
             {
                 act.OnActivated += AddActivate;
                 act.OnDesactivated += RemoveActivate;
+
+                if(activable.TryGetComponent(out PressurePlate plate))
+                {
+                    plate.CanBeTriggeredWithPlayer = false;
+                }
             }
         }
 
@@ -116,6 +121,13 @@ public class MirrorTuto : MonoBehaviour
         InputManager.Instance.OnRotateLeft -= InvokeRotate;
         InputManager.Instance.OnRotateRight -= InvokeRotate;
         _done = true;
+        foreach (var activable in _activables)
+        {
+            if (activable.TryGetComponent(out PressurePlate plate))
+            {
+                plate.CanBeTriggeredWithPlayer = false;
+            }
+        }
         SaveSystem.Instance.SaveElement<bool>("Room2TutoMirror", _done);
         DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.Rotate);
     }

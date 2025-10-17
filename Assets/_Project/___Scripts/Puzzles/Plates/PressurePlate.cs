@@ -22,6 +22,8 @@ public class PressurePlate : MonoBehaviour, IActivable
 
     private HashSet<Collider> _validColliders = new HashSet<Collider>();
 
+    public bool CanBeTriggeredWithPlayer { get => _canBeTriggeredWithPlayer; set => _canBeTriggeredWithPlayer = value; }
+
     private void Start()
     {
         GameManager.Instance.CurrentLevelManager.OnLevelEnter += CheckForObjectsOnStart;

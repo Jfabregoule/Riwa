@@ -27,6 +27,13 @@ public class SequencerActionLerpSensaAtPosition : SequencerAction
         Vector3 initialRiwaPosition = _instance.Chawa.transform.position;
         Vector3 targetRiwaPosition = _instance.RiwaLandingTransform.position;
 
+        if (MoveWithRiwa)
+        {
+            _instance.ChawaVFX.Play();
+            foreach(GameObject trail in _instance.ChawaTrails)
+                trail.SetActive(true);
+        }
+
         float elapsedTime = 0f;
 
         while(elapsedTime < MoveDuration)
@@ -41,7 +48,13 @@ public class SequencerActionLerpSensaAtPosition : SequencerAction
 
         GameManager.Instance.Character.Animator.SetBool("Move", false);
         GameManager.Instance.Character.transform.position = targetSensaPosition;
-        if (MoveWithRiwa) _instance.Chawa.transform.position = targetRiwaPosition;
+        if (MoveWithRiwa)
+        {
+            _instance.Chawa.transform.position = targetRiwaPosition;
+            _instance.ChawaVFX.Stop();
+            foreach(GameObject trail in _instance.ChawaTrails)
+                trail.SetActive(false);   
+        }
         _dialogueSystem.EventRegistery.Invoke(WaitDialogueEventType.WaitForSensaLandingAtFragment);
     }
 }

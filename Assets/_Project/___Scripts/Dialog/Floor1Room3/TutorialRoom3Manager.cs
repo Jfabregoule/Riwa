@@ -59,6 +59,9 @@ public class TutorialRoom3Manager : MonoBehaviour
             case DialogueEventType.RiwaEndShowingPath:
                 _instance.ChawaPathTriggerZone.enabled = true;
                 _instance.RiwaSensaCamera[0].Priority = 0;
+                foreach(GameObject trail in _instance.ChawaTrail)
+                    trail.gameObject.SetActive(false);
+                _instance.ChawaVFX.Play();
                 GameManager.Instance.UIManager.StartPulse(UIElementEnum.ChangeTime);
                 break;
             case DialogueEventType.ShowLianaPath:
@@ -177,7 +180,9 @@ public class TutorialRoom3Manager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         _instance.TreeStumpTest.enabled = true;
         _instance.TreeStumpTest.CanInteract = true;
-        _instance.ChawaTrail.gameObject.SetActive(false);
+        _instance.ChawaVFX.Stop();
+        foreach(GameObject trail in _instance.ChawaTrail)
+            trail.gameObject.SetActive(false);
         StartCoroutine(HideRiwa());
     }
     

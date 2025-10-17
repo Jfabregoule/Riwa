@@ -17,6 +17,9 @@ public class SequenceActionRiwaAppearing : SequencerAction
     {
         _instance.Chawa.transform.SetParent(null);
         _instance.Chawa.SetActive(true);
+        _instance.ChawaVFX.Play();
+        foreach(GameObject trail in _instance.ChawaTrails)
+            trail.SetActive(true);
 
         Vector3 initialChawaPos = _instance.Chawa.transform.position;
         Vector3 sensaPosition = GameManager.Instance.Character.transform.position;
@@ -45,5 +48,9 @@ public class SequenceActionRiwaAppearing : SequencerAction
         _instance.Chawa.transform.position = targetPosition;
         _instance.Chawa.transform.rotation = chawaTargetRotation;
         _instance.Chawa.transform.localScale = finalScale;
+        
+        _instance.ChawaVFX.Stop();
+        foreach(GameObject trail in _instance.ChawaTrails)
+            trail.SetActive(false);
     }
 }

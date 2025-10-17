@@ -23,7 +23,8 @@ public class Floor1Room3LevelManager : BaseLevelManager
 
     [Header("Chawa")]
     [SerializeField] private GameObject _chawa;
-    [SerializeField] private ParticleSystem _chawaTrail;
+    [SerializeField] private ParticleSystem _chawaVFX;
+    [SerializeField] private List<GameObject> _chawaTrail;
     [SerializeField] private Transform _chawaLianaPosition;
     [SerializeField] private BoxCollider _chawaPathTriggerZone;
     
@@ -44,7 +45,8 @@ public class Floor1Room3LevelManager : BaseLevelManager
     public List<CinemachineVirtualCamera> RiwaSensaCamera { get => _riwaSensaCamera; }
     public List<CinemachineVirtualCamera> VinesCameras { get => _vinesCameras; }
     public GameObject Chawa { get => _chawa; set => _chawa = value; }
-    public ParticleSystem ChawaTrail { get => _chawaTrail; set => _chawaTrail = value; }
+    public ParticleSystem ChawaVFX { get => _chawaVFX; set => _chawaVFX = value; }
+    public List<GameObject> ChawaTrail { get => _chawaTrail; set => _chawaTrail = value; }
     public TutorialRoom3Manager TutorialRoom3Manager { get => _tutorialRoom3Manager; }
     public bool IsDamierCompleted { get => _isDamierCompleted; set => _isDamierCompleted = value; }
     public Transform ChawaLianaPosition { get => _chawaLianaPosition; set => _chawaLianaPosition = value; }

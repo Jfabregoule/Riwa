@@ -19,7 +19,6 @@ public class Room3LianaTutorialCollider : MonoBehaviour
     {
         if (_isPlayerInArea && _hasBeenAlreadyTriggered == false && temporality == EnumTemporality.Present)
         {
-            _instance.ChawaTrail.gameObject.SetActive(false);
             _instance.RiwaShowingPathTriggerZone.CanInteract = false;
             _instance.TreeStumpTest.CanInteract = false;
 

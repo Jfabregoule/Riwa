@@ -20,6 +20,10 @@ public class Floor1Room4LevelManager : BaseLevelManager
     [Header("GameObjects")]
     [SerializeField] private GameObject _chawa;
     [SerializeField] private MuralPiece _muralPiece;
+    
+    [Header("Chawa")]
+    [SerializeField] private List<GameObject> _chawaTrails;
+    [SerializeField] private ParticleSystem _chawaVFX;
 
     [Header("Values")]
     [SerializeField] private Transform _sensaLandingTransform;
@@ -42,6 +46,8 @@ public class Floor1Room4LevelManager : BaseLevelManager
     public CinemachineVirtualCamera SensaRiwaDiscussing { get => _sensaRiwaDiscussing; }
     public List<CinemachineVirtualCamera> FresqueCameras { get => _fresqueCameras; }
     public GameObject Chawa { get => _chawa; }
+    public List<GameObject> ChawaTrails { get => _chawaTrails; }
+    public ParticleSystem ChawaVFX { get => _chawaVFX; }
     public TutorialDialogRoom4Manager DialogManager { get => _dialogManager; }
     public bool IsTutorialDone { get => _isTutorialDone; set => _isTutorialDone = value; }
     public MuralPiece MuralPiece { get => _muralPiece; }

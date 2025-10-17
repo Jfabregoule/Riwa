@@ -73,8 +73,12 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        if(RotationUnlocked == true)
-            Display(UIElementEnum.Rotate);
+        //Display(UIElementEnum.Joystick);
+        //Display(UIElementEnum.Interact);
+        //Display(UIElementEnum.ChangeTime);
+        //Display(UIElementEnum.Push);
+        //if (RotationUnlocked == true)
+        //    Display(UIElementEnum.Rotate);
     }
 
     public void StartPulse(UIElementEnum uiElementEnum)

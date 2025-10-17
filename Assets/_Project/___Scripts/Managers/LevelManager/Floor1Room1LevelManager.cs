@@ -103,6 +103,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
             _currentZone = 0;
             GameManager.Instance.UIManager.Hide(UIElementEnum.Interact);
             GameManager.Instance.UIManager.Hide(UIElementEnum.Push);
+            GameManager.Instance.UIManager.Hide(UIElementEnum.ChangeTime);
             RiwaSaveManagerRoom1.Instance.Save = false;
         }
 

@@ -17,6 +17,8 @@ public class MirrorTuto : MonoBehaviour
 
     [SerializeField] private MonoBehaviour[] _activables;
 
+    [SerializeField] private Crate[] _crates;
+
     [SerializeField] private MonoBehaviour _activableGhost;
     [SerializeField] private MonoBehaviour _desactivableGhost;
 
@@ -40,7 +42,7 @@ public class MirrorTuto : MonoBehaviour
     private void LoadData()
     {
         _done = SaveSystem.Instance.LoadElement<bool>("Room2TutoMirror");
-        _interactedWithMirror = SaveSystem.Instance.LoadElement<bool>("Room2TutoMirrorInteracted");
+        _interactedWithMirror = SaveSystem.Instance.LoadElement<bool>("RotationUnlocked");
     }
     void Start()
     {
@@ -125,8 +127,12 @@ public class MirrorTuto : MonoBehaviour
         {
             if (activable.TryGetComponent(out PressurePlate plate))
             {
-                plate.CanBeTriggeredWithPlayer = false;
+                plate.CanBeTriggeredWithPlayer = true;
             }
+        }
+        foreach (Crate crate in _crates)
+        {
+            crate.CanInteract = true;
         }
         SaveSystem.Instance.SaveElement<bool>("Room2TutoMirror", _done);
         DialogueSystem.Instance.EventRegistery.Invoke(WaitDialogueEventType.Rotate);
@@ -199,6 +205,10 @@ public class MirrorTuto : MonoBehaviour
         if (CurrentActive == _activables.Length && !_done)
         {
             StartCoroutine(Helpers.WaitMonoBeheviour(() => DialogueSystem.Instance, SubscribeToDialogueSystem));
+            foreach (Crate crate in _crates)
+            {
+                crate.CanInteract = false;
+            }
         }
     }
 

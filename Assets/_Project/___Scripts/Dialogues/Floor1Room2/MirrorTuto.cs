@@ -94,6 +94,27 @@ public class MirrorTuto : MonoBehaviour
         if(_zone != null)
             _zone.OnPlace -= PlayerInZone;
 
+        foreach (var activable in _activables)
+        {
+            if (activable.TryGetComponent(out IActivable act))
+            {
+                act.OnActivated -= AddActivate;
+                act.OnDesactivated -= RemoveActivate;
+            }
+        }
+
+        if (_activableGhost.TryGetComponent(out IActivable acti))
+        {
+            acti.OnActivated -= ActiveGhost;
+            acti.OnDesactivated -= DesactiveGhost;
+        }
+
+        if (_desactivableGhost.TryGetComponent(out IActivable ac))
+        {
+            ac.OnActivated -= DesactiveGhost;
+            ac.OnDesactivated -= ActiveGhost;
+        }
+
         SaveSystem.Instance.OnLoadProgress -= LoadData;
         SaveSystem.Instance.SaveElement<bool>("Room2TutoMirror", _done);
     }

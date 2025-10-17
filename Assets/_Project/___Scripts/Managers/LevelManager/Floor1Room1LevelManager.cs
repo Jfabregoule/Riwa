@@ -108,7 +108,6 @@ public class Floor1Room1LevelManager : BaseLevelManager
 
         if (CurrentAdvancement > EnumAdvancementRoom1.Room0)
         {
-            GameManager.Instance.UIManager.Display(UIElementEnum.Push);
             GameManager.Instance.UIManager.Display(UIElementEnum.Interact);
             GameManager.Instance.UIManager.Display(UIElementEnum.ChangeTime);
             //GameManager.Instance.UnlockChangeTime();

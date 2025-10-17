@@ -25,7 +25,16 @@ public class HoldingStateCharacter : BaseStateCharacter<EnumStateCharacter>
 
         _subStateMachine.ChangeState(_subStateMachine.States[EnumHolding.IdleHolding]);
         _character.InputManager.OnInteract += OnInteractEnd;
-        ((ACharacter)_character).InvokeHoldingStart();
+        
+        ACharacter character = (ACharacter)_character;
+        if (character.HoldingObject.TryGetComponent(out IRotatable rotatable))
+            GameManager.Instance.UIManager.Display(UIElementEnum.Rotate);
+        if (character.HoldingObject.TryGetComponent(out IMovable movable))
+        {
+            GameManager.Instance.UIManager.Display(UIElementEnum.Push);
+            GameManager.Instance.UIManager.Display(UIElementEnum.Pull);
+        }
+        GameManager.Instance.UIManager.Hide(UIElementEnum.ChangeTime);
         _character.InputManager.DisableGameplayMoveControls();
     }
 
@@ -43,8 +52,10 @@ public class HoldingStateCharacter : BaseStateCharacter<EnumStateCharacter>
         chara.SetHoldingObject(null);
         chara.InputManager.OnInteract -= OnInteractEnd;
         _subStateMachine.ChangeState(_subStateMachine.States[EnumHolding.StandBy]);
-        chara.InvokeHoldingEnd();
-
+        GameManager.Instance.UIManager.Hide(UIElementEnum.Push);
+        GameManager.Instance.UIManager.Hide(UIElementEnum.Pull);
+        GameManager.Instance.UIManager.Hide(UIElementEnum.Rotate);
+        GameManager.Instance.UIManager.Display(UIElementEnum.ChangeTime);
         _character.InputManager.EnableGameplayMoveControls();
     }
 
@@ -53,8 +64,6 @@ public class HoldingStateCharacter : BaseStateCharacter<EnumStateCharacter>
         base.UpdateState();
 
         _subStateMachine.StateMachineUpdate();
-
-        
     }
 
     public override void CheckChangeState()

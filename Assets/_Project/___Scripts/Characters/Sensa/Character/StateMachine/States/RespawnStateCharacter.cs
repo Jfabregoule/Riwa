@@ -18,10 +18,7 @@ public class RespawnStateCharacter : BaseStateCharacter<EnumStateCharacter>
         _character.transform.position = chara.RespawnPosition;
         _character.transform.localEulerAngles = chara.RespawnRotation;
 
-        chara.Animator.SetBool("Land", true);
-
         ACharacter character = (ACharacter)_character;
-        character.InvokeFallStun();
     }
 
     public override void ExitState()

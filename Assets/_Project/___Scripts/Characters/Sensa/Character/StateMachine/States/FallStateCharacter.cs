@@ -42,19 +42,8 @@ public class FallStateCharacter : BaseStateCharacter<EnumStateCharacter>
         if (_chara.Feet.IsGround && _canTriggerLanding)
         {
             ACharacter chara = (ACharacter)_chara;
-            chara.Animator.SetBool("Land", true);
-            chara.InvokeFallStun();
+            _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Idle]);
             _canTriggerLanding = false;
         }
     }
-
-    public IEnumerator FallStun(float sec)
-    {
-        yield return new WaitForSeconds(sec);
-
-        _character.Animator.SetBool("Land", false);
-        _stateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Idle]);
-
-    }
-
 }

@@ -153,12 +153,6 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
         StateMachine.ChangeState(_stateMachine.States[EnumStateCharacter.Respawn]);
     }
 
-    public void InvokeFallStun()
-    {
-        FallStateCharacter state = (FallStateCharacter)StateMachine.States[EnumStateCharacter.Fall];
-        StartCoroutine(state.FallStun(_fallingStun));
-    }
-
     public void InvokeRotate()
     {
         OnRotate?.Invoke();

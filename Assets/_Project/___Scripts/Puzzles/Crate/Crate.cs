@@ -3,7 +3,7 @@ using System.Drawing;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class Crate : MonoBehaviour, IMovable, IRotatable
+public class Crate : MonoBehaviour, IMovable
 {
     ACharacter _character;
 
@@ -157,13 +157,6 @@ public class Crate : MonoBehaviour, IMovable, IRotatable
         Debug.DrawLine(points[4], points[6], color, duration);
         Debug.DrawLine(points[5], points[7], color, duration);
         Debug.DrawLine(points[6], points[7], color, duration);
-    }
-
-    public void Rotate(int sens)
-    {
-        
-        StartCoroutine(CoroutineRotate(sens));
-        
     }
 
     private IEnumerator CoroutineRotate(int sens)

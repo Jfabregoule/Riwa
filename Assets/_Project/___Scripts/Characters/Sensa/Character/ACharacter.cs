@@ -178,15 +178,7 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
         SerializableVector3 respawnRotation = new SerializableVector3(RespawnRotation);
         SaveSystem.Instance.SaveElement<SerializableVector3>("RespawnRotation", respawnRotation);
     }
-
-    public void InvokeHoldingStart()
-    {
-        OnHoldingStart?.Invoke();
-    }
-    public void InvokeHoldingEnd()
-    {
-        OnHoldingEnd?.Invoke();
-    }
+    
     public void InvokeCinematicSpeak()
     {
         OnFinishAnimationSpeak?.Invoke();

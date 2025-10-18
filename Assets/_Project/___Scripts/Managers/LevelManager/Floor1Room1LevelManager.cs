@@ -103,14 +103,14 @@ public class Floor1Room1LevelManager : BaseLevelManager
             _currentZone = 0;
             GameManager.Instance.UIManager.Hide(UIElementEnum.Interact);
             GameManager.Instance.UIManager.Hide(UIElementEnum.Push);
-            GameManager.Instance.UIManager.Hide(UIElementEnum.ChangeTime);
+            GameManager.Instance.UIManager.Hide(UIElementEnum.ChangeTimeParent);
             RiwaSaveManagerRoom1.Instance.Save = false;
         }
 
         if (CurrentAdvancement > EnumAdvancementRoom1.Room0)
         {
             GameManager.Instance.UIManager.Display(UIElementEnum.Interact);
-            GameManager.Instance.UIManager.Display(UIElementEnum.ChangeTime);
+            GameManager.Instance.UIManager.Display(UIElementEnum.ChangeTimeParent);
             //GameManager.Instance.UnlockChangeTime();
         }
         
@@ -380,7 +380,7 @@ public class Floor1Room1LevelManager : BaseLevelManager
         InputManager.Instance.EnableGameplayChangeTimeControls();
         DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.ChangeTime, OnChangeTime);
         GameManager.Instance.UIManager.StartHighlight(UIElementEnum.ChangeTime);
-        GameManager.Instance.UIManager.Display(UIElementEnum.ChangeTime);
+        GameManager.Instance.UIManager.Display(UIElementEnum.ChangeTimeParent);
         _character.InputManager.OnChangeTime += InvokeChangeTime;
 
     }

@@ -33,7 +33,7 @@ public class HoldingStateCharacter : BaseStateCharacter<EnumStateCharacter>
         {
             GameManager.Instance.UIManager.Display(UIElementEnum.Moveable);
         }
-        GameManager.Instance.UIManager.Hide(UIElementEnum.ChangeTime);
+        GameManager.Instance.UIManager.Hide(UIElementEnum.ChangeTimeParent);
         _character.InputManager.DisableGameplayMoveControls();
     }
 
@@ -53,7 +53,7 @@ public class HoldingStateCharacter : BaseStateCharacter<EnumStateCharacter>
         _subStateMachine.ChangeState(_subStateMachine.States[EnumHolding.StandBy]);
         GameManager.Instance.UIManager.Hide(UIElementEnum.Moveable);
         GameManager.Instance.UIManager.Hide(UIElementEnum.Rotatable);
-        GameManager.Instance.UIManager.Display(UIElementEnum.ChangeTime);
+        GameManager.Instance.UIManager.Display(UIElementEnum.ChangeTimeParent);
         _character.InputManager.EnableGameplayMoveControls();
     }
 

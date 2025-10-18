@@ -14,7 +14,8 @@ public enum UIElementEnum
     Push,
     Rotate,
     Moveable,
-    Rotatable
+    Rotatable,
+    ChangeTimeParent
 }
 
 [System.Serializable]

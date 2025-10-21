@@ -20,6 +20,12 @@ public class LanguageSelector : MonoBehaviour
     {
         SaveSystem.Instance.OnLoadSettings += SetLanguage;
     }
+
+    private void OnDisable()
+    {
+        if(SaveSystem.Instance)
+            SaveSystem.Instance.OnLoadSettings -= SetLanguage;
+    }
     private void Start()
     {
         _translateSystem = GameManager.Instance.TranslateSystem;

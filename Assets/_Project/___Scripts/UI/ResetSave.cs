@@ -19,8 +19,11 @@ public class ResetSave : MonoBehaviour
         }
         else
         {
+            InputManager.Instance.EnableGameplayControls();
+            DialogueSystem.Instance.FinishDialogue();
+            GameManager.Instance.UIManager.BlackScreen.ResetCercle();
             string CurrentRoomSceneName = RiwaLoadSceneSystem.Instance.GetCurrentRoomSceneName();
-            StartCoroutine(RiwaLoadSceneSystem.Instance.ChangeScene(new[] { new SceneData(CurrentRoomSceneName) }, new[] { new SceneData("MainMenu", 0, new System.Action[] { SaveSystem.Instance.DeleteAllData, GameManager.Instance.ResetSave }) }));
+            StartCoroutine(RiwaLoadSceneSystem.Instance.ChangeScene(new[] { new SceneData(CurrentRoomSceneName), }, new[] { new SceneData("MainMenu", 0, new System.Action[] { SaveSystem.Instance.DeleteAllData, GameManager.Instance.ResetSave }) }));
         }
     }
 }

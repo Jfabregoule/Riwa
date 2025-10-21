@@ -45,6 +45,8 @@ public class Floor1Room1LevelManager : BaseLevelManager
     [SerializeField] private CinematicRoom1[] _cinematics;
     [SerializeField] private TutoGhost _ghost;
 
+    [SerializeField] private Crate _presentCrate;
+
 
     [SerializeField] private EndGameCinematic _endGameCinematic;
     
@@ -319,12 +321,15 @@ public class Floor1Room1LevelManager : BaseLevelManager
                 InputManager.Instance.DisableOptionsControls();
                 InputManager.Instance.DisableGameplayPullControls();
                 InputManager.Instance.EnableGameplayInteractControls();
+                _presentCrate.CanInteract = false;
                 DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.EndInteract, OnEndInteract);
                 GameManager.Instance.UIManager.StartHighlight(UIElementEnum.Interact);
                 GameManager.Instance.UIManager.Display(UIElementEnum.Interact);
                 _character.InputManager.OnInteract += InvokeEndInteract;
                 break;
             case DialogueEventType.WaitInteract:
+                _presentCrate.CanInteract = true;
+                InputManager.Instance.DisableGameplayMoveControls();
                 _character.InputManager.OnInteract += InvokeInteract;
                 break;
             case DialogueEventType.ValidateTuto1Room1:

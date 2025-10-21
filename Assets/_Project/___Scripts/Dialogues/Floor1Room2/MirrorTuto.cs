@@ -137,7 +137,6 @@ public class MirrorTuto : MonoBehaviour
 
     private void InvokeRotate()
     {
-        InputManager.Instance.DisableGameplayRotateControls();
         InputManager.Instance.EnableOptionsControls();
         InputManager.Instance.EnableGameplayControls();
         GameManager.Instance.UIManager.StopHighlight(UIElementEnum.Rotate);
@@ -182,7 +181,6 @@ public class MirrorTuto : MonoBehaviour
         {
             case DialogueEventType.DisplayRotate:
                 InputManager.Instance.DisableOptionsControls();
-                InputManager.Instance.DisableGameplayControls();
                 InputManager.Instance.EnableGameplayRotateControls();
                 DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.Rotate, OnRotate);
                 GameManager.Instance.UIManager.StartHighlight(UIElementEnum.Rotate);
@@ -203,6 +201,7 @@ public class MirrorTuto : MonoBehaviour
 
             case DialogueEventType.WaitInteract:
                 DialogueSystem.Instance.EventRegistery.Register(WaitDialogueEventType.Interact, OnInteract);
+                InputManager.Instance.DisableGameplayMoveControls();
                 InputManager.Instance.OnInteract += InvokeInteract;
                 break;
         }

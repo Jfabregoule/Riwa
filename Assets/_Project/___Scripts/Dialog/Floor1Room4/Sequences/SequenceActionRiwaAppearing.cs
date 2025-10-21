@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Rendering;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Riwa Appearing", menuName = "Riwa/Dialogue/Floor1/Room4/Sequences/Riwa Appearing")]

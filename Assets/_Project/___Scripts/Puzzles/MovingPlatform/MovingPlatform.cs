@@ -10,7 +10,7 @@ public class MovingPlatform : MonoBehaviour
 
     private int _currentIndex = 0;
     private int _direction = 1;
-    private List<Vector3> _targetPositions = new List<Vector3>();
+    //private List<Vector3> _targetPositions = new List<Vector3>();
 
     private bool _isActivated = false;
 
@@ -18,13 +18,13 @@ public class MovingPlatform : MonoBehaviour
 
     private void Start()
     {
-        _targetPositions.Add(transform.position);
+        //_targetPositions.Add(transform.position);
 
-        foreach (Transform point in _points)
-        {
-            if (point != null)
-                _targetPositions.Add(point.position);
-        }
+        //foreach (Transform point in _points)
+        //{
+        //    if (point != null)
+        //        _targetPositions.Add(point.position);
+        //}
 
         if(_activableComponents.Length > 0)
         {
@@ -37,7 +37,7 @@ public class MovingPlatform : MonoBehaviour
             }
         }
 
-        if (_targetPositions.Count > 1 && _activableComponents.Length == 0)
+        if (_points.Count > 1 && _activableComponents.Length == 0)
         {
             OnMovingPlatformStateUptated(true);
             StartCoroutine(MovePlatform());
@@ -48,7 +48,7 @@ public class MovingPlatform : MonoBehaviour
     {
         _isActivated = true;
         OnMovingPlatformStateUptated(true);
-        if (_targetPositions.Count > 1)
+        if (_points.Count > 1)
             StartCoroutine(MovePlatform());
     }
 
@@ -57,7 +57,7 @@ public class MovingPlatform : MonoBehaviour
         if (_isActivated) return;
         OnMovingPlatformStateUptated(true);
         _isActivated = true;
-        if (_targetPositions.Count > 1)
+        if (_points.Count > 1)
             StartCoroutine(MovePlatform());
     }
 
@@ -65,7 +65,7 @@ public class MovingPlatform : MonoBehaviour
     {
         while (true)
         {
-            Vector3 target = _targetPositions[_currentIndex];
+            Vector3 target = _points[_currentIndex].position;
             while (Vector3.Distance(transform.position, target) > 0.01f)
             {
                 transform.position = Vector3.MoveTowards(transform.position, target, _moveSpeed * Time.deltaTime);
@@ -76,7 +76,7 @@ public class MovingPlatform : MonoBehaviour
 
             yield return new WaitForSeconds(2f);
 
-            if (_currentIndex == _targetPositions.Count - 1)
+            if (_currentIndex == _points.Count - 1)
                 _direction = -1;
             else if (_currentIndex == 0)
                 _direction = 1;

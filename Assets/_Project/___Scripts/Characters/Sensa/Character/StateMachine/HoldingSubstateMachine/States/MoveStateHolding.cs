@@ -33,12 +33,10 @@ public class MoveStateHolding : HoldingBaseState
         _character.Animator.SetFloat("HoldingSens", Sens);
         _character.Animator.SetFloat("PushSpeed", _movable.MoveSpeed);
 
-        _character.InputManager.OnRotateLeft += OnRotateLeft;
-        _character.InputManager.OnRotateRight += OnRotateRight;
         _character.InputManager.OnPush += OnPush;
         _character.InputManager.OnPull += OnPull;
 
-        //_character.Feet.OnFall += GoToFall;
+        _character.Feet.OnFall += GoToFall;
     }
 
     public override void ExitState()
@@ -48,11 +46,9 @@ public class MoveStateHolding : HoldingBaseState
         _movable.OnMoveFinished -= CanGoToIdle;
         _movable.OnReplacePlayer -= ReplacePlayer;
 
-        _character.InputManager.OnRotateLeft -= OnRotateLeft;
-        _character.InputManager.OnRotateRight -= OnRotateRight;
         _character.InputManager.OnPush -= OnPush;
         _character.InputManager.OnPull -= OnPull;
-        //_character.Feet.OnFall -= GoToFall;
+        _character.Feet.OnFall -= GoToFall;
     }
 
     public override void UpdateState()
@@ -145,8 +141,6 @@ public class MoveStateHolding : HoldingBaseState
     {
         base.DestroyState();
 
-        _character.InputManager.OnRotateLeft -= OnRotateLeft;
-        _character.InputManager.OnRotateRight -= OnRotateRight;
         _character.InputManager.OnPush -= OnPush;
         _character.InputManager.OnPull -= OnPull;
     }
@@ -180,31 +174,15 @@ public class MoveStateHolding : HoldingBaseState
         _character.StateMachine.ChangeState(_character.StateMachine.States[EnumStateCharacter.Fall]);
     }
 
-    private void OnRotateLeft()
-    {
-        if (!_character.HoldingObject.TryGetComponent(out IRotatable rotatable)) return;
-        ((RotateStateHolding)_stateMachine.States[EnumHolding.Rotate]).Sens = 1;
-        _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Rotate]);
-    }
-
-    private void OnRotateRight()
-    {
-        if (!_character.HoldingObject.TryGetComponent(out IRotatable rotatable)) return;
-        ((RotateStateHolding)_stateMachine.States[EnumHolding.Rotate]).Sens = -1;
-        _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Rotate]);
-    }
-
     private void OnPush()
     {
-        if (!_character.HoldingObject.TryGetComponent(out IMovable movable)) return;
-        Sens = 1;
+        if (!_character.HoldingObject.TryGetComponent(out IMovable movable) && Sens == 1) return;
         _character.Animator.SetFloat("HoldingSens", Sens);
     }
 
     private void OnPull()
     {
-        if (!_character.HoldingObject.TryGetComponent(out IMovable movable)) return;
-        Sens = -1;
+        if (!_character.HoldingObject.TryGetComponent(out IMovable movable) && Sens == -1) return;
         _character.Animator.SetFloat("HoldingSens", Sens);
     }
 

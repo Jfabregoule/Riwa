@@ -50,8 +50,6 @@ public class RotateStateHolding : HoldingBaseState
 
         _character.InputManager.OnRotateLeft -= OnRotateLeft;
         _character.InputManager.OnRotateRight -= OnRotateRight;
-        _character.InputManager.OnPush -= OnPush;
-        _character.InputManager.OnPull -= OnPull;
 
     }
 
@@ -77,8 +75,6 @@ public class RotateStateHolding : HoldingBaseState
 
         _character.InputManager.OnRotateLeft += OnRotateLeft;
         _character.InputManager.OnRotateRight += OnRotateRight;
-        _character.InputManager.OnPush += OnPush;
-        _character.InputManager.OnPull += OnPull;
     }
 
     public override void DestroyState()
@@ -90,35 +86,18 @@ public class RotateStateHolding : HoldingBaseState
 
         _character.InputManager.OnRotateLeft -= OnRotateLeft;
         _character.InputManager.OnRotateRight -= OnRotateRight;
-        _character.InputManager.OnPush -= OnPush;
-        _character.InputManager.OnPull -= OnPull;
     }
 
     private void OnRotateLeft()
     {
-        if (!_character.HoldingObject.TryGetComponent(out IRotatable rotatable)) return;
-        ((RotateStateHolding)_stateMachine.States[EnumHolding.Rotate]).Sens = 1;
+        if (!_character.HoldingObject.TryGetComponent(out IRotatable rotatable) && Sens == 1) return;
         _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Rotate]);
     }
 
     private void OnRotateRight()
     {
-        if (!_character.HoldingObject.TryGetComponent(out IRotatable rotatable)) return;
-        ((RotateStateHolding)_stateMachine.States[EnumHolding.Rotate]).Sens = -1;
+        if (!_character.HoldingObject.TryGetComponent(out IRotatable rotatable) && Sens == -1) return;
         _stateMachine.ChangeState(_stateMachine.States[EnumHolding.Rotate]);
     }
 
-    private void OnPush()
-    {
-        if (!_character.HoldingObject.TryGetComponent(out IMovable movable)) return;
-        Sens = 1;
-        _character.Animator.SetFloat("HoldingSens", Sens);
-    }
-
-    private void OnPull()
-    {
-        if (!_character.HoldingObject.TryGetComponent(out IMovable movable)) return;
-        Sens = -1;
-        _character.Animator.SetFloat("HoldingSens", Sens);
-    }
 }

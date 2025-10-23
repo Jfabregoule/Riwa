@@ -62,7 +62,6 @@ public class Statue : MonoBehaviour, IMovable, IRotatable
     public bool Move(Vector3 direction)
     {
         if (_isMoving || _validate) return true;
-
         if (_showDebugLog == true) Debug.Log("UnitgridSize: " + _unitGridSize + " | Direction: " + direction);
         if (_showDebugLog == true) Debug.Log("PosX: " + _pos.x + " | PosY: " + _pos.y + " | Rotation: " + _content.rotation + " | ID: " + _content.id);
         

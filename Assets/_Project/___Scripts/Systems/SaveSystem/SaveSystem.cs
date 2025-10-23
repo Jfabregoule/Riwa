@@ -3,8 +3,6 @@ using System.IO;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using static UnityEngine.Rendering.DebugUI;
-using JetBrains.Annotations;
 
 [System.Serializable]
 public class SerializableVector3
@@ -218,6 +216,23 @@ public class SaveSystem : Singleton<SaveSystem>
         if (File.Exists(_progressPath))
         {
             _progressData = JsonConvert.DeserializeObject<Dictionary<string, object>>(File.ReadAllText(_progressPath));
+        }
+        else
+        {
+            _progressData = new Dictionary<string, object>(_defaultProgress);
+        }
+
+        OnLoadProgress?.Invoke();
+    }
+
+    /// <summary>
+    /// Charge les données de progression depuis un fichier JSON.
+    /// </summary>
+    public void LoadProgressData(string path)
+    {
+        if (File.Exists(path))
+        {
+            _progressData = JsonConvert.DeserializeObject<Dictionary<string, object>>(File.ReadAllText(path));
         }
         else
         {

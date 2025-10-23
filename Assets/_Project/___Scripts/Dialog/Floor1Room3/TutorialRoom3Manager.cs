@@ -36,6 +36,15 @@ public class TutorialRoom3Manager : MonoBehaviour
         DialogueSystem.Instance.OnDialogueEvent += DispatchEventOnDialogueEvent;
     }
 
+    private void OnDisable()
+    {
+        if(_instance)
+            _instance.OnLevelEnter -= Init;
+
+        if(DialogueSystem.Instance)
+            DialogueSystem.Instance.OnDialogueEvent -= DispatchEventOnDialogueEvent;
+    }
+
     private void Init()
     {
         DialogueSystem.Instance.BeginDialogue(_damierDialogue[0]);

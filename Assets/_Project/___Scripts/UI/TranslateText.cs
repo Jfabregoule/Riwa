@@ -18,6 +18,16 @@ public class TranslateText : MonoBehaviour
     {
         SaveSystem.Instance.OnLoadSettings += SetText;
         GameManager.Instance.TranslateSystem.OnLanguageChanged += SetText;
+        SetText();
+    }
+
+    private void OnDisable()
+    {
+        if(SaveSystem.Instance)
+            SaveSystem.Instance.OnLoadSettings -= SetText;
+
+        if (GameManager.Instance)
+            GameManager.Instance.TranslateSystem.OnLanguageChanged -= SetText;
     }
 
     private void SetText()

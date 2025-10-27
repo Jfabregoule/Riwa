@@ -21,7 +21,6 @@ public class ACharacter : APawn<EnumStateCharacter>, IRespawnable
     //Field
 
     private GameObject _pawn;
-    //new private StateMachineCharacter _stateMachine;
     private GameObject _soul;
     private GameObject _holdingObject;
 

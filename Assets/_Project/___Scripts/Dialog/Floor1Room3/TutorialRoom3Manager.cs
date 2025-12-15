@@ -55,7 +55,7 @@ public class TutorialRoom3Manager : MonoBehaviour
         switch (dialogueEvent)
         {
             case DialogueEventType.RiwaSensaDamierDiscussionRoom3:
-                StartCoroutine(SensaChawaDiscuss(0));
+                StartCoroutine(DelayDialogue(1.5f,0));
                 break;
             case DialogueEventType.RiwaSensaLianaDiscussionRoom3:
                 StartCoroutine(SensaChawaDiscuss(1));
@@ -68,9 +68,9 @@ public class TutorialRoom3Manager : MonoBehaviour
             case DialogueEventType.RiwaEndShowingPath:
                 _instance.ChawaPathTriggerZone.enabled = true;
                 _instance.RiwaSensaCamera[0].Priority = 0;
-                foreach(GameObject trail in _instance.ChawaTrail)
+                foreach (GameObject trail in _instance.ChawaTrail)
                     trail.gameObject.SetActive(false);
-                _instance.ChawaVFX.Play();
+                _instance.ChawaVFX.Stop();
                 GameManager.Instance.UIManager.StartPulse(UIElementEnum.ChangeTime);
                 break;
             case DialogueEventType.ShowLianaPath:
@@ -128,6 +128,13 @@ public class TutorialRoom3Manager : MonoBehaviour
         _instance.Chawa.transform.localScale = finalScale;
         _instance.Chawa.transform.SetParent(null);
         _chawaAlreadySpawned = true;
+    }
+
+    public IEnumerator DelayDialogue(float delayTime,int cameraID)
+    {
+        yield return new WaitForSeconds(delayTime);
+        StartCoroutine(SensaChawaDiscuss(cameraID));
+
     }
 
     public IEnumerator HideRiwa()

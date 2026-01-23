@@ -61,8 +61,7 @@ public class Crate : MonoBehaviour, IMovable
         Collider[] colliders = Physics.OverlapBox(transform.position + Vector3.up * transform.localScale.y * 0.2f, _boxSize * 0.5f, transform.rotation, layerMask);
 
         if (layerMask.value != (1 << gameObject.layer)) return;
-
-        DebugDrawBox(transform.position + Vector3.up * transform.localScale.y * 0.2f, _boxSize * 0.5f, transform.rotation, UnityEngine.Color.magenta, 20f);
+        
         foreach (Collider collider in colliders)
         {
             if (IsValidObject(collider, temporality))
@@ -107,12 +106,6 @@ public class Crate : MonoBehaviour, IMovable
 
         Collider[] colliders = Physics.OverlapBox(transform.position + multiplicator, size, Quaternion.Euler(new Vector3(0,90 * direction.z, 0)), layerMask);
 
-        Vector3 center = transform.position + multiplicator;
-        Vector3 halfExtents = size;
-        Quaternion orientation = Quaternion.Euler(new Vector3(0, 90 * direction.z, 0));
-
-        DebugDrawBox(center, halfExtents, orientation, UnityEngine.Color.red, 1f);
-
         foreach (var col in colliders)
         {
             if ((col.gameObject != gameObject
@@ -126,37 +119,6 @@ public class Crate : MonoBehaviour, IMovable
         _isMoving = true;
         StartCoroutine(MoveLerp(direction));
         return true;
-    }
-
-    void DebugDrawBox(Vector3 center, Vector3 halfExtents, Quaternion orientation, UnityEngine.Color color, float duration)
-    {
-        Vector3[] points = new Vector3[8];
-
-        Vector3 right = orientation * Vector3.right;
-        Vector3 up = orientation * Vector3.up;
-        Vector3 forward = orientation * Vector3.forward;
-
-        points[0] = center + right * halfExtents.x + up * halfExtents.y + forward * halfExtents.z;
-        points[1] = center + right * halfExtents.x + up * halfExtents.y - forward * halfExtents.z;
-        points[2] = center + right * halfExtents.x - up * halfExtents.y + forward * halfExtents.z;
-        points[3] = center + right * halfExtents.x - up * halfExtents.y - forward * halfExtents.z;
-        points[4] = center - right * halfExtents.x + up * halfExtents.y + forward * halfExtents.z;
-        points[5] = center - right * halfExtents.x + up * halfExtents.y - forward * halfExtents.z;
-        points[6] = center - right * halfExtents.x - up * halfExtents.y + forward * halfExtents.z;
-        points[7] = center - right * halfExtents.x - up * halfExtents.y - forward * halfExtents.z;
-
-        Debug.DrawLine(points[0], points[1], color, duration);
-        Debug.DrawLine(points[0], points[2], color, duration);
-        Debug.DrawLine(points[0], points[4], color, duration);
-        Debug.DrawLine(points[1], points[3], color, duration);
-        Debug.DrawLine(points[1], points[5], color, duration);
-        Debug.DrawLine(points[2], points[3], color, duration);
-        Debug.DrawLine(points[2], points[6], color, duration);
-        Debug.DrawLine(points[3], points[7], color, duration);
-        Debug.DrawLine(points[4], points[5], color, duration);
-        Debug.DrawLine(points[4], points[6], color, duration);
-        Debug.DrawLine(points[5], points[7], color, duration);
-        Debug.DrawLine(points[6], points[7], color, duration);
     }
 
     private IEnumerator CoroutineRotate(int sens)
